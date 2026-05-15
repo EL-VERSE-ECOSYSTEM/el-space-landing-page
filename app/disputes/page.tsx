@@ -26,6 +26,7 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { AlertTriangle, Scale, MessageCircle, FileText, CheckCircle } from 'lucide-react'
 import { useLoader } from '@/components/loader-provider'
+import { useAuth } from '@/components/auth-provider'
 import { toast } from 'sonner'
 
 interface Dispute {
@@ -47,6 +48,7 @@ interface Dispute {
 }
 
 export default function DisputesPage() {
+  const { user, loading: authLoading } = useAuth()
   const { show: showLoader, hide: hideLoader } = useLoader()
   const [disputes, setDisputes] = useState<Dispute[]>([])
   const [loading, setLoading] = useState(true)
@@ -57,14 +59,16 @@ export default function DisputesPage() {
   const [selectedProject, setSelectedProject] = useState('')
 
   useEffect(() => {
-    fetchDisputes()
-  }, [])
+    if (!authLoading) {
+      fetchDisputes()
+    }
+  }, [authLoading, user])
 
   const fetchDisputes = async () => {
     try {
       setLoading(true)
       showLoader(2)
-      const userId = localStorage.getItem('userId') || ''
+      const userId = user?.id || ''
       if (!userId) return
 
       const response = await fetch(`/api/disputes?userId=${userId}`)
@@ -97,7 +101,7 @@ export default function DisputesPage() {
           action: 'add-message',
           disputeId: selectedDispute.id,
           message: messageText,
-          sender: localStorage.getItem('userName') || 'User',
+          sender: user?.name || 'User',
         }),
       })
 

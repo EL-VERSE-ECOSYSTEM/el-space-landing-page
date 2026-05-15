@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { useAuth } from '@/components/auth-provider';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -16,6 +17,7 @@ import { toast } from 'sonner';
 
 export default function ProjectDetailPage() {
   const params = useParams();
+  const { user } = useAuth();
   const [project, setProject] = useState<any>(null);
   const [applications, setApplications] = useState<any[]>([]);
   const [milestones, setMilestones] = useState<any[]>([]);
@@ -62,7 +64,7 @@ export default function ProjectDetailPage() {
     }
 
     try {
-      const userId = localStorage.getItem('userId') || ''
+      const userId = user?.id || ''
       const response = await fetch('/api/applications', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -95,7 +97,7 @@ export default function ProjectDetailPage() {
         body: JSON.stringify({
           applicationId,
           status: 'accepted',
-          clientId: localStorage.getItem('userId') || '', // Updated from hardcoded user-123
+          clientId: user?.id || '', // Updated from hardcoded user-123
         }),
       });
 

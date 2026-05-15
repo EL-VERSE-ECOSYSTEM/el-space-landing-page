@@ -27,6 +27,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { CheckCircle2, Clock, AlertCircle, Target, Calendar, DollarSign, CheckCheck, MessageCircle } from 'lucide-react'
 import { useLoader } from '@/components/loader-provider'
+import { useAuth } from '@/components/auth-provider'
 import { toast } from 'sonner'
 
 interface Milestone {
@@ -52,6 +53,7 @@ interface Milestone {
 }
 
 export default function MilestonesPage() {
+  const { user, loading: authLoading } = useAuth()
   const { show: showLoader, hide: hideLoader } = useLoader()
   const [milestones, setMilestones] = useState<Milestone[]>([])
   const [loading, setLoading] = useState(true)
@@ -62,14 +64,16 @@ export default function MilestonesPage() {
   const [activeTab, setActiveTab] = useState('all')
 
   useEffect(() => {
-    fetchMilestones()
-  }, [])
+    if (!authLoading) {
+      fetchMilestones()
+    }
+  }, [authLoading, user])
 
   const fetchMilestones = async () => {
     try {
       setLoading(true)
       showLoader(2)
-      const userId = localStorage.getItem('userId') || ''
+      const userId = user?.id || ''
       if (!userId) {
         toast.error('Please log in to view milestones')
         return

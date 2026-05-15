@@ -122,9 +122,9 @@ export default function ContactPage() {
               <div>
                 <h3 className="text-lg font-semibold text-white mb-1">Follow Us</h3>
                 <div className="flex gap-4">
-                  <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">Twitter</a>
-                  <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">LinkedIn</a>
-                  <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">Discord</a>
+                  <a href="https://twitter.com/elspace" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-cyan-400 transition-colors">Twitter</a>
+                  <a href="https://linkedin.com/company/elspace" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-cyan-400 transition-colors">LinkedIn</a>
+                  <a href="https://discord.gg/elspace" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-cyan-400 transition-colors">Discord</a>
                 </div>
               </div>
             </div>

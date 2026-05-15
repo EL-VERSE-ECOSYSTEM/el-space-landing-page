@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { DashboardLayout } from '@/components/dashboard/auth-guard'
+import { useAuth } from '@/components/auth-provider'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -27,6 +28,7 @@ interface Message {
 }
 
 export default function MessagesPage() {
+  const { user, loading: authLoading } = useAuth()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null)
   const [messageInput, setMessageInput] = useState('')
@@ -36,8 +38,10 @@ export default function MessagesPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchConversations()
-  }, [])
+    if (!authLoading) {
+      fetchConversations()
+    }
+  }, [authLoading, user])
 
   useEffect(() => {
     if (selectedConversation) {
@@ -48,7 +52,7 @@ export default function MessagesPage() {
   const fetchConversations = async () => {
     try {
       setLoading(true)
-      const userId = localStorage.getItem('userId') || ''
+      const userId = user?.id || ''
       const response = await fetch(`/api/messages?userId=${userId}`)
       const data = await response.json()
       
@@ -70,7 +74,7 @@ export default function MessagesPage() {
 
   const fetchMessages = async (conversationId: string) => {
     try {
-      const userId = localStorage.getItem('userId') || ''
+      const userId = user?.id || ''
       const response = await fetch(`/api/messages?userId=${userId}&conversationId=${conversationId}`)
       const data = await response.json()
       

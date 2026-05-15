@@ -25,6 +25,7 @@ import {
 } from '@/components/ui/select'
 import { AlertCircle, Download, Send, Wallet, Plus, ArrowUpRight, ArrowDownLeft, Info, Check } from 'lucide-react'
 import { useLoader } from '@/components/loader-provider'
+import { useAuth } from '@/components/auth-provider'
 import { toast } from 'sonner'
 import { BANKS_BY_COUNTRY, SUPPORTED_COUNTRIES, type CountryCode } from '@/lib/banks'
 import { CRYPTO_CURRENCIES, WITHDRAWAL_METHODS } from '@/lib/crypto'
@@ -49,6 +50,7 @@ interface Transaction {
 
 export default function WalletPage() {
   const router = useRouter()
+  const { user, loading: authLoading } = useAuth()
   const { show: showLoader, hide: hideLoader } = useLoader()
   const [wallet, setWallet] = useState<WalletData | null>(null)
   const [transactions, setTransactions] = useState<Transaction[]>([])
@@ -73,16 +75,17 @@ export default function WalletPage() {
   const [userEmail, setUserEmail] = useState('')
 
   useEffect(() => {
-    fetchWalletData()
-  }, [])
+    if (!authLoading) {
+      fetchWalletData()
+    }
+  }, [authLoading, user])
 
   const fetchWalletData = async () => {
     try {
       setLoading(true)
       showLoader(2)
       
-      // Get user ID from localStorage or session
-      const userId = localStorage.getItem('userId') || ''
+      const userId = user?.id || ''
       if (!userId) {
         toast.error('Please log in to view wallet')
         router.push('/auth/login')
@@ -127,7 +130,7 @@ export default function WalletPage() {
 
     try {
       showLoader(3)
-      const userId = localStorage.getItem('userId') || ''
+      const userId = user?.id || ''
 
       const response = await fetch('/api/wallet', {
         method: 'POST',
@@ -181,7 +184,7 @@ export default function WalletPage() {
 
     try {
       showLoader(3)
-      const userId = localStorage.getItem('userId') || ''
+      const userId = user?.id || ''
 
       const response = await fetch('/api/wallet', {
         method: 'POST',
@@ -368,8 +371,8 @@ export default function WalletPage() {
                 <div className="bg-slate-700/50 p-4 rounded-lg border border-blue-500/10">
                   <p className="text-sm text-blue-200 mb-2">Checkout Details (Pre-filled):</p>
                   <div className="space-y-1 text-xs text-blue-300">
-                    <p><strong>Email:</strong> {localStorage.getItem('email') || 'Not set'}</p>
-                    <p><strong>Name:</strong> {localStorage.getItem('fullName') || 'Not set'}</p>
+                    <p><strong>Email:</strong> {user?.email || 'Not set'}</p>
+                    <p><strong>Name:</strong> {user?.name || 'Not set'}</p>
                   </div>
                 </div>
 

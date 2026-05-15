@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { DashboardLayout } from '@/components/dashboard/auth-guard'
+import { useAuth } from '@/components/auth-provider'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -15,6 +16,7 @@ import { toast } from 'sonner'
 
 export default function SettingsPage() {
   const router = useRouter()
+  const { user, logout } = useAuth()
   const [activeTab, setActiveTab] = useState('profile')
   const [userType] = useState<'client' | 'freelancer'>('client')
   const [showPasswordDialog, setShowPasswordDialog] = useState(false)
@@ -24,15 +26,25 @@ export default function SettingsPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [profileData, setProfileData] = useState({
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '+1 (555) 123-4567',
-    bio: 'Professional freelancer with 5+ years of experience',
-    companyName: 'Acme Corp',
-    website: 'https://example.com',
+    name: '',
+    email: '',
+    phone: '',
+    bio: '',
+    companyName: '',
+    website: '',
     language: 'English',
     timezone: 'America/New_York',
   })
+
+  useEffect(() => {
+    if (user) {
+      setProfileData(prev => ({
+        ...prev,
+        name: user.name || '',
+        email: user.email || '',
+      }))
+    }
+  }, [user])
 
   const handleSaveProfile = async () => {
     setLoading(true)
@@ -69,9 +81,8 @@ export default function SettingsPage() {
     }
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem('authToken')
-    localStorage.removeItem('user')
+  const handleLogout = async () => {
+    await logout()
     router.push('/auth/login')
   }
 

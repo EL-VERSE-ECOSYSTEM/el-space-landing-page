@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 
 interface AuthUser {
   id: string
+  el_space_id?: string
   email: string
   name: string
   role: 'client' | 'freelancer' | 'admin'

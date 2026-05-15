@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { DashboardLayout } from '@/components/dashboard/auth-guard'
+import { useAuth } from '@/components/auth-provider'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -59,6 +60,7 @@ interface Application {
 }
 
 export default function ApplicationsPage() {
+  const { user, loading: authLoading } = useAuth()
   const [userType] = useState<'freelancer' | 'client'>('client')
   const [selectedApplicationId, setSelectedApplicationId] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<'list' | 'comparison' | 'recommendations'>('list')
@@ -66,13 +68,15 @@ export default function ApplicationsPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchApplications()
-  }, [])
+    if (!authLoading) {
+      fetchApplications()
+    }
+  }, [authLoading, user])
 
   const fetchApplications = async () => {
     try {
       setLoading(true)
-      const userId = localStorage.getItem('userId') || ''
+      const userId = user?.id || ''
       const response = await fetch(`/api/applications?userId=${userId}`)
       const data = await response.json()
       
