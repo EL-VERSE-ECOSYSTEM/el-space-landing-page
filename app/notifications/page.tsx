@@ -17,6 +17,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/components/auth-provider";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
@@ -221,17 +222,20 @@ function StatsCard({ icon: Icon, label, value, color }: { icon: typeof Bell; lab
 
 // Main Page Component
 export default function NotificationsPage() {
+  const { user, loading: authLoading } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [activeFilter, setActiveFilter] = useState<FilterType>("all");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchNotifications();
-  }, []);
+    if (!authLoading) {
+      fetchNotifications();
+    }
+  }, [authLoading, user]);
 
   const fetchNotifications = async () => {
     try {
-      const userId = localStorage.getItem('userId') || '';
+      const userId = user?.id || '';
       if (!userId) {
         setLoading(false);
         return;

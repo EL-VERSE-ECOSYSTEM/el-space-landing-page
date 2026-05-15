@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/select'
 import { CreditCard, Download, DollarSign, ArrowUpRight, ArrowDownLeft, Calendar, Eye } from 'lucide-react'
 import { useLoader } from '@/components/loader-provider'
+import { useAuth } from '@/components/auth-provider'
 import { toast } from 'sonner'
 
 interface Payment {
@@ -48,6 +49,7 @@ interface PaymentStats {
 }
 
 export default function PaymentsPage() {
+  const { user, loading: authLoading } = useAuth()
   const { show: showLoader, hide: hideLoader } = useLoader()
   const [payments, setPayments] = useState<Payment[]>([])
   const [stats, setStats] = useState<PaymentStats>({
@@ -64,14 +66,16 @@ export default function PaymentsPage() {
   const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
-    fetchPayments()
-  }, [])
+    if (!authLoading) {
+      fetchPayments()
+    }
+  }, [authLoading, user])
 
   const fetchPayments = async () => {
     try {
       setLoading(true)
       showLoader(2)
-      const userId = localStorage.getItem('userId') || ''
+      const userId = user?.id || ''
       if (!userId) return
 
       const response = await fetch(`/api/payments?userId=${userId}&action=history`)

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { DashboardLayout } from '@/components/dashboard/auth-guard'
+import { useAuth } from '@/components/auth-provider'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -37,6 +38,7 @@ interface Project {
 
 export default function FeedPage() {
   const router = useRouter()
+  const { user, loading: authLoading } = useAuth()
   const [activeTab, setActiveTab] = useState('discover')
   const [searchQuery, setSearchQuery] = useState('')
   const [userType] = useState<'client' | 'freelancer'>('client')
@@ -46,12 +48,14 @@ export default function FeedPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchFeedData()
-  }, [])
+    if (!authLoading) {
+      fetchFeedData()
+    }
+  }, [authLoading, user])
 
   const fetchFeedData = async () => {
     try {
-      const userId = localStorage.getItem('userId') || ''
+      const userId = user?.id || ''
       
       // Fetch freelancers
       const freelancerResponse = await fetch(`/api/freelancers?limit=10`)

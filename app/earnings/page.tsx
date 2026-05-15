@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useAuth } from '@/components/auth-provider';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -10,18 +11,21 @@ import { DollarSign, TrendingUp, Clock, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function EarningsPage() {
+  const { user, loading: authLoading } = useAuth();
   const [earnings, setEarnings] = useState<any[]>([]);
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [withdrawalAmount, setWithdrawalAmount] = useState('');
 
   useEffect(() => {
-    fetchEarnings();
-  }, []);
+    if (!authLoading) {
+      fetchEarnings();
+    }
+  }, [authLoading, user]);
 
   const fetchEarnings = async () => {
     try {
-      const userId = localStorage.getItem('userId') || ''
+      const userId = user?.id || ''
       if (!userId) return
       const response = await fetch(`/api/earnings?freelancerId=${userId}`);
       const data = await response.json();
@@ -41,7 +45,7 @@ export default function EarningsPage() {
     }
 
     try {
-      const userId = localStorage.getItem('userId') || ''
+      const userId = user?.id || ''
       const response = await fetch('/api/earnings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

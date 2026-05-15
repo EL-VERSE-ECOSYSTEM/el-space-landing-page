@@ -2,52 +2,33 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { user, loading: authLoading, isAuthenticated, logout } = useAuth();
   const [userName, setUserName] = useState("");
   const [elSpaceId, setElSpaceId] = useState("");
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
+    if (!authLoading && !isAuthenticated) {
       router.push("/auth/login");
-      return;
     }
 
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const user = JSON.parse(storedUser);
+    if (user) {
       setUserName(user.name || user.email);
       setElSpaceId(user.el_space_id || "EL-XXXXXXXX");
-      setIsAuthenticated(true);
-      setLoading(false);
-      return;
     }
+  }, [user, authLoading, isAuthenticated, router]);
 
-    // Decode token to get user info (basic example)
-    try {
-      const decoded = JSON.parse(Buffer.from(token, "base64").toString());
-      setUserName(decoded.email);
-      setIsAuthenticated(true);
-    } catch (error) {
-      localStorage.removeItem("authToken");
-      router.push("/auth/login");
-    } finally {
-      setLoading(false);
-    }
-  }, [router]);
-
-  const handleLogout = () => {
-    localStorage.removeItem("authToken");
+  const handleLogout = async () => {
+    await logout();
     router.push("/");
   };
 
-  if (loading) {
+  if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-900">
         <div className="text-center">
