@@ -8,12 +8,12 @@ interface BenefitCardProps {
 }
 
 const iconBackgrounds = {
-  cyan: 'bg-cyan-500/20 text-cyan-400',
-  purple: 'bg-purple-500/20 text-purple-400',
-  green: 'bg-emerald-500/20 text-emerald-400',
-  blue: 'bg-blue-500/20 text-blue-400',
-  yellow: 'bg-yellow-500/20 text-yellow-400',
-  pink: 'bg-pink-500/20 text-pink-400'
+  cyan: 'bg-cyan-50 text-cyan-600 border-cyan-100',
+  purple: 'bg-purple-50 text-purple-600 border-purple-100',
+  green: 'bg-emerald-50 text-emerald-600 border-emerald-100',
+  blue: 'bg-blue-50 text-blue-600 border-blue-100',
+  yellow: 'bg-yellow-50 text-yellow-600 border-yellow-100',
+  pink: 'bg-pink-50 text-pink-600 border-pink-100'
 }
 
 export function BenefitCard({ 
@@ -23,14 +23,14 @@ export function BenefitCard({
   colorScheme = 'cyan'
 }: BenefitCardProps) {
   return (
-    <div className="flex flex-col gap-3 p-4 rounded-lg border border-slate-700/50 bg-slate-900/40 backdrop-blur-sm hover:border-slate-600/50 transition-all">
-      <div className="flex items-start gap-4">
-        <span className={`mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg text-sm font-bold ${iconBackgrounds[colorScheme]} border border-opacity-20`}>
+    <div className="group flex flex-col gap-4 p-6 rounded-3xl border border-slate-200 bg-white hover:border-slate-300 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300">
+      <div className="flex items-start gap-5">
+        <span className={`mt-1 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl text-xl font-bold \${iconBackgrounds[colorScheme]} border transition-transform duration-300 group-hover:scale-110`}>
           {icon}
         </span>
         <div className="flex-1">
-          <h3 className="font-bold text-white">{title}</h3>
-          <p className="text-sm text-slate-400 mt-1">{description}</p>
+          <h3 className="font-bold text-slate-900 group-hover:text-slate-950 transition-colors">{title}</h3>
+          <p className="text-sm text-slate-500 mt-2 leading-relaxed">{description}</p>
         </div>
       </div>
     </div>

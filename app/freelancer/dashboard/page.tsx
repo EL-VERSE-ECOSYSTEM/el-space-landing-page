@@ -3,12 +3,13 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth-provider';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Progress } from '@/components/ui/progress';
-import { Briefcase, DollarSign, CheckCircle, Clock, MessageSquare, Star } from 'lucide-react';
+import { Briefcase, Search, ChevronRight, Clock, ShieldCheck, Zap, Star, MessageSquare } from 'lucide-react';
+import { DashboardStats } from '@/components/freelancer/DashboardStats';
+import Link from 'next/link';
 
 export default function FreelancerDashboardPage() {
   const router = useRouter();
@@ -55,209 +56,181 @@ export default function FreelancerDashboardPage() {
     }
   };
 
+  const stats = {
+    activeProjects: activeProjects.length,
+    totalEarned: earnings?.totalEarnings || 0,
+    jobSuccess: 100,
+    profileViews: 142
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-900/20 to-slate-950 pt-24 pb-12">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Freelancer Dashboard</h1>
-          <p className="text-slate-400">Manage your projects and track progress</p>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid md:grid-cols-4 gap-4 mb-8">
-          <Card className="bg-slate-900/40 backdrop-blur-md border-cyan-500/20 hover:border-cyan-500/40 transition-all">
-            <CardContent className="py-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-slate-400 text-sm">Active Projects</p>
-                  <p className="text-2xl font-bold text-white mt-1">{activeProjects.length}</p>
-                </div>
-                <div className="p-2 bg-cyan-500/10 rounded-lg">
-                  <Briefcase className="h-6 w-6 text-cyan-500" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-slate-900/40 backdrop-blur-md border-emerald-500/20 hover:border-emerald-500/40 transition-all">
-            <CardContent className="py-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-slate-400 text-sm">Total Earnings</p>
-                  <p className="text-2xl font-bold text-white mt-1">${earnings?.totalEarnings || 0}</p>
-                </div>
-                <div className="p-2 bg-emerald-500/10 rounded-lg">
-                  <DollarSign className="h-6 w-6 text-emerald-500" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-slate-900/40 backdrop-blur-md border-amber-500/20 hover:border-amber-500/40 transition-all">
-            <CardContent className="py-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-slate-400 text-sm">Pending Earnings</p>
-                  <p className="text-2xl font-bold text-white mt-1">${earnings?.pendingEarnings || 0}</p>
-                </div>
-                <div className="p-2 bg-amber-500/10 rounded-lg">
-                  <Clock className="h-6 w-6 text-amber-500" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-slate-900/40 backdrop-blur-md border-blue-500/20 hover:border-blue-500/40 transition-all">
-            <CardContent className="py-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-slate-400 text-sm">Applications</p>
-                  <p className="text-2xl font-bold text-white mt-1">{applications.length}</p>
-                </div>
-                <div className="p-2 bg-blue-500/10 rounded-lg">
-                  <MessageSquare className="h-6 w-6 text-blue-500" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Actions */}
-        <div className="flex gap-4 mb-8">
-          <Button
-            onClick={() => router.push('/jobs')}
-            className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
-          >
-            Browse Jobs
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => router.push('/earnings')}
-            className="border-slate-600 text-slate-300 hover:bg-slate-700"
-          >
-            View Earnings
-          </Button>
-        </div>
-
-        {/* Main Content */}
-        <Tabs defaultValue="active" className="space-y-4">
-          <TabsList className="bg-slate-900/40 backdrop-blur-md border border-slate-800 p-1">
-            <TabsTrigger value="active" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white transition-all">Active Projects</TabsTrigger>
-            <TabsTrigger value="applications" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white transition-all">Applications</TabsTrigger>
-            <TabsTrigger value="proposals" className="data-[state=active]:bg-cyan-500 data-[state=active]:text-white transition-all">My Proposals</TabsTrigger>
-          </TabsList>
-
-          {/* Active Projects */}
-          <TabsContent value="active">
-            <div className="space-y-4">
-              {loading ? (
-                <Card className="bg-slate-900/40 backdrop-blur-md border-slate-800">
-                  <CardContent className="py-12 flex justify-center">
-                    <div className="animate-spin h-8 w-8 border-2 border-cyan-500 border-t-transparent rounded-full"></div>
-                  </CardContent>
-                </Card>
-              ) : activeProjects.length > 0 ? (
-                activeProjects.map((project) => (
-                  <Card key={project.id} className="bg-slate-900/40 backdrop-blur-md border-slate-800 hover:border-cyan-500/40 transition-all">
-                    <CardHeader>
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <CardTitle className="text-white">{project.title}</CardTitle>
-                          <CardDescription className="text-slate-400">Client: {project.client}</CardDescription>
-                        </div>
-                        <Badge className="bg-blue-500/20 text-blue-300">In Progress</Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div>
-                        <div className="flex justify-between items-center mb-2">
-                          <p className="text-slate-400 text-sm">Progress</p>
-                          <p className="text-slate-300 font-medium">{project.progress}%</p>
-                        </div>
-                        <Progress value={project.progress} className="h-2 bg-slate-700" />
-                      </div>
-
-                      <div className="flex justify-between items-center pt-2 border-t border-slate-700">
-                        <p className="text-slate-400">Budget: <span className="text-cyan-400 font-semibold">${project.budget}</span></p>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="border-slate-600 text-slate-300 hover:bg-slate-700"
-                          onClick={() => router.push(`/projects/${project.id}`)}
-                        >
-                          View Project
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))
-              ) : (
-                <Card className="bg-slate-800 border-slate-700">
-                  <CardContent className="py-12 text-center">
-                    <Briefcase className="mx-auto h-12 w-12 text-slate-600 mb-4" />
-                    <p className="text-slate-400">No active projects</p>
-                    <Button
-                      onClick={() => router.push('/jobs')}
-                      variant="outline"
-                      className="mt-4 border-slate-600 text-slate-300 hover:bg-slate-700"
-                    >
-                      Browse Jobs
-                    </Button>
-                  </CardContent>
-                </Card>
-              )}
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <header className="bg-white/80 backdrop-blur-md border-b border-slate-100 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="h-10 w-10 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-xl flex items-center justify-center font-black text-white text-xs shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
+              EL
             </div>
-          </TabsContent>
+            <span className="text-2xl font-black bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text text-transparent tracking-tight">SPACE</span>
+          </Link>
 
-          {/* Change Summary */}
-          <TabsContent value="applications">
-            <div className="space-y-4">
-              {applications.length > 0 ? (
-                applications.map((app) => (
-                  <Card key={app.id} className="bg-slate-800 border-slate-700">
-                    <CardContent className="pt-6">
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <p className="font-semibold text-white">Project: {app.project_id}</p>
-                          <p className="text-slate-400 text-sm mt-1">{app.cover_letter}</p>
-                        </div>
-                        <div className="text-right">
-                          <Badge className={
-                            app.status === 'pending' ? 'bg-amber-500/20 text-amber-300' :
-                            app.status === 'accepted' ? 'bg-green-500/20 text-green-300' :
-                            'bg-slate-700 text-slate-200'
-                          }>
-                            {app.status}
-                          </Badge>
-                          {app.proposed_rate && <p className="text-cyan-400 font-semibold mt-2">${app.proposed_rate}/hr</p>}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))
-              ) : (
-                <Card className="bg-slate-800 border-slate-700">
-                  <CardContent className="py-12 text-center">
-                    <MessageSquare className="mx-auto h-12 w-12 text-slate-600 mb-4" />
-                    <p className="text-slate-400">No applications submitted yet</p>
-                  </CardContent>
-                </Card>
-              )}
+          <div className="flex items-center gap-6">
+             <Link href="/jobs" className="text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors">Find Work</Link>
+             <Link href="/messages" className="text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors">Messages</Link>
+             <div className="h-10 w-10 rounded-full bg-slate-100 border-2 border-white shadow-sm flex items-center justify-center font-black text-slate-400 text-xs">
+               {user?.name?.charAt(0) || 'F'}
+             </div>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Welcome Section */}
+        <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 text-purple-600 font-black text-[10px] uppercase tracking-widest mb-4">
+               <Zap className="w-3 h-3 fill-purple-600" /> Professional Elite
             </div>
-          </TabsContent>
+            <h1 className="text-4xl font-black text-slate-900 tracking-tight">Talent Hub</h1>
+            <p className="text-slate-500 font-medium text-lg mt-1">Accelerate your career through high-impact missions.</p>
+          </div>
+          <div className="flex gap-4">
+            <Button
+              onClick={() => router.push('/jobs')}
+              className="bg-slate-900 hover:bg-cyan-600 text-white font-black px-8 py-6 rounded-2xl shadow-xl shadow-slate-200 transition-all group"
+            >
+              Browse Marketplace <Search className="ml-2 w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            </Button>
+          </div>
+        </div>
 
-          {/* Proposals */}
-          <TabsContent value="proposals">
-            <Card className="bg-slate-800 border-slate-700">
-              <CardContent className="py-12 text-center">
-                <CheckCircle className="mx-auto h-12 w-12 text-slate-600 mb-4" />
-                <p className="text-slate-400">View all your submitted proposals and their status</p>
-              </CardContent>
+        {/* Stats */}
+        <div className="mb-16">
+           <DashboardStats stats={stats} />
+        </div>
+
+        {/* Sections */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-8 space-y-8">
+            <Tabs defaultValue="active" className="w-full">
+               <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-2xl font-black text-slate-900 tracking-tight">Project Management</h3>
+                  <TabsList className="bg-slate-50 p-1 rounded-xl h-10 border border-slate-100">
+                    <TabsTrigger value="active" className="rounded-lg px-4 text-xs font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-purple-600 data-[state=active]:shadow-sm">Active</TabsTrigger>
+                    <TabsTrigger value="applied" className="rounded-lg px-4 text-xs font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-purple-600 data-[state=active]:shadow-sm">Applied</TabsTrigger>
+                  </TabsList>
+               </div>
+
+               <TabsContent value="active" className="space-y-6 focus-visible:outline-none">
+                  {loading ? (
+                    [1].map(i => <div key={i} className="h-40 bg-slate-50 border border-slate-100 rounded-[2.5rem] animate-pulse" />)
+                  ) : activeProjects.length > 0 ? (
+                    activeProjects.map((project) => (
+                      <Card key={project.id} className="group border-2 border-slate-50 bg-white hover:border-transparent hover:shadow-2xl hover:shadow-purple-500/5 transition-all duration-500 rounded-[2.5rem] overflow-hidden">
+                        <CardContent className="p-8">
+                           <div className="flex justify-between items-start mb-6">
+                              <div className="space-y-1">
+                                 <Badge className="bg-purple-50 text-purple-600 border-none px-3 py-1 rounded-lg font-black uppercase tracking-widest text-[9px]">Mission In Progress</Badge>
+                                 <h4 className="text-2xl font-black text-slate-900 group-hover:text-purple-600 transition-colors">{project.title}</h4>
+                              </div>
+                              <div className="text-right">
+                                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Earnings</p>
+                                 <p className="text-xl font-black text-slate-900">${project.budget}</p>
+                              </div>
+                           </div>
+                           <div className="flex items-center justify-between pt-6 border-t border-slate-50">
+                              <div className="flex items-center gap-4">
+                                 <div className="flex items-center gap-2">
+                                    <Clock className="w-4 h-4 text-slate-300" />
+                                    <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Due in 5 days</span>
+                                 </div>
+                              </div>
+                              <Button variant="outline" className="border-2 border-slate-100 text-slate-900 font-bold rounded-xl px-6">Access Workspace</Button>
+                           </div>
+                        </CardContent>
+                      </Card>
+                    ))
+                  ) : (
+                    <div className="py-24 text-center bg-slate-50 border-2 border-dashed border-slate-200 rounded-[3rem]">
+                      <Briefcase className="mx-auto h-12 w-12 text-slate-200 mb-4" />
+                      <p className="text-slate-400 font-bold">No active missions found.</p>
+                      <Button onClick={() => router.push('/jobs')} variant="link" className="text-purple-600 font-black mt-2">Browse Marketplace</Button>
+                    </div>
+                  )}
+               </TabsContent>
+
+               <TabsContent value="applied" className="space-y-6 focus-visible:outline-none">
+                  {applications.length > 0 ? (
+                    applications.map((app) => (
+                      <Card key={app.id} className="border-2 border-slate-50 bg-white rounded-[2rem] p-6 hover:shadow-xl transition-all">
+                         <div className="flex justify-between items-center">
+                            <div>
+                               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Application ID: {app.id.slice(0,8)}</p>
+                               <h5 className="font-black text-slate-900">Project: {app.project_id}</h5>
+                            </div>
+                            <Badge className="bg-slate-100 text-slate-600 font-black uppercase tracking-widest text-[9px]">{app.status}</Badge>
+                         </div>
+                      </Card>
+                    ))
+                  ) : (
+                    <div className="py-20 text-center bg-slate-50 rounded-[2.5rem] border border-slate-100">
+                       <MessageSquare className="mx-auto h-12 w-12 text-slate-200 mb-4" />
+                       <p className="text-slate-400 font-bold">No pending applications.</p>
+                    </div>
+                  )}
+               </TabsContent>
+            </Tabs>
+          </div>
+
+          <div className="lg:col-span-4 space-y-8">
+            <h3 className="text-2xl font-black text-slate-900 tracking-tight ml-2">Verification & Growth</h3>
+            <Card className="border-2 border-slate-50 bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-100">
+               <div className="space-y-8">
+                  <div className="flex items-center gap-4 p-4 rounded-2xl bg-cyan-50 border border-cyan-100">
+                     <ShieldCheck className="w-8 h-8 text-cyan-600" />
+                     <div>
+                        <p className="text-xs font-black text-cyan-800 uppercase tracking-widest">Status</p>
+                        <p className="font-black text-slate-900">Verified Expert</p>
+                     </div>
+                  </div>
+
+                  <div className="space-y-4">
+                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Next Milestones</p>
+                     {[
+                       { label: 'Portfolio Review', status: 'Completed', color: 'text-emerald-500' },
+                       { label: 'Identity Check', status: 'Completed', color: 'text-emerald-500' },
+                       { label: 'Technical Assessment', status: 'Pending', color: 'text-amber-500' }
+                     ].map((m, i) => (
+                       <div key={i} className="flex justify-between items-center text-sm font-bold">
+                          <span className="text-slate-600">{m.label}</span>
+                          <span className={m.color}>{m.status}</span>
+                       </div>
+                     ))}
+                  </div>
+
+                  <div className="pt-6 border-t border-slate-50">
+                     <Button className="w-full h-14 bg-slate-900 hover:bg-cyan-600 text-white font-black rounded-2xl transition-all">
+                        Upgrade Tier
+                     </Button>
+                  </div>
+               </div>
             </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
+
+            <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white relative overflow-hidden group">
+               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-transparent opacity-50" />
+               <div className="relative z-10 space-y-4">
+                  <Star className="w-8 h-8 text-amber-400" />
+                  <h4 className="text-xl font-black tracking-tight">Access Premium Jobs</h4>
+                  <p className="text-slate-400 text-sm font-medium leading-relaxed">Join the top 1% by completing our advanced ecosystem certification.</p>
+                  <Button variant="link" className="text-cyan-400 p-0 h-auto font-black text-[10px] uppercase tracking-widest pt-2">
+                    Learn More <ChevronRight className="w-3 h-3 ml-1" />
+                  </Button>
+               </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

@@ -314,8 +314,8 @@ JWT_SECRET=your_jwt_secret
 ✅ /feed
 ✅ /earnings
 ✅ /settings
-✅ /auth/login
-✅ /auth/register
+✅ /login
+✅ /signup
 ✅ /freelancer/dashboard
 ✅ /client/dashboard
 ```

@@ -266,8 +266,8 @@ npx vercel
 - `POST /api/contact` - Contact form
 
 ### Authentication
-- `GET /auth/login` - Multi-step login
-- `GET /auth/register` - Multi-step registration with OTP
+- `GET /login` - Multi-step login
+- `GET /signup` - Multi-step registration with OTP
 
 ### Client Routes
 - `GET /client/dashboard` - Client dashboard
@@ -352,7 +352,7 @@ POST /api/auth/verify-otp
 Body: { email: string, otp: string, password: string }
 
 # Register User
-POST /api/auth/register
+POST /api/signup
 Body: { email: string, password: string, role: 'client' | 'freelancer' }
 ```
 

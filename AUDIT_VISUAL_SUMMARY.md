@@ -28,8 +28,8 @@ AUTH CONTEXT:         ███████░░░░░░░░░░░░�
 
 ### Authentication (2) ✅
 ```
-✅ Login (Multi-step)             /auth/login
-✅ Register (Multi-step)          /auth/register
+✅ Login (Multi-step)             /login
+✅ Register (Multi-step)          /signup
   - Email entry
   - Password setup
   - OTP verification
@@ -170,8 +170,8 @@ DashboardLayout
 ```
 Authentication Layer
 ├─ ✅ /api/auth/check-user
-├─ ✅ /api/auth/login
-├─ ✅ /api/auth/register
+├─ ✅ /api/login
+├─ ✅ /api/signup
 └─ ✅ /api/auth/[action]
 
 Project Management

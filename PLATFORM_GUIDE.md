@@ -76,8 +76,8 @@ EL SPACE is a modern, high-converting freelance marketplace platform part of the
 | Route | Purpose |
 |-------|---------|
 | `/` | Landing page |
-| `/auth/login` | OTP-based login |
-| `/auth/register` | Registration form |
+| `/login` | OTP-based login |
+| `/signup` | Registration form |
 
 ### Protected Pages
 | Route | Purpose |
@@ -92,7 +92,7 @@ EL SPACE is a modern, high-converting freelance marketplace platform part of the
 |-------|--------|---------|
 | `/api/auth/send-otp` | POST | Send OTP email |
 | `/api/auth/verify-otp` | POST | Verify OTP |
-| `/api/auth/register` | POST | Create user account |
+| `/api/signup` | POST | Create user account |
 
 ---
 
@@ -217,14 +217,14 @@ http://localhost:3000
 ## 🧪 Testing the System
 
 ### Test Registration
-1. Go to `/auth/register`
+1. Go to `/signup`
 2. Enter email, name, and user type
 3. Check Gmail for OTP
 4. Enter OTP to verify and create account
 5. Receive welcome email
 
 ### Test Login
-1. Go to `/auth/login`
+1. Go to `/login`
 2. Enter email
 3. Check Gmail for OTP
 4. Enter OTP to login

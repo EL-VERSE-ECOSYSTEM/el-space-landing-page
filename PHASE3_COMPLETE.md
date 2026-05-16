@@ -306,7 +306,7 @@ app/
 
 **Pages (○ Static / ƒ Dynamic)**:
 - ○ / (home - landing)
-- ○ /auth/login, /auth/register
+- ○ /login, /signup
 - ○ /dashboard (multi-purpose)
 - ○ /jobs (job listing)
 - ○ /jobs/post (create job)

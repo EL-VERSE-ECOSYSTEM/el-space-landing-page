@@ -36,7 +36,7 @@
 **Steps:**
 1. Open http://localhost:3000
 2. Click "Apply as Freelancer" or "Post a Job"
-3. You'll be redirected to `/auth/register`
+3. You'll be redirected to `/signup`
 4. Enter:
    - **Full Name:** John Doe
    - **Email:** your-email@gmail.com
@@ -68,7 +68,7 @@ From: elcoderssoftwares12@gmail.com
 ### Test 2: Login with Existing Email
 
 **Steps:**
-1. Open http://localhost:3000/auth/login
+1. Open http://localhost:3000/login
 2. Enter your email (from Test 1)
 3. Click "Send OTP"
 4. Check Gmail for OTP
@@ -156,7 +156,7 @@ Try clearing browser cache or use incognito window
 ## 📊 Testing Checklist
 
 ### Registration Flow
-- [ ] Can access `/auth/register`
+- [ ] Can access `/signup`
 - [ ] Form accepts email, name, user type
 - [ ] OTP email is sent
 - [ ] OTP email contains 6-digit code
@@ -167,7 +167,7 @@ Try clearing browser cache or use incognito window
 - [ ] Redirected to login when accessing dashboard without auth
 
 ### Login Flow
-- [ ] Can access `/auth/login`
+- [ ] Can access `/login`
 - [ ] Form accepts email only
 - [ ] OTP email is sent
 - [ ] Can enter OTP and verify
@@ -197,7 +197,7 @@ Try clearing browser cache or use incognito window
    - Show modern design
    - Explain features
    
-2. **Click "Post a Job" button** → `/auth/register`
+2. **Click "Post a Job" button** → `/signup`
    - Fill out registration form
    - Click Continue
    
@@ -217,7 +217,7 @@ Try clearing browser cache or use incognito window
    - Show authenticated page
    - Click Logout
    
-7. **Login Again** → `/auth/login`
+7. **Login Again** → `/login`
    - Quick OTP login
    - Instant dashboard access
 

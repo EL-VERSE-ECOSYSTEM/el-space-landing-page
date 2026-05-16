@@ -79,7 +79,7 @@ app/api/
 ```
 User Registration Form
     ↓
-POST /api/auth/register
+POST /api/signup
     ↓
 Generates OTP → otp.ts/generateOTP()
     ↓

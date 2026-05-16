@@ -110,7 +110,7 @@ All core marketplace features have been successfully implemented, tested, and co
 
 ✓ ROUTES DEPLOYED:
   Landing:           / (home)
-  Auth:              /auth/login, /auth/register
+  Auth:              /login, /signup
   Jobs:              /jobs, /jobs/post, /jobs/[id]
   Profiles:          /freelancer/[id]
   Dashboards:        /dashboard, /freelancer/dashboard, /client/dashboard

@@ -88,7 +88,7 @@ export default function WalletPage() {
       const userId = user?.id || ''
       if (!userId) {
         toast.error('Please log in to view wallet')
-        router.push('/auth/login')
+        router.push('/login')
         return
       }
 

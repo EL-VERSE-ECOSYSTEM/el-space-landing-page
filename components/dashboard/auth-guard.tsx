@@ -13,7 +13,7 @@ export function useAuth(redirectTo?: string) {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (!token) {
-      router.push(redirectTo || "/auth/login");
+      router.push(redirectTo || "/login");
       return;
     }
 
@@ -24,7 +24,7 @@ export function useAuth(redirectTo?: string) {
         setUser(userData);
       } catch (e) {
         localStorage.removeItem("authToken");
-        router.push("/auth/login");
+        router.push("/login");
       }
     } else {
       // Try to decode token
@@ -36,7 +36,7 @@ export function useAuth(redirectTo?: string) {
         }
       } catch (e) {
         localStorage.removeItem("authToken");
-        router.push("/auth/login");
+        router.push("/login");
       }
     }
     
@@ -57,7 +57,7 @@ export function AuthGuard({ children, userType, redirectPath }: {
   userType?: "client" | "freelancer";
   redirectPath?: string;
 }) {
-  const { user, loading, logout } = useAuth("/auth/login");
+  const { user, loading, logout } = useAuth("/login");
 
   if (loading) {
     return (
@@ -93,7 +93,7 @@ export function DashboardLayout({
   userType: "client" | "freelancer";
   navItems: { label: string; href: string; icon?: React.ReactNode }[];
 }) {
-  const { user, logout } = useAuth("/auth/login");
+  const { user, logout } = useAuth("/login");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   if (!user) return null;

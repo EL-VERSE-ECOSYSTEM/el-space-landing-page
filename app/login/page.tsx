@@ -1,253 +1,411 @@
-'use client'
+"use client";
+import React from "react";
 
-import React, { useState } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Eye, EyeOff, Mail, Lock, ArrowRight, Zap } from 'lucide-react'
-import { toast } from 'sonner'
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import Link from "next/link";
+import { AlertCircle, CheckCircle, Loader, Mail, Lock, Eye, EyeOff, ArrowRight, ArrowLeft, ShieldCheck, Zap } from "lucide-react";
+import { toast } from "sonner";
+import { GoogleSignInButton } from "@/components/ui/google-signin-button";
+import { GitHubSignInButton } from "@/components/ui/github-signin-button";
+import { OTPNotification } from "@/components/ui/otp-notification";
+import { useAuth } from "@/components/auth-provider";
 
 export default function LoginPage() {
-  const router = useRouter()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [rememberMe, setRememberMe] = useState(false)
+  const router = useRouter();
+  const { login } = useAuth();
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    if (!email || !password) {
-      toast.error('Please fill in all fields')
-      return
-    }
+  // Step management: email -> password -> otp
+  const [step, setStep] = useState<"email" | "password" | "otp">("email");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [generatedOtp, setGeneratedOtp] = useState("");
+  const [showOtpPopup, setShowOtpPopup] = useState(false);
+  const [userData, setUserData] = useState<any>(null);
+
+  const handleCheckEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
     try {
-      setIsLoading(true)
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, rememberMe }),
-      })
+      const response = await fetch("/api/auth/check-user", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
 
-      const data = await response.json()
-      
-      if (data.success) {
-        toast.success('Welcome back!')
-        localStorage.setItem('user', JSON.stringify(data.user))
-        localStorage.setItem('userId', data.user.id)
-        
-        // Redirect based on user role
-        if (data.user.role === 'admin') {
-          router.push('/admin')
-        } else if (data.user.role === 'client') {
-          router.push('/dashboard/client')
-        } else {
-          router.push('/dashboard/freelancer')
-        }
-      } else {
-        toast.error(data.message || 'Login failed')
+      const data = await response.json();
+
+      if (!response.ok || !data.exists) {
+        setError("No account found with this email. Please register first.");
+        setLoading(false);
+        return;
       }
-    } catch (error) {
-      console.error('Login error:', error)
-      toast.error('An error occurred. Please try again.')
+
+      setUserData(data.user);
+      setSuccess("Account verified! Please enter your password.");
+      setStep("password");
+    } catch (err: any) {
+      setError(err.message || "An error occurred");
     } finally {
-      setIsLoading(false)
+      setLoading(false);
     }
-  }
+  };
+
+  const handleSendOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/auth/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          type: "login",
+          metadata: { password }
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || "Failed to send OTP. Check your password.");
+        setLoading(false);
+        return;
+      }
+
+      if (data.otp) {
+        setGeneratedOtp(data.otp);
+        setShowOtpPopup(true);
+      }
+
+      setSuccess("Verification code sent to your email!");
+      setStep("otp");
+    } catch (err: any) {
+      setError(err.message || "An error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/auth/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, otp, type: "login", password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Failed to verify OTP");
+        setLoading(false);
+        return;
+      }
+
+      setSuccess("Login successful!");
+      
+      // Update auth context
+      login(data.user, data.token);
+
+      // Redirect based on user type
+      setTimeout(() => {
+        if (data.user?.user_type === "freelancer" || data.user?.role === "freelancer") {
+          router.push("/dashboard/freelancer");
+        } else if (data.user?.user_type === "client" || data.user?.role === "client") {
+          router.push("/dashboard/client");
+        } else {
+          router.push("/dashboard");
+        }
+      }, 1000);
+    } catch (err: any) {
+      setError(err.message || "An error occurred");
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-900/20 to-slate-950 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated background gradient orbs */}
+    <div className="min-h-screen bg-white flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Premium Background Orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute top-1/2 right-1/3 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[120px] animate-pulse" />
       </div>
 
-      {/* Main login card */}
       <div className="w-full max-w-md relative z-10">
-        {/* Logo area */}
-        <div className="text-center mb-8 space-y-3">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/20">
-            <span className="text-3xl font-black text-white">EL</span>
+        {/* Logo */}
+        <div className="text-center mb-10 space-y-4">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 shadow-xl shadow-cyan-500/20">
+            <span className="text-2xl font-black text-white">EL</span>
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-            <p className="text-slate-400">Freelance without the friction</p>
+            <h1 className="text-4xl font-black text-slate-900 mb-2 tracking-tight">Secure Sign In</h1>
+            <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">Premium Authentication</p>
           </div>
         </div>
 
-        <Card className="bg-slate-900/80 backdrop-blur-xl border-slate-700/50 shadow-2xl">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-white text-2xl">Sign In</CardTitle>
-            <CardDescription className="text-slate-400">
-              Access your EL SPACE account
-            </CardDescription>
-          </CardHeader>
+        {/* Progress Tracker */}
+        <div className="flex justify-center mb-8 px-8">
+           <div className="flex items-center w-full max-w-[240px]">
+              {["email", "password", "otp"].map((s, i) => {
+                const steps = ["email", "password", "otp"];
+                const currentIndex = steps.indexOf(step);
+                const isActive = i <= currentIndex;
+                const isCompleted = i < currentIndex;
+                return (
+                  <React.Fragment key={s}>
+                    <div className={`relative flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-500 ${
+                      isCompleted ? 'bg-cyan-500 border-cyan-500 text-white' :
+                      isActive ? 'border-cyan-500 text-cyan-600 bg-cyan-50' :
+                      'border-slate-100 text-slate-300'
+                    }`}>
+                      {isCompleted ? <ShieldCheck className="w-5 h-5" /> : <span className="text-sm font-black">{i + 1}</span>}
+                    </div>
+                    {i < 2 && (
+                      <div className={`flex-1 h-1 mx-2 rounded-full transition-all duration-500 ${
+                        i < currentIndex ? 'bg-cyan-500' : 'bg-slate-100'
+                      }`} />
+                    )}
+                  </React.Fragment>
+                );
+              })}
+           </div>
+        </div>
 
-          <CardContent>
-            <form onSubmit={handleLogin} className="space-y-5">
-              {/* Email Input */}
+        {/* Card */}
+        <div className="bg-white/80 backdrop-blur-xl border border-slate-200 rounded-[2.5rem] p-8 md:p-10 shadow-2xl shadow-slate-200/50 overflow-hidden">
+          {/* Status Messages */}
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
+              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
+              <p className="text-red-800 text-sm font-bold leading-tight">{error}</p>
+            </div>
+          )}
+
+          {success && (
+            <div className="mb-6 p-4 bg-emerald-50 border border-emerald-100 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
+              <CheckCircle className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+              <p className="text-emerald-800 text-sm font-bold leading-tight">{success}</p>
+            </div>
+          )}
+
+          {/* Step 1: Email */}
+          {step === "email" && (
+            <form onSubmit={handleCheckEmail} className="space-y-6">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Email Address</label>
+                <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Email Address</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                   <Input
                     type="email"
-                    placeholder="your@email.com"
+                    placeholder="you@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 bg-slate-800/50 border-slate-700 text-white placeholder-slate-500 focus:border-cyan-500 focus:ring-cyan-500/20 transition-all"
+                    required
+                    className="pl-12 h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 focus:border-cyan-500 focus:ring-cyan-500/10 transition-all rounded-2xl font-bold"
                   />
                 </div>
               </div>
 
-              {/* Password Input */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <label className="text-sm font-medium text-slate-300">Password</label>
-                  <Link
-                    href="/forgot-password"
-                    className="text-xs text-cyan-400 hover:text-cyan-300 transition-colors"
-                  >
-                    Forgot?
-                  </Link>
-                </div>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
-                  <Input
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="••••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10 bg-slate-800/50 border-slate-700 text-white placeholder-slate-500 focus:border-cyan-500 focus:ring-cyan-500/20 transition-all"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-400 transition-colors"
-                  >
-                    {showPassword ? (
-                      <EyeOff className="w-5 h-5" />
-                    ) : (
-                      <Eye className="w-5 h-5" />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              {/* Remember Me */}
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="remember"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 rounded border-slate-700 bg-slate-800 text-cyan-500 focus:ring-cyan-500 cursor-pointer"
-                />
-                <label htmlFor="remember" className="text-sm text-slate-400 cursor-pointer hover:text-slate-300">
-                  Remember me for 30 days
-                </label>
-              </div>
-
-              {/* Login Button */}
               <Button
                 type="submit"
-                disabled={isLoading}
-                className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/40 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={loading || !email}
+                className="w-full h-14 bg-slate-900 hover:bg-cyan-600 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-cyan-500/20 group"
               >
-                {isLoading ? (
+                {loading ? (
                   <span className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Signing in...
+                    <Loader className="w-5 h-5 animate-spin" />
+                    Checking Identity...
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
-                    <Zap className="w-5 h-5" />
-                    Sign In
-                    <ArrowRight className="w-5 h-5" />
+                    Continue <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </span>
                 )}
               </Button>
 
-              {/* Divider */}
               <div className="relative py-2">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-slate-700/50"></div>
+                  <div className="w-full border-t border-slate-100"></div>
                 </div>
-                <div className="relative flex justify-center text-xs">
-                  <span className="px-2 bg-slate-900 text-slate-500">or continue with</span>
+                <div className="relative flex justify-center text-[10px]">
+                  <span className="px-4 bg-white/80 text-slate-400 font-black uppercase tracking-[0.2em]">or social login</span>
                 </div>
               </div>
 
-              {/* Social Buttons */}
-              <div className="grid grid-cols-2 gap-3">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800/50"
-                >
-                  <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3 8h-1.35c-.538 0-.65.221-.65.778v1.222h2l-.209 2h-1.791v7h-3v-7h-2v-2h2v-1.333c0-1.985 1.175-3.667 3.738-3.667h2.911v2z" />
-                  </svg>
-                  GitHub
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800/50"
-                >
-                  <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-                  </svg>
-                  Google
-                </Button>
+              <div className="grid grid-cols-2 gap-4">
+                <GoogleSignInButton fullWidth variant="outline" className="h-14 rounded-2xl font-bold border-2 border-slate-100" />
+                <GitHubSignInButton fullWidth variant="outline" className="h-14 rounded-2xl font-bold border-2 border-slate-100" />
               </div>
             </form>
+          )}
 
-            {/* Sign Up Link */}
-            <div className="mt-6 text-center">
-              <p className="text-slate-400 text-sm">
-                Don&apos;t have an account?{' '}
-                <Link
-                  href="/signup"
-                  className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors"
-                >
-                  Sign up for free
-                </Link>
-              </p>
-            </div>
+          {/* Step 2: Password */}
+          {step === "password" && (
+            <form onSubmit={handleSendOTP} className="space-y-6">
+              <div className="bg-slate-50 p-4 rounded-2xl text-center mb-2">
+                <p className="text-sm font-bold text-slate-600">
+                  Signing in as <span className="text-cyan-600">{email}</span>
+                </p>
+              </div>
 
-            {/* Security Notice */}
-            <div className="mt-6 p-3 rounded-lg bg-cyan-500/5 border border-cyan-500/20">
-              <p className="text-xs text-slate-400 text-center">
-                🔒 Your data is encrypted and secure. We never share your information.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+              <div className="space-y-2">
+                <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Password</Label>
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter account password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="pl-4 pr-12 h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 focus:border-cyan-500 focus:ring-cyan-500/10 transition-all rounded-2xl font-bold"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                disabled={loading || !password}
+                className="w-full h-14 bg-slate-900 hover:bg-cyan-600 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-cyan-500/20 group"
+              >
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <Loader className="w-5 h-5 animate-spin" />
+                    Sending OTP...
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    Request OTP <Zap className="w-5 h-5" />
+                  </span>
+                )}
+              </Button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setStep("email");
+                  setPassword("");
+                  setError("");
+                  setSuccess("");
+                }}
+                className="w-full py-2 text-sm font-bold text-slate-400 hover:text-slate-600 flex items-center justify-center gap-2 transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" /> Change email address
+              </button>
+            </form>
+          )}
+
+          {/* Step 3: OTP */}
+          {step === "otp" && (
+            <form onSubmit={handleVerifyOTP} className="space-y-6">
+              <div className="bg-slate-50 p-4 rounded-2xl text-center mb-2">
+                <p className="text-sm font-bold text-slate-600">
+                  Enter 6-digit code sent to <br/><span className="text-cyan-600">{email}</span>
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1 text-center block">Verification Code</Label>
+                <Input
+                  type="text"
+                  placeholder="000000"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                  maxLength={6}
+                  required
+                  className="h-16 bg-slate-50 border-slate-100 text-slate-900 text-center text-3xl tracking-[0.5em] font-black rounded-2xl focus:border-cyan-500 focus:ring-cyan-500/10"
+                />
+              </div>
+
+              <Button
+                type="submit"
+                disabled={loading || otp.length !== 6}
+                className="w-full h-14 bg-slate-900 hover:bg-cyan-600 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-cyan-500/20"
+              >
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <Loader className="w-5 h-5 animate-spin" />
+                    Verifying...
+                  </span>
+                ) : (
+                  "Verify & Sign In"
+                )}
+              </Button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setStep("password");
+                  setOtp("");
+                  setError("");
+                  setSuccess("");
+                }}
+                className="w-full py-2 text-sm font-bold text-slate-400 hover:text-slate-600 flex items-center justify-center gap-2 transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" /> Back to password
+              </button>
+            </form>
+          )}
+
+          <div className="mt-8 pt-8 border-t border-slate-100">
+            <p className="text-center text-slate-500 font-bold text-sm">
+              New to the platform?{" "}
+              <Link
+                href="/signup"
+                className="text-cyan-600 hover:text-cyan-700 font-black transition-colors underline underline-offset-4 decoration-2 decoration-cyan-500/30"
+              >
+                Register here
+              </Link>
+            </p>
+          </div>
+        </div>
 
         {/* Footer */}
-        <div className="mt-8 text-center text-xs text-slate-500 space-y-2">
-          <p>
-            <Link href="/terms" className="hover:text-slate-400 transition-colors">
-              Terms of Service
-            </Link>
-            {' '} • {' '}
-            <Link href="/privacy" className="hover:text-slate-400 transition-colors">
-              Privacy Policy
-            </Link>
-          </p>
-          <p>© 2026 EL VERSE TECHNOLOGIES. All rights reserved.</p>
+        <div className="mt-10 text-center space-y-4">
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">© 2026 EL VERSE TECHNOLOGIES</p>
         </div>
       </div>
+
+      {/* OTP Notification Popup */}
+      <OTPNotification
+        isOpen={showOtpPopup}
+        onOpenChange={setShowOtpPopup}
+        otp={generatedOtp}
+        email={email}
+        type="login"
+        onOTPCopied={(otpCode) => {
+          setOtp(otpCode);
+          toast.success('Code copied! Authenticating...');
+        }}
+        onVerified={() => {
+          setOtp(generatedOtp);
+        }}
+        showCopyButton={true}
+        expiryMinutes={15}
+      />
     </div>
-  )
+  );
 }
