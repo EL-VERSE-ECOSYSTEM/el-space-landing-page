@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth-provider';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
+import { Rocket, Sparkles, ChevronLeft, Target, DollarSign, Clock, X } from 'lucide-react';
 
 export default function PostJobPage() {
   const router = useRouter();
@@ -47,7 +48,7 @@ export default function PostJobPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          clientId: userId, // Updated from hardcoded user-123
+          clientId: userId,
           title: formData.title,
           description: formData.description,
           category: formData.category,
@@ -60,7 +61,7 @@ export default function PostJobPage() {
       if (!response.ok) throw new Error('Failed to post job');
 
       const data = await response.json();
-      toast.success('Job posted successfully!');
+      toast.success('Project launched successfully!');
       router.push(`/jobs/${data.project.id}`);
     } catch (error) {
       console.error('Error posting job:', error);
@@ -71,113 +72,166 @@ export default function PostJobPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 pt-24 pb-12">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Card className="bg-slate-800 border-slate-700">
-          <CardHeader>
-            <CardTitle className="text-2xl text-white">Post a New Job</CardTitle>
-            <CardDescription className="text-slate-400">Describe your project and find the right freelancer</CardDescription>
+    <div className="min-h-screen bg-white pt-24 pb-24 relative overflow-hidden">
+      {/* Background Orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[120px] animate-pulse" />
+      </div>
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+         {/* Breadcrumb */}
+         <button
+          onClick={() => router.back()}
+          className="flex items-center gap-2 text-slate-400 hover:text-cyan-600 font-bold text-sm mb-8 transition-colors group"
+        >
+          <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
+        </button>
+
+        <div className="mb-12">
+           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-50 text-cyan-600 font-black text-[10px] uppercase tracking-widest mb-4">
+              <Rocket className="w-3 h-3" /> Launch a Project
+           </div>
+           <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-4">Hire Top Tech Talent</h1>
+           <p className="text-slate-500 font-medium text-lg">Describe your vision and get matched with the best in the industry.</p>
+        </div>
+
+        <Card className="bg-white/80 backdrop-blur-xl border border-slate-200 rounded-[3rem] shadow-2xl shadow-slate-200/50 overflow-hidden">
+          <CardHeader className="p-8 md:p-12 pb-4">
+            <CardTitle className="text-2xl font-black text-slate-900 flex items-center gap-3">
+               <Sparkles className="w-6 h-6 text-cyan-500" /> Project Definition
+            </CardTitle>
           </CardHeader>
 
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <CardContent className="p-8 md:p-12 pt-6">
+            <form onSubmit={handleSubmit} className="space-y-10">
               {/* Title */}
-              <div>
-                <Label htmlFor="title" className="text-slate-300">Job Title *</Label>
+              <div className="space-y-3">
+                <Label htmlFor="title" className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Job Title *</Label>
                 <Input
                   id="title"
-                  placeholder="e.g., Build a React Dashboard"
+                  placeholder="e.g., Senior Next.js Developer for Fintech Dashboard"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="mt-2 bg-slate-700 border-slate-600 text-white placeholder:text-slate-500"
+                  className="h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 rounded-2xl font-bold focus:border-cyan-500"
                   required
                 />
               </div>
 
               {/* Description */}
-              <div>
-                <Label htmlFor="description" className="text-slate-300">Project Description *</Label>
+              <div className="space-y-3">
+                <Label htmlFor="description" className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Detailed Description *</Label>
                 <Textarea
                   id="description"
-                  placeholder="Describe your project in detail..."
+                  placeholder="Tell us about the project goals, requirements, and scope..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="mt-2 bg-slate-700 border-slate-600 text-white placeholder:text-slate-500 h-32"
+                  className="bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 rounded-3xl p-6 h-48 focus:border-cyan-500 font-medium leading-relaxed"
                   required
                 />
               </div>
 
-              {/* Category */}
-              <div>
-                <Label htmlFor="category" className="text-slate-300">Category *</Label>
-                <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
-                  <SelectTrigger className="mt-2 bg-slate-700 border-slate-600 text-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-slate-700 border-slate-600">
-                    <SelectItem value="Development">Development</SelectItem>
-                    <SelectItem value="Design">Design</SelectItem>
-                    <SelectItem value="Marketing">Marketing</SelectItem>
-                    <SelectItem value="Writing">Writing</SelectItem>
-                    <SelectItem value="Other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* Category */}
+                <div className="space-y-3">
+                  <Label htmlFor="category" className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Category *</Label>
+                  <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
+                    <SelectTrigger className="h-14 bg-slate-50 border-slate-100 text-slate-900 rounded-2xl font-bold">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border-slate-200">
+                      <SelectItem value="Development" className="font-bold">Development</SelectItem>
+                      <SelectItem value="Design" className="font-bold">Design</SelectItem>
+                      <SelectItem value="Marketing" className="font-bold">Marketing</SelectItem>
+                      <SelectItem value="Writing" className="font-bold">Writing</SelectItem>
+                      <SelectItem value="Other" className="font-bold">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Timeline */}
+                <div className="space-y-3">
+                  <Label htmlFor="timeline" className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Project Duration</Label>
+                  <div className="relative">
+                    <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                    <Select value={formData.timeline} onValueChange={(value) => setFormData({ ...formData, timeline: value })}>
+                      <SelectTrigger className="h-14 bg-slate-50 border-slate-100 text-slate-900 pl-12 rounded-2xl font-bold">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white border-slate-200">
+                        <SelectItem value="Less than 1 week" className="font-bold">Less than 1 week</SelectItem>
+                        <SelectItem value="1-2 weeks" className="font-bold">1-2 weeks</SelectItem>
+                        <SelectItem value="1 month" className="font-bold">1 month</SelectItem>
+                        <SelectItem value="1-3 months" className="font-bold">1-3 months</SelectItem>
+                        <SelectItem value="3+ months" className="font-bold">3+ months</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
               </div>
 
               {/* Budget */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="budgetMin" className="text-slate-300">Min Budget ($) *</Label>
-                  <Input
-                    id="budgetMin"
-                    type="number"
-                    min="0"
-                    value={formData.budget.min}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      budget: { ...formData.budget, min: parseInt(e.target.value) || 0 }
-                    })}
-                    className="mt-2 bg-slate-700 border-slate-600 text-white"
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="budgetMax" className="text-slate-300">Max Budget ($) *</Label>
-                  <Input
-                    id="budgetMax"
-                    type="number"
-                    min="0"
-                    value={formData.budget.max}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      budget: { ...formData.budget, max: parseInt(e.target.value) || 0 }
-                    })}
-                    className="mt-2 bg-slate-700 border-slate-600 text-white"
-                    required
-                  />
+              <div className="space-y-4">
+                <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-2">
+                  <DollarSign className="w-3 h-3" /> Budget Range (USD) *
+                </Label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
+                    <Input
+                      id="budgetMin"
+                      type="number"
+                      placeholder="Min"
+                      value={formData.budget.min}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        budget: { ...formData.budget, min: parseInt(e.target.value) || 0 }
+                      })}
+                      className="h-14 bg-slate-50 border-slate-100 text-slate-900 pl-8 rounded-2xl font-black text-lg"
+                      required
+                    />
+                  </div>
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
+                    <Input
+                      id="budgetMax"
+                      type="number"
+                      placeholder="Max"
+                      value={formData.budget.max}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        budget: { ...formData.budget, max: parseInt(e.target.value) || 0 }
+                      })}
+                      className="h-14 bg-slate-50 border-slate-100 text-slate-900 pl-8 rounded-2xl font-black text-lg"
+                      required
+                    />
+                  </div>
                 </div>
               </div>
 
               {/* Skills */}
-              <div>
-                <Label htmlFor="skills" className="text-slate-300">Required Skills</Label>
-                <div className="flex gap-2 mt-2">
+              <div className="space-y-4">
+                <Label htmlFor="skills" className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-2">
+                   <Target className="w-3 h-3" /> Target Expertise
+                </Label>
+                <div className="flex gap-3">
                   <Input
                     id="skills"
-                    placeholder="Type and press Enter..."
+                    placeholder="Enter skills (React, Figma, etc.)"
                     value={formData.skills}
                     onChange={(e) => setFormData({ ...formData, skills: e.target.value })}
                     onKeyPress={(e) => {
                       if (e.key === 'Enter') {
+                        e.preventDefault();
                         handleAddSkill();
                       }
                     }}
-                    className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-500"
+                    className="h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 rounded-2xl font-bold"
                   />
                   <Button
                     type="button"
                     onClick={handleAddSkill}
-                    className="bg-slate-600 hover:bg-slate-500"
+                    className="h-14 px-8 bg-slate-900 text-white font-bold rounded-2xl hover:bg-cyan-600 transition-all"
                   >
                     Add
                   </Button>
@@ -185,48 +239,43 @@ export default function PostJobPage() {
 
                 {/* Selected Skills */}
                 {selectedSkills.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-4">
+                  <div className="flex flex-wrap gap-2 pt-2">
                     {selectedSkills.map((skill) => (
-                      <Badge key={skill} className="bg-cyan-500/20 text-cyan-300 cursor-pointer hover:bg-cyan-500/30">
+                      <Badge
+                        key={skill}
+                        className="bg-white border-2 border-slate-100 text-slate-700 px-4 py-2 rounded-xl font-bold flex items-center gap-2 hover:border-red-200 transition-all group/badge"
+                        onClick={() => handleRemoveSkill(skill)}
+                      >
                         {skill}
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveSkill(skill)}
-                          className="ml-2 font-bold"
-                        >
-                          ×
-                        </button>
+                        <X className="w-3 h-3 text-slate-400 group-hover/badge:text-red-500 cursor-pointer" />
                       </Badge>
                     ))}
                   </div>
                 )}
               </div>
 
-              {/* Timeline */}
-              <div>
-                <Label htmlFor="timeline" className="text-slate-300">Timeline</Label>
-                <Select value={formData.timeline} onValueChange={(value) => setFormData({ ...formData, timeline: value })}>
-                  <SelectTrigger className="mt-2 bg-slate-700 border-slate-600 text-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-slate-700 border-slate-600">
-                    <SelectItem value="Less than 1 week">Less than 1 week</SelectItem>
-                    <SelectItem value="1-2 weeks">1-2 weeks</SelectItem>
-                    <SelectItem value="1 month">1 month</SelectItem>
-                    <SelectItem value="1-3 months">1-3 months</SelectItem>
-                    <SelectItem value="3+ months">3+ months</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
               {/* Submit */}
-              <Button
-                type="submit"
-                disabled={loading || !formData.title || !formData.description}
-                className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white py-2"
-              >
-                {loading ? 'Posting...' : 'Post Job'}
-              </Button>
+              <div className="pt-6">
+                <Button
+                  type="submit"
+                  disabled={loading || !formData.title || !formData.description}
+                  className="w-full h-16 bg-slate-900 hover:bg-cyan-600 text-white font-black text-xl rounded-[1.5rem] shadow-2xl shadow-slate-200 transition-all hover:scale-[1.02] active:scale-95 group"
+                >
+                  {loading ? (
+                    <span className="flex items-center gap-2 justify-center">
+                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                       Launching Project...
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-2 justify-center">
+                       Launch Project <Rocket className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                    </span>
+                  )}
+                </Button>
+                <p className="text-center text-slate-400 font-bold text-xs mt-6 uppercase tracking-widest">
+                  Secure Escrow protection active for all projects
+                </p>
+              </div>
             </form>
           </CardContent>
         </Card>

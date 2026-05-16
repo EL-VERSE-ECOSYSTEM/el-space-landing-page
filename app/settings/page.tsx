@@ -83,7 +83,7 @@ export default function SettingsPage() {
 
   const handleLogout = async () => {
     await logout()
-    router.push('/auth/login')
+    router.push('/login')
   }
 
   const navItems = [

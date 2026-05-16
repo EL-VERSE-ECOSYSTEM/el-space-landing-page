@@ -1,53 +1,47 @@
 import { TESTIMONIALS } from '@/lib/constants'
 import { SectionHeader } from '@/components/ui/SectionHeader'
+import { Quote, Star } from 'lucide-react'
 
 export function Testimonials() {
   return (
-    <section className="py-16 md:py-24 lg:py-32 bg-gradient-to-b from-slate-900/50 to-slate-950">
+    <section className="py-16 md:py-24 lg:py-32 bg-slate-50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           subheading="Real Results"
           heading="What Our Community Says"
-          description="Stories from clients and freelancers who&apos;ve transformed their work."
+          description="Stories from clients and freelancers who&apos;ve transformed their work through EL SPACE."
         />
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {TESTIMONIALS.map((testimonial, idx) => {
-            const isClient = testimonial.type === 'client'
-            const borderGradient = isClient 
-              ? 'border-cyan-500/30 hover:border-cyan-500/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.15)]'
-              : 'border-purple-500/30 hover:border-purple-500/50 hover:shadow-[0_0_20px_rgba(168,85,247,0.15)]'
-            const bgGradient = isClient 
-              ? 'from-cyan-500/10 to-blue-500/5'
-              : 'from-purple-500/10 to-pink-500/5'
-            const badge = isClient ? 'bg-cyan-500/20 text-cyan-300' : 'bg-purple-500/20 text-purple-300'
-            
             return (
               <div
                 key={idx}
-                className={`rounded-lg border ${borderGradient} bg-gradient-to-br ${bgGradient} bg-slate-900/40 backdrop-blur-sm p-8 transition-all duration-300`}
+                className="group relative flex flex-col h-full rounded-[2.5rem] border border-slate-200 bg-white p-10 transition-all duration-500 hover:border-transparent hover:shadow-2xl hover:shadow-slate-200/50"
               >
-                {/* Stars */}
-                <div className="mb-4 flex gap-1">
-                  {Array.from({ length: testimonial.rating }).map((_, i) => (
-                    <span key={i} className="text-xl">
-                      ⭐
-                    </span>
-                  ))}
+                <div className="mb-8">
+                  <div className="inline-flex items-center justify-center h-12 w-12 rounded-2xl bg-cyan-50 text-cyan-500 mb-6 group-hover:scale-110 transition-transform duration-500">
+                    <Quote className="w-6 h-6 fill-cyan-500" />
+                  </div>
+                  <div className="flex gap-1 mb-6">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
+                  <p className="text-xl font-bold text-slate-900 leading-relaxed tracking-tight mb-8">
+                    &quot;{testimonial.text}&quot;
+                  </p>
                 </div>
 
-                {/* Quote */}
-                <p className="mb-6 text-lg font-medium text-white leading-relaxed italic">
-                  "{testimonial.quote}"
-                </p>
-
-                {/* Author */}
-                <div className="flex items-center justify-between">
+                <div className="mt-auto flex items-center gap-4">
+                  <div className="h-14 w-14 rounded-2xl bg-slate-100 flex-shrink-0 overflow-hidden">
+                    <div className="h-full w-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center font-black text-slate-400">
+                      {testimonial.author.charAt(0)}
+                    </div>
+                  </div>
                   <div>
-                    <p className="font-semibold text-white">{testimonial.author}</p>
-                    <span className={`inline-block text-xs font-medium px-3 py-1 rounded-full mt-2 ${badge}`}>
-                      {testimonial.type === 'client' ? 'Client' : 'Freelancer'}
-                    </span>
+                    <p className="font-black text-slate-900">{testimonial.author}</p>
+                    <p className="text-sm font-bold text-slate-400">{testimonial.role}</p>
                   </div>
                 </div>
               </div>

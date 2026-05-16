@@ -14,17 +14,17 @@ export function SectionHeader({
   centered = true,
 }: SectionHeaderProps) {
   return (
-    <div className={`mb-12 md:mb-16 ${centered ? 'text-center' : ''}`}>
+    <div className={`mb-12 md:mb-16 \${centered ? 'text-center' : ''}`}>
       {subheading && (
-        <p className="mb-3 text-xs sm:text-sm font-bold text-cyan-500 dark:text-cyan-400 uppercase tracking-widest">
+        <p className="mb-4 text-sm font-bold text-transparent bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text uppercase tracking-widest">
           {subheading}
         </p>
       )}
-      <h2 className="mb-4 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white text-balance leading-tight">
+      <h2 className="mb-6 text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 text-balance leading-tight tracking-tight">
         {heading}
       </h2>
       {description && (
-        <p className="mx-auto max-w-3xl text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+        <p className="mx-auto max-w-2xl text-base sm:text-lg text-slate-600 leading-relaxed">
           {description}
         </p>
       )}

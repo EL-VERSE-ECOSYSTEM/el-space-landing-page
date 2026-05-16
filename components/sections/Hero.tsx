@@ -1,190 +1,164 @@
 import { HERO_CLIENT, HERO_FREELANCER } from '@/lib/constants'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { Zap, Shield, TrendingUp, Users } from 'lucide-react'
+import { Zap, Shield, TrendingUp, Users, ArrowRight } from 'lucide-react'
 
 export function Hero() {
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-white via-red-50 to-white py-16 md:py-24 lg:py-32">
+    <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-cyan-50/30 to-purple-50/30 py-16 md:py-24 lg:py-32">
       {/* Premium animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Red glow top-right */}
-        <div className="absolute top-20 right-0 w-96 h-96 bg-red-500/10 rounded-full blur-3xl animate-pulse" />
-        {/* Gold glow bottom-left */}
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-pulse" />
-        {/* Red accent */}
-        <div className="absolute top-1/2 right-1/4 w-64 h-64 bg-red-500/5 rounded-full blur-3xl animate-pulse animation-delay-1000" />
+        {/* Cyan glow top-right */}
+        <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px] animate-pulse" />
+        {/* Purple glow bottom-left */}
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[120px] animate-pulse" />
+        {/* Blue accent */}
+        <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-[100px] animate-pulse animation-delay-1000" />
         {/* Grid pattern overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-red-50/20 to-transparent" />
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         {/* EL SPACE branding section */}
         <div className="text-center mb-12 md:mb-16">
           <div className="inline-block mb-6">
-            <span className="text-xs sm:text-sm font-bold uppercase tracking-widest text-transparent bg-gradient-to-r from-red-600 to-red-500 bg-clip-text px-4 py-2 rounded-full flex items-center gap-2 transition-all border border-red-500/30 hover:border-red-500/60 hover:shadow-[0_0_20px_rgba(220,38,38,0.2)]">
-              <Zap className="w-4 h-4" />
+            <span className="text-xs sm:text-sm font-bold uppercase tracking-widest text-transparent bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text px-4 py-2 rounded-full flex items-center gap-2 transition-all border border-cyan-500/30 hover:border-cyan-500/60 hover:shadow-[0_0_20px_rgba(6,182,212,0.2)]">
+              <Zap className="w-4 h-4 text-cyan-500" />
               ✨ Trusted by 10,000+ Professionals
             </span>
           </div>
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6">
-            <span className="bg-gradient-to-r from-red-600 via-red-500 to-gold bg-clip-text text-transparent inline-block animate-pulse">EL</span>
-            <span className="text-black ml-3">SPACE</span>
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 tracking-tight">
+            <span className="bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 bg-clip-text text-transparent inline-block">EL</span>
+            <span className="text-slate-900 ml-3">SPACE</span>
           </h1>
-          <p className="text-lg sm:text-xl md:text-2xl bg-gradient-to-r from-red-600 to-gold bg-clip-text text-transparent mb-4 font-bold">
+          <p className="text-lg sm:text-xl md:text-2xl bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text text-transparent mb-4 font-bold">
             Freelance Without the Friction
           </p>
-          <p className="text-base sm:text-lg text-gray-700 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
             Where top talent meets great opportunities. Escrow-protected payments, vetted professionals, instant payouts. Your next great project starts here.
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12 mb-12">
           {/* Client Side */}
-          <div className="flex flex-col justify-center space-y-6">
-            <div className="inline-block max-w-max rounded-full bg-gradient-to-r from-red-500/20 to-gold/10 px-4 py-2 border border-red-500/30">
-              <span className="text-sm font-semibold bg-gradient-to-r from-red-600 to-gold bg-clip-text text-transparent flex items-center gap-2">
-                <Users className="w-4 h-4 text-red-600" />
+          <div className="group flex flex-col justify-center space-y-6 p-8 rounded-3xl bg-white/50 backdrop-blur-sm border border-slate-200 hover:border-cyan-500/30 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-500/10">
+            <div className="inline-block max-w-max rounded-full bg-cyan-500/10 px-4 py-2 border border-cyan-500/20">
+              <span className="text-sm font-semibold text-cyan-700 flex items-center gap-2">
+                <Users className="w-4 h-4" />
                 {HERO_CLIENT.badge}
               </span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-black text-balance">
+            <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-slate-900 text-balance">
               {HERO_CLIENT.headline}
             </h2>
-            <p className="text-base sm:text-lg text-gray-700">
+            <p className="text-base sm:text-lg text-slate-600">
               {HERO_CLIENT.subheadline}
             </p>
             
             {/* Quick Benefits */}
             <div className="space-y-4">
-              <div className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-br from-red-500/10 to-red-500/5 border border-red-500/20 hover:border-red-500/40 transition-all">
-                <div className="p-2 bg-red-500/20 rounded-lg mt-0.5">
-                  <Shield className="w-5 h-5 text-red-600" />
+              <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 group-hover:border-cyan-200 transition-all">
+                <div className="p-2.5 bg-cyan-500/10 rounded-xl mt-0.5 text-cyan-600">
+                  <Shield className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-900">Escrow Protection</p>
-                  <p className="text-sm text-gray-600">100% payment secured</p>
+                  <p className="font-semibold text-slate-900">Escrow Protection</p>
+                  <p className="text-sm text-slate-500">100% payment secured</p>
                 </div>
               </div>
-              <div className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-br from-gold/10 to-gold/5 border border-gold/20 hover:border-gold/40 transition-all">
-                <div className="p-2 bg-gold/20 rounded-lg mt-0.5">
-                  <Zap className="w-5 h-5 text-gold" />
+              <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 group-hover:border-cyan-200 transition-all">
+                <div className="p-2.5 bg-blue-500/10 rounded-xl mt-0.5 text-blue-600">
+                  <Zap className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-900">Instant Payouts</p>
-                  <p className="text-sm text-gray-600">Get paid in minutes</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-br from-red-500/10 to-red-500/5 border border-red-500/20 hover:border-red-500/40 transition-all">
-                <div className="p-2 bg-red-500/20 rounded-lg mt-0.5">
-                  <TrendingUp className="w-5 h-5 text-red-600" />
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-900">Vetted Talent</p>
-                  <p className="text-sm text-gray-600">Top 5% professionals only</p>
+                  <p className="font-semibold text-slate-900">Instant Payouts</p>
+                  <p className="text-sm text-slate-500">Get paid in minutes</p>
                 </div>
               </div>
             </div>
 
-            <div className="rounded-lg border border-gold/30 bg-gradient-to-br from-gold/10 to-gold/5 p-4 hover:border-gold/60 transition-all">
-              <p className="text-sm font-semibold bg-gradient-to-r from-gold to-gold bg-clip-text text-transparent">
+            <div className="rounded-xl border border-cyan-100 bg-cyan-50/50 p-4">
+              <p className="text-sm font-semibold text-cyan-700">
                 {HERO_CLIENT.fee}
               </p>
             </div>
-            <Link href="/auth/register" className="w-full">
+            <Link href="/signup" className="w-full pt-2">
               <Button
                 size="lg"
-                className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold text-lg py-6 rounded-lg transition-all hover:shadow-lg hover:shadow-cyan-500/50 active:scale-95"
+                className="w-full bg-slate-900 hover:bg-cyan-600 text-white font-bold text-lg py-7 rounded-2xl transition-all hover:shadow-xl hover:shadow-cyan-500/20 active:scale-95 group/btn"
               >
-                {HERO_CLIENT.cta} →
+                {HERO_CLIENT.cta} <ArrowRight className="ml-2 w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
               </Button>
             </Link>
           </div>
 
-          {/* Divider - Hidden on mobile */}
-          <div className="hidden h-auto w-px bg-gradient-to-b from-transparent via-slate-700/50 to-transparent md:block"></div>
-
           {/* Freelancer Side */}
-          <div className="flex flex-col justify-center space-y-6">
-            <div className="inline-block max-w-max rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/10 px-4 py-2 border border-purple-500/30">
-              <span className="text-sm font-semibold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-purple-400" />
+          <div className="group flex flex-col justify-center space-y-6 p-8 rounded-3xl bg-white/50 backdrop-blur-sm border border-slate-200 hover:border-purple-500/30 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/10">
+            <div className="inline-block max-w-max rounded-full bg-purple-500/10 px-4 py-2 border border-purple-500/20">
+              <span className="text-sm font-semibold text-purple-700 flex items-center gap-2">
+                <TrendingUp className="w-4 h-4" />
                 {HERO_FREELANCER.badge}
               </span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-black text-balance">
+            <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-slate-900 text-balance">
               {HERO_FREELANCER.headline}
             </h2>
-            <p className="text-base sm:text-lg text-gray-700">
+            <p className="text-base sm:text-lg text-slate-600">
               {HERO_FREELANCER.subheadline}
             </p>
 
             {/* Quick Benefits */}
             <div className="space-y-4">
-              <div className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-br from-gold/10 to-gold/5 border border-gold/20 hover:border-gold/40 transition-all">
-                <div className="p-2 bg-gold/20 rounded-lg mt-0.5">
-                  <Zap className="w-5 h-5 text-gold" />
+              <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 group-hover:border-purple-200 transition-all">
+                <div className="p-2.5 bg-purple-500/10 rounded-xl mt-0.5 text-purple-600">
+                  <TrendingUp className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-900">Work You Love</p>
-                  <p className="text-sm text-gray-600">Choose projects that excite you</p>
+                  <p className="font-semibold text-slate-900">Work You Love</p>
+                  <p className="text-sm text-slate-500">Choose projects that excite you</p>
                 </div>
               </div>
-              <div className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-br from-red-500/10 to-red-500/5 border border-red-500/20 hover:border-red-500/40 transition-all">
-                <div className="p-2 bg-red-500/20 rounded-lg mt-0.5">
-                  <Shield className="w-5 h-5 text-red-600" />
+              <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 group-hover:border-purple-200 transition-all">
+                <div className="p-2.5 bg-blue-500/10 rounded-xl mt-0.5 text-blue-600">
+                  <Shield className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-900">Secure Payments</p>
-                  <p className="text-sm text-gray-600">Escrow-backed protection</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-br from-gold/10 to-gold/5 border border-gold/20 hover:border-gold/40 transition-all">
-                <div className="p-2 bg-gold/20 rounded-lg mt-0.5">
-                  <TrendingUp className="w-5 h-5 text-gold" />
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-900">Grow Your Career</p>
-                  <p className="text-sm text-gray-600">Build portfolio & reputation</p>
+                  <p className="font-semibold text-slate-900">Secure Payments</p>
+                  <p className="text-sm text-slate-500">Escrow-backed protection</p>
                 </div>
               </div>
             </div>
 
-            <div className="rounded-lg border border-red-500/30 bg-gradient-to-br from-red-500/10 to-red-500/5 p-4 hover:border-red-500/60 transition-all">
-              <p className="text-sm font-semibold bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-transparent">
+            <div className="rounded-xl border border-purple-100 bg-purple-50/50 p-4">
+              <p className="text-sm font-semibold text-purple-700">
                 {HERO_FREELANCER.fee}
               </p>
             </div>
-            <Link href="/auth/register" className="w-full">
+            <Link href="/signup" className="w-full pt-2">
               <Button
                 size="lg"
-                className="w-full bg-gradient-to-r from-gold to-red-600 hover:from-amber-600 hover:to-red-700 text-white font-bold text-lg py-6 rounded-lg transition-all hover:shadow-lg hover:shadow-gold/50 active:scale-95"
+                className="w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 hover:from-cyan-600 hover:via-blue-600 hover:to-purple-700 text-white font-bold text-lg py-7 rounded-2xl transition-all hover:shadow-xl hover:shadow-blue-500/30 active:scale-95 group/btn"
               >
-                {HERO_FREELANCER.cta} →
+                {HERO_FREELANCER.cta} <ArrowRight className="ml-2 w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
               </Button>
             </Link>
           </div>
         </div>
 
         {/* New Stats Section */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mt-20 pt-12 border-t border-gray-200">
-          <div className="text-center p-4 rounded-lg bg-gradient-to-br from-red-500/10 to-red-500/5 border border-red-500/20 hover:border-red-500/40 transition-all">
-            <div className="text-3xl font-bold bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-transparent mb-2">10K+</div>
-            <p className="text-sm text-gray-700 font-semibold">Active Users</p>
-          </div>
-          <div className="text-center p-4 rounded-lg bg-gradient-to-br from-gold/10 to-gold/5 border border-gold/20 hover:border-gold/40 transition-all">
-            <div className="text-3xl font-bold bg-gradient-to-r from-gold to-gold bg-clip-text text-transparent mb-2">500+</div>
-            <p className="text-sm text-gray-700 font-semibold">Projects Done</p>
-          </div>
-          <div className="text-center p-4 rounded-lg bg-gradient-to-br from-red-500/10 to-red-500/5 border border-red-500/20 hover:border-red-500/40 transition-all">
-            <div className="text-3xl font-bold bg-gradient-to-r from-red-600 to-red-600 bg-clip-text text-transparent mb-2">$2M+</div>
-            <p className="text-sm text-gray-700 font-semibold">Paid Out</p>
-          </div>
-          <div className="text-center p-4 rounded-lg bg-gradient-to-br from-gold/10 to-gold/5 border border-gold/20 hover:border-gold/40 transition-all">
-            <div className="text-3xl font-bold bg-gradient-to-r from-gold to-gold bg-clip-text text-transparent mb-2">98%</div>
-            <p className="text-sm text-gray-700 font-semibold">Satisfaction</p>
-          </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 pt-12 border-t border-slate-200">
+          {[
+            { label: 'Active Users', value: '10K+', color: 'text-cyan-600', bg: 'bg-cyan-50' },
+            { label: 'Projects Done', value: '500+', color: 'text-blue-600', bg: 'bg-blue-50' },
+            { label: 'Paid Out', value: '$2M+', color: 'text-purple-600', bg: 'bg-purple-50' },
+            { label: 'Satisfaction', value: '98%', color: 'text-indigo-600', bg: 'bg-indigo-50' },
+          ].map((stat, i) => (
+            <div key={i} className="text-center p-6 rounded-2xl bg-white border border-slate-100 hover:border-slate-300 transition-all shadow-sm">
+              <div className={`text-3xl font-bold \${stat.color} mb-1`}>{stat.value}</div>
+              <p className="text-sm text-slate-500 font-medium">{stat.label}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

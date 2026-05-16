@@ -449,19 +449,19 @@ External Services (Ready)
 Route (app)
 ┌ ○ /
 ├ ○ /_not-found
-├ ○ /auth/login
-├ ○ /auth/register
+├ ○ /login
+├ ○ /signup
 ├ ○ /client/dashboard
 ├ ○ /dashboard
 ├ ○ /earnings
 ├ ○ /freelancer/dashboard
 ├ ○ /jobs
 ├ ○ /jobs/post
-├ ○ /auth/login
-├ ○ /auth/register
+├ ○ /login
+├ ○ /signup
 ├ ○ /client/dashboard
 ├ ƒ /api/applications
-├ ƒ /api/auth/register
+├ ƒ /api/signup
 ├ ƒ /api/auth/send-otp
 ├ ƒ /api/auth/verify-otp
 ├ ƒ /api/earnings

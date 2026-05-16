@@ -21,8 +21,8 @@
 - **Cookie Policy** - [app/cookies/page.tsx](app/cookies/page.tsx) - Cookie policy details
 
 #### Authentication Pages
-- **Login** - [app/auth/login/page.tsx](app/auth/login/page.tsx) - Multi-step login (email → password → OTP)
-- **Register** - [app/auth/register/page.tsx](app/auth/register/page.tsx) - Multi-step registration with role selection
+- **Login** - [app/login/page.tsx](app/login/page.tsx) - Multi-step login (email → password → OTP)
+- **Register** - [app/signup/page.tsx](app/signup/page.tsx) - Multi-step registration with role selection
 
 #### Main Dashboard Pages
 - **General Dashboard** - [app/dashboard/page.tsx](app/dashboard/page.tsx) - Generic user dashboard redirect

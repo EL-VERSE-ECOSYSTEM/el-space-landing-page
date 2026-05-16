@@ -24,14 +24,14 @@ Password: zblmwwypeoictzfa (Gmail App Password)
 
 **How it works:**
 
-1. **Registration** (`/auth/register`):
+1. **Registration** (`/signup`):
    - User enters name, email, and role
    - OTP is generated (6 digits)
    - Email is sent via Gmail SMTP
    - User enters OTP to verify
    - Account created → Dashboard
 
-2. **Login** (`/auth/login`):
+2. **Login** (`/login`):
    - User enters email
    - OTP is generated and emailed
    - User enters OTP to verify
@@ -51,8 +51,8 @@ Password: zblmwwypeoictzfa (Gmail App Password)
 | `utils/supabase/client.ts` | Updated to use `NEXT_PUBLIC_SUPABASE_ANON_KEY` |
 | `middleware.ts` | Updated to use `NEXT_PUBLIC_SUPABASE_ANON_KEY` |
 | `app/api/auth/send-otp/route.ts` | Added dev mode OTP display |
-| `app/auth/register/page.tsx` | Shows OTP in dev mode, fixed role dropdown |
-| `app/auth/login/page.tsx` | Shows OTP in dev mode |
+| `app/signup/page.tsx` | Shows OTP in dev mode, fixed role dropdown |
+| `app/login/page.tsx` | Shows OTP in dev mode |
 | `components/sections/Navbar.tsx` | Fixed routing to auth pages |
 
 ## 🧪 How to Test OTP
@@ -63,7 +63,7 @@ Password: zblmwwypeoictzfa (Gmail App Password)
 npm run dev
 
 # 2. Open in browser
-http://localhost:3000/auth/register
+http://localhost:3000/signup
 
 # 3. Fill in the form
 - Name: Test User
@@ -82,7 +82,7 @@ http://localhost:3000/auth/register
 npm run dev
 
 # 2. Open in browser
-http://localhost:3000/auth/register
+http://localhost:3000/signup
 
 # 3. Fill in the form and click "Continue"
 - If email fails, OTP will be shown on screen
@@ -101,8 +101,8 @@ http://localhost:3000/auth/register
 
 All routes working:
 - ✅ Landing page (`/`)
-- ✅ Registration (`/auth/register`)
-- ✅ Login (`/auth/login`)
+- ✅ Registration (`/signup`)
+- ✅ Login (`/login`)
 - ✅ Dashboard (`/dashboard`)
 - ✅ OTP API (`/api/auth/send-otp`, `/api/auth/verify-otp`)
 - ✅ All protected routes

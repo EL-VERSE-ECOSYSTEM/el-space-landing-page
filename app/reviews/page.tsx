@@ -18,6 +18,7 @@ import { Label } from '@/components/ui/label'
 import { Star, MessageSquare, ThumbsUp, Flag } from 'lucide-react'
 import { useLoader } from '@/components/loader-provider'
 import { toast } from 'sonner'
+import { useAuth } from '@/components/auth-provider'
 
 interface Review {
   id: string
@@ -39,6 +40,7 @@ interface ReviewStats {
 }
 
 export default function ReviewsPage() {
+  const { user, loading: authLoading } = useAuth()
   const { show: showLoader, hide: hideLoader } = useLoader()
   const [reviews, setReviews] = useState<Review[]>([])
   const [stats, setStats] = useState<ReviewStats>({
@@ -54,17 +56,19 @@ export default function ReviewsPage() {
   const [myComment, setMyComment] = useState('')
 
   useEffect(() => {
-    fetchReviews()
-  }, [])
+    if (!authLoading && user) {
+      fetchReviews()
+    } else if (!authLoading && !user) {
+      setLoading(false)
+    }
+  }, [user, authLoading])
 
   const fetchReviews = async () => {
     try {
       setLoading(true)
       showLoader(2)
-      const userId = localStorage.getItem('userId') || ''
-      if (!userId) return
 
-      const response = await fetch(`/api/reviews?userId=${userId}`)
+      const response = await fetch(`/api/reviews?userId=${user?.id}`)
       const data = await response.json()
 
       if (data.success && data.reviews) {
@@ -161,13 +165,31 @@ export default function ReviewsPage() {
     }
   }
 
-  if (loading) {
+  if (loading || authLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
         <div className="text-center text-white">
           <Star className="w-12 h-12 mx-auto mb-4 animate-bounce" />
           <p>Loading reviews...</p>
         </div>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+        <Card className="max-w-md w-full bg-slate-800 border-purple-500/20">
+          <CardHeader>
+            <CardTitle className="text-white">Authentication Required</CardTitle>
+            <CardDescription className="text-purple-200">Please log in to view and manage reviews.</CardDescription>
+          </CardHeader>
+          <CardContent>
+             <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white" onClick={() => window.location.href='/login'}>
+               Go to Login
+             </Button>
+          </CardContent>
+        </Card>
       </div>
     )
   }

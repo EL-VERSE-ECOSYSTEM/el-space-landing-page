@@ -191,7 +191,7 @@ export default function PricingPage() {
             Join thousands of successful professionals. No credit card required.
           </p>
           <Link
-            href="/auth/register"
+            href="/signup"
             className="inline-block px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold rounded-lg transition-colors"
           >
             Sign Up Now

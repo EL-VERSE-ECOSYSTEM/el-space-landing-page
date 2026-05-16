@@ -26,8 +26,8 @@ All requested features have been successfully implemented, tested, and deployed.
 - `app/api/auth/github/callback/route.ts` (new)
 - `components/ui/github-signin-button.tsx` (new)
 - `app/auth/github-success/page.tsx` (new)
-- `app/auth/login/page.tsx` - Added GitHub button
-- `app/auth/register/page.tsx` - Added GitHub button import
+- `app/login/page.tsx` - Added GitHub button
+- `app/signup/page.tsx` - Added GitHub button import
 
 ---
 
@@ -56,12 +56,12 @@ Successfully transformed entire app from Cyan/Slate theme to Red, White, and Gol
   - Changed button colors to Red/Gold
   - Updated benefit cards with new colors
   - Updated stats section styling
-- `app/auth/login/page.tsx` - Full color overhaul
+- `app/login/page.tsx` - Full color overhaul
   - Changed background to white/red
   - Updated progress bar colors
   - Updated button colors
   - Updated input field styling
-- `app/auth/register/page.tsx` - Full color overhaul
+- `app/signup/page.tsx` - Full color overhaul
   - Changed background to white/red
   - Updated progress indicators
   - Updated form styling
@@ -210,8 +210,8 @@ GitHub OAuth users automatically created with:
 
 ### Pages
 1. `app/auth/github-success/page.tsx` - ✅ Created
-2. `app/auth/login/page.tsx` - ✅ Updated
-3. `app/auth/register/page.tsx` - ✅ Updated
+2. `app/login/page.tsx` - ✅ Updated
+3. `app/signup/page.tsx` - ✅ Updated
 
 ---
 
@@ -276,7 +276,7 @@ Visit: `http://localhost:3000`
 - Verify button colors
 
 ### 2. Login Page
-Visit: `http://localhost:3000/auth/login`
+Visit: `http://localhost:3000/login`
 - Test email entry
 - Test password entry
 - Test OTP popup
@@ -284,7 +284,7 @@ Visit: `http://localhost:3000/auth/login`
 - Verify colors and styling
 
 ### 3. Register Page
-Visit: `http://localhost:3000/auth/register`
+Visit: `http://localhost:3000/signup`
 - Test registration flow
 - Test GitHub OAuth integration
 - Verify new theme colors

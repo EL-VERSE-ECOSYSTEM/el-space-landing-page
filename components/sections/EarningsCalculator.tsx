@@ -26,27 +26,42 @@ export function EarningsCalculator() {
   const earnings = userType === 'freelancer' ? projectValue - fee : projectValue + fee
 
   return (
-    <section className="py-16 md:py-24 lg:py-32 bg-gradient-to-b from-slate-950 to-slate-900/50">
+    <section className="py-16 md:py-24 lg:py-32 bg-white">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           heading="How Much Will You Make (or Pay)?"
           subheading="Earnings Calculator"
-          description="Calculate your take-home earnings or see what you'll pay as a client."
+          description="Calculate your take-home earnings or see what you'll pay as a client with our transparent fee structure."
         />
 
-        <div className="rounded-lg border border-slate-700/50 bg-slate-900/40 backdrop-blur-sm p-8 md:p-12">
-          <Tabs value={userType} onValueChange={(val) => setUserType(val as any)} className="w-full mb-8">
-            <TabsList className="grid w-full grid-cols-2 mb-8 bg-slate-900/50 border border-slate-700/50">
-              <TabsTrigger value="freelancer" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-600 data-[state=active]:to-teal-600 data-[state=active]:text-white">Freelancer View</TabsTrigger>
-              <TabsTrigger value="client" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-cyan-600 data-[state=active]:text-white">Client View</TabsTrigger>
-            </TabsList>
+        <div className="rounded-[3rem] border border-slate-200 bg-white p-8 md:p-16 shadow-2xl shadow-slate-200/50">
+          <Tabs value={userType} onValueChange={(val) => setUserType(val as any)} className="w-full mb-12">
+            <div className="flex justify-center">
+              <TabsList className="grid w-full max-w-md grid-cols-2 p-1 bg-slate-100 rounded-2xl h-14">
+                <TabsTrigger
+                  value="freelancer"
+                  className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-purple-600 data-[state=active]:shadow-sm"
+                >
+                  Freelancer View
+                </TabsTrigger>
+                <TabsTrigger
+                  value="client"
+                  className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-cyan-600 data-[state=active]:shadow-sm"
+                >
+                  Client View
+                </TabsTrigger>
+              </TabsList>
+            </div>
           </Tabs>
 
           {/* Slider */}
-          <div className="mb-8">
-            <label className="mb-4 block text-sm font-semibold text-white">
-              Project Value: <span className="text-cyan-400">${projectValue.toLocaleString()}</span>
-            </label>
+          <div className="mb-12">
+            <div className="flex justify-between items-end mb-6">
+              <label className="text-sm font-black text-slate-400 uppercase tracking-widest">
+                Project Value
+              </label>
+              <span className="text-4xl font-black text-slate-900">\${projectValue.toLocaleString()}</span>
+            </div>
             <Slider
               value={[projectValue]}
               onValueChange={(val) => setProjectValue(val[0])}
@@ -55,71 +70,51 @@ export function EarningsCalculator() {
               step={100}
               className="w-full"
             />
-            <div className="mt-2 flex justify-between text-xs text-slate-400">
+            <div className="mt-4 flex justify-between text-xs font-bold text-slate-400">
               <span>$100</span>
               <span>$20,000</span>
             </div>
           </div>
 
           {/* Results */}
-          <div className="space-y-6">
-            {userType === 'freelancer' ? (
-              <>
-                <div className="rounded-lg bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 border border-yellow-500/30 p-6">
-                  <p className="mb-2 text-sm text-slate-400">EL SPACE Fee</p>
-                  <p className="text-3xl font-bold text-yellow-400">
-                    ${fee.toFixed(2)}
-                  </p>
-                </div>
-                <div className="rounded-lg border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 p-6">
-                  <p className="mb-2 text-sm text-slate-400">You Earn</p>
-                  <p className="text-4xl font-bold text-emerald-400">
-                    ${earnings.toFixed(2)}
-                  </p>
-                  <p className="mt-3 text-sm font-semibold text-white">
-                    That&apos;s {((earnings / projectValue) * 100).toFixed(1)}% of the project value
-                  </p>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="rounded-lg bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 border border-yellow-500/30 p-6">
-                  <p className="mb-2 text-sm text-slate-400">EL SPACE Fee</p>
-                  <p className="text-3xl font-bold text-yellow-400">
-                    ${fee.toFixed(2)}
-                  </p>
-                </div>
-                <div className="rounded-lg border border-cyan-500/30 bg-gradient-to-br from-cyan-500/10 to-cyan-600/5 p-6">
-                  <p className="mb-2 text-sm text-slate-400">You Pay</p>
-                  <p className="text-4xl font-bold text-cyan-400">
-                    ${earnings.toFixed(2)}
-                  </p>
-                  <p className="mt-3 text-sm font-semibold text-white">
-                    That&apos;s only {((fee / projectValue) * 100).toFixed(1)}% above project cost
-                  </p>
-                </div>
-              </>
-            )}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="rounded-[2rem] bg-slate-50 border border-slate-100 p-8 transition-all hover:bg-white hover:shadow-xl hover:shadow-slate-100">
+              <p className="mb-2 text-xs font-black text-slate-400 uppercase tracking-widest">EL SPACE Fee</p>
+              <p className="text-3xl font-black text-slate-900">
+                \${fee.toFixed(2)}
+              </p>
+              <p className="mt-4 text-sm font-bold text-slate-400 leading-relaxed">
+                Covers escrow, dispute resolution, and 24/7 support.
+              </p>
+            </div>
+
+            <div className={`rounded-[2rem] p-8 transition-all shadow-xl shadow-\${userType === 'freelancer' ? 'purple' : 'cyan'}-500/10 border border-\${userType === 'freelancer' ? 'purple' : 'cyan'}-100 bg-\${userType === 'freelancer' ? 'purple' : 'cyan'}-50`}>
+              <p className="mb-2 text-xs font-black text-slate-400 uppercase tracking-widest">{userType === 'freelancer' ? 'You Take Home' : 'Total Client Cost'}</p>
+              <p className={`text-4xl font-black \${userType === 'freelancer' ? 'text-purple-600' : 'text-cyan-600'}`}>
+                \${earnings.toFixed(2)}
+              </p>
+              <p className="mt-4 text-sm font-bold text-slate-900">
+                That&apos;s {userType === 'freelancer' ? (earnings / projectValue * 100).toFixed(1) : (fee / projectValue * 100).toFixed(1)}% {userType === 'freelancer' ? 'of the project value' : 'above project cost'}
+              </p>
+            </div>
           </div>
 
           {/* Comparison */}
-          <div className="mt-8 border-t border-slate-700/50 pt-8">
-            <p className="mb-4 text-center text-sm text-slate-400">
-              Compare to other platforms:
+          <div className="mt-12 pt-12 border-t border-slate-100">
+            <p className="mb-8 text-center text-xs font-black text-slate-400 uppercase tracking-[0.2em]">
+              Compare to Competitors
             </p>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between rounded-lg bg-slate-800/50 p-3">
-                <span className="font-semibold text-white">Upwork</span>
-                <span className="text-lg font-bold text-white">20%</span>
-              </div>
-              <div className="flex items-center justify-between rounded-lg bg-slate-800/50 p-3">
-                <span className="font-semibold text-white">Fiverr</span>
-                <span className="text-lg font-bold text-white">20%</span>
-              </div>
-              <div className="flex items-center justify-between rounded-lg border border-cyan-500/30 bg-gradient-to-r from-cyan-500/10 to-blue-500/5 p-3">
-                <span className="font-semibold text-white">EL SPACE</span>
-                <span className="text-lg font-bold text-cyan-400">3-5%</span>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                { name: 'Upwork', fee: '20%', color: 'text-slate-400' },
+                { name: 'Fiverr', fee: '20%', color: 'text-slate-400' },
+                { name: 'EL SPACE', fee: '3-5%', color: 'text-cyan-600 font-black' }
+              ].map((plat, i) => (
+                <div key={i} className="flex items-center justify-between px-6 py-4 rounded-2xl bg-slate-50 border border-slate-100">
+                  <span className="font-bold text-slate-900">{plat.name}</span>
+                  <span className={`text-lg \${plat.color}`}>{plat.fee}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>

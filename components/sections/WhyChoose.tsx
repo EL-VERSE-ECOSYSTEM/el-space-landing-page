@@ -4,7 +4,7 @@ import { BenefitCard } from '@/components/ui/BenefitCard'
 
 export function WhyClientsChoose() {
   return (
-    <section className="py-16 md:py-24 lg:py-32 bg-gradient-to-b from-slate-900/50 to-slate-950">
+    <section className="py-16 md:py-24 lg:py-32 bg-slate-50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           subheading="For Clients"
@@ -34,7 +34,7 @@ export function WhyClientsChoose() {
 
 export function WhyFreelancersChoose() {
   return (
-    <section className="py-16 md:py-24 lg:py-32 bg-gradient-to-b from-slate-950 to-slate-900/50">
+    <section className="py-16 md:py-24 lg:py-32 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           subheading="For Freelancers"
