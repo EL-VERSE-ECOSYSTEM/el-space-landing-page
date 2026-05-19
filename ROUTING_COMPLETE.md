@@ -13,8 +13,8 @@
 - `/contact` - Contact & Support
 
 ## Authentication
-- `/login` - Login Page
-- `/signup` - Registration Page
+- `/auth/login` - Login Page
+- `/auth/register` - Registration Page
 
 ## Client Dashboard
 - `/client` - Main Client Dashboard
@@ -42,7 +42,7 @@
 ## API Endpoints
 
 ### Authentication
-- `POST /api/signup` - Register new user
+- `POST /api/auth/register` - Register new user
 - `POST /api/auth/send-otp` - Send OTP via email
 - `POST /api/auth/verify-otp` - Verify OTP
 - `POST /api/auth/check-user` - Check user authentication status
@@ -139,8 +139,8 @@
 ✅ Contact (/contact)
 
 ### Auth Pages
-✅ Login (/login)
-✅ Register (/signup)
+✅ Login (/auth/login)
+✅ Register (/auth/register)
 
 ### Client Pages
 ✅ Client Dashboard (/client)

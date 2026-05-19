@@ -1,32 +1,38 @@
-import { NextResponse } from 'next/server';
-import { getAllUsers, getAllPayments, getAllJobs } from '@/lib/supabase';
+import { NextRequest, NextResponse } from 'next/server';
+import { supabase } from '@/lib/supabase';
 
-interface Payment {
-  amount?: number;
-  status?: string;
-}
-
-interface Job {
-  status?: string;
-}
-
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const users = await getAllUsers();
-    const payments = await getAllPayments();
-    const jobs = await getAllJobs();
+    const { data: stats, error } = await supabase.rpc('get_admin_stats');
 
-    const stats = {
-      totalUsers: users?.length || 0,
-      totalPayments: payments?.reduce((sum: number, p: Payment) => sum + (p.amount || 0), 0) || 0,
-      pendingPayments: payments?.filter((p: Payment) => p.status === 'pending').length || 0,
-      totalJobListings: jobs?.length || 0,
-      pendingApprovals: jobs?.filter((j: Job) => j.status === 'pending').length || 0,
-    };
+    // Fallback if RPC doesn't exist yet
+    if (error) {
+      const [users, payments, jobs, withdrawals] = await Promise.all([
+        supabase.from('users').select('id', { count: 'exact' }),
+        supabase.from('payments').select('amount'),
+        supabase.from('projects').select('id', { count: 'exact' }),
+        supabase.from('payments').select('id', { count: 'exact' }).eq('payment_type', 'withdrawal').eq('status', 'pending')
+      ]);
+
+      const totalPayments = payments.data?.reduce((acc, p) => acc + p.amount, 0) || 0;
+
+      return NextResponse.json({
+        success: true,
+        stats: {
+          totalUsers: users.count || 0,
+          totalPayments: totalPayments.toLocaleString(),
+          pendingPayments: 0,
+          totalJobListings: jobs.count || 0,
+          pendingApprovals: 0,
+          activeDisputes: 0,
+          totalWithdrawals: 0,
+          pendingWithdrawals: withdrawals.count || 0
+        }
+      });
+    }
 
     return NextResponse.json({ success: true, stats });
-  } catch (error) {
-    console.error('Error fetching admin stats:', error);
-    return NextResponse.json({ error: 'Failed to fetch stats' }, { status: 500 });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }

@@ -14,7 +14,7 @@ export function SectionHeader({
   centered = true,
 }: SectionHeaderProps) {
   return (
-    <div className={`mb-12 md:mb-16 \${centered ? 'text-center' : ''}`}>
+    <div className={`mb-12 md:mb-16 ${centered ? 'text-center' : ''}`}>
       {subheading && (
         <p className="mb-4 text-sm font-bold text-transparent bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text uppercase tracking-widest">
           {subheading}

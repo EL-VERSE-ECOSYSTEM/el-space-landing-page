@@ -19,7 +19,7 @@ export function StepCard({ icon, title, description, step }: StepCardProps) {
 
   return (
     <div className="group relative flex flex-col items-start gap-5 rounded-3xl border border-slate-200 bg-white p-8 transition-all duration-500 hover:border-transparent hover:shadow-2xl hover:shadow-slate-200/50">
-      <div className={`text-4xl rounded-2xl p-4 transition-transform duration-500 group-hover:scale-110 \${colorClass}`}>
+      <div className={`text-4xl rounded-2xl p-4 transition-transform duration-500 group-hover:scale-110 ${colorClass}`}>
         {icon}
       </div>
       <div className="flex-1">

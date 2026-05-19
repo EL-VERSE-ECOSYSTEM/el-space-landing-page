@@ -1,4 +1,5 @@
 "use client";
+import React from 'react';
 
 import { DashboardLayout } from "@/components/dashboard/auth-guard";
 import { Briefcase, DollarSign, TrendingUp, Star, Search, Bell, Settings, FileText } from "lucide-react";

@@ -25,7 +25,7 @@ export function BenefitCard({
   return (
     <div className="group flex flex-col gap-4 p-6 rounded-3xl border border-slate-200 bg-white hover:border-slate-300 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300">
       <div className="flex items-start gap-5">
-        <span className={`mt-1 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl text-xl font-bold \${iconBackgrounds[colorScheme]} border transition-transform duration-300 group-hover:scale-110`}>
+        <span className={`mt-1 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl text-xl font-bold ${iconBackgrounds[colorScheme]} border transition-transform duration-300 group-hover:scale-110`}>
           {icon}
         </span>
         <div className="flex-1">

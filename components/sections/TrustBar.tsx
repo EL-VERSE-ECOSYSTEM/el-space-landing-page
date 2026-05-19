@@ -1,3 +1,4 @@
+import React from 'react';
 import { ECOSYSTEM_BRANDS } from '@/lib/constants'
 
 export function TrustBar() {

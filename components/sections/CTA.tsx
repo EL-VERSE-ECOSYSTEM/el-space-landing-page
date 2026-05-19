@@ -1,3 +1,4 @@
+import React from 'react';
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
@@ -27,7 +28,7 @@ export function CTA() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center pt-4">
-            <Link href="/signup">
+            <Link href="/auth/register">
               <Button
                 size="lg"
                 className="bg-white hover:bg-cyan-50 text-slate-900 font-black text-lg px-10 py-8 rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-xl shadow-white/5 group"
@@ -35,7 +36,7 @@ export function CTA() {
                 Post a Job Today <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-            <Link href="/signup">
+            <Link href="/auth/register">
               <Button
                 size="lg"
                 variant="outline"

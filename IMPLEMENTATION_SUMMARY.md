@@ -137,8 +137,8 @@ Dashboards:
   ✓ /freelancer/dashboard - Freelancer dashboard
   
 Authentication:
-  ✓ /login - Login page
-  ✓ /signup - Registration page
+  ✓ /auth/login - Login page
+  ✓ /auth/register - Registration page
   
 Finance:
   ✓ /earnings - Earnings dashboard
@@ -151,7 +151,7 @@ API Routes (11 Total):
   ✓ /api/payments/* - Payment handling
   ✓ /api/profile/* - Profile management
   ✓ /api/earnings/* - Earnings tracking
-  ✓ /api/signup - User registration
+  ✓ /api/auth/register - User registration
   ✓ /api/auth/send-otp - OTP generation
   ✓ /api/auth/verify-otp - OTP verification
 ```

@@ -32,25 +32,25 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 ### 2. Routing Fixes ✅
 
 #### Navbar Updates (`components/sections/Navbar.tsx`)
-- Changed "Browse Jobs" → "Get Started" (links to `/signup`)
-- Changed "Earnings" → "Login" (links to `/login`)
+- Changed "Browse Jobs" → "Get Started" (links to `/auth/register`)
+- Changed "Earnings" → "Login" (links to `/auth/login`)
 - Changed "Dashboard" → Removed (only visible when authenticated)
-- Changed "Post a Job" → Links to `/signup` (requires auth)
-- Changed "Apply Now" → Links to `/signup` (requires auth)
+- Changed "Post a Job" → Links to `/auth/register` (requires auth)
+- Changed "Apply Now" → Links to `/auth/register` (requires auth)
 - Fixed navigation links to use `Link` component instead of `<a>` tags for client-side navigation
 
 #### Middleware Protection
 The middleware now:
 - Protects routes: `/dashboard`, `/freelancer/dashboard`, `/client/dashboard`, `/jobs/post`, `/earnings`
-- Redirects unauthenticated users to `/login`
-- Redirects authenticated users away from `/login` and `/signup` to `/dashboard`
+- Redirects unauthenticated users to `/auth/login`
+- Redirects authenticated users away from `/auth/login` and `/auth/register` to `/dashboard`
 - Properly handles Supabase session cookies
 
 ---
 
 ### 3. Registration Page Role Selection Fix ✅
 
-**File**: `app/signup/page.tsx`
+**File**: `app/auth/register/page.tsx`
 
 **Changes**:
 - Enhanced the "Select your role" dropdown with better styling and visibility
@@ -68,8 +68,8 @@ The middleware now:
 #### Development Mode Support
 **Files**: 
 - `app/api/auth/send-otp/route.ts`
-- `app/login/page.tsx`
-- `app/signup/page.tsx`
+- `app/auth/login/page.tsx`
+- `app/auth/register/page.tsx`
 
 **Changes**:
 - OTP system now works in development even without email configuration
@@ -103,7 +103,7 @@ The application builds successfully with no errors:
 ```
 
 All routes are properly configured:
-- **Static Pages**: `/`, `/login`, `/signup`, `/dashboard`, `/client/dashboard`, `/freelancer/dashboard`, `/earnings`, `/jobs`, `/jobs/post`
+- **Static Pages**: `/`, `/auth/login`, `/auth/register`, `/dashboard`, `/client/dashboard`, `/freelancer/dashboard`, `/earnings`, `/jobs`, `/jobs/post`
 - **Dynamic API Routes**: All `/api/*` routes working
 - **Middleware**: Active for route protection
 

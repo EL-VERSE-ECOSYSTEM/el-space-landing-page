@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
     const state = searchParams.get('state');
 
     if (!code) {
-      return NextResponse.redirect(`${REDIRECT_URI}/login?error=no_code`);
+      return NextResponse.redirect(`${REDIRECT_URI}/auth/login?error=no_code`);
     }
 
     // Exchange code for access token
@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
     const tokenData: GitHubTokenResponse = await tokenResponse.json();
 
     if (!tokenData.access_token) {
-      return NextResponse.redirect(`${REDIRECT_URI}/login?error=token_exchange_failed`);
+      return NextResponse.redirect(`${REDIRECT_URI}/auth/login?error=token_exchange_failed`);
     }
 
     // Get user info from GitHub
@@ -115,7 +115,7 @@ export async function GET(request: NextRequest) {
 
       if (insertError) {
         console.error('Error creating user:', insertError);
-        return NextResponse.redirect(`${REDIRECT_URI}/login?error=user_creation_failed`);
+        return NextResponse.redirect(`${REDIRECT_URI}/auth/login?error=user_creation_failed`);
       }
 
       user = newUser;
@@ -162,6 +162,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   } catch (error) {
     console.error('GitHub OAuth error:', error);
-    return NextResponse.redirect(`${REDIRECT_URI}/login?error=oauth_error`);
+    return NextResponse.redirect(`${REDIRECT_URI}/auth/login?error=oauth_error`);
   }
 }

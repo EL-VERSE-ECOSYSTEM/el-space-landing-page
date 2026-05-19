@@ -49,12 +49,12 @@ export async function proxy(request: NextRequest) {
   const isProtectedPath = protectedPaths.some(path => request.nextUrl.pathname.startsWith(path));
 
   // Auth routes that should redirect if already logged in
-  const authPaths = ['/login', '/signup'];
+  const authPaths = ['/auth/login', '/auth/register'];
   const isAuthPath = authPaths.some(path => request.nextUrl.pathname.startsWith(path));
 
   // If trying to access protected route without authentication
   if (isProtectedPath && !session) {
-    const redirectUrl = new URL('/login', request.url);
+    const redirectUrl = new URL('/auth/login', request.url);
     redirectUrl.searchParams.set('redirect', request.nextUrl.pathname);
     return NextResponse.redirect(redirectUrl);
   }

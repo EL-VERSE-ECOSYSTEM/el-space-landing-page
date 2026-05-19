@@ -136,8 +136,8 @@ Implemented across all major user actions:
 ### Pages Audited:
 
 #### Authentication Pages:
-- ✅ `/login` - Complete with Google button, OTP flow
-- ✅ `/signup` - Complete with Google button, multi-step form, OTP
+- ✅ `/auth/login` - Complete with Google button, OTP flow
+- ✅ `/auth/register` - Complete with Google button, multi-step form, OTP
 
 #### User Dashboards:
 - ✅ `/client` - Client dashboard

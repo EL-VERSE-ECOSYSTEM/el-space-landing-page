@@ -77,21 +77,27 @@ export function ELLoader() {
       `}</style>
 
       <div className="loader-container">
-        <div className="loader-logo relative w-48 h-24 sm:w-64 sm:h-32">
-          <Image
-            src="/logo.png"
-            alt="EL SPACE"
-            fill
-            className="object-contain"
-            priority
-          />
+        <div className="relative">
+          {/* Decorative rings */}
+          <div className="absolute -inset-8 border border-cyan-500/10 rounded-full animate-[spin_10s_linear_infinite]" />
+          <div className="absolute -inset-16 border border-purple-500/5 rounded-full animate-[spin_15s_linear_infinite_reverse]" />
+
+          <div className="loader-logo relative w-48 h-24 sm:w-64 sm:h-32">
+            <Image
+              src="/logo.png"
+              alt="EL SPACE"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
         </div>
         
         <div className="progress-bar-container">
           <div className="progress-bar-fill" />
         </div>
 
-        <p className="loader-text">Initializing EL SPACE</p>
+        <p className="loader-text">Initializing Premium Experience</p>
       </div>
     </div>
   );

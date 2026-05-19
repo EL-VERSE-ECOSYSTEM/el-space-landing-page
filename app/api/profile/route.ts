@@ -1,75 +1,53 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getUser, updateFreelancerProfile, deleteUser } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
   try {
-    const userId = request.nextUrl.searchParams.get('userId');
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get('userId');
 
     if (!userId) {
-      return NextResponse.json({ error: 'userId required' }, { status: 400 });
+      return NextResponse.json({ error: 'User ID required' }, { status: 400 });
     }
 
-    const { data, error } = await getUser(userId);
+    // Get basic user info
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', userId)
+      .single();
 
-    if (error) throw error;
-    if (!data) {
+    if (userError || !user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ user: data });
-  } catch (error: unknown) {
-    console.error('Error fetching profile:', error);
-    return NextResponse.json({ error: (error instanceof Error ? error.message : "Unknown error") }, { status: 500 });
-  }
-}
-
-export async function PATCH(request: NextRequest) {
-  try {
-    const userId = request.nextUrl.searchParams.get('userId');
-    const body = await request.json();
-
-    if (!userId) {
-      return NextResponse.json({ error: 'userId required' }, { status: 400 });
+    // Get specific profile data
+    let profileData = null;
+    if (user.user_type === 'freelancer') {
+      const { data } = await supabase
+        .from('freelancer_profiles')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+      profileData = data;
+    } else {
+      const { data } = await supabase
+        .from('client_profiles')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+      profileData = data;
     }
 
-    if (body.isFreelancer) {
-      const { data, error } = await updateFreelancerProfile(userId, {
-        skills: body.skills,
-        hourly_rate: body.hourlyRate,
-        bio: body.bio,
-        portfolio_url: body.portfolioUrl,
-        years_experience: body.yearsExperience,
-      });
+    return NextResponse.json({
+      success: true,
+      profile: {
+        user,
+        details: profileData
+      }
+    });
 
-      if (error) throw error;
-      return NextResponse.json({ success: true, user: data });
-    }
-
-    // Update client profile
-    return NextResponse.json({ success: true, message: 'Profile updated' });
-  } catch (error: unknown) {
-    console.error('Error updating profile:', error);
-    return NextResponse.json({ error: (error instanceof Error ? error.message : "Unknown error") }, { status: 500 });
-  }
-}
-
-export async function DELETE(request: NextRequest) {
-  try {
-    const userId = request.nextUrl.searchParams.get('userId');
-
-    if (!userId) {
-      return NextResponse.json({ error: 'userId required' }, { status: 400 });
-    }
-
-    const { error } = await deleteUser(userId);
-    if (error) throw error;
-
-    const response = NextResponse.json({ success: true, message: 'Account deleted' });
-    response.cookies.delete('el-space-auth');
-    
-    return response;
-  } catch (error: unknown) {
-    console.error('Error deleting profile:', error);
-    return NextResponse.json({ error: (error instanceof Error ? error.message : "Unknown error") }, { status: 500 });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }

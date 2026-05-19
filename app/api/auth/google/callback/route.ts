@@ -17,19 +17,19 @@ export async function GET(request: NextRequest) {
       
       // Redirect back to login with error
       return NextResponse.redirect(
-        new URL(`/login?error=${encodeURIComponent(errorDescription)}`, request.url)
+        new URL(`/auth/login?error=${encodeURIComponent(errorDescription)}`, request.url)
       );
     }
 
     if (!code) {
       return NextResponse.redirect(
-        new URL('/login?error=No authorization code received', request.url)
+        new URL('/auth/login?error=No authorization code received', request.url)
       );
     }
 
     if (!state) {
       return NextResponse.redirect(
-        new URL('/login?error=Invalid state parameter', request.url)
+        new URL('/auth/login?error=Invalid state parameter', request.url)
       );
     }
 
@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
     if (!response.ok) {
       console.error('[Google OAuth] Auth failed:', data.error);
       return NextResponse.redirect(
-        new URL(`/login?error=${encodeURIComponent(data.error || 'Authentication failed')}`, request.url)
+        new URL(`/auth/login?error=${encodeURIComponent(data.error || 'Authentication failed')}`, request.url)
       );
     }
 
@@ -70,7 +70,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('[Google OAuth Callback] Error:', error);
     return NextResponse.redirect(
-      new URL('/login?error=Callback processing failed', request.url)
+      new URL('/auth/login?error=Callback processing failed', request.url)
     );
   }
 }

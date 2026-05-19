@@ -1,207 +1,211 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/components/auth-provider';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Briefcase, Rocket, Search, ChevronRight, Clock, ShieldCheck } from 'lucide-react';
-import { DashboardStats } from '@/components/client/DashboardStats';
-import Link from 'next/link';
+import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import Image from 'next/image'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import {
+  Briefcase, Users, Plus, ChevronRight,
+  Search, Bell, Settings, Filter, ArrowUpRight,
+  TrendingUp, Clock, Activity, MessageSquare
+} from 'lucide-react'
+import { useAuth } from '@/components/auth-provider'
+import { toast } from 'sonner'
+import { ELLoader } from '@/components/ui/el-loader'
 
-export default function ClientDashboardPage() {
-  const router = useRouter();
-  const { user, loading: authLoading } = useAuth();
-  const [projects, setProjects] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function ClientHub() {
+  const router = useRouter()
+  const { user } = useAuth()
+  const [loading, setLoading] = useState(true)
+  const [projects, setProjects] = useState<any[]>([])
+  const [stats, setStats] = useState({
+    activeProjects: 0,
+    totalSpent: 0,
+    hiredFreelancers: 0,
+    pendingApplications: 0
+  })
 
   useEffect(() => {
-    if (!authLoading) {
-      fetchProjects();
+    if (user) {
+      fetchDashboardData()
     }
-  }, [authLoading, user]);
+  }, [user])
 
-  const fetchProjects = async () => {
+  const fetchDashboardData = async () => {
     try {
-      const userId = user?.id || ''
-      if (!userId) return
-      const response = await fetch(`/api/projects?clientId=${userId}`);
-      const data = await response.json();
-      setProjects(data.projects || []);
-    } catch (error) {
-      console.error('Error fetching projects:', error);
+      setLoading(true)
+      const res = await fetch(`/api/projects?clientId=${user?.id}`)
+      const data = await res.json()
+      if (data.success) {
+        setProjects(data.projects || [])
+        // Mock stats for UI demonstration, in real app these come from API
+        setStats({
+          activeProjects: data.projects?.length || 0,
+          totalSpent: 12500,
+          hiredFreelancers: 8,
+          pendingApplications: 24
+        })
+      }
+    } catch (err) {
+      toast.error('Failed to sync workspace')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
-  const stats = {
-    activeJobs: projects.filter(p => p.status === 'active').length,
-    totalSpent: projects.reduce((sum, p) => sum + (p.total_budget || 0), 0),
-    talentHired: projects.filter(p => p.status === 'completed').length, // Placeholder logic
-    openProposals: 12, // Placeholder
-  };
+  if (loading) return <div className="min-h-screen bg-slate-950 flex items-center justify-center"><ELLoader /></div>
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-slate-100 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="h-10 w-10 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-xl flex items-center justify-center font-black text-white text-xs shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
-              EL
-            </div>
-            <span className="text-2xl font-black bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text text-transparent tracking-tight">SPACE</span>
-          </Link>
+    <div className="min-h-screen bg-[#020617] text-slate-200">
+      {/* Premium Navbar */}
+      <header className="h-20 bg-slate-900/30 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-8 sticky top-0 z-50">
+        <div className="flex items-center gap-8">
+          <div className="relative w-32 h-8 cursor-pointer" onClick={() => router.push('/')}>
+            <Image src="/logo.png" alt="Logo" fill className="object-contain" />
+          </div>
+          <nav className="hidden md:flex items-center gap-6">
+            <button className="text-white font-bold text-sm">Workspace</button>
+            <button onClick={() => router.push('/jobs')} className="text-slate-400 hover:text-white transition-colors text-sm">Marketplace</button>
+            <button onClick={() => router.push('/messages')} className="text-slate-400 hover:text-white transition-colors text-sm">Messages</button>
+          </nav>
+        </div>
 
-          <div className="flex items-center gap-6">
-             <Link href="/jobs" className="text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors">Marketplace</Link>
-             <Link href="/messages" className="text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors">Messages</Link>
-             <div className="h-10 w-10 rounded-full bg-slate-100 border-2 border-white shadow-sm flex items-center justify-center font-black text-slate-400 text-xs">
-               {user?.name?.charAt(0) || 'C'}
-             </div>
+        <div className="flex items-center gap-4">
+          <Button onClick={() => router.push('/jobs/post')} className="bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-6 rounded-full hidden sm:flex">
+            <Plus className="w-4 h-4 mr-2" /> Post Project
+          </Button>
+          <div className="h-10 w-10 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center overflow-hidden">
+             {user?.avatar_url ? <Image src={user.avatar_url} alt="" width={40} height={40} /> : <User className="w-5 h-5 text-slate-500" />}
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="max-w-7xl mx-auto p-8 space-y-10">
         {/* Welcome Section */}
-        <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="flex flex-col md:flex-row justify-between items-end gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 text-cyan-600 font-black text-[10px] uppercase tracking-widest mb-4">
-               <ShieldCheck className="w-3 h-3" /> Verified Employer
-            </div>
-            <h1 className="text-4xl font-black text-slate-900 tracking-tight">Client Hub</h1>
-            <p className="text-slate-500 font-medium text-lg mt-1">Directing projects and talent acquisition.</p>
+            <h1 className="text-4xl font-black text-white tracking-tight">Client Hub</h1>
+            <p className="text-slate-400 mt-2 font-medium">Managing operations for <span className="text-cyan-400">{user?.full_name}</span></p>
           </div>
-          <div className="flex gap-4">
-            <Button
-              onClick={() => router.push('/jobs/post')}
-              className="bg-slate-900 hover:bg-cyan-600 text-white font-black px-8 py-6 rounded-2xl shadow-xl shadow-slate-200 transition-all group"
-            >
-              Post New Project <Rocket className="ml-2 w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-            </Button>
+          <div className="flex gap-3">
+             <Badge className="bg-white/5 border-white/10 text-slate-400 px-4 py-2 rounded-lg text-[10px] font-black tracking-widest uppercase">
+               Premium Tier Access
+             </Badge>
           </div>
         </div>
 
-        {/* Stats */}
-        <div className="mb-16">
-           <DashboardStats stats={stats} />
+        {/* Vital Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+           {[
+             { label: 'Active Projects', value: stats.activeProjects, icon: Briefcase, color: 'cyan' },
+             { label: 'Total Investment', value: `$${stats.totalSpent.toLocaleString()}`, icon: TrendingUp, color: 'emerald' },
+             { label: 'Active Talent', value: stats.hiredFreelancers, icon: Users, color: 'purple' },
+             { label: 'Incoming Bids', value: stats.pendingApplications, icon: Activity, color: 'orange' }
+           ].map((stat, i) => (
+             <Card key={i} className="bg-slate-900/40 border-white/5 hover:border-cyan-500/20 transition-all group overflow-hidden">
+                <div className={`absolute top-0 left-0 w-1 h-full bg-${stat.color}-500/50`} />
+                <CardContent className="p-6">
+                   <div className="flex items-center justify-between mb-4">
+                      <div className={`p-3 rounded-2xl bg-${stat.color}-500/10 text-${stat.color}-400 group-hover:scale-110 transition-transform`}>
+                         <stat.icon className="w-6 h-6" />
+                      </div>
+                   </div>
+                   <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest">{stat.label}</p>
+                   <h3 className="text-3xl font-black text-white mt-1">{stat.value}</h3>
+                </CardContent>
+             </Card>
+           ))}
         </div>
 
-        {/* Projects Sections */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-8 space-y-8">
-            <div className="flex items-center justify-between mb-2">
-               <h3 className="text-2xl font-black text-slate-900 tracking-tight">Active Projects</h3>
-               <Link href="/jobs" className="text-xs font-black text-cyan-600 uppercase tracking-widest hover:text-cyan-700 transition-colors">View All Archive</Link>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          {/* Main List */}
+          <div className="lg:col-span-2 space-y-6">
+            <div className="flex items-center justify-between">
+               <h2 className="text-2xl font-black text-white">Your Pipeline</h2>
+               <button className="text-cyan-400 text-xs font-bold uppercase tracking-widest hover:underline">View History</button>
             </div>
 
-            <div className="space-y-6">
-              {loading ? (
-                [1, 2].map(i => <div key={i} className="h-48 bg-slate-50 border border-slate-100 rounded-[2.5rem] animate-pulse" />)
-              ) : projects.length > 0 ? (
-                projects.map((project) => (
-                  <Card key={project.id} className="group border-2 border-slate-50 bg-white hover:border-transparent hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500 rounded-[2.5rem] overflow-hidden">
-                    <CardContent className="p-8 md:p-10">
-                      <div className="flex justify-between items-start mb-6">
-                        <div className="space-y-2">
-                           <div className="flex gap-2">
-                             <Badge className="bg-cyan-50 text-cyan-600 border-none px-3 py-1 rounded-lg font-black uppercase tracking-widest text-[9px]">
-                               {project.category}
-                             </Badge>
-                             <Badge className="bg-emerald-50 text-emerald-600 border-none px-3 py-1 rounded-lg font-black uppercase tracking-widest text-[9px]">
-                               {project.status}
-                             </Badge>
-                           </div>
-                           <h4 className="text-2xl font-black text-slate-900 group-hover:text-cyan-600 transition-colors">{project.title}</h4>
-                        </div>
-                        <div className="text-right">
-                           <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Budget</p>
-                           <p className="text-xl font-black text-slate-900">${project.budget_min} - ${project.budget_max}</p>
-                        </div>
-                      </div>
-
-                      <p className="text-slate-500 font-medium line-clamp-2 mb-8 leading-relaxed">
-                        {project.description}
-                      </p>
-
-                      <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-8 border-t border-slate-50">
-                         <div className="flex items-center gap-6">
-                            <div className="flex items-center gap-2">
-                               <Clock className="w-4 h-4 text-slate-300" />
-                               <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Posted 3d ago</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                               <Search className="w-4 h-4 text-slate-300" />
-                               <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">12 Applications</span>
-                            </div>
-                         </div>
-                         <Button
-                          onClick={() => router.push(`/jobs/${project.id}`)}
-                          className="w-full sm:w-auto bg-slate-50 hover:bg-slate-100 text-slate-900 font-black px-8 py-6 rounded-2xl transition-all"
-                        >
-                          Management Console <ChevronRight className="ml-2 w-4 h-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))
-              ) : (
-                <div className="py-24 text-center bg-slate-50 border-2 border-dashed border-slate-200 rounded-[3rem]">
-                  <Briefcase className="mx-auto h-16 w-16 text-slate-200 mb-6" />
-                  <p className="text-slate-400 font-black uppercase tracking-widest text-xs">No project deployment found</p>
-                  <Button onClick={() => router.push('/jobs/post')} variant="link" className="text-cyan-600 font-black mt-2">Initialize First Project</Button>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="lg:col-span-4 space-y-8">
-            <h3 className="text-2xl font-black text-slate-900 tracking-tight ml-2">Premium Network</h3>
-            <Card className="border-2 border-slate-50 bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-100">
-               <div className="space-y-8">
-                  <div className="space-y-4">
-                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Recommended Experts</p>
-                     {[1, 2, 3].map(i => (
-                       <div key={i} className="flex items-center justify-between group cursor-pointer">
-                          <div className="flex items-center gap-4">
-                             <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center font-black text-slate-400">
-                                {String.fromCharCode(64 + i)}
-                             </div>
-                             <div>
-                                <p className="font-black text-slate-900 text-sm group-hover:text-cyan-600 transition-colors">Expert User {i}</p>
-                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Full Stack • $85/h</p>
+            <div className="space-y-4">
+               {projects.length > 0 ? projects.map((project) => (
+                 <Card key={project.id} className="bg-slate-900/40 border-white/5 hover:bg-white/[0.02] transition-all cursor-pointer group" onClick={() => router.push(`/jobs/${project.id}`)}>
+                    <CardContent className="p-6 flex items-center justify-between">
+                       <div className="flex items-center gap-6">
+                          <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center border border-white/5">
+                             <Briefcase className="w-8 h-8 text-cyan-500" />
+                          </div>
+                          <div>
+                             <h4 className="text-white font-bold text-lg group-hover:text-cyan-400 transition-colors">{project.title}</h4>
+                             <div className="flex items-center gap-4 mt-1">
+                                <p className="text-slate-500 text-sm font-medium">Budget: <span className="text-emerald-400">${project.budget_min} - ${project.budget_max}</span></p>
+                                <div className="h-1 w-1 bg-slate-700 rounded-full" />
+                                <p className="text-slate-500 text-sm">{project.category}</p>
                              </div>
                           </div>
-                          <ChevronRight className="w-4 h-4 text-slate-200 group-hover:text-cyan-500 transition-all" />
                        </div>
-                     ))}
-                  </div>
-
-                  <div className="pt-8 border-t border-slate-50">
-                     <Button className="w-full h-14 bg-slate-900 hover:bg-cyan-600 text-white font-black rounded-2xl transition-all shadow-lg shadow-slate-200">
-                        Explore All Talent
-                     </Button>
-                  </div>
-               </div>
-            </Card>
-
-            <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white relative overflow-hidden group cursor-pointer">
-               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-transparent opacity-50 group-hover:opacity-100 transition-opacity" />
-               <div className="relative z-10 space-y-4">
-                  <h4 className="text-xl font-black tracking-tight">Need a customized team?</h4>
-                  <p className="text-slate-400 text-sm font-medium leading-relaxed">Let our EL elites handle the sourcing and management for your enterprise needs.</p>
-                  <p className="text-cyan-400 font-black text-[10px] uppercase tracking-widest pt-2 flex items-center gap-2">
-                    Contact ELITES Support <ChevronRight className="w-3 h-3" />
-                  </p>
-               </div>
+                       <div className="flex items-center gap-6">
+                          <div className="hidden md:block text-right">
+                             <p className="text-slate-500 text-[10px] uppercase font-black tracking-widest">Status</p>
+                             <Badge className="mt-1 bg-cyan-500/10 text-cyan-400 border-cyan-500/20">{project.status}</Badge>
+                          </div>
+                          <ChevronRight className="w-6 h-6 text-slate-700 group-hover:text-white transition-colors" />
+                       </div>
+                    </CardContent>
+                 </Card>
+               )) : (
+                 <div className="py-20 text-center bg-slate-900/20 border border-dashed border-white/10 rounded-3xl">
+                    <Briefcase className="w-12 h-12 text-slate-700 mx-auto mb-4" />
+                    <p className="text-slate-500 font-medium">No active projects found.</p>
+                    <Button onClick={() => router.push('/jobs/post')} className="mt-6 bg-white text-slate-950 font-bold px-8">Post First Job</Button>
+                 </div>
+               )}
             </div>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-8">
+             <Card className="bg-gradient-to-br from-cyan-900/20 to-blue-900/20 border-white/5 overflow-hidden">
+                <CardHeader>
+                   <CardTitle className="text-white text-lg">Platform Intelligence</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                   <div className="p-4 bg-white/5 rounded-xl border border-white/5">
+                      <p className="text-xs text-slate-400 mb-2 font-bold uppercase tracking-widest">Recommended Action</p>
+                      <p className="text-white text-sm">You have <span className="text-cyan-400 font-bold">12 new applications</span> for your Mobile App project. Review them to keep momentum.</p>
+                      <Button className="w-full mt-4 bg-white/10 hover:bg-white/20 border-white/10 text-white font-bold text-xs uppercase tracking-widest">Review Applications</Button>
+                   </div>
+
+                   <div className="flex items-center justify-between p-2">
+                      <div className="flex items-center gap-3">
+                         <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+                         <span className="text-slate-300 text-sm">System Health</span>
+                      </div>
+                      <span className="text-emerald-400 text-xs font-bold uppercase">Optimal</span>
+                   </div>
+                </CardContent>
+             </Card>
+
+             <div className="space-y-4">
+                <h3 className="text-white font-bold px-2">Marketplace Shortcuts</h3>
+                <Button className="w-full justify-between bg-slate-900/40 border-white/5 hover:bg-white/5 text-slate-400 px-6 py-8">
+                   <div className="flex items-center gap-4">
+                      <Search className="w-5 h-5 text-cyan-400" />
+                      <span className="text-white font-bold">Find Talent</span>
+                   </div>
+                   <ArrowUpRight className="w-5 h-5" />
+                </Button>
+                <Button className="w-full justify-between bg-slate-900/40 border-white/5 hover:bg-white/5 text-slate-400 px-6 py-8">
+                   <div className="flex items-center gap-4">
+                      <MessageSquare className="w-5 h-5 text-purple-400" />
+                      <span className="text-white font-bold">Messaging</span>
+                   </div>
+                   <ArrowUpRight className="w-5 h-5" />
+                </Button>
+             </div>
           </div>
         </div>
       </main>
     </div>
-  );
+  )
 }

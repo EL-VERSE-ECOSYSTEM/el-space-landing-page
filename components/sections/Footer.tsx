@@ -1,3 +1,4 @@
+import React from 'react';
 import { FOOTER_SECTIONS } from '@/lib/constants'
 import Link from 'next/link'
 import Image from 'next/image'

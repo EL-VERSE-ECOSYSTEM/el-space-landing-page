@@ -1,411 +1,233 @@
-"use client";
-import React from "react";
+'use client'
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import Link from "next/link";
-import { AlertCircle, CheckCircle, Loader, Mail, Lock, Eye, EyeOff, ArrowRight, ArrowLeft, ShieldCheck, Zap } from "lucide-react";
-import { toast } from "sonner";
-import { GoogleSignInButton } from "@/components/ui/google-signin-button";
-import { GitHubSignInButton } from "@/components/ui/github-signin-button";
-import { OTPNotification } from "@/components/ui/otp-notification";
-import { useAuth } from "@/components/auth-provider";
+import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import Image from 'next/image'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import {
+  Shield, Mail, Lock, ArrowRight, CheckCircle,
+  ChevronLeft, Eye, EyeOff, Key
+} from 'lucide-react'
+import { useAuth } from '@/components/auth-provider'
+import { toast } from 'sonner'
+import { ELLoader } from '@/components/ui/el-loader'
 
 export default function LoginPage() {
-  const router = useRouter();
-  const { login } = useAuth();
+  const router = useRouter()
+  const { login } = useAuth()
+  const [step, setStep] = useState(1) // 1: Password, 2: OTP
+  const [isLoading, setIsLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    otp: ''
+  })
 
-  // Step management: email -> password -> otp
-  const [step, setStep] = useState<"email" | "password" | "otp">("email");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [otp, setOtp] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [generatedOtp, setGeneratedOtp] = useState("");
-  const [showOtpPopup, setShowOtpPopup] = useState(false);
-  const [userData, setUserData] = useState<any>(null);
-
-  const handleCheckEmail = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!formData.email || !formData.password) {
+      toast.error('Email and password are required')
+      return
+    }
 
     try {
-      const response = await fetch("/api/auth/check-user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+      setIsLoading(true)
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email, password: formData.password })
+      })
+      const data = await res.json()
 
-      const data = await response.json();
-
-      if (!response.ok || !data.exists) {
-        setError("No account found with this email. Please register first.");
-        setLoading(false);
-        return;
+      if (data.needsOTP) {
+        // Now trigger the OTP send
+        await fetch('/api/auth/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: formData.email, type: 'login', password: formData.password })
+        })
+        setStep(2)
+        toast.success('Security code sent to your email')
+      } else if (data.error) {
+        toast.error(data.error)
       }
-
-      setUserData(data.user);
-      setSuccess("Account verified! Please enter your password.");
-      setStep("password");
-    } catch (err: any) {
-      setError(err.message || "An error occurred");
+    } catch (err) {
+      toast.error('Connection failed')
     } finally {
-      setLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
-  const handleSendOTP = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
     try {
-      const response = await fetch("/api/auth/send-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          type: "login",
-          metadata: { password }
-        }),
-      });
+      setIsLoading(true)
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+      const data = await res.json()
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error || "Failed to send OTP. Check your password.");
-        setLoading(false);
-        return;
+      if (data.success) {
+        login(data.user)
+        toast.success(`Welcome back, ${data.user.full_name}`)
+        router.push(data.user.user_type === 'client' ? '/client/dashboard' : '/freelancer/dashboard')
+      } else {
+        toast.error(data.error || 'Verification failed')
       }
-
-      if (data.otp) {
-        setGeneratedOtp(data.otp);
-        setShowOtpPopup(true);
-      }
-
-      setSuccess("Verification code sent to your email!");
-      setStep("otp");
-    } catch (err: any) {
-      setError(err.message || "An error occurred");
+    } catch (err) {
+      toast.error('Authentication error')
     } finally {
-      setLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
-  const handleVerifyOTP = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-
-    try {
-      const response = await fetch("/api/auth/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp, type: "login", password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.message || "Failed to verify OTP");
-        setLoading(false);
-        return;
-      }
-
-      setSuccess("Login successful!");
-      
-      // Update auth context
-      login(data.user, data.token);
-
-      // Redirect based on user type
-      setTimeout(() => {
-        if (data.user?.user_type === "freelancer" || data.user?.role === "freelancer") {
-          router.push("/dashboard/freelancer");
-        } else if (data.user?.user_type === "client" || data.user?.role === "client") {
-          router.push("/dashboard/client");
-        } else {
-          router.push("/dashboard");
-        }
-      }, 1000);
-    } catch (err: any) {
-      setError(err.message || "An error occurred");
-      setLoading(false);
-    }
-  };
+  if (isLoading) return <div className="min-h-screen bg-slate-950 flex items-center justify-center"><ELLoader /></div>
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Premium Background Orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[120px] animate-pulse" />
-      </div>
+    <div className="min-h-screen bg-[#020617] flex items-center justify-center p-4 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-cyan-900/10 via-slate-950 to-slate-950 pointer-events-none" />
 
-      <div className="w-full max-w-md relative z-10">
-        {/* Logo */}
-        <div className="text-center mb-10 space-y-4">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 shadow-xl shadow-cyan-500/20">
-            <span className="text-2xl font-black text-white">EL</span>
-          </div>
-          <div>
-            <h1 className="text-4xl font-black text-slate-900 mb-2 tracking-tight">Secure Sign In</h1>
-            <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">Premium Authentication</p>
-          </div>
-        </div>
+      <Card className="w-full max-w-lg bg-slate-900/40 backdrop-blur-2xl border-white/5 shadow-2xl relative z-10 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500" />
 
-        {/* Progress Tracker */}
-        <div className="flex justify-center mb-8 px-8">
-           <div className="flex items-center w-full max-w-[240px]">
-              {["email", "password", "otp"].map((s, i) => {
-                const steps = ["email", "password", "otp"];
-                const currentIndex = steps.indexOf(step);
-                const isActive = i <= currentIndex;
-                const isCompleted = i < currentIndex;
-                return (
-                  <React.Fragment key={s}>
-                    <div className={`relative flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-500 ${
-                      isCompleted ? 'bg-cyan-500 border-cyan-500 text-white' :
-                      isActive ? 'border-cyan-500 text-cyan-600 bg-cyan-50' :
-                      'border-slate-100 text-slate-300'
-                    }`}>
-                      {isCompleted ? <ShieldCheck className="w-5 h-5" /> : <span className="text-sm font-black">{i + 1}</span>}
+        <CardContent className="p-10 md:p-14">
+          {step === 1 ? (
+            <div className="space-y-10">
+              <div className="text-center space-y-4">
+                <div className="relative w-40 h-12 mx-auto mb-8">
+                  <Image src="/logo.png" alt="Logo" fill className="object-contain" />
+                </div>
+                <h1 className="text-4xl font-black text-white tracking-tight">Secure Sign In</h1>
+                <p className="text-slate-400 uppercase tracking-widest text-xs font-bold">Premium Authentication</p>
+
+                <div className="flex justify-center gap-4 mt-8">
+                   {[1, 2, 3].map(i => (
+                     <div key={i} className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-500 ${
+                       i === 1 ? 'border-cyan-500 text-cyan-400 bg-cyan-500/5' : 'border-white/5 text-slate-600'
+                     }`}>
+                       {i}
+                     </div>
+                   ))}
+                </div>
+              </div>
+
+              <form onSubmit={handlePasswordSubmit} className="space-y-6">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Email Address</label>
+                    <div className="relative">
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                      <Input
+                        type="email"
+                        placeholder="you@example.com"
+                        className="bg-white/5 border-white/5 pl-12 h-14 text-white focus:border-cyan-500/50"
+                        value={formData.email}
+                        onChange={e => setFormData({...formData, email: e.target.value})}
+                        required
+                      />
                     </div>
-                    {i < 2 && (
-                      <div className={`flex-1 h-1 mx-2 rounded-full transition-all duration-500 ${
-                        i < currentIndex ? 'bg-cyan-500' : 'bg-slate-100'
-                      }`} />
-                    )}
-                  </React.Fragment>
-                );
-              })}
-           </div>
-        </div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center px-1">
+                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Password</label>
+                      <Link href="/forgot-password" weights="bold" className="text-[10px] text-cyan-400 uppercase tracking-widest hover:underline">Forgot?</Link>
+                    </div>
+                    <div className="relative">
+                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Enter secure password"
+                        className="bg-white/5 border-white/5 pl-12 h-14 text-white focus:border-cyan-500/50"
+                        value={formData.password}
+                        onChange={e => setFormData({...formData, password: e.target.value})}
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white"
+                      >
+                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
 
-        {/* Card */}
-        <div className="bg-white/80 backdrop-blur-xl border border-slate-200 rounded-[2.5rem] p-8 md:p-10 shadow-2xl shadow-slate-200/50 overflow-hidden">
-          {/* Status Messages */}
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
-              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
-              <p className="text-red-800 text-sm font-bold leading-tight">{error}</p>
+                <Button className="w-full h-14 bg-white text-slate-950 hover:bg-cyan-400 hover:text-white font-black text-lg transition-all rounded-xl">
+                  Continue <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+
+                <div className="relative py-4">
+                   <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/5"></div></div>
+                   <div className="relative flex justify-center text-[10px] uppercase font-black text-slate-500 tracking-widest">
+                     <span className="bg-[#0f172a] px-4">Or Social Login</span>
+                   </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                   <Button variant="outline" className="border-white/5 bg-white/5 hover:bg-white/10 text-white h-12">
+                     <Image src="/placeholder-logo.svg" alt="G" width={16} height={16} className="mr-2" /> Google
+                   </Button>
+                   <Button variant="outline" className="border-white/5 bg-white/5 hover:bg-white/10 text-white h-12">
+                     <Shield className="w-4 h-4 mr-2" /> GitHub
+                   </Button>
+                </div>
+
+                <p className="text-center text-slate-500 text-sm">
+                  New to the platform? <Link href="/signup" className="text-cyan-400 font-bold hover:underline">Register here</Link>
+                </p>
+              </form>
+            </div>
+          ) : (
+            <div className="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
+               <button onClick={() => setStep(1)} className="flex items-center text-slate-500 hover:text-white text-sm font-bold uppercase tracking-widest">
+                 <ChevronLeft className="w-4 h-4 mr-1" /> Back
+               </button>
+
+               <div className="text-center space-y-4">
+                  <div className="w-20 h-20 bg-cyan-500/10 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-cyan-500/20">
+                    <Key className="w-10 h-10 text-cyan-400" />
+                  </div>
+                  <h2 className="text-3xl font-black text-white tracking-tight">2FA Challenge</h2>
+                  <p className="text-slate-400 max-w-xs mx-auto">Please enter the security code sent to <span className="text-white font-bold">{formData.email}</span></p>
+               </div>
+
+               <form onSubmit={handleLogin} className="space-y-8">
+                  <div className="flex justify-center gap-3">
+                     <Input
+                       placeholder="••••••"
+                       className="w-full max-w-[240px] h-16 text-center text-3xl font-black tracking-[1em] bg-white/5 border-white/10 text-cyan-400 focus:border-cyan-500 focus:ring-cyan-500/20"
+                       maxLength={6}
+                       value={formData.otp}
+                       onChange={e => setFormData({...formData, otp: e.target.value})}
+                       required
+                     />
+                  </div>
+
+                  <div className="space-y-4">
+                    <Button className="w-full h-14 bg-cyan-600 hover:bg-cyan-500 text-white font-black text-lg transition-all rounded-xl">
+                      Verify & Access <CheckCircle className="ml-2 w-5 h-5" />
+                    </Button>
+                    <p className="text-center text-slate-500 text-xs">
+                      Time-sensitive code expires in 15m. <button type="button" onClick={handlePasswordSubmit} className="text-cyan-400 font-bold hover:underline">Resend Code</button>
+                    </p>
+                  </div>
+               </form>
             </div>
           )}
+        </CardContent>
+      </Card>
 
-          {success && (
-            <div className="mb-6 p-4 bg-emerald-50 border border-emerald-100 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
-              <CheckCircle className="w-5 h-5 text-emerald-500 flex-shrink-0" />
-              <p className="text-emerald-800 text-sm font-bold leading-tight">{success}</p>
-            </div>
-          )}
-
-          {/* Step 1: Email */}
-          {step === "email" && (
-            <form onSubmit={handleCheckEmail} className="space-y-6">
-              <div className="space-y-2">
-                <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Email Address</Label>
-                <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                  <Input
-                    type="email"
-                    placeholder="you@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="pl-12 h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 focus:border-cyan-500 focus:ring-cyan-500/10 transition-all rounded-2xl font-bold"
-                  />
-                </div>
-              </div>
-
-              <Button
-                type="submit"
-                disabled={loading || !email}
-                className="w-full h-14 bg-slate-900 hover:bg-cyan-600 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-cyan-500/20 group"
-              >
-                {loading ? (
-                  <span className="flex items-center gap-2">
-                    <Loader className="w-5 h-5 animate-spin" />
-                    Checking Identity...
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-2">
-                    Continue <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                )}
-              </Button>
-
-              <div className="relative py-2">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-slate-100"></div>
-                </div>
-                <div className="relative flex justify-center text-[10px]">
-                  <span className="px-4 bg-white/80 text-slate-400 font-black uppercase tracking-[0.2em]">or social login</span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <GoogleSignInButton fullWidth variant="outline" className="h-14 rounded-2xl font-bold border-2 border-slate-100" />
-                <GitHubSignInButton fullWidth variant="outline" className="h-14 rounded-2xl font-bold border-2 border-slate-100" />
-              </div>
-            </form>
-          )}
-
-          {/* Step 2: Password */}
-          {step === "password" && (
-            <form onSubmit={handleSendOTP} className="space-y-6">
-              <div className="bg-slate-50 p-4 rounded-2xl text-center mb-2">
-                <p className="text-sm font-bold text-slate-600">
-                  Signing in as <span className="text-cyan-600">{email}</span>
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Password</Label>
-                <div className="relative">
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter account password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="pl-4 pr-12 h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 focus:border-cyan-500 focus:ring-cyan-500/10 transition-all rounded-2xl font-bold"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
-                  >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
-                </div>
-              </div>
-
-              <Button
-                type="submit"
-                disabled={loading || !password}
-                className="w-full h-14 bg-slate-900 hover:bg-cyan-600 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-cyan-500/20 group"
-              >
-                {loading ? (
-                  <span className="flex items-center gap-2">
-                    <Loader className="w-5 h-5 animate-spin" />
-                    Sending OTP...
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-2">
-                    Request OTP <Zap className="w-5 h-5" />
-                  </span>
-                )}
-              </Button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setStep("email");
-                  setPassword("");
-                  setError("");
-                  setSuccess("");
-                }}
-                className="w-full py-2 text-sm font-bold text-slate-400 hover:text-slate-600 flex items-center justify-center gap-2 transition-colors"
-              >
-                <ArrowLeft className="w-4 h-4" /> Change email address
-              </button>
-            </form>
-          )}
-
-          {/* Step 3: OTP */}
-          {step === "otp" && (
-            <form onSubmit={handleVerifyOTP} className="space-y-6">
-              <div className="bg-slate-50 p-4 rounded-2xl text-center mb-2">
-                <p className="text-sm font-bold text-slate-600">
-                  Enter 6-digit code sent to <br/><span className="text-cyan-600">{email}</span>
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1 text-center block">Verification Code</Label>
-                <Input
-                  type="text"
-                  placeholder="000000"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                  maxLength={6}
-                  required
-                  className="h-16 bg-slate-50 border-slate-100 text-slate-900 text-center text-3xl tracking-[0.5em] font-black rounded-2xl focus:border-cyan-500 focus:ring-cyan-500/10"
-                />
-              </div>
-
-              <Button
-                type="submit"
-                disabled={loading || otp.length !== 6}
-                className="w-full h-14 bg-slate-900 hover:bg-cyan-600 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-cyan-500/20"
-              >
-                {loading ? (
-                  <span className="flex items-center gap-2">
-                    <Loader className="w-5 h-5 animate-spin" />
-                    Verifying...
-                  </span>
-                ) : (
-                  "Verify & Sign In"
-                )}
-              </Button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setStep("password");
-                  setOtp("");
-                  setError("");
-                  setSuccess("");
-                }}
-                className="w-full py-2 text-sm font-bold text-slate-400 hover:text-slate-600 flex items-center justify-center gap-2 transition-colors"
-              >
-                <ArrowLeft className="w-4 h-4" /> Back to password
-              </button>
-            </form>
-          )}
-
-          <div className="mt-8 pt-8 border-t border-slate-100">
-            <p className="text-center text-slate-500 font-bold text-sm">
-              New to the platform?{" "}
-              <Link
-                href="/signup"
-                className="text-cyan-600 hover:text-cyan-700 font-black transition-colors underline underline-offset-4 decoration-2 decoration-cyan-500/30"
-              >
-                Register here
-              </Link>
-            </p>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="mt-10 text-center space-y-4">
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">© 2026 EL VERSE TECHNOLOGIES</p>
-        </div>
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] opacity-40">
+         © 2026 EL VERSE TECHNOLOGIES
       </div>
-
-      {/* OTP Notification Popup */}
-      <OTPNotification
-        isOpen={showOtpPopup}
-        onOpenChange={setShowOtpPopup}
-        otp={generatedOtp}
-        email={email}
-        type="login"
-        onOTPCopied={(otpCode) => {
-          setOtp(otpCode);
-          toast.success('Code copied! Authenticating...');
-        }}
-        onVerified={() => {
-          setOtp(generatedOtp);
-        }}
-        showCopyButton={true}
-        expiryMinutes={15}
-      />
     </div>
-  );
+  )
 }

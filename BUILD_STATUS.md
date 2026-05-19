@@ -121,7 +121,7 @@
 6. Dashboard access granted
 
 ### Meeting Requirements
-✅ **Login requires password before OTP** - Implemented in `/app/login`
+✅ **Login requires password before OTP** - Implemented in `/app/auth/login`
 ✅ **OTP functionality** - Tested with 6-digit codes via Gmail SMTP
 ✅ **Wallet system** - Basic implementation with balance, deposit, withdrawal
 ✅ **Email templates** - All 8 core templates plus in-app notification support

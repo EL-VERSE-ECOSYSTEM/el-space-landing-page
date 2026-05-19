@@ -1,4 +1,5 @@
 'use client'
+import React from 'react';
 
 import { FAQ_ITEMS } from '@/lib/constants'
 import { SectionHeader } from '@/components/ui/SectionHeader'
@@ -46,7 +47,7 @@ export function FAQ() {
               {clientFAQ.map((item, idx) => (
                 <AccordionItem
                   key={idx}
-                  value={`client-\${idx}`}
+                  value={`client-${idx}`}
                   className="border border-slate-200 rounded-2xl px-6 bg-slate-50/50 hover:bg-white hover:shadow-md hover:shadow-slate-200/50 transition-all duration-300"
                 >
                   <AccordionTrigger className="text-left font-bold text-slate-900 hover:no-underline py-5">
@@ -65,7 +66,7 @@ export function FAQ() {
               {freelancerFAQ.map((item, idx) => (
                 <AccordionItem
                   key={idx}
-                  value={`freelancer-\${idx}`}
+                  value={`freelancer-${idx}`}
                   className="border border-slate-200 rounded-2xl px-6 bg-slate-50/50 hover:bg-white hover:shadow-md hover:shadow-slate-200/50 transition-all duration-300"
                 >
                   <AccordionTrigger className="text-left font-bold text-slate-900 hover:no-underline py-5">
