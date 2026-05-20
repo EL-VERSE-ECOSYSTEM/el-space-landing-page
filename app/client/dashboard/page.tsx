@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import {
   Briefcase, Users, Plus, ChevronRight,
   Search, Bell, Settings, Filter, ArrowUpRight,
-  TrendingUp, Clock, Activity, MessageSquare, User
+  TrendingUp, Clock, Activity, MessageSquare, User as LucideUser
 } from 'lucide-react'
 import { useAuth } from '@/components/auth-provider'
 import { toast } from 'sonner'
@@ -77,7 +77,7 @@ export default function ClientHub() {
             <Plus className="w-4 h-4 mr-2" /> Post Project
           </Button>
           <div className="h-10 w-10 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center overflow-hidden">
-             {user?.avatar_url ? <Image src={user.avatar_url} alt="" width={40} height={40} /> : <User className="w-5 h-5 text-slate-500" />}
+             {user?.avatar_url ? <Image src={user.avatar_url} alt="" width={40} height={40} /> : <LucideUser className="w-5 h-5 text-slate-500" />}
           </div>
         </div>
       </header>

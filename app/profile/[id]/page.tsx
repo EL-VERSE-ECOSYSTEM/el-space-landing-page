@@ -102,7 +102,7 @@ export default function ProfilePage() {
                   </div>
                   <h2 className="text-4xl font-black text-white">Full Stack Software Architect & Product Designer</h2>
                   <p className="text-slate-400 text-lg leading-relaxed">
-                     Highly experienced professional specializing in high-performance web applications and premium UI/UX design. I've delivered over 150+ successful projects across various industries, from Fintech to Healthcare.
+                     Highly experienced professional specializing in high-performance web applications and premium UI/UX design. I&apos;ve delivered over 150+ successful projects across various industries, from Fintech to Healthcare.
                   </p>
                </div>
 
