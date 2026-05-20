@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import {
   Briefcase, Users, Plus, ChevronRight,
   Search, Bell, Settings, Filter, ArrowUpRight,
-  TrendingUp, Clock, Activity, MessageSquare
+  TrendingUp, Clock, Activity, MessageSquare, User
 } from 'lucide-react'
 import { useAuth } from '@/components/auth-provider'
 import { toast } from 'sonner'
