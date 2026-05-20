@@ -1,0 +1,166 @@
+'use client'
+
+import React, { useState, useEffect } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import Image from 'next/image'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import {
+  Star, Shield, Zap, Globe, Github,
+  Linkedin, Mail, MessageSquare, Briefcase,
+  MapPin, Clock, Calendar, ChevronRight
+} from 'lucide-react'
+import { toast } from 'sonner'
+import { ELLoader } from '@/components/ui/el-loader'
+
+export default function ProfilePage() {
+  const params = useParams()
+  const router = useRouter()
+  const [loading, setLoading] = useState(true)
+  const [profile, setProfile] = useState<any>(null)
+
+  useEffect(() => {
+    fetchProfile()
+  }, [params.id])
+
+  const fetchProfile = async () => {
+    try {
+      setLoading(true)
+      const res = await fetch(`/api/profile?userId=${params.id}`)
+      const data = await res.json()
+      if (data.success) {
+        setProfile(data.profile)
+      }
+    } catch (err) {
+      toast.error('Failed to load profile')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (loading) return <div className="min-h-screen bg-slate-950 flex items-center justify-center"><ELLoader /></div>
+  if (!profile) return <div className="min-h-screen bg-slate-950 flex items-center justify-center text-white">Profile not found</div>
+
+  return (
+    <div className="min-h-screen bg-[#020617] text-slate-200">
+      {/* Header Cover Area */}
+      <div className="h-64 bg-gradient-to-r from-cyan-600/20 via-blue-600/20 to-purple-600/20 relative">
+         <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-3xl" />
+      </div>
+
+      <main className="max-w-6xl mx-auto px-8 -mt-32 relative z-10 pb-20">
+         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            {/* Left Column: Avatar & Basic Info */}
+            <div className="space-y-8">
+               <Card className="bg-slate-900/60 backdrop-blur-xl border-white/5 overflow-hidden">
+                  <CardContent className="p-8 text-center">
+                     <div className="w-32 h-32 rounded-3xl bg-slate-800 border-4 border-slate-950 mx-auto shadow-2xl relative overflow-hidden flex items-center justify-center">
+                        {profile.user?.avatar_url ? (
+                          <Image src={profile.user.avatar_url} alt="" fill className="object-cover" />
+                        ) : (
+                          <span className="text-4xl font-black text-cyan-400">{(profile.user?.full_name || 'U').charAt(0)}</span>
+                        )}
+                     </div>
+                     <h1 className="mt-6 text-2xl font-black text-white">{profile.user?.full_name}</h1>
+                     <p className="text-cyan-400 font-bold text-xs uppercase tracking-widest mt-1">{profile.user?.user_type} Profile</p>
+
+                     <div className="flex justify-center gap-4 mt-6">
+                        <Button variant="ghost" size="icon" className="text-slate-500 hover:text-white bg-white/5"><Github className="w-5 h-5" /></Button>
+                        <Button variant="ghost" size="icon" className="text-slate-500 hover:text-white bg-white/5"><Linkedin className="w-5 h-5" /></Button>
+                        <Button variant="ghost" size="icon" className="text-slate-500 hover:text-white bg-white/5"><Globe className="w-5 h-5" /></Button>
+                     </div>
+
+                     <div className="mt-8 pt-8 border-t border-white/5 space-y-4 text-left">
+                        <div className="flex items-center justify-between text-sm">
+                           <span className="text-slate-500">Location</span>
+                           <span className="text-white font-medium flex items-center gap-1"><MapPin className="w-3 h-3 text-slate-500" /> New York, USA</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                           <span className="text-slate-500">Member Since</span>
+                           <span className="text-white font-medium">{new Date(profile.user?.created_at).getFullYear()}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                           <span className="text-slate-500">Response Time</span>
+                           <span className="text-emerald-400 font-bold">~2 hours</span>
+                        </div>
+                     </div>
+                  </CardContent>
+               </Card>
+
+               <Button className="w-full h-14 bg-white text-slate-950 hover:bg-cyan-400 hover:text-white font-black text-lg transition-all rounded-2xl shadow-xl shadow-cyan-500/20">
+                  <MessageSquare className="w-5 h-5 mr-2" /> Message
+               </Button>
+            </div>
+
+            {/* Middle & Right Column: Details */}
+            <div className="lg:col-span-2 space-y-10">
+               <div className="space-y-6">
+                  <div className="flex flex-wrap items-center gap-3">
+                     <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 px-3 py-1 font-bold">VERIFIED IDENTITY</Badge>
+                     <Badge className="bg-purple-500/10 text-purple-400 border-purple-500/20 px-3 py-1 font-bold">TOP RATED</Badge>
+                  </div>
+                  <h2 className="text-4xl font-black text-white">Full Stack Software Architect & Product Designer</h2>
+                  <p className="text-slate-400 text-lg leading-relaxed">
+                     Highly experienced professional specializing in high-performance web applications and premium UI/UX design. I've delivered over 150+ successful projects across various industries, from Fintech to Healthcare.
+                  </p>
+               </div>
+
+               {/* Key Stats Row */}
+               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {[
+                    { label: 'Job Success', value: '100%' },
+                    { label: 'Total Jobs', value: '142' },
+                    { label: 'Hours Logged', value: '1,200' },
+                    { label: 'Avg. Rating', value: '5.0' },
+                  ].map((stat, i) => (
+                    <div key={i} className="bg-white/5 border border-white/5 p-6 rounded-2xl text-center">
+                       <p className="text-white font-black text-2xl">{stat.value}</p>
+                       <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-1">{stat.label}</p>
+                    </div>
+                  ))}
+               </div>
+
+               {/* Experience & Skills */}
+               <div className="space-y-8">
+                  <div>
+                     <h3 className="text-xl font-black text-white mb-6 flex items-center gap-2">
+                        <Zap className="w-5 h-5 text-cyan-400" />
+                        Core Expertise
+                     </h3>
+                     <div className="flex flex-wrap gap-2">
+                        {['Next.js', 'TypeScript', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'AWS', 'UI/UX Design', 'Product Strategy'].map(skill => (
+                          <Badge key={skill} className="bg-slate-800 text-slate-300 border-white/5 px-4 py-2 rounded-full font-medium">
+                            {skill}
+                          </Badge>
+                        ))}
+                     </div>
+                  </div>
+
+                  <div>
+                     <h3 className="text-xl font-black text-white mb-6 flex items-center gap-2">
+                        <Briefcase className="w-5 h-5 text-blue-400" />
+                        Verification History
+                     </h3>
+                     <div className="space-y-4">
+                        <div className="bg-white/5 border border-white/5 p-6 rounded-2xl flex items-center justify-between group cursor-pointer hover:bg-white/[0.08] transition-all">
+                           <div className="flex items-center gap-4">
+                              <div className="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center">
+                                 <Shield className="w-6 h-6 text-cyan-400" />
+                              </div>
+                              <div>
+                                 <p className="text-white font-bold">Premium EL ACCESS Holder</p>
+                                 <p className="text-slate-500 text-sm">Verified background and financial stability check passed.</p>
+                              </div>
+                           </div>
+                           <ChevronRight className="w-6 h-6 text-slate-700 group-hover:text-white transition-colors" />
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </main>
+    </div>
+  )
+}

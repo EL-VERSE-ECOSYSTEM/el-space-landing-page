@@ -1,807 +1,265 @@
-"use client";
-import React from "react";
+'use client'
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import Image from 'next/image'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { PhoneInput } from "@/components/ui/phone-input";
-import { INDUSTRIES, TECH_STACKS, COMPANY_SIZES, BUSINESS_TYPES } from "@/lib/constants";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import Image from "next/image";
-import { AlertCircle, CheckCircle, Loader, Mail, Lock, Upload, Eye, EyeOff, ArrowLeft, ArrowRight, ShieldCheck, Zap, User, Briefcase, Rocket } from "lucide-react";
-import { toast } from "sonner";
-import { OTPNotification } from '@/components/ui/otp-notification';
-import { GoogleSignInButton } from '@/components/ui/google-signin-button';
-import { GitHubSignInButton } from '@/components/ui/github-signin-button';
-import { useAuth } from "@/components/auth-provider";
+  Shield, Mail, Lock, User, ArrowRight, CheckCircle,
+  AlertCircle, ChevronLeft, Briefcase, Rocket, Eye, EyeOff
+} from 'lucide-react'
+import { useAuth } from '@/components/auth-provider'
+import { toast } from 'sonner'
+import { ELLoader } from '@/components/ui/el-loader'
 
-export default function RegisterPage() {
-  const router = useRouter();
-  const { login } = useAuth();
-
-  // Step management: info -> details -> otp -> complete
-  const [step, setStep] = useState<"info" | "details" | "otp">("info");
-
-  // Common fields
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [userType, setUserType] = useState<"" | "client" | "freelancer">("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-
-  // Client fields
-  const [companyName, setCompanyName] = useState("");
-  const [businessType, setBusinessType] = useState("");
-  const [industry, setIndustry] = useState("");
-  const [companySize, setCompanySize] = useState("");
-  const [companyLogo, setCompanyLogo] = useState<File | null>(null);
-  const [companyLogoPreview, setCompanyLogoPreview] = useState<string>("");
-
-  // Freelancer fields
-  const [techStack, setTechStack] = useState<string[]>([]);
-  const [techStackSearch, setTechStackSearch] = useState("");
-  const [aboutYou, setAboutYou] = useState("");
-  const [profilePicture, setProfilePicture] = useState<File | null>(null);
-  const [profilePicturePreview, setProfilePicturePreview] = useState<string>("");
-  const [cvFile, setCvFile] = useState<File | null>(null);
-
-  // Phone
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [countryCode, setCountryCode] = useState("+1");
-
-  // OTP
-  const [otp, setOtp] = useState("");
-  const [generatedOtp, setGeneratedOtp] = useState("");
-  const [showOtpPopup, setShowOtpPopup] = useState(false);
-
-  // State
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+export default function SignupPage() {
+  const router = useRouter()
+  const { signup } = useAuth()
+  const [step, setStep] = useState(1) // 1: Info, 2: OTP
+  const [isLoading, setIsLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [formData, setFormData] = useState({
+    full_name: '',
+    email: '',
+    password: '',
+    user_type: '' as 'client' | 'freelancer',
+    otp: ''
+  })
 
   const handleSendOTP = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-
-    // Validation
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
+    e.preventDefault()
+    if (!formData.full_name || !formData.email || !formData.password || !formData.user_type) {
+      toast.error('Please complete all fields and choose account type')
+      return
     }
-
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters");
-      return;
-    }
-
-    setLoading(true);
 
     try {
-      const response = await fetch("/api/auth/send-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          type: "register",
-          metadata: { name, userType }
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error || "Failed to send OTP");
-        setLoading(false);
-        return;
+      setIsLoading(true)
+      const res = await fetch('/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email, type: 'register' })
+      })
+      const data = await res.json()
+      if (data.success) {
+        toast.success('Verification code sent to your email')
+        setStep(2)
+      } else {
+        toast.error(data.error || 'Failed to send verification code')
       }
-
-      if (data.otp) {
-        setGeneratedOtp(data.otp);
-        setShowOtpPopup(true);
-      }
-
-      setSuccess("Verification code sent to your email!");
-      setStep("otp");
-    } catch (err: any) {
-      setError(err.message || "An error occurred");
+    } catch (err) {
+      toast.error('Network error. Please try again.')
     } finally {
-      setLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
-  const handleVerifyAndRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (formData.otp.length < 6) {
+      toast.error('Please enter the 6-digit verification code')
+      return
+    }
 
     try {
-      // Verify OTP
-      const verifyResponse = await fetch("/api/auth/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp, type: "register" }),
-      });
+      setIsLoading(true)
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+      const data = await res.json()
 
-      const verifyData = await verifyResponse.json();
-
-      if (!verifyResponse.ok) {
-        setError(verifyData.message || "Failed to verify OTP");
-        setLoading(false);
-        return;
+      if (data.success) {
+        toast.success('Account created successfully!')
+        signup(data.user)
+        router.push(data.user.user_type === 'client' ? '/client/dashboard' : '/freelancer/dashboard')
+      } else {
+        toast.error(data.error || 'Registration failed')
       }
-
-      // Prepare registration data
-      const registerData: any = {
-        email,
-        name,
-        userType,
-        password,
-        phoneNumber,
-        countryCode,
-      };
-
-      // Add client-specific fields
-      if (userType === "client") {
-        registerData.companyName = companyName || name;
-        registerData.businessType = businessType;
-        registerData.industry = industry;
-        registerData.companySize = companySize;
-        if (companyLogoPreview) {
-          registerData.companyLogo = companyLogoPreview;
-        }
-      }
-
-      // Add freelancer-specific fields
-      if (userType === "freelancer") {
-        registerData.techStack = techStack;
-        registerData.aboutYou = aboutYou;
-        if (profilePicturePreview) {
-          registerData.profilePicture = profilePicturePreview;
-        }
-        if (cvFile) {
-          // In production, upload to storage and get URL
-          registerData.cvUrl = URL.createObjectURL(cvFile);
-        }
-      }
-
-      // Register user
-      const registerResponse = await fetch("/api/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(registerData),
-      });
-
-      const registerData_response = await registerResponse.json();
-
-      if (!registerResponse.ok) {
-        setError(registerData_response.error || "Failed to register");
-        setLoading(false);
-        return;
-      }
-
-      // Update auth context
-      login(registerData_response.user, verifyData.token);
-
-      setSuccess("Registration successful! Welcome aboard.");
-
-      // Redirect based on user type
-      setTimeout(() => {
-        if (userType === "freelancer") {
-          router.push("/dashboard/freelancer");
-        } else {
-          router.push("/dashboard/client");
-        }
-      }, 1500);
-    } catch (err: any) {
-      setError(err.message || "An error occurred");
-      setLoading(false);
+    } catch (err) {
+      toast.error('System error during registration')
+    } finally {
+      setIsLoading(false)
     }
-  };
+  }
 
-  const handleFileUpload = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    setter: React.Dispatch<React.SetStateAction<File | null>>,
-    previewSetter: React.Dispatch<React.SetStateAction<string>>,
-    accept: string
-  ) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (!file.type.match(accept) && accept === "image/*") {
-        toast.error("Please upload an image file");
-        return;
-      }
-      setter(file);
-      const reader = new FileReader();
-      reader.onload = () => {
-        previewSetter(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const toggleTechStack = (tech: string) => {
-    if (techStack.includes(tech)) {
-      setTechStack(techStack.filter((t) => t !== tech));
-    } else if (techStack.length < 15) {
-      setTechStack([...techStack, tech]);
-    } else {
-      toast.error("Maximum 15 tech stacks allowed");
-    }
-  };
-
-  const filteredTechStacks = TECH_STACKS.filter((tech) =>
-    tech.toLowerCase().includes(techStackSearch.toLowerCase())
-  ).slice(0, 20);
+  if (isLoading) return <div className="min-h-screen bg-slate-950 flex items-center justify-center"><ELLoader /></div>
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Premium Background Orbs */}
+    <div className="min-h-screen bg-[#020617] flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Dynamic Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-purple-500/10 rounded-full blur-[120px] animate-pulse" />
       </div>
 
-      <div className="w-full max-w-3xl relative z-10 py-12">
-        {/* Logo */}
-        <div className="text-center mb-10 space-y-4">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 shadow-xl shadow-cyan-500/20">
-            <span className="text-2xl font-black text-white">EL</span>
-          </div>
-          <div>
-            <h1 className="text-4xl font-black text-slate-900 mb-2 tracking-tight">Create Professional Identity</h1>
-            <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">Join the EL SPACE Network</p>
-          </div>
-        </div>
+      <Card className="w-full max-w-2xl bg-slate-900/40 backdrop-blur-2xl border-white/5 shadow-2xl relative z-10 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500" />
 
-        {/* Progress Tracker */}
-        <div className="flex justify-center mb-8 px-8">
-           <div className="flex items-center w-full max-w-md">
-              {["info", "details", "otp"].map((s, i) => {
-                const steps = ["info", "details", "otp"];
-                const currentIndex = steps.indexOf(step);
-                const isActive = i <= currentIndex;
-                const isCompleted = i < currentIndex;
-                return (
-                  <React.Fragment key={s}>
-                    <div className={`relative flex items-center justify-center w-12 h-12 rounded-2xl border-2 transition-all duration-500 ${
-                      isCompleted ? 'bg-cyan-500 border-cyan-500 text-white shadow-lg shadow-cyan-500/20' :
-                      isActive ? 'border-cyan-500 text-cyan-600 bg-cyan-50 shadow-md shadow-cyan-500/10' :
-                      'border-slate-100 text-slate-300'
-                    }`}>
-                      {isCompleted ? <ShieldCheck className="w-6 h-6" /> : <span className="text-lg font-black">{i + 1}</span>}
-                    </div>
-                    {i < 2 && (
-                      <div className={`flex-1 h-1.5 mx-2 rounded-full transition-all duration-500 ${
-                        i < currentIndex ? 'bg-cyan-500' : 'bg-slate-100'
-                      }`} />
-                    )}
-                  </React.Fragment>
-                );
-              })}
-           </div>
-        </div>
-
-        {/* Card */}
-        <div className="bg-white/80 backdrop-blur-xl border border-slate-200 rounded-[3rem] p-8 md:p-12 shadow-2xl shadow-slate-200/50 overflow-hidden">
-          {/* Status Messages */}
-          {error && (
-            <div className="mb-8 p-4 bg-red-50 border border-red-100 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
-              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
-              <p className="text-red-800 text-sm font-bold leading-tight">{error}</p>
-            </div>
-          )}
-
-          {success && (
-            <div className="mb-8 p-4 bg-emerald-50 border border-emerald-100 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
-              <CheckCircle className="w-5 h-5 text-emerald-500 flex-shrink-0" />
-              <p className="text-emerald-800 text-sm font-bold leading-tight">{success}</p>
-            </div>
-          )}
-
-          {/* Step 1: Basic Info */}
-          {step === "info" && (
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Full Name *</Label>
-                  <div className="relative">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                    <Input
-                      type="text"
-                      placeholder="John Doe"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                      className="pl-12 h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 focus:border-cyan-500 focus:ring-cyan-500/10 transition-all rounded-2xl font-bold"
-                    />
-                  </div>
+        <CardContent className="p-8 md:p-12">
+          {step === 1 ? (
+            <div className="space-y-10">
+              <div className="text-center space-y-4">
+                <div className="relative w-40 h-12 mx-auto mb-6">
+                  <Image src="/logo.png" alt="Logo" fill className="object-contain" />
                 </div>
+                <h1 className="text-4xl font-black text-white tracking-tight">Create Professional Identity</h1>
+                <p className="text-slate-400 uppercase tracking-widest text-xs font-bold">Join the EL SPACE Network</p>
 
-                <div className="space-y-2">
-                  <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Email Address *</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                    <Input
-                      type="email"
-                      placeholder="you@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="pl-12 h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 focus:border-cyan-500 focus:ring-cyan-500/10 transition-all rounded-2xl font-bold"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Password *</Label>
-                  <div className="relative">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Min. 8 chars"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      className="pl-12 pr-12 h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 focus:border-cyan-500 focus:ring-cyan-500/10 transition-all rounded-2xl font-bold"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
-                    >
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Confirm Password *</Label>
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Re-enter password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                    className="h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 focus:border-cyan-500 focus:ring-cyan-500/10 transition-all rounded-2xl font-bold"
-                  />
+                <div className="flex justify-center gap-4 mt-8">
+                   {[1, 2, 3].map(i => (
+                     <div key={i} className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-500 ${
+                       i === 1 ? 'border-cyan-500 text-cyan-400 bg-cyan-500/5' : 'border-white/5 text-slate-600'
+                     }`}>
+                       {i}
+                     </div>
+                   ))}
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Choose Account Type *</Label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                   <button
-                    type="button"
-                    onClick={() => setUserType('client')}
-                    className={`group flex items-center gap-4 p-5 rounded-[1.5rem] border-2 transition-all duration-300 text-left ${
-                      userType === 'client'
-                        ? 'border-cyan-500 bg-cyan-50 shadow-lg shadow-cyan-500/10'
-                        : 'border-slate-100 bg-slate-50 hover:border-slate-200'
-                    }`}
-                  >
-                    <div className={`flex h-12 w-12 items-center justify-center rounded-xl transition-all ${
-                      userType === 'client' ? 'bg-cyan-500 text-white' : 'bg-slate-200 text-slate-500'
-                    }`}>
-                      <Briefcase className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <div className="font-black text-slate-900">Client</div>
-                      <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Hiring Talent</div>
-                    </div>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setUserType('freelancer')}
-                    className={`group flex items-center gap-4 p-5 rounded-[1.5rem] border-2 transition-all duration-300 text-left ${
-                      userType === 'freelancer'
-                        ? 'border-purple-500 bg-purple-50 shadow-lg shadow-purple-500/10'
-                        : 'border-slate-100 bg-slate-50 hover:border-slate-200'
-                    }`}
-                  >
-                    <div className={`flex h-12 w-12 items-center justify-center rounded-xl transition-all ${
-                      userType === 'freelancer' ? 'bg-purple-500 text-white' : 'bg-slate-200 text-slate-500'
-                    }`}>
-                      <Rocket className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <div className="font-black text-slate-900">Freelancer</div>
-                      <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Finding Work</div>
-                    </div>
-                  </button>
-                </div>
-              </div>
-
-              <div className="relative py-4">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-slate-100"></div>
-                </div>
-                <div className="relative flex justify-center text-[10px]">
-                  <span className="px-4 bg-white/80 text-slate-400 font-black uppercase tracking-[0.2em]">or continue with</span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <GoogleSignInButton fullWidth variant="outline" className="h-14 rounded-2xl font-bold border-2 border-slate-100" />
-                <GitHubSignInButton fullWidth variant="outline" className="h-14 rounded-2xl font-bold border-2 border-slate-100" />
-              </div>
-
-              <Button
-                type="button"
-                onClick={() => {
-                  if (!name || !email || !userType || !password) {
-                    setError("Please fill in all required fields");
-                    return;
-                  }
-                  if (password !== confirmPassword) {
-                    setError("Passwords do not match");
-                    return;
-                  }
-                  if (password.length < 8) {
-                    setError("Password must be at least 8 characters");
-                    return;
-                  }
-                  setError("");
-                  setStep("details");
-                }}
-                className="w-full h-16 bg-slate-900 hover:bg-cyan-600 text-white font-black text-lg rounded-[1.5rem] transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/20 group"
-              >
-                Proceed to Details
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </div>
-          )}
-
-          {/* Step 2: Details */}
-          {step === "details" && (
-            <div className="space-y-6">
-              <div>
-                <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Phone Number</Label>
-                <PhoneInput
-                  value={phoneNumber}
-                  countryCode={countryCode}
-                  onPhoneChange={setPhoneNumber}
-                  onCountryCodeChange={setCountryCode}
-                  className="h-14"
-                />
-              </div>
-
-              {/* Client Fields */}
-              {userType === "client" && (
+              <form onSubmit={handleSendOTP} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Company Name *</Label>
-                    <Input
-                      type="text"
-                      placeholder="Acme Corp"
-                      value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}
-                      className="h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 rounded-2xl font-bold"
-                    />
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Full Name *</label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                      <Input
+                        placeholder="John Doe"
+                        className="bg-white/5 border-white/5 pl-10 h-12 text-white focus:border-cyan-500/50"
+                        value={formData.full_name}
+                        onChange={e => setFormData({...formData, full_name: e.target.value})}
+                      />
+                    </div>
                   </div>
-
                   <div className="space-y-2">
-                    <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Business Type</Label>
-                    <Select value={businessType} onValueChange={setBusinessType}>
-                      <SelectTrigger className="h-14 bg-slate-50 border-slate-100 text-slate-900 rounded-2xl font-bold">
-                        <SelectValue placeholder="Select type" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white border-slate-200">
-                        {BUSINESS_TYPES.map((type) => (
-                          <SelectItem key={type} value={type} className="font-bold">
-                            {type}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Email Address *</label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                      <Input
+                        type="email"
+                        placeholder="you@example.com"
+                        className="bg-white/5 border-white/5 pl-10 h-12 text-white focus:border-cyan-500/50"
+                        value={formData.email}
+                        onChange={e => setFormData({...formData, email: e.target.value})}
+                      />
+                    </div>
                   </div>
-
                   <div className="space-y-2">
-                    <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Industry *</Label>
-                    <Select value={industry} onValueChange={setIndustry}>
-                      <SelectTrigger className="h-14 bg-slate-50 border-slate-100 text-slate-900 rounded-2xl font-bold">
-                        <SelectValue placeholder="Select industry" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white border-slate-200 max-h-[300px]">
-                        {INDUSTRIES.map((ind) => (
-                          <SelectItem key={ind} value={ind} className="font-bold">
-                            {ind}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Password *</label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Min. 8 chars"
+                        className="bg-white/5 border-white/5 pl-10 h-12 text-white focus:border-cyan-500/50"
+                        value={formData.password}
+                        onChange={e => setFormData({...formData, password: e.target.value})}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white"
+                      >
+                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
                   </div>
-
                   <div className="space-y-2">
-                    <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Company Size</Label>
-                    <Select value={companySize} onValueChange={setCompanySize}>
-                      <SelectTrigger className="h-14 bg-slate-50 border-slate-100 text-slate-900 rounded-2xl font-bold">
-                        <SelectValue placeholder="Select size" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white border-slate-200">
-                        {COMPANY_SIZES.map((size) => (
-                          <SelectItem key={size} value={size} className="font-bold">
-                            {size}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="md:col-span-2 space-y-2">
-                    <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Company Logo</Label>
-                    <div className="flex items-center gap-6">
-                      {companyLogoPreview ? (
-                        <div className="relative w-24 h-24 rounded-3xl overflow-hidden border-2 border-cyan-500/20 shadow-lg">
-                          <Image src={companyLogoPreview} alt="Logo preview" fill className="object-cover" />
-                        </div>
-                      ) : (
-                        <div className="w-24 h-24 rounded-3xl bg-slate-100 flex items-center justify-center border-2 border-dashed border-slate-200">
-                          <Briefcase className="w-8 h-8 text-slate-300" />
-                        </div>
-                      )}
-                      <label className="flex-1 cursor-pointer">
-                        <div className="border-2 border-dashed border-slate-200 rounded-[1.5rem] p-6 text-center hover:border-cyan-500 hover:bg-cyan-50 transition-all">
-                          <Upload className="w-6 h-6 mx-auto mb-2 text-slate-400" />
-                          <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Upload Brand Identity</p>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => handleFileUpload(e, setCompanyLogo, setCompanyLogoPreview, "image/*")}
-                            className="hidden"
-                          />
-                        </div>
-                      </label>
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Confirm Password *</label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                      <Input
+                        type="password"
+                        placeholder="Re-enter password"
+                        className="bg-white/5 border-white/5 pl-10 h-12 text-white focus:border-cyan-500/50"
+                      />
                     </div>
                   </div>
                 </div>
-              )}
 
-              {/* Freelancer Fields */}
-              {userType === "freelancer" && (
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Tech Stack * (Select up to 15)</Label>
-                    <Input
-                      type="text"
-                      placeholder="Search technologies..."
-                      value={techStackSearch}
-                      onChange={(e) => setTechStackSearch(e.target.value)}
-                      className="h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 rounded-2xl font-bold mb-4"
-                    />
-                    <div className="max-h-[200px] overflow-y-auto space-y-2 bg-slate-50 rounded-[1.5rem] p-4 border border-slate-100">
-                      <div className="flex flex-wrap gap-2">
-                        {filteredTechStacks.map((tech) => (
-                          <button
-                            key={tech}
-                            type="button"
-                            onClick={() => toggleTechStack(tech)}
-                            className={cn(
-                              "px-4 py-2 rounded-xl text-xs font-bold transition-all border-2",
-                              techStack.includes(tech)
-                                ? "bg-purple-500 border-purple-500 text-white shadow-md shadow-purple-500/20"
-                                : "bg-white border-slate-100 text-slate-600 hover:border-purple-200"
-                            )}
-                          >
-                            {tech}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                    {techStack.length > 0 && (
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {techStack.map((tech) => (
-                          <span
-                            key={tech}
-                            className="px-3 py-1 bg-purple-50 text-purple-700 text-[10px] font-black uppercase tracking-widest rounded-full border border-purple-100"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Professional Bio *</Label>
-                    <Textarea
-                      placeholder="Share your expertise, achievements, and unique value proposition..."
-                      value={aboutYou}
-                      onChange={(e) => setAboutYou(e.target.value)}
-                      rows={4}
-                      className="bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 rounded-2xl font-bold p-6 focus:border-purple-500"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Profile Photo</Label>
-                      <div className="flex items-center gap-4">
-                        {profilePicturePreview ? (
-                          <div className="relative w-16 h-16 rounded-2xl overflow-hidden border-2 border-purple-500/20 shadow-md">
-                            <Image src={profilePicturePreview} alt="Profile preview" fill className="object-cover" />
-                          </div>
-                        ) : (
-                          <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center border-2 border-dashed border-slate-200">
-                            <User className="w-6 h-6 text-slate-300" />
-                          </div>
-                        )}
-                        <label className="flex-1 cursor-pointer">
-                          <div className="border-2 border-dashed border-slate-200 rounded-2xl p-4 text-center hover:border-purple-500 hover:bg-purple-50 transition-all">
-                            <Upload className="w-5 h-5 mx-auto mb-1 text-slate-400" />
-                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Upload Photo</p>
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={(e) => handleFileUpload(e, setProfilePicture, setProfilePicturePreview, "image/*")}
-                              className="hidden"
-                            />
-                          </div>
-                        </label>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">CV/Resume (PDF)</Label>
-                      <label className="cursor-pointer block">
-                        <div className="border-2 border-dashed border-slate-200 rounded-2xl p-4 text-center hover:border-purple-500 hover:bg-purple-50 transition-all h-[84px] flex flex-col justify-center">
-                          <Upload className="w-5 h-5 mx-auto mb-1 text-slate-400" />
-                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest truncate px-2">
-                            {cvFile ? cvFile.name : "Select Resume"}
-                          </p>
-                          <input
-                            type="file"
-                            accept=".pdf"
-                            onChange={(e) => {
-                              const file = e.target.files?.[0];
-                              if (file) {
-                                if (file.size > 5 * 1024 * 1024) {
-                                  toast.error("File size must be less than 5MB");
-                                  return;
-                                }
-                                setCvFile(file);
-                              }
-                            }}
-                            className="hidden"
-                          />
-                        </div>
-                      </label>
-                    </div>
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Choose Account Type *</label>
+                  <div className="grid grid-cols-2 gap-4">
+                    {[
+                      { id: 'client', icon: Briefcase, label: 'Client', desc: 'HIRING TALENT' },
+                      { id: 'freelancer', icon: Rocket, label: 'Freelancer', desc: 'FINDING WORK' }
+                    ].map(type => (
+                      <button
+                        key={type.id}
+                        type="button"
+                        onClick={() => setFormData({...formData, user_type: type.id as any})}
+                        className={`p-6 rounded-2xl border-2 text-left transition-all group ${
+                          formData.user_type === type.id
+                          ? 'border-cyan-500 bg-cyan-500/5 ring-4 ring-cyan-500/10'
+                          : 'border-white/5 bg-white/5 hover:border-white/10'
+                        }`}
+                      >
+                        <type.icon className={`w-8 h-8 mb-4 transition-colors ${formData.user_type === type.id ? 'text-cyan-400' : 'text-slate-600 group-hover:text-slate-400'}`} />
+                        <h4 className={`font-bold ${formData.user_type === type.id ? 'text-white' : 'text-slate-400'}`}>{type.label}</h4>
+                        <p className="text-[10px] font-black text-slate-500 tracking-tighter uppercase mt-1">{type.desc}</p>
+                      </button>
+                    ))}
                   </div>
                 </div>
-              )}
 
-              <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setStep("info")}
-                  className="flex-1 h-16 border-2 border-slate-100 text-slate-600 font-black text-lg rounded-[1.5rem] hover:bg-slate-50"
-                >
-                  <ArrowLeft className="w-5 h-5 mr-2" />
-                  Back
+                <Button className="w-full h-14 bg-white text-slate-950 hover:bg-cyan-400 hover:text-white font-black text-lg transition-all rounded-xl mt-4">
+                  Secure Continue <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
-                <Button
-                  type="button"
-                  onClick={() => {
-                    if (userType === "client" && !industry) {
-                      setError("Please select your industry");
-                      return;
-                    }
-                    if (userType === "freelancer" && (!techStack.length || !aboutYou)) {
-                      setError("Please select tech stack and write your bio");
-                      return;
-                    }
-                    setError("");
-                    setStep("otp");
-                    handleSendOTP({ preventDefault: () => {} } as any);
-                  }}
-                  className="flex-2 sm:flex-[2] h-16 bg-slate-900 hover:bg-cyan-600 text-white font-black text-lg rounded-[1.5rem] transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/20 group"
-                >
-                  Verify Email
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </div>
+
+                <p className="text-center text-slate-500 text-sm">
+                  Already a member? <Link href="/login" className="text-cyan-400 font-bold hover:underline">Sign In</Link>
+                </p>
+              </form>
+            </div>
+          ) : (
+            <div className="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
+               <button onClick={() => setStep(1)} className="flex items-center text-slate-500 hover:text-white text-sm font-bold uppercase tracking-widest">
+                 <ChevronLeft className="w-4 h-4 mr-1" /> Back
+               </button>
+
+               <div className="text-center space-y-4">
+                  <div className="w-20 h-20 bg-cyan-500/10 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-cyan-500/20">
+                    <Mail className="w-10 h-10 text-cyan-400" />
+                  </div>
+                  <h2 className="text-3xl font-black text-white tracking-tight">Verify Email</h2>
+                  <p className="text-slate-400 max-w-xs mx-auto">We sent a 6-digit security code to <span className="text-white font-bold">{formData.email}</span></p>
+               </div>
+
+               <form onSubmit={handleSignup} className="space-y-8">
+                  <div className="flex justify-center gap-3">
+                     <Input
+                       placeholder="••••••"
+                       className="w-full max-w-[240px] h-16 text-center text-3xl font-black tracking-[1em] bg-white/5 border-white/10 text-cyan-400 focus:border-cyan-500 focus:ring-cyan-500/20"
+                       maxLength={6}
+                       value={formData.otp}
+                       onChange={e => setFormData({...formData, otp: e.target.value})}
+                     />
+                  </div>
+
+                  <div className="space-y-4">
+                    <Button className="w-full h-14 bg-cyan-600 hover:bg-cyan-500 text-white font-black text-lg transition-all rounded-xl">
+                      Complete Registration <CheckCircle className="ml-2 w-5 h-5" />
+                    </Button>
+                    <p className="text-center text-slate-500 text-xs">
+                      Didn't receive the code? <button type="button" onClick={handleSendOTP} className="text-cyan-400 font-bold hover:underline">Resend Security Code</button>
+                    </p>
+                  </div>
+               </form>
             </div>
           )}
+        </CardContent>
+      </Card>
 
-          {/* Step 3: OTP Verification */}
-          {step === "otp" && (
-            <form onSubmit={handleVerifyAndRegister} className="space-y-8">
-              <div className="bg-slate-50 p-6 rounded-[2rem] text-center">
-                <p className="text-slate-600 font-bold leading-relaxed">
-                  Enter the 6-digit verification code sent to <br/>
-                  <span className="text-cyan-600 font-black">{email}</span>
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                <Label className="text-xs font-black text-slate-400 uppercase tracking-widest text-center block mb-2">Security Code</Label>
-                <Input
-                  type="text"
-                  placeholder="000000"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                  maxLength={6}
-                  required
-                  className="h-20 bg-slate-50 border-slate-100 text-slate-900 text-center text-4xl tracking-[0.5em] font-black rounded-[2rem] focus:border-cyan-500 focus:ring-cyan-500/10"
-                />
-              </div>
-
-              <Button
-                type="submit"
-                disabled={loading || otp.length !== 6}
-                className="w-full h-16 bg-slate-900 hover:bg-cyan-600 text-white font-black text-xl rounded-[1.5rem] transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/20"
-              >
-                {loading ? (
-                  <span className="flex items-center gap-3 justify-center">
-                    <Loader className="w-6 h-6 animate-spin" />
-                    Launching Account...
-                  </span>
-                ) : (
-                  "Complete Registration"
-                )}
-              </Button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setStep("details");
-                  setOtp("");
-                  setError("");
-                  setSuccess("");
-                }}
-                className="w-full py-2 text-sm font-bold text-slate-400 hover:text-slate-600 flex items-center justify-center gap-2 transition-colors"
-              >
-                <ArrowLeft className="w-4 h-4" /> Edit details
-              </button>
-            </form>
-          )}
-
-          <div className="mt-10 pt-10 border-t border-slate-100">
-            <p className="text-center text-slate-500 font-bold text-base">
-              Already have an account?{" "}
-              <Link
-                href="/login"
-                className="text-cyan-600 hover:text-cyan-700 font-black transition-colors underline underline-offset-4 decoration-2 decoration-cyan-500/30"
-              >
-                Sign in here
-              </Link>
-            </p>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="mt-12 text-center">
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">© 2026 EL VERSE TECHNOLOGIES</p>
-        </div>
+      {/* Branding Footer */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 opacity-40">
+         <Shield className="w-5 h-5 text-slate-400" />
+         <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">AES-256 Bit Encryption Active</p>
       </div>
-
-      {/* OTP Notification Popup */}
-      <OTPNotification
-        isOpen={showOtpPopup}
-        onOpenChange={setShowOtpPopup}
-        otp={generatedOtp}
-        email={email}
-        type="register"
-        showCopyButton={true}
-        expiryMinutes={15}
-        onOTPCopied={(code) => {
-          setOtp(code);
-          toast.success("Code copied! Ready to verify.");
-        }}
-      />
     </div>
-  );
+  )
 }

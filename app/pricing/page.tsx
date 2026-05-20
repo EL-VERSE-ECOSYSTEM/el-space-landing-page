@@ -1,3 +1,4 @@
+import React from 'react';
 import { Navbar } from '@/components/sections/Navbar'
 import { Pricing } from '@/components/sections/Pricing'
 import { Footer } from '@/components/sections/Footer'
@@ -191,7 +192,7 @@ export default function PricingPage() {
             Join thousands of successful professionals. No credit card required.
           </p>
           <Link
-            href="/signup"
+            href="/auth/register"
             className="inline-block px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold rounded-lg transition-colors"
           >
             Sign Up Now

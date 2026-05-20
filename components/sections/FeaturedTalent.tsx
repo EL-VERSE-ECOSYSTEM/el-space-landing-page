@@ -103,7 +103,7 @@ export function FeaturedTalent() {
                 </div>
 
                 {/* CTA */}
-                <Link href={`/freelancer/\${freelancer.id}`} className="w-full">
+                <Link href={`/freelancer/${freelancer.id}`} className="w-full">
                   <Button variant="outline" className="w-full border-2 border-slate-200 text-slate-900 font-bold py-6 rounded-2xl group-hover:bg-slate-900 group-hover:text-white group-hover:border-slate-900 transition-all duration-300">
                     View Profile
                   </Button>

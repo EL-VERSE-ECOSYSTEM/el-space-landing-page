@@ -1,3 +1,4 @@
+import React from 'react';
 import { HOW_IT_WORKS_CLIENTS, HOW_IT_WORKS_FREELANCERS } from '@/lib/constants'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { StepCard } from '@/components/ui/StepCard'

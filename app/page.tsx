@@ -1,3 +1,4 @@
+import React from 'react';
 import { NavbarWrapper } from '@/components/navbar-wrapper'
 import { Hero } from '@/components/sections/Hero'
 import { TrustBar } from '@/components/sections/TrustBar'

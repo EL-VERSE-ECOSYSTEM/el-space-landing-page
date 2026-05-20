@@ -1,3 +1,4 @@
+import React from 'react';
 import { Navbar } from '@/components/sections/Navbar'
 import { Footer } from '@/components/sections/Footer'
 import Link from 'next/link'

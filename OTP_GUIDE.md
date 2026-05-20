@@ -46,7 +46,7 @@ This allows testing without email configuration.
 
 ### Manual Test:
 1. Start the dev server: `npm run dev`
-2. Go to `http://localhost:3000/signup`
+2. Go to `http://localhost:3000/auth/register`
 3. Fill in the form and click "Continue"
 4. Check email for OTP (or see it on screen in dev mode)
 5. Enter OTP and complete registration

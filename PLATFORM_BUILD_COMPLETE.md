@@ -9,7 +9,7 @@
 ## ✅ Authentication System
 
 ### 1. Registration Flow: 3-Step Process
-**Location**: `/app/signup/page.tsx` (797 lines)
+**Location**: `/app/auth/register/page.tsx` (797 lines)
 
 #### Step 1: Basic Information
 - Email validation
@@ -42,7 +42,7 @@
 - Post-registration redirect to role-specific dashboard
 
 ### 2. Login Flow: 3-Step Process
-**Location**: `/app/login/page.tsx`
+**Location**: `/app/auth/login/page.tsx`
 
 - **Step 1**: Email address check (verify user exists)
 - **Step 2**: Password entry with visibility toggle
@@ -227,7 +227,7 @@ All role-specific data automatically created in Supabase:
 ## ⚙️ API Endpoints
 - `/api/auth/send-otp` - Generate and send OTP
 - `/api/auth/verify-otp` - Verify OTP and create session
-- `/api/signup` - Create new user account
+- `/api/auth/register` - Create new user account
 - `/api/auth/check-user` - Verify if user exists
 - `/api/projects` - Fetch projects/jobs
 

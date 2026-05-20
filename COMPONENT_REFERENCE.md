@@ -65,8 +65,8 @@ Located: `components/dashboard/`
 - `/contact` - Contact Form
 
 ### AUTH PAGES (2)
-- `/login` - Multi-step login
-- `/signup` - Multi-step registration
+- `/auth/login` - Multi-step login
+- `/auth/register` - Multi-step registration
 
 ### CLIENT PAGES (3)
 - `/client` - Client dashboard
@@ -217,7 +217,7 @@ type AvailabilityStatus = 'available' | 'busy' | 'unavailable'
 
 ### To Update Pages
 - Public pages: `app/page.tsx`, `app/pricing/`, etc.
-- Auth pages: `app/login/`, `app/signup/`
+- Auth pages: `app/auth/login/`, `app/auth/register/`
 - Dashboard pages: `app/client/`, `app/freelancer/`
 - Feature pages: `app/jobs/`, `app/messages/`, etc.
 

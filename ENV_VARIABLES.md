@@ -80,7 +80,7 @@ These environment variables are used in:
 1. Copy `.env.local.example` to `.env.local`
 2. Update the values with your credentials
 3. Restart your development server
-4. Test OTP flow at `/signup` or `/login`
+4. Test OTP flow at `/auth/register` or `/auth/login`
 
 ## ⚠️ Troubleshooting
 

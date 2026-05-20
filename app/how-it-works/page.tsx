@@ -1,3 +1,4 @@
+import React from 'react';
 import { Navbar } from '@/components/sections/Navbar'
 import { Footer } from '@/components/sections/Footer'
 import { HowItWorksClients, HowItWorksFreelancers } from '@/components/sections/HowItWorks'
@@ -106,13 +107,13 @@ export default function HowItWorksPage() {
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <Link
-              href="/signup"
+              href="/auth/register"
               className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold rounded-lg transition-colors"
             >
               Post a Project
             </Link>
             <Link
-              href="/signup"
+              href="/auth/register"
               className="px-8 py-3 border border-cyan-500 text-cyan-400 hover:bg-cyan-500/10 font-semibold rounded-lg transition-colors"
             >
               Find Work

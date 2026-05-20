@@ -1,3 +1,4 @@
+import React from 'react';
 import { HERO_CLIENT, HERO_FREELANCER } from '@/lib/constants'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -83,7 +84,7 @@ export function Hero() {
                 {HERO_CLIENT.fee}
               </p>
             </div>
-            <Link href="/signup" className="w-full pt-2">
+            <Link href="/auth/register" className="w-full pt-2">
               <Button
                 size="lg"
                 className="w-full bg-slate-900 hover:bg-cyan-600 text-white font-bold text-lg py-7 rounded-2xl transition-all hover:shadow-xl hover:shadow-cyan-500/20 active:scale-95 group/btn"
@@ -135,7 +136,7 @@ export function Hero() {
                 {HERO_FREELANCER.fee}
               </p>
             </div>
-            <Link href="/signup" className="w-full pt-2">
+            <Link href="/auth/register" className="w-full pt-2">
               <Button
                 size="lg"
                 className="w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 hover:from-cyan-600 hover:via-blue-600 hover:to-purple-700 text-white font-bold text-lg py-7 rounded-2xl transition-all hover:shadow-xl hover:shadow-blue-500/30 active:scale-95 group/btn"
@@ -155,7 +156,7 @@ export function Hero() {
             { label: 'Satisfaction', value: '98%', color: 'text-indigo-600', bg: 'bg-indigo-50' },
           ].map((stat, i) => (
             <div key={i} className="text-center p-6 rounded-2xl bg-white border border-slate-100 hover:border-slate-300 transition-all shadow-sm">
-              <div className={`text-3xl font-bold \${stat.color} mb-1`}>{stat.value}</div>
+              <div className={`text-3xl font-bold ${stat.color} mb-1`}>{stat.value}</div>
               <p className="text-sm text-slate-500 font-medium">{stat.label}</p>
             </div>
           ))}

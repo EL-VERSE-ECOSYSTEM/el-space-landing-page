@@ -387,7 +387,7 @@ export default function ProjectDetailPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-3">
-                    <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1 text-cyan-600">Proposed Rate ($) *</label>
+                    <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1 text-cyan-600">Proposed Rate (\$) *</label>
                     <div className="relative">
                        <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                        <Input
@@ -415,7 +415,7 @@ export default function ProjectDetailPage() {
                 </div>
 
                 <div className="p-4 bg-cyan-50 border border-cyan-100 rounded-2xl">
-                   <p className="text-[10px] font-black text-cyan-700 uppercase tracking-widest text-center">EL SPACE Fee: 5% (${applyFormData.proposedRate ? (parseFloat(applyFormData.proposedRate) * 0.05).toFixed(2) : '0.00'}) will be deducted.</p>
+                   <p className="text-[10px] font-black text-cyan-700 uppercase tracking-widest text-center">EL SPACE Fee: 5% ({applyFormData.proposedRate ? (parseFloat(applyFormData.proposedRate) * 0.05).toFixed(2) : '0.00'}) will be deducted.</p>
                 </div>
               </div>
 

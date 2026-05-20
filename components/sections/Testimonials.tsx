@@ -1,3 +1,4 @@
+import React from 'react';
 import { TESTIMONIALS } from '@/lib/constants'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { Quote, Star } from 'lucide-react'

@@ -1,3 +1,4 @@
+import React from 'react';
 import { WHY_CLIENTS_CHOOSE, WHY_FREELANCERS_CHOOSE } from '@/lib/constants'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { BenefitCard } from '@/components/ui/BenefitCard'

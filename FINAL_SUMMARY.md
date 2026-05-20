@@ -25,7 +25,7 @@ The EL SPACE platform has been **fully built and is ready for production deploym
 ## ✨ WHAT'S WORKING RIGHT NOW
 
 ### 1. LOGIN & AUTHENTICATION ✅
-**Location:** http://localhost:3000/login
+**Location:** http://localhost:3000/auth/login
 
 Flow:
 1. Enter email address

@@ -199,8 +199,8 @@
 
 ### Auth Routes (✅ 2)
 ```
-✅ /login              → Login page (OTP)
-✅ /signup           → Registration page
+✅ /auth/login              → Login page (OTP)
+✅ /auth/register           → Registration page
 ```
 
 ### Client Routes (✅ 4)

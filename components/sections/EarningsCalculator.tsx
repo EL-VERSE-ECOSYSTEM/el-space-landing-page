@@ -60,7 +60,7 @@ export function EarningsCalculator() {
               <label className="text-sm font-black text-slate-400 uppercase tracking-widest">
                 Project Value
               </label>
-              <span className="text-4xl font-black text-slate-900">\${projectValue.toLocaleString()}</span>
+              <span className="text-4xl font-black text-slate-900">${projectValue.toLocaleString()}</span>
             </div>
             <Slider
               value={[projectValue]}
@@ -81,17 +81,17 @@ export function EarningsCalculator() {
             <div className="rounded-[2rem] bg-slate-50 border border-slate-100 p-8 transition-all hover:bg-white hover:shadow-xl hover:shadow-slate-100">
               <p className="mb-2 text-xs font-black text-slate-400 uppercase tracking-widest">EL SPACE Fee</p>
               <p className="text-3xl font-black text-slate-900">
-                \${fee.toFixed(2)}
+                ${fee.toFixed(2)}
               </p>
               <p className="mt-4 text-sm font-bold text-slate-400 leading-relaxed">
                 Covers escrow, dispute resolution, and 24/7 support.
               </p>
             </div>
 
-            <div className={`rounded-[2rem] p-8 transition-all shadow-xl shadow-\${userType === 'freelancer' ? 'purple' : 'cyan'}-500/10 border border-\${userType === 'freelancer' ? 'purple' : 'cyan'}-100 bg-\${userType === 'freelancer' ? 'purple' : 'cyan'}-50`}>
+            <div className={`rounded-[2rem] p-8 transition-all shadow-xl shadow-${userType === 'freelancer' ? 'purple' : 'cyan'}-500/10 border border-${userType === 'freelancer' ? 'purple' : 'cyan'}-100 bg-${userType === 'freelancer' ? 'purple' : 'cyan'}-50`}>
               <p className="mb-2 text-xs font-black text-slate-400 uppercase tracking-widest">{userType === 'freelancer' ? 'You Take Home' : 'Total Client Cost'}</p>
-              <p className={`text-4xl font-black \${userType === 'freelancer' ? 'text-purple-600' : 'text-cyan-600'}`}>
-                \${earnings.toFixed(2)}
+              <p className={`text-4xl font-black ${userType === 'freelancer' ? 'text-purple-600' : 'text-cyan-600'}`}>
+                ${earnings.toFixed(2)}
               </p>
               <p className="mt-4 text-sm font-bold text-slate-900">
                 That&apos;s {userType === 'freelancer' ? (earnings / projectValue * 100).toFixed(1) : (fee / projectValue * 100).toFixed(1)}% {userType === 'freelancer' ? 'of the project value' : 'above project cost'}
@@ -112,7 +112,7 @@ export function EarningsCalculator() {
               ].map((plat, i) => (
                 <div key={i} className="flex items-center justify-between px-6 py-4 rounded-2xl bg-slate-50 border border-slate-100">
                   <span className="font-bold text-slate-900">{plat.name}</span>
-                  <span className={`text-lg \${plat.color}`}>{plat.fee}</span>
+                  <span className={`text-lg ${plat.color}`}>{plat.fee}</span>
                 </div>
               ))}
             </div>

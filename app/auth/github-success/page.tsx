@@ -19,7 +19,7 @@ function GitHubSuccessContent() {
 
       if (!token) {
         setError('No authentication token received')
-        setTimeout(() => router.push('/login?error=no_token'), 2000)
+        setTimeout(() => router.push('/auth/login?error=no_token'), 2000)
         return
       }
 
@@ -46,7 +46,7 @@ function GitHubSuccessContent() {
     } catch (err) {
       console.error('GitHub success error:', err)
       setError('An error occurred during authentication')
-      setTimeout(() => router.push('/login'), 2000)
+      setTimeout(() => router.push('/auth/login'), 2000)
     }
   }, [searchParams, router, login])
 

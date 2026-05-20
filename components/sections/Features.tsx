@@ -1,3 +1,4 @@
+import React from 'react';
 import { FEATURES } from '@/lib/constants'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { FeatureCard } from '@/components/ui/FeatureCard'
