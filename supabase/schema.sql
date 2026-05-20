@@ -1,24 +1,31 @@
--- EL SPACE Supabase Schema
+-- EL SPACE Supabase Schema (Comprehensive)
 
--- Users Table
+-- 1. Users & Authentication Extensions
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- 2. Users Table
+-- Note: id is UUID matching auth.users.id
 CREATE TABLE IF NOT EXISTS users (
-  id UUID REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
+  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   el_space_id TEXT UNIQUE NOT NULL,
   email TEXT UNIQUE NOT NULL,
-  name TEXT NOT NULL,
+  full_name TEXT NOT NULL,
   user_type TEXT CHECK (user_type IN ('client', 'freelancer')) NOT NULL,
   role TEXT CHECK (role IN ('admin', 'moderator', 'user')) DEFAULT 'user',
   avatar_url TEXT,
   bio TEXT,
-  verified_badge INTEGER DEFAULT 0,
+  password_hash TEXT, -- For legacy/OTP fallback if needed
+  verified_badge INTEGER DEFAULT 0, -- 0: None, 1: Portfolio, 2: Test Passed, 3: ELACCESS
   verified_at TIMESTAMPTZ,
+  phone_number TEXT,
+  location TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Freelancer Profiles Table
+-- 3. Freelancer Profiles
 CREATE TABLE IF NOT EXISTS freelancer_profiles (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES users(id) ON DELETE CASCADE UNIQUE NOT NULL,
   hourly_rate NUMERIC DEFAULT 0,
   years_experience INTEGER DEFAULT 0,
@@ -36,13 +43,14 @@ CREATE TABLE IF NOT EXISTS freelancer_profiles (
   languages TEXT[] DEFAULT '{}',
   verified_test_project_id UUID,
   korapay_account_id TEXT,
+  skills_verified BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Client Profiles Table
+-- 4. Client Profiles
 CREATE TABLE IF NOT EXISTS client_profiles (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES users(id) ON DELETE CASCADE UNIQUE NOT NULL,
   company_name TEXT,
   company_url TEXT,
@@ -58,9 +66,9 @@ CREATE TABLE IF NOT EXISTS client_profiles (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Projects/Jobs Table
+-- 5. Projects
 CREATE TABLE IF NOT EXISTS projects (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   client_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
   title TEXT NOT NULL,
   description TEXT NOT NULL,
@@ -75,15 +83,31 @@ CREATE TABLE IF NOT EXISTS projects (
   fixed_fee_amount NUMERIC,
   hourly_rate NUMERIC,
   estimated_hours NUMERIC,
+  visibility TEXT CHECK (visibility IN ('public', 'private', 'invite-only')) DEFAULT 'public',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   started_at TIMESTAMPTZ,
   completed_at TIMESTAMPTZ
 );
 
--- Milestones Table
+-- 6. Applications
+CREATE TABLE IF NOT EXISTS applications (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  project_id UUID REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
+  freelancer_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+  cover_letter TEXT NOT NULL,
+  proposed_rate NUMERIC,
+  estimated_days INTEGER,
+  status TEXT CHECK (status IN ('pending', 'accepted', 'rejected', 'withdrawn')) DEFAULT 'pending',
+  attachment_urls TEXT[] DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(project_id, freelancer_id)
+);
+
+-- 7. Milestones
 CREATE TABLE IF NOT EXISTS milestones (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   project_id UUID REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
   freelancer_id UUID REFERENCES users(id) NOT NULL,
   title TEXT NOT NULL,
@@ -94,23 +118,36 @@ CREATE TABLE IF NOT EXISTS milestones (
   submitted_at TIMESTAMPTZ,
   approved_at TIMESTAMPTZ,
   released_at TIMESTAMPTZ,
-  payment_id UUID,
+  submission_notes TEXT,
+  submission_attachments TEXT[] DEFAULT '{}',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Payments Table
+-- 8. Wallets
+CREATE TABLE IF NOT EXISTS wallets (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE UNIQUE NOT NULL,
+  balance NUMERIC DEFAULT 0,
+  escrow_balance NUMERIC DEFAULT 0,
+  currency TEXT DEFAULT 'USD',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 9. Payments & Transactions
 CREATE TABLE IF NOT EXISTS payments (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   project_id UUID REFERENCES projects(id),
   milestone_id UUID REFERENCES milestones(id),
-  user_id UUID REFERENCES users(id) NOT NULL,
+  user_id UUID REFERENCES users(id) NOT NULL, -- The user initiating the payment
+  recipient_id UUID REFERENCES users(id),
   amount NUMERIC NOT NULL,
   fee_amount NUMERIC DEFAULT 0,
   currency TEXT DEFAULT 'USD',
   status TEXT CHECK (status IN ('pending', 'processing', 'completed', 'failed', 'refunded', 'escrowed')) DEFAULT 'pending',
-  payment_method TEXT CHECK (payment_method IN ('card', 'bank_transfer', 'mobile_money', 'crypto')),
-  payment_type TEXT CHECK (payment_type IN ('wallet_funding', 'milestone_funding', 'payout', 'withdrawal')),
+  payment_method TEXT CHECK (payment_method IN ('card', 'bank_transfer', 'mobile_money', 'crypto', 'wallet')),
+  payment_type TEXT CHECK (payment_type IN ('wallet_funding', 'milestone_funding', 'payout', 'withdrawal', 'internal_transfer')),
   reference TEXT UNIQUE,
   korapay_reference TEXT UNIQUE,
   metadata JSONB DEFAULT '{}',
@@ -118,19 +155,9 @@ CREATE TABLE IF NOT EXISTS payments (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Wallets Table
-CREATE TABLE IF NOT EXISTS wallets (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID REFERENCES users(id) ON DELETE CASCADE UNIQUE NOT NULL,
-  balance NUMERIC DEFAULT 0,
-  currency TEXT DEFAULT 'USD',
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- Reviews Table
+-- 10. Reviews
 CREATE TABLE IF NOT EXISTS reviews (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   project_id UUID REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
   reviewer_id UUID REFERENCES users(id) NOT NULL,
   reviewee_id UUID REFERENCES users(id) NOT NULL,
@@ -143,23 +170,55 @@ CREATE TABLE IF NOT EXISTS reviews (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Applications Table
-CREATE TABLE IF NOT EXISTS applications (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  project_id UUID REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
-  freelancer_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
-  cover_letter TEXT NOT NULL,
-  proposed_rate NUMERIC,
-  estimated_days INTEGER,
-  status TEXT CHECK (status IN ('pending', 'accepted', 'rejected', 'withdrawn')) DEFAULT 'pending',
+-- 11. Messages & Chat
+CREATE TABLE IF NOT EXISTS chat_rooms (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  project_id UUID REFERENCES projects(id) ON DELETE SET NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(project_id, freelancer_id)
+  updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Time Logs Table
+CREATE TABLE IF NOT EXISTS chat_participants (
+  room_id UUID REFERENCES chat_rooms(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  last_read_at TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY (room_id, user_id)
+);
+
+CREATE TABLE IF NOT EXISTS messages (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  room_id UUID REFERENCES chat_rooms(id) ON DELETE CASCADE,
+  sender_id UUID REFERENCES users(id) NOT NULL,
+  content TEXT NOT NULL,
+  attachment_urls TEXT[] DEFAULT '{}',
+  is_system_message BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 12. Notifications
+CREATE TABLE IF NOT EXISTS notifications (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+  type TEXT NOT NULL,
+  title TEXT NOT NULL,
+  message TEXT NOT NULL,
+  related_id UUID, -- project_id, milestone_id, etc.
+  read BOOLEAN DEFAULT FALSE,
+  link TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS push_subscriptions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+  subscription_json JSONB NOT NULL,
+  device_type TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 13. Time Tracking
 CREATE TABLE IF NOT EXISTS time_logs (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   project_id UUID REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
   freelancer_id UUID REFERENCES users(id) NOT NULL,
   start_time TIMESTAMPTZ NOT NULL,
@@ -168,40 +227,80 @@ CREATE TABLE IF NOT EXISTS time_logs (
   activity_description TEXT,
   screenshot_url TEXT,
   billable BOOLEAN DEFAULT TRUE,
+  status TEXT CHECK (status IN ('pending', 'approved', 'rejected')) DEFAULT 'pending',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Disputes Table
+-- 14. Disputes
 CREATE TABLE IF NOT EXISTS disputes (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   project_id UUID REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
   initiated_by UUID REFERENCES users(id) NOT NULL,
   initiated_against UUID REFERENCES users(id) NOT NULL,
   reason TEXT NOT NULL,
   description TEXT,
-  status TEXT CHECK (status IN ('open', 'in_review', 'resolved', 'closed')) DEFAULT 'open',
+  status TEXT CHECK (status IN ('open', 'in_review', 'resolved', 'closed', 'escalated')) DEFAULT 'open',
   resolution TEXT,
+  compensation_amount NUMERIC,
+  compensation_to UUID REFERENCES users(id),
+  escalation_reason TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
-  resolved_at TIMESTAMPTZ
+  resolved_at TIMESTAMPTZ,
+  escalated_at TIMESTAMPTZ
 );
 
--- Messages Table
-CREATE TABLE IF NOT EXISTS messages (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  project_id UUID REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
-  sender_id UUID REFERENCES users(id) NOT NULL,
-  receiver_id UUID REFERENCES users(id) NOT NULL,
-  content TEXT NOT NULL,
-  attachment_urls TEXT[] DEFAULT '{}',
-  read BOOLEAN DEFAULT FALSE,
+CREATE TABLE IF NOT EXISTS dispute_evidence (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  dispute_id UUID REFERENCES disputes(id) ON DELETE CASCADE NOT NULL,
+  user_id UUID REFERENCES users(id) NOT NULL,
+  evidence TEXT NOT NULL,
+  attachment_url TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Saved Freelancers Table
+-- 15. Verified Tests
+CREATE TABLE IF NOT EXISTS test_projects (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  freelancer_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  budget NUMERIC,
+  status TEXT CHECK (status IN ('assigned', 'in_progress', 'submitted', 'approved', 'rejected')) DEFAULT 'assigned',
+  submission_url TEXT,
+  feedback TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 16. Referrals
+CREATE TABLE IF NOT EXISTS referrals (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  referrer_id UUID REFERENCES users(id) ON DELETE SET NULL,
+  referred_user_email TEXT NOT NULL,
+  referred_user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+  referral_type TEXT CHECK (referral_type IN ('client', 'freelancer')),
+  status TEXT CHECK (status IN ('pending', 'completed')) DEFAULT 'pending',
+  reward_amount NUMERIC DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  completed_at TIMESTAMPTZ
+);
+
+-- 17. Contact Requests
+CREATE TABLE IF NOT EXISTS contact_requests (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  subject TEXT,
+  message TEXT NOT NULL,
+  status TEXT CHECK (status IN ('pending', 'responded', 'closed')) DEFAULT 'pending',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 18. Miscellaneous
 CREATE TABLE IF NOT EXISTS saved_freelancers (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   client_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
   freelancer_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
   folder_name TEXT,
@@ -209,44 +308,81 @@ CREATE TABLE IF NOT EXISTS saved_freelancers (
   UNIQUE(client_id, freelancer_id)
 );
 
--- Todos Table (For Demo)
 CREATE TABLE IF NOT EXISTS todos (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
   is_completed BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Enable Row Level Security
-ALTER TABLE users ENABLE ROW LEVEL SECURITY;
-ALTER TABLE freelancer_profiles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE client_profiles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
-ALTER TABLE milestones ENABLE ROW LEVEL SECURITY;
-ALTER TABLE payments ENABLE ROW LEVEL SECURITY;
-ALTER TABLE wallets ENABLE ROW LEVEL SECURITY;
-ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
-ALTER TABLE applications ENABLE ROW LEVEL SECURITY;
-ALTER TABLE time_logs ENABLE ROW LEVEL SECURITY;
-ALTER TABLE disputes ENABLE ROW LEVEL SECURITY;
-ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
-ALTER TABLE saved_freelancers ENABLE ROW LEVEL SECURITY;
-ALTER TABLE todos ENABLE ROW LEVEL SECURITY;
+CREATE TABLE IF NOT EXISTS otp_codes (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  email TEXT NOT NULL,
+  code TEXT NOT NULL,
+  type TEXT NOT NULL,
+  metadata JSONB,
+  expires_at TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
 
--- Basic RLS Policies
+-- 19. Row Level Security (RLS) Policies
 
--- Users: Anyone can read public info, only owner can update
-CREATE POLICY "Public users are viewable by everyone." ON users FOR SELECT USING (true);
-CREATE POLICY "Users can update own record." ON users FOR UPDATE USING (auth.uid() = id);
+-- Enable RLS on all tables
+DO $$
+DECLARE
+    t text;
+BEGIN
+    FOR t IN (SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE') LOOP
+        EXECUTE format('ALTER TABLE %I ENABLE ROW LEVEL SECURITY', t);
+    END LOOP;
+END $$;
 
--- Todos: Everyone can read and write for demo purposes
-CREATE POLICY "Anyone can read todos." ON todos FOR SELECT USING (true);
-CREATE POLICY "Anyone can insert todos." ON todos FOR INSERT WITH CHECK (true);
+-- Users Policies
+CREATE POLICY "Public profiles are viewable by everyone." ON users FOR SELECT USING (true);
+CREATE POLICY "Users can update own profile." ON users FOR UPDATE USING (auth.uid() = id);
 
--- Wallets: Only owner can view
+-- Profiles Policies
+CREATE POLICY "Freelancer profiles are public." ON freelancer_profiles FOR SELECT USING (true);
+CREATE POLICY "Clients can update own profile." ON freelancer_profiles FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "Client profiles are public." ON client_profiles FOR SELECT USING (true);
+CREATE POLICY "Clients can update own client profile." ON client_profiles FOR UPDATE USING (auth.uid() = user_id);
+
+-- Projects Policies
+CREATE POLICY "Open projects are viewable by everyone." ON projects FOR SELECT USING (status = 'open' OR visibility = 'public' OR auth.uid() = client_id OR auth.uid() = accepted_freelancer_id);
+CREATE POLICY "Clients can manage own projects." ON projects FOR ALL USING (auth.uid() = client_id);
+
+-- Messages Policies
+CREATE POLICY "Participants can view room messages." ON messages FOR SELECT USING (
+  EXISTS (SELECT 1 FROM chat_participants WHERE room_id = messages.room_id AND user_id = auth.uid())
+);
+CREATE POLICY "Participants can send messages." ON messages FOR INSERT WITH CHECK (
+  EXISTS (SELECT 1 FROM chat_participants WHERE room_id = messages.room_id AND user_id = auth.uid())
+);
+
+-- Wallet Policies
 CREATE POLICY "Users can view own wallet." ON wallets FOR SELECT USING (auth.uid() = user_id);
 
--- Projects: Everyone can view open projects, only clients can create/update
-CREATE POLICY "Everyone can view open projects." ON projects FOR SELECT USING (status = 'open' OR auth.uid() = client_id OR auth.uid() = accepted_freelancer_id);
-CREATE POLICY "Clients can create projects." ON projects FOR INSERT WITH CHECK (auth.uid() = client_id);
-CREATE POLICY "Clients can update own projects." ON projects FOR UPDATE USING (auth.uid() = client_id);
+-- Notifications Policies
+CREATE POLICY "Users can view own notifications." ON notifications FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Users can update own notifications." ON notifications FOR UPDATE USING (auth.uid() = user_id);
+
+-- 20. Useful Functions & Triggers
+
+-- Update updated_at timestamp automatically
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+DO $$
+DECLARE
+    t text;
+BEGIN
+    FOR t IN (SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE' AND column_name = 'updated_at') LOOP
+        EXECUTE format('CREATE TRIGGER update_updated_at BEFORE UPDATE ON %I FOR EACH ROW EXECUTE FUNCTION update_updated_at_column()', t);
+    END LOOP;
+END $$;
