@@ -10,7 +10,7 @@ const isConfigured = supabaseUrl && supabaseKey &&
                      !supabaseKey.includes('placeholder');
 
 export async function proxy(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
+  const supabaseResponse = NextResponse.next({
     request: {
       headers: request.headers,
     },

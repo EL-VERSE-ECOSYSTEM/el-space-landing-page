@@ -61,7 +61,7 @@ export default function ContactPage() {
             Get in Touch
           </h1>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Have questions or need support? We're here to help. Reach out to us using the form below or contact us directly.
+            Have questions or need support? We&apos;re here to help. Reach out to us using the form below or contact us directly.
           </p>
         </div>
 
@@ -132,7 +132,7 @@ export default function ContactPage() {
             {/* Response Time */}
             <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 mt-8">
               <p className="text-sm text-slate-300">
-                <strong>Average Response Time:</strong> Within 24 business hours. For urgent matters, please email our support team with "URGENT" in the subject line.
+                <strong>Average Response Time:</strong> Within 24 business hours. For urgent matters, please email our support team with &quot;URGENT&quot; in the subject line.
               </p>
             </div>
           </div>
@@ -240,7 +240,7 @@ export default function ContactPage() {
               </Button>
 
               <p className="text-xs text-slate-400 text-center">
-                We'll get back to you as soon as possible. Please expect a response within 24 business hours.
+                We&apos;ll get back to you as soon as possible. Please expect a response within 24 business hours.
               </p>
             </form>
           </div>
@@ -253,11 +253,11 @@ export default function ContactPage() {
             <div>
               <h3 className="font-semibold text-white mb-2">How do I get help with my account?</h3>
               <p className="text-slate-400 text-sm">
-                You can contact our support team by email or through this contact form. We're available 24/7 to help.
+                You can contact our support team by email or through this contact form. We&apos;re available 24/7 to help.
               </p>
             </div>
             <div>
-              <h3 className="font-semibold text-white mb-2">What's your typical response time?</h3>
+              <h3 className="font-semibold text-white mb-2">What&apos;s your typical response time?</h3>
               <p className="text-slate-400 text-sm">
                 We aim to respond to all inquiries within 24 business hours. Urgent matters may receive faster responses.
               </p>
@@ -265,13 +265,13 @@ export default function ContactPage() {
             <div>
               <h3 className="font-semibold text-white mb-2">How do I report a problem?</h3>
               <p className="text-slate-400 text-sm">
-                Please use the form above with "Support Request" as the inquiry type and describe the issue in detail.
+                Please use the form above with &quot;Support Request&quot; as the inquiry type and describe the issue in detail.
               </p>
             </div>
             <div>
               <h3 className="font-semibold text-white mb-2">Can I schedule a call?</h3>
               <p className="text-slate-400 text-sm">
-                For partnership or enterprise inquiries, please mention it in your message and we'll arrange a call.
+                For partnership or enterprise inquiries, please mention it in your message and we&apos;ll arrange a call.
               </p>
             </div>
           </div>

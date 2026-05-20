@@ -246,7 +246,7 @@ export default function SignupPage() {
                       Complete Registration <CheckCircle className="ml-2 w-5 h-5" />
                     </Button>
                     <p className="text-center text-slate-500 text-xs">
-                      Didn't receive the code? <button type="button" onClick={handleSendOTP} className="text-cyan-400 font-bold hover:underline">Resend Security Code</button>
+                      Didn&apos;t receive the code? <button type="button" onClick={handleSendOTP} className="text-cyan-400 font-bold hover:underline">Resend Security Code</button>
                     </p>
                   </div>
                </form>

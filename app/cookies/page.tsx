@@ -21,7 +21,7 @@ export default function CookiePolicyPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-white mb-4">1. What Are Cookies?</h2>
             <p className="text-slate-300 mb-4">
-              Cookies are small pieces of data stored on your browser or device. They help us remember information about you, such as your preferences, login information, and browsing habits. They're commonly used to enhance user experience on websites.
+              Cookies are small pieces of data stored on your browser or device. They help us remember information about you, such as your preferences, login information, and browsing habits. They&apos;re commonly used to enhance user experience on websites.
             </p>
           </section>
 
@@ -101,7 +101,7 @@ export default function CookiePolicyPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-white mb-4">7. Do Not Track</h2>
             <p className="text-slate-300 mb-4">
-              Some browsers include a "Do Not Track" feature. EL SPACE currently does not respond to Do Not Track signals as there is no industry standard for interpretation. However, you can control cookie usage through your browser settings.
+              Some browsers include a &quot;Do Not Track&quot; feature. EL SPACE currently does not respond to Do Not Track signals as there is no industry standard for interpretation. However, you can control cookie usage through your browser settings.
             </p>
           </section>
 

@@ -15,7 +15,7 @@ interface JWKSResponse {
   keys: JWKSKey[];
 }
 
-let cachedKeys: Map<string, JWKSKey> = new Map();
+const cachedKeys: Map<string, JWKSKey> = new Map();
 let cacheTime: number = 0;
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
