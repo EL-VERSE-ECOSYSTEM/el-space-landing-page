@@ -10,7 +10,7 @@ import {
   Rocket, DollarSign, Clock, CheckCircle,
   Search, Bell, Settings, Filter, ArrowUpRight,
   TrendingUp, Activity, MessageSquare, Star,
-  Zap, Briefcase, Globe
+  Zap, Briefcase, Globe, ChevronRight
 } from 'lucide-react'
 import { useAuth } from '@/components/auth-provider'
 import { toast } from 'sonner'
