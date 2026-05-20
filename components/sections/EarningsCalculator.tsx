@@ -35,7 +35,7 @@ export function EarningsCalculator() {
         />
 
         <div className="rounded-[3rem] border border-slate-200 bg-white p-8 md:p-16 shadow-2xl shadow-slate-200/50">
-          <Tabs value={userType} onValueChange={(val) => setUserType(val as any)} className="w-full mb-12">
+          <Tabs value={userType} onValueChange={(val) => setUserType(val as 'freelancer' | 'client')} className="w-full mb-12">
             <div className="flex justify-center">
               <TabsList className="grid w-full max-w-md grid-cols-2 p-1 bg-slate-100 rounded-2xl h-14">
                 <TabsTrigger

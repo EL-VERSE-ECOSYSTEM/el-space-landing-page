@@ -14,7 +14,7 @@ interface QuickHireProps {
   projectBudget: number;
   proposedRate: number;
   estimatedDays: number;
-  onConfirmHire?: (data: any) => Promise<void>;
+  onConfirmHire?: (data: { freelancerId: string; proposedRate: number; estimatedDays: number }) => Promise<void>;
 }
 
 export function QuickHire({

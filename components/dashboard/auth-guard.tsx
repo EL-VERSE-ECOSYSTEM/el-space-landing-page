@@ -8,7 +8,7 @@ import Link from "next/link";
 // Auth guard component
 export function useAuth(redirectTo?: string) {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
