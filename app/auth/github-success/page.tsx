@@ -33,9 +33,9 @@ function GitHubSuccessContent() {
           // Redirect based on user type
           setTimeout(() => {
             if (user?.user_type === 'freelancer' || user?.role === 'freelancer') {
-              router.push('/dashboard/freelancer')
+              router.push('/freelancer/dashboard')
             } else {
-              router.push('/dashboard/client')
+              router.push('/client/dashboard')
             }
           }, 1000)
         } catch (e) {

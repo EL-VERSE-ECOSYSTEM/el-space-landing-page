@@ -127,9 +127,9 @@ export default function LoginPage() {
       // Redirect based on user type
       setTimeout(() => {
         if (data.user?.user_type === "freelancer" || data.user?.role === "freelancer") {
-          router.push("/dashboard/freelancer");
+          router.push("/freelancer/dashboard");
         } else if (data.user?.user_type === "client" || data.user?.role === "client") {
-          router.push("/dashboard/client");
+          router.push("/client/dashboard");
         } else {
           router.push("/dashboard");
         }
