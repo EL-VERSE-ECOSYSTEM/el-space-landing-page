@@ -199,9 +199,9 @@ export default function RegisterPage() {
       // Redirect based on user type
       setTimeout(() => {
         if (userType === "freelancer") {
-          router.push("/dashboard/freelancer");
+          router.push("/freelancer/dashboard");
         } else {
-          router.push("/dashboard/client");
+          router.push("/client/dashboard");
         }
       }, 1500);
     } catch (err: any) {
