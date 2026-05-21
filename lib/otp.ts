@@ -60,7 +60,7 @@ export async function verifyOTP(email: string, otp: string): Promise<{ valid: bo
       .eq('email', email)
       .order('created_at', { ascending: false })
       .limit(1)
-      .maybeSingle();
+      .maybeSingle() as any;
 
     if (error || !data) {
       // Check in-memory store as fallback
@@ -174,7 +174,7 @@ export async function getOTPType(email: string): Promise<string | undefined> {
       .eq('email', email)
       .order('created_at', { ascending: false })
       .limit(1)
-      .maybeSingle();
+      .maybeSingle() as any;
     
     if (error || !data) {
       const storedOTP = otpStore.get(email);

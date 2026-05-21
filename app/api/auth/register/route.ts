@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
 
     const verifyData = await verifyRes.json();
     if (!verifyData.success) {
-      return NextResponse.json({ error: 'Invalid or expired OTP' }, { status: 400 });
+      return NextResponse.json({ error: verifyData.message || 'Invalid or expired OTP' }, { status: 400 });
     }
 
     // 2. Check if user already exists
@@ -69,6 +69,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
+      token: verifyData.token,
       user: {
         id: user.id,
         email: user.email,

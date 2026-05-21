@@ -1,0 +1,305 @@
+app/api/admin/stats/route.ts(17,71): error TS2339: Property 'amount' does not exist on type 'never'.
+app/api/admin/withdrawals/route.ts(33,15): error TS2345: Argument of type '{ status: any; metadata: { rejectionReason: any; }; updated_at: Date; }' is not assignable to parameter of type 'never'.
+app/api/applications/route.ts(57,70): error TS18048: 'application' is possibly 'undefined'.
+app/api/applications/route.ts(60,35): error TS18048: 'application' is possibly 'undefined'.
+app/api/applications/route.ts(63,38): error TS18048: 'application' is possibly 'undefined'.
+app/api/applications/route.ts(63,67): error TS18047: 'project' is possibly 'null'.
+app/api/applications/route.ts(65,25): error TS18048: 'application' is possibly 'undefined'.
+app/api/applications/route.ts(66,28): error TS18048: 'application' is possibly 'undefined'.
+app/api/applications/route.ts(70,46): error TS18048: 'application' is possibly 'undefined'.
+app/api/applications/route.ts(76,64): error TS18047: 'project' is possibly 'null'.
+app/api/applications/route.ts(77,56): error TS18048: 'application' is possibly 'undefined'.
+app/api/applications/route.ts(82,36): error TS2339: Property 'name' does not exist on type 'never'.
+app/api/applications/route.ts(83,44): error TS2339: Property 'name' does not exist on type 'never'.
+app/api/applications/route.ts(84,31): error TS18047: 'project' is possibly 'null'.
+app/api/applications/route.ts(88,30): error TS18047: 'project' is possibly 'null'.
+app/api/applications/route.ts(90,40): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/applications/route.ts(91,36): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/applications/route.ts(94,76): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/applications/route.ts(96,39): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/applications/route.ts(101,53): error TS2339: Property 'email' does not exist on type 'never'.
+app/api/applications/route.ts(102,57): error TS2339: Property 'email' does not exist on type 'never'.
+app/api/applications/route.ts(139,15): error TS2698: Spread types may only be created from object types.
+app/api/applications/route.ts(140,32): error TS2339: Property 'user_metadata' does not exist on type 'never'.
+app/api/applications/route.ts(140,66): error TS2339: Property 'email' does not exist on type 'never'.
+app/api/applications/route.ts(141,38): error TS2339: Property 'user_metadata' does not exist on type 'never'.
+app/api/auth/check-user/route.ts(28,20): error TS2339: Property 'id' does not exist on type 'never'.
+app/api/auth/check-user/route.ts(29,23): error TS2339: Property 'email' does not exist on type 'never'.
+app/api/auth/check-user/route.ts(30,22): error TS2339: Property 'name' does not exist on type 'never'.
+app/api/auth/check-user/route.ts(31,27): error TS2339: Property 'user_type' does not exist on type 'never'.
+app/api/auth/check-user/route.ts(32,29): error TS2339: Property 'el_space_id' does not exist on type 'never'.
+app/api/auth/github/callback/route.ts(91,20): error TS2345: Argument of type 'string | null' is not assignable to parameter of type '{}'.
+  Type 'null' is not assignable to type '{}'.
+app/api/auth/github/callback/route.ts(101,11): error TS2322: Type '{ email: string | null; name: string; profile_picture: string | undefined; oauth_provider: string; oauth_id: string; user_type: string; verified: true; created_at: string; updated_at: string; }' is not assignable to type 'never'.
+app/api/auth/github/callback/route.ts(124,25): error TS2339: Property 'oauth_provider' does not exist on type 'never'.
+app/api/auth/github/callback/route.ts(127,19): error TS2345: Argument of type '{ oauth_provider: string; oauth_id: string; profile_picture: any; }' is not assignable to parameter of type 'never'.
+app/api/auth/github/callback/route.ts(130,39): error TS2339: Property 'profile_picture' does not exist on type 'GitHubUserInfo'.
+app/api/auth/github/callback/route.ts(132,34): error TS2339: Property 'id' does not exist on type 'never'.
+app/api/auth/github/callback/route.ts(143,17): error TS18047: 'user' is possibly 'null'.
+app/api/auth/github/callback/route.ts(144,16): error TS18047: 'user' is possibly 'null'.
+app/api/auth/github/callback/route.ts(145,19): error TS18047: 'user' is possibly 'null'.
+app/api/auth/github/callback/route.ts(155,11): error TS18047: 'user' is possibly 'null'.
+app/api/auth/github/callback/route.ts(156,14): error TS18047: 'user' is possibly 'null'.
+app/api/auth/github/callback/route.ts(157,13): error TS18047: 'user' is possibly 'null'.
+app/api/auth/github/callback/route.ts(158,18): error TS18047: 'user' is possibly 'null'.
+app/api/auth/github/callback/route.ts(159,24): error TS18047: 'user' is possibly 'null'.
+app/api/auth/google/route.ts(97,34): error TS2304: Cannot find name 'id_token'.
+app/api/auth/google/route.ts(99,9): error TS2322: Type 'string | (() => string) | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+app/api/auth/google/route.ts(99,13): error TS18047: 'decoded' is possibly 'null'.
+app/api/auth/google/route.ts(100,16): error TS18047: 'decoded' is possibly 'null'.
+app/api/auth/google/route.ts(100,24): error TS2339: Property 'email' does not exist on type 'string | JwtPayload'.
+  Property 'email' does not exist on type 'string'.
+app/api/auth/google/route.ts(101,15): error TS18047: 'decoded' is possibly 'null'.
+app/api/auth/google/route.ts(101,23): error TS2339: Property 'name' does not exist on type 'string | JwtPayload'.
+  Property 'name' does not exist on type 'string'.
+app/api/auth/google/route.ts(102,18): error TS18047: 'decoded' is possibly 'null'.
+app/api/auth/google/route.ts(102,26): error TS2339: Property 'picture' does not exist on type 'string | JwtPayload'.
+  Property 'picture' does not exist on type 'string'.
+app/api/auth/google/route.ts(103,25): error TS18047: 'decoded' is possibly 'null'.
+app/api/auth/google/route.ts(103,33): error TS2339: Property 'email_verified' does not exist on type 'string | JwtPayload'.
+  Property 'email_verified' does not exist on type 'string'.
+app/api/auth/google/route.ts(133,11): error TS2322: Type '{ email: string; name: string; profile_picture: string | undefined; email_verified: boolean; auth_provider: string; auth_provider_id: string; metadata: { google_id: string; joined_via: string; }; created_at: string; }' is not assignable to type 'never'.
+app/api/auth/google/route.ts(163,17): error TS2345: Argument of type '{ auth_provider: string; auth_provider_id: string; email_verified: boolean; profile_picture: any; }' is not assignable to parameter of type 'never'.
+app/api/auth/google/route.ts(167,53): error TS2339: Property 'profile_picture' does not exist on type 'never'.
+app/api/auth/google/route.ts(169,24): error TS2339: Property 'id' does not exist on type 'never'.
+app/api/auth/google/route.ts(174,14): error TS18047: 'user' is possibly 'null'.
+app/api/auth/google/route.ts(175,15): error TS18047: 'user' is possibly 'null'.
+app/api/auth/google/route.ts(176,17): error TS18047: 'user' is possibly 'null'.
+app/api/auth/google/route.ts(177,18): error TS18047: 'user' is possibly 'null'.
+app/api/auth/login/route.ts(25,65): error TS2339: Property 'password_hash' does not exist on type 'never'.
+app/api/auth/login/route.ts(52,18): error TS2339: Property 'id' does not exist on type 'never'.
+app/api/auth/login/route.ts(53,21): error TS2339: Property 'email' does not exist on type 'never'.
+app/api/auth/login/route.ts(54,25): error TS2339: Property 'full_name' does not exist on type 'never'.
+app/api/auth/login/route.ts(55,25): error TS2339: Property 'user_type' does not exist on type 'never'.
+app/api/auth/login/route.ts(56,27): error TS2339: Property 'el_space_id' does not exist on type 'never'.
+app/api/auth/login/route.ts(57,20): error TS2339: Property 'role' does not exist on type 'never'.
+app/api/auth/register/route.ts(45,16): error TS2322: Type '{ email: any; password_hash: string; full_name: any; user_type: any; el_space_id: string; role: string; status: string; created_at: Date; }' is not assignable to type 'never'.
+app/api/auth/register/route.ts(62,58): error TS2322: Type '{ user_id: any; created_at: Date; }' is not assignable to type 'never'.
+app/api/auth/register/route.ts(62,74): error TS2339: Property 'id' does not exist on type 'never'.
+app/api/auth/register/route.ts(64,54): error TS2322: Type '{ user_id: any; created_at: Date; }' is not assignable to type 'never'.
+app/api/auth/register/route.ts(64,70): error TS2339: Property 'id' does not exist on type 'never'.
+app/api/auth/register/route.ts(68,44): error TS2322: Type '{ user_id: any; balance: number; currency: string; created_at: Date; }' is not assignable to type 'never'.
+app/api/auth/register/route.ts(68,60): error TS2339: Property 'id' does not exist on type 'never'.
+app/api/auth/register/route.ts(73,18): error TS2339: Property 'id' does not exist on type 'never'.
+app/api/auth/register/route.ts(74,21): error TS2339: Property 'email' does not exist on type 'never'.
+app/api/auth/register/route.ts(75,25): error TS2339: Property 'full_name' does not exist on type 'never'.
+app/api/auth/register/route.ts(76,25): error TS2339: Property 'user_type' does not exist on type 'never'.
+app/api/auth/register/route.ts(77,27): error TS2339: Property 'el_space_id' does not exist on type 'never'.
+app/api/auth/send-otp/route.ts(46,17): error TS2339: Property 'password_hash' does not exist on type 'never'.
+app/api/auth/send-otp/route.ts(54,67): error TS2339: Property 'password_hash' does not exist on type 'never'.
+app/api/auth/verify-otp/route.ts(43,28): error TS2339: Property 'password_hash' does not exist on type 'never'.
+app/api/auth/verify-otp/route.ts(44,69): error TS2339: Property 'password_hash' does not exist on type 'never'.
+app/api/auth/verify-otp/route.ts(64,20): error TS2339: Property 'id' does not exist on type 'never'.
+app/api/auth/verify-otp/route.ts(65,22): error TS2339: Property 'user_type' does not exist on type 'never'.
+app/api/auth/verify-otp/route.ts(66,23): error TS2339: Property 'el_space_id' does not exist on type 'never'.
+app/api/earnings/route.ts(48,27): error TS2339: Property 'balance' does not exist on type 'never'.
+app/api/earnings/route.ts(68,26): error TS2339: Property 'currency' does not exist on type 'never'.
+app/api/earnings/route.ts(78,13): error TS18048: 'payment' is possibly 'undefined'.
+app/api/milestones/route.ts(74,52): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/milestones/route.ts(75,56): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/milestones/route.ts(76,52): error TS18047: 'project' is possibly 'null'.
+app/api/milestones/route.ts(80,39): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/milestones/route.ts(81,46): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/milestones/route.ts(84,50): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/milestones/route.ts(87,35): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/milestones/route.ts(91,22): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/milestones/route.ts(92,25): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/milestones/route.ts(93,27): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/milestones/route.ts(94,21): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/milestones/route.ts(95,25): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/milestones/route.ts(104,55): error TS2339: Property 'email' does not exist on type 'never'.
+app/api/milestones/route.ts(105,44): error TS2339: Property 'name' does not exist on type 'never'.
+app/api/milestones/route.ts(106,36): error TS2339: Property 'name' does not exist on type 'never'.
+app/api/milestones/route.ts(108,31): error TS18047: 'project' is possibly 'null'.
+app/api/milestones/route.ts(109,39): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/milestones/route.ts(110,34): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/milestones/route.ts(112,30): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/milestones/route.ts(118,27): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/milestones/route.ts(121,36): error TS18047: 'project' is possibly 'null'.
+app/api/milestones/route.ts(123,33): error TS18047: 'project' is possibly 'null'.
+app/api/milestones/route.ts(123,56): error TS18048: 'milestone' is possibly 'undefined'.
+app/api/milestones/route.ts(128,38): error TS18047: 'project' is possibly 'null'.
+app/api/milestones/route.ts(132,53): error TS2339: Property 'email' does not exist on type 'never'.
+app/api/milestones/route.ts(133,36): error TS2339: Property 'name' does not exist on type 'never'.
+app/api/milestones/route.ts(134,31): error TS18047: 'project' is possibly 'null'.
+app/api/milestones/route.ts(135,44): error TS2339: Property 'name' does not exist on type 'never'.
+app/api/milestones/route.ts(136,36): error TS18047: 'project' is possibly 'null'.
+app/api/milestones/route.ts(150,57): error TS2339: Property 'email' does not exist on type 'never'.
+app/api/milestones/route.ts(151,44): error TS2339: Property 'name' does not exist on type 'never'.
+app/api/milestones/route.ts(152,31): error TS18047: 'project' is possibly 'null'.
+app/api/milestones/route.ts(153,36): error TS2339: Property 'name' does not exist on type 'never'.
+app/api/notifications/route.ts(51,44): error TS2339: Property 'status' does not exist on type 'never'.
+app/api/notifications/route.ts(95,20): error TS2339: Property 'email' does not exist on type 'never'.
+app/api/notifications/route.ts(101,59): error TS2339: Property 'email' does not exist on type 'never'.
+app/api/notifications/route.ts(111,18): error TS2322: Type '{ user_id: string; type: string; title: string; message: string; action_url: string | null; data: Record<string, any>; status: string; created_at: string; }' is not assignable to type 'never'.
+app/api/notifications/route.ts(160,15): error TS2345: Argument of type '{ status: any; }' is not assignable to parameter of type 'never'.
+app/api/payments/route.ts(19,20): error TS2339: Property 'verified' does not exist on type 'string | JwtPayload'.
+  Property 'verified' does not exist on type 'string'.
+app/api/payments/route.ts(19,40): error TS2339: Property 'type' does not exist on type 'string | JwtPayload'.
+  Property 'type' does not exist on type 'string'.
+app/api/payments/route.ts(102,30): error TS2339: Property 'status' does not exist on type 'never'.
+app/api/payments/route.ts(107,31): error TS18047: 'existing' is possibly 'null'.
+app/api/payments/route.ts(125,25): error TS2339: Property 'balance' does not exist on type 'never'.
+app/api/payments/route.ts(157,52): error TS2339: Property 'amount' does not exist on type 'never'.
+app/api/payments/route.ts(159,37): error TS2339: Property 'id' does not exist on type 'never'.
+app/api/payments/route.ts(178,41): error TS2339: Property 'id' does not exist on type 'never'.
+app/api/payments/route.ts(181,66): error TS2339: Property 'name' does not exist on type 'never'.
+app/api/payments/route.ts(191,25): error TS2339: Property 'balance' does not exist on type 'never'.
+app/api/payments/route.ts(200,22): error TS2339: Property 'currency' does not exist on type 'never'.
+app/api/payments/route.ts(205,24): error TS2339: Property 'currency' does not exist on type 'never'.
+app/api/payments/route.ts(215,22): error TS2339: Property 'currency' does not exist on type 'never'.
+app/api/profile/route.ts(26,14): error TS2339: Property 'user_type' does not exist on type 'never'.
+app/api/projects/route.ts(32,45): error TS2339: Property 'email' does not exist on type 'never'.
+app/api/projects/route.ts(33,32): error TS2339: Property 'name' does not exist on type 'never'.
+app/api/wallet/route-old.ts(19,59): error TS2872: This kind of expression is always truthy.
+app/api/wallet/route-old.ts(71,61): error TS2872: This kind of expression is always truthy.
+app/api/wallet/route-old.ts(87,61): error TS2872: This kind of expression is always truthy.
+app/api/wallet/route.ts(93,9): error TS2698: Spread types may only be created from object types.
+app/api/wallet/route.ts(94,55): error TS2339: Property 'balance' does not exist on type 'never'.
+app/api/wallet/route.ts(94,79): error TS2339: Property 'pending_balance' does not exist on type 'never'.
+app/api/wallet/route.ts(138,40): error TS2339: Property 'balance' does not exist on type 'never'.
+app/api/wallet/route.ts(138,64): error TS2339: Property 'pending_balance' does not exist on type 'never'.
+app/api/wallet/route.ts(177,34): error TS2339: Property 'balance' does not exist on type 'never'.
+app/api/wallet/route.ts(178,34): error TS2339: Property 'pending_balance' does not exist on type 'never'.
+app/api/wallet/route.ts(180,53): error TS2554: Expected 2 arguments, but got 3.
+app/api/wallet/route.ts(186,15): error TS18048: 'payment' is possibly 'undefined'.
+app/api/wallet/route.ts(192,22): error TS18048: 'payment' is possibly 'undefined'.
+app/api/wallet/route.ts(200,34): error TS2339: Property 'balance' does not exist on type 'never'.
+app/api/wallet/route.ts(201,32): error TS2339: Property 'total_earned' does not exist on type 'never'.
+app/api/wallet/route.ts(206,9): error TS2554: Expected 2 arguments, but got 4.
+app/api/wallet/route.ts(206,16): error TS2339: Property 'pending_balance' does not exist on type 'never'.
+app/api/wallet/route.ts(246,34): error TS2339: Property 'pending_balance' does not exist on type 'never'.
+app/api/wallet/route.ts(250,16): error TS2339: Property 'balance' does not exist on type 'never'.
+app/api/wallet/route.ts(251,9): error TS2554: Expected 2 arguments, but got 3.
+app/api/wallet/route.ts(282,37): error TS2339: Property 'balance' does not exist on type 'never'.
+app/api/wallet/route.ts(290,46): error TS2339: Property 'pending_balance' does not exist on type 'never'.
+app/api/wallet/route.ts(294,16): error TS2339: Property 'balance' does not exist on type 'never'.
+app/api/wallet/route.ts(295,9): error TS2554: Expected 2 arguments, but got 3.
+app/api/wallet/route.ts(325,37): error TS2339: Property 'balance' does not exist on type 'never'.
+app/api/wallet/route.ts(367,7): error TS2698: Spread types may only be created from object types.
+app/api/wallet/transfer/route.ts(20,14): error TS2339: Property 'transaction_pin' does not exist on type 'never'.
+app/api/wallet/transfer/route.ts(25,14): error TS2339: Property 'balance' does not exist on type 'never'.
+app/api/wallet/transfer/route.ts(40,19): error TS2339: Property 'id' does not exist on type 'never'.
+app/api/wallet/transfer/route.ts(45,104): error TS2345: Argument of type '{ p_sender_id: any; p_recipient_id: any; p_amount: any; }' is not assignable to parameter of type 'undefined'.
+app/api/wallet/transfer/route.ts(47,33): error TS2339: Property 'id' does not exist on type 'never'.
+app/api/wallet/transfer/route.ts(55,7): error TS2322: Type '{ user_id: any; amount: number; payment_type: string; status: string; description: string; metadata: { recipient_id: any; }; }' is not assignable to type 'never'.
+app/api/wallet/transfer/route.ts(60,47): error TS2339: Property 'full_name' does not exist on type 'never'.
+app/api/wallet/transfer/route.ts(61,45): error TS2339: Property 'id' does not exist on type 'never'.
+app/api/wallet/transfer/route.ts(63,7): error TS2322: Type '{ user_id: any; amount: any; payment_type: string; status: string; description: string; metadata: { sender_id: any; }; }' is not assignable to type 'never'.
+app/api/wallet/transfer/route.ts(64,28): error TS2339: Property 'id' does not exist on type 'never'.
+app/api/wallet/transfer/route.ts(68,44): error TS2339: Property 'full_name' does not exist on type 'never'.
+app/applications/page.tsx(153,73): error TS2345: Argument of type 'string' is not assignable to parameter of type 'SetStateAction<"list" | "recommendations" | "comparison">'.
+app/auth/login/page.tsx(257,65): error TS2322: Type '{ fullWidth: true; variant: "outline"; className: string; }' is not assignable to type 'IntrinsicAttributes & GoogleSignInProps'.
+  Property 'className' does not exist on type 'IntrinsicAttributes & GoogleSignInProps'.
+app/auth/login/page.tsx(258,65): error TS2322: Type '{ fullWidth: true; variant: "outline"; className: string; }' is not assignable to type 'IntrinsicAttributes & GitHubSignInProps'.
+  Property 'className' does not exist on type 'IntrinsicAttributes & GitHubSignInProps'.
+app/auth/register/page.tsx(426,65): error TS2322: Type '{ fullWidth: true; variant: "outline"; className: string; }' is not assignable to type 'IntrinsicAttributes & GoogleSignInProps'.
+  Property 'className' does not exist on type 'IntrinsicAttributes & GoogleSignInProps'.
+app/auth/register/page.tsx(427,65): error TS2322: Type '{ fullWidth: true; variant: "outline"; className: string; }' is not assignable to type 'IntrinsicAttributes & GitHubSignInProps'.
+  Property 'className' does not exist on type 'IntrinsicAttributes & GitHubSignInProps'.
+app/client/dashboard/page.tsx(80,21): error TS2339: Property 'avatar_url' does not exist on type 'AuthUser'.
+app/client/dashboard/page.tsx(80,51): error TS2339: Property 'avatar_url' does not exist on type 'AuthUser'.
+app/client/dashboard/page.tsx(90,123): error TS2339: Property 'full_name' does not exist on type 'AuthUser'.
+app/freelancer/dashboard/page.tsx(86,21): error TS2339: Property 'avatar_url' does not exist on type 'AuthUser'.
+app/freelancer/dashboard/page.tsx(86,51): error TS2339: Property 'avatar_url' does not exist on type 'AuthUser'.
+app/freelancer/dashboard/page.tsx(86,141): error TS2339: Property 'full_name' does not exist on type 'AuthUser'.
+app/freelancer/dashboard/page.tsx(95,23): error TS2339: Property 'full_name' does not exist on type 'AuthUser'.
+app/freelancer/dashboard/page.tsx(99,87): error TS2339: Property 'full_name' does not exist on type 'AuthUser'.
+app/wallet/page.tsx(103,119): error TS2339: Property 'full_name' does not exist on type 'AuthUser'.
+components/dashboard/auth-guard.tsx(79,24): error TS2339: Property 'user_type' does not exist on type '{}'.
+components/dashboard/auth-guard.tsx(79,55): error TS2339: Property 'userType' does not exist on type '{}'.
+components/dashboard/auth-guard.tsx(81,33): error TS2339: Property 'user_type' does not exist on type '{}'.
+components/dashboard/auth-guard.tsx(102,25): error TS2339: Property 'name' does not exist on type '{}'.
+components/dashboard/auth-guard.tsx(102,38): error TS2339: Property 'email' does not exist on type '{}'.
+components/dashboard/auth-guard.tsx(103,26): error TS2339: Property 'el_space_id' does not exist on type '{}'.
+components/ui/github-signin-button.tsx(54,7): error TS2322: Type '"lg" | "md" | "sm"' is not assignable to type '"lg" | "sm" | "default" | "icon" | "icon-sm" | "icon-lg" | null | undefined'.
+  Type '"md"' is not assignable to type '"lg" | "sm" | "default" | "icon" | "icon-sm" | "icon-lg" | null | undefined'.
+components/ui/google-signin-button.tsx(54,7): error TS2322: Type '"lg" | "md" | "sm"' is not assignable to type '"lg" | "sm" | "default" | "icon" | "icon-sm" | "icon-lg" | null | undefined'.
+  Type '"md"' is not assignable to type '"lg" | "sm" | "default" | "icon" | "icon-sm" | "icon-lg" | null | undefined'.
+lib/email.ts(55,11): error TS18046: 'data' is of type 'unknown'.
+lib/email.ts(69,74): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'Record<string, any>'.
+lib/email.ts(75,11): error TS18046: 'data' is of type 'unknown'.
+lib/email.ts(89,74): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'Record<string, any>'.
+lib/email.ts(281,32): error TS18046: 'data' is of type 'unknown'.
+lib/email.ts(282,50): error TS18046: 'data' is of type 'unknown'.
+lib/email.ts(286,6): error TS18046: 'data' is of type 'unknown'.
+lib/email.ts(288,30): error TS18046: 'data' is of type 'unknown'.
+lib/email.ts(288,59): error TS18046: 'data' is of type 'unknown'.
+lib/email.ts(290,15): error TS18046: 'data' is of type 'unknown'.
+lib/email.ts(291,12): error TS18046: 'data' is of type 'unknown'.
+lib/email.ts(292,18): error TS18046: 'data' is of type 'unknown'.
+lib/email.ts(302,6): error TS18046: 'data' is of type 'unknown'.
+lib/email.ts(304,15): error TS18046: 'data' is of type 'unknown'.
+lib/email.ts(304,62): error TS18046: 'data' is of type 'unknown'.
+lib/email.ts(306,12): error TS18046: 'data' is of type 'unknown'.
+lib/email.ts(307,34): error TS18046: 'data' is of type 'unknown'.
+lib/email.ts(319,71): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'Record<string, any>'.
+lib/email.ts(324,50): error TS18046: 'data' is of type 'unknown'.
+lib/email.ts(340,67): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'Record<string, any>'.
+lib/email.ts(345,45): error TS18046: 'data' is of type 'unknown'.
+lib/email.ts(345,71): error TS18046: 'data' is of type 'unknown'.
+lib/email.ts(364,67): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'Record<string, any>'.
+lib/email.ts(397,71): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'Record<string, any>'.
+lib/email.ts(430,71): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'Record<string, any>'.
+lib/otp.ts(33,16): error TS2322: Type '{ email: string; code: string; expires_at: string; type: "withdrawal" | "register" | "login" | "transfer"; metadata: Record<string, any> | undefined; created_at: string; }' is not assignable to type 'never'.
+lib/otp.ts(97,37): error TS2339: Property 'expires_at' does not exist on type 'never'.
+lib/otp.ts(103,14): error TS2339: Property 'code' does not exist on type 'never'.
+lib/otp.ts(112,18): error TS2339: Property 'type' does not exist on type 'never'.
+lib/otp.ts(113,22): error TS2339: Property 'metadata' does not exist on type 'never'.
+lib/otp.ts(184,17): error TS2339: Property 'type' does not exist on type 'never'.
+lib/push-notifications.ts(1,21): error TS7016: Could not find a declaration file for module 'web-push'. '/app/node_modules/.pnpm/web-push@3.6.7/node_modules/web-push/src/index.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/web-push` if it exists or add a new declaration (.d.ts) file containing `declare module 'web-push';`
+lib/push-notifications.ts(56,16): error TS2322: Type '{ user_id: string; endpoint: string; auth: string; p256dh: string; created_at: string; updated_at: string; }' is not assignable to type 'never'.
+lib/supabase-jwt.ts(128,20): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Type 'string' is not assignable to type 'Algorithm'.
+lib/supabase.ts(92,14): error TS2322: Type '{ email: string; name: string; user_type: "client" | "freelancer"; verified_badge: number; role: string; el_space_id: string; created_at: Date; updated_at: Date; }' is not assignable to type 'never'.
+lib/supabase.ts(146,14): error TS2322: Type 'any' is not assignable to type 'never'.
+lib/supabase.ts(146,16): error TS2698: Spread types may only be created from object types.
+lib/supabase.ts(194,13): error TS2345: Argument of type '{ status: string; updated_at: Date; }' is not assignable to parameter of type 'never'.
+lib/supabase.ts(203,14): error TS2322: Type 'any' is not assignable to type 'never'.
+lib/supabase.ts(203,16): error TS2698: Spread types may only be created from object types.
+lib/supabase.ts(220,13): error TS2345: Argument of type 'any' is not assignable to parameter of type 'never'.
+lib/supabase.ts(220,15): error TS2698: Spread types may only be created from object types.
+lib/supabase.ts(231,14): error TS2322: Type 'any' is not assignable to type 'never'.
+lib/supabase.ts(231,16): error TS2698: Spread types may only be created from object types.
+lib/supabase.ts(270,13): error TS2345: Argument of type 'any' is not assignable to parameter of type 'never'.
+lib/supabase.ts(270,15): error TS2698: Spread types may only be created from object types.
+lib/supabase.ts(281,14): error TS2322: Type 'any' is not assignable to type 'never'.
+lib/supabase.ts(281,16): error TS2698: Spread types may only be created from object types.
+lib/supabase.ts(298,13): error TS2345: Argument of type '{ released_at?: Date | undefined; status: string; updated_at: Date; }' is not assignable to parameter of type 'never'.
+lib/supabase.ts(327,14): error TS2322: Type '{ user_id: string; balance: number; currency: string; }' is not assignable to type 'never'.
+lib/supabase.ts(334,74): error TS2345: Argument of type '{ user_id_param: string; amount_param: number; }' is not assignable to parameter of type 'undefined'.
+lib/supabase.ts(347,75): error TS2345: Argument of type '{ sender_id: string; recipient_id: any; transfer_amount: number; }' is not assignable to parameter of type 'undefined'.
+lib/supabase.ts(349,29): error TS2339: Property 'id' does not exist on type 'never'.
+lib/supabase.ts(361,14): error TS2322: Type 'any' is not assignable to type 'never'.
+lib/supabase.ts(362,7): error TS2698: Spread types may only be created from object types.
+lib/supabase.ts(391,13): error TS2345: Argument of type '{ status: string; updated_at: Date; }' is not assignable to parameter of type 'never'.
+lib/supabase.ts(402,14): error TS2322: Type 'any' is not assignable to type 'never'.
+lib/supabase.ts(402,16): error TS2698: Spread types may only be created from object types.
+lib/supabase.ts(424,53): error TS2339: Property 'rating' does not exist on type 'never'.
+lib/supabase.ts(433,14): error TS2322: Type 'any' is not assignable to type 'never'.
+lib/supabase.ts(433,16): error TS2698: Spread types may only be created from object types.
+lib/supabase.ts(458,13): error TS2345: Argument of type '{ status: string; updated_at: Date; }' is not assignable to parameter of type 'never'.
+lib/supabase.ts(474,50): error TS2339: Property 'amount' does not exist on type 'never'.
+lib/supabase.ts(474,61): error TS2339: Property 'fee_amount' does not exist on type 'never'.
+lib/supabase.ts(483,14): error TS2322: Type 'unknown' is not assignable to type 'never'.
+lib/supabase.ts(502,14): error TS2322: Type '{ client_id: string; freelancer_id: string; }' is not assignable to type 'never'.
+lib/supabase.ts(520,14): error TS2322: Type 'any' is not assignable to type 'never'.
+lib/supabase.ts(521,7): error TS2698: Spread types may only be created from object types.
+lib/supabase.ts(570,13): error TS2345: Argument of type 'any' is not assignable to parameter of type 'never'.
+lib/supabase.ts(579,14): error TS2322: Type '{ dispute_id: string; user_id: string; evidence: string; attachment_url: string | undefined; created_at: string; }' is not assignable to type 'never'.
+lib/supabase.ts(602,14): error TS2322: Type '{ dispute_id: string; mediator_id: string; status: string; created_at: string; }' is not assignable to type 'never'.
+lib/supabase.ts(624,13): error TS2345: Argument of type 'any' is not assignable to parameter of type 'never'.
+lib/supabase.ts(624,15): error TS2698: Spread types may only be created from object types.
+lib/supabase.ts(633,14): error TS2322: Type 'any' is not assignable to type 'never'.
+lib/supabase.ts(635,7): error TS2698: Spread types may only be created from object types.
+lib/supabase.ts(654,13): error TS2345: Argument of type '{ status: string; escalation_reason: string; escalated_at: string; updated_at: string; }' is not assignable to parameter of type 'never'.
+lib/supabase.ts(673,13): error TS2345: Argument of type '{ status: string; resolution: string; compensation_amount: number | undefined; compensation_to: string | undefined; resolved_at: string; updated_at: string; }' is not assignable to parameter of type 'never'.
+lib/websocket.ts(93,20): error TS2322: Type '{ sender_id: string; recipient_id: string; project_id: string; content: string; attachment_url: string | undefined; read: false; created_at: string; }' is not assignable to type 'never'.
+lib/websocket.ts(115,29): error TS2339: Property 'id' does not exist on type 'never'.
+lib/websocket.ts(121,36): error TS2339: Property 'created_at' does not exist on type 'never'.
+lib/websocket.ts(134,45): error TS2339: Property 'name' does not exist on type 'never'.
+lib/websocket.ts(148,19): error TS2345: Argument of type '{ read: boolean; read_at: string; }' is not assignable to parameter of type 'never'.
+lib/websocket.ts(317,15): error TS2345: Argument of type '{ read: boolean; read_at: string; }' is not assignable to parameter of type 'never'.
