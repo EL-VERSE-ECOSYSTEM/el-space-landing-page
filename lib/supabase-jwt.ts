@@ -125,7 +125,7 @@ export async function verifySupabaseJWT(token: string): Promise<jwt.JwtPayload> 
 
     // Verify the token
     const payload = jwt.verify(token, publicKey, {
-      algorithms: [key.alg || 'ES256'],
+      algorithms: [(key.alg || 'ES256') as jwt.Algorithm],
     }) as jwt.JwtPayload;
 
     return payload;

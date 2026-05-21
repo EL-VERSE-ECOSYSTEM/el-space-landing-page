@@ -127,7 +127,7 @@ export async function GET(request: NextRequest) {
           .update({
             oauth_provider: 'github',
             oauth_id: userInfo.id.toString(),
-            profile_picture: userInfo.profile_picture || userInfo.avatar_url,
+            profile_picture: userInfo.avatar_url,
           })
           .eq('id', existingUser.id);
 

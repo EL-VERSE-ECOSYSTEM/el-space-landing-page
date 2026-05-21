@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
         supabase.from('payments').select('id', { count: 'exact' }).eq('payment_type', 'withdrawal').eq('status', 'pending')
       ]);
 
-      const totalPayments = payments.data?.reduce((acc, p) => acc + p.amount, 0) || 0;
+      const totalPayments = (payments.data as any[])?.reduce((acc: number, p: any) => acc + (p.amount || 0), 0) || 0;
 
       return NextResponse.json({
         success: true,
