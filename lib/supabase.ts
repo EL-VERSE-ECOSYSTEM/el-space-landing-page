@@ -140,7 +140,7 @@ export const getUserBySpaceId = async (spaceId: string) => {
 
 // ============ PROJECTS & FEED ============
 
-export const createProject = async (projectData: any) => {
+export const createProject = async (projectData: unknown) => {
   const { data, error } = await supabase
     .from('projects')
     .insert([{ ...projectData, status: 'open' }])
@@ -197,7 +197,7 @@ export const updateProjectStatus = async (projectId: string, status: string) => 
   return { data: data?.[0], error };
 };
 
-export const createClientProfile = async (userId: string, profileData: any) => {
+export const createClientProfile = async (userId: string, profileData: unknown) => {
   const { data, error } = await supabase
     .from('client_profiles')
     .insert([{ ...profileData, user_id: userId }])
@@ -214,7 +214,7 @@ export const getClientProfile = async (userId: string) => {
   return { data, error };
 };
 
-export const updateClientProfile = async (userId: string, updates: any) => {
+export const updateClientProfile = async (userId: string, updates: unknown) => {
   const { data, error } = await supabase
     .from('client_profiles')
     .update({ ...updates, updated_at: new Date() })
@@ -225,7 +225,7 @@ export const updateClientProfile = async (userId: string, updates: any) => {
 
 // ============ FREELANCER PROFILES ============
 
-export const createFreelancerProfile = async (userId: string, profileData: any) => {
+export const createFreelancerProfile = async (userId: string, profileData: unknown) => {
   const { data, error } = await supabase
     .from('freelancer_profiles')
     .insert([{ ...profileData, user_id: userId }])
@@ -264,7 +264,7 @@ export const getFreelancersBySkills = async (skills: string[], limit = 10) => {
   return { data, error };
 };
 
-export const updateFreelancerProfile = async (userId: string, updates: any) => {
+export const updateFreelancerProfile = async (userId: string, updates: unknown) => {
   const { data, error } = await supabase
     .from('freelancer_profiles')
     .update({ ...updates, updated_at: new Date() })
@@ -275,7 +275,7 @@ export const updateFreelancerProfile = async (userId: string, updates: any) => {
 
 // ============ MILESTONES ============
 
-export const createMilestone = async (milestoneData: any) => {
+export const createMilestone = async (milestoneData: unknown) => {
   const { data, error } = await supabase
     .from('milestones')
     .insert([{ ...milestoneData, status: 'pending' }])
@@ -355,7 +355,7 @@ export const internalTransfer = async (fromUserId: string, toSpaceId: string, am
 
 // ============ PAYMENTS ============
 
-export const createPayment = async (paymentData: any) => {
+export const createPayment = async (paymentData: unknown) => {
   const { data, error } = await supabase
     .from('payments')
     .insert([{ 
@@ -396,7 +396,7 @@ export const updatePaymentStatus = async (paymentId: string, status: string) => 
 
 // ============ REVIEWS ============
 
-export const createReview = async (reviewData: any) => {
+export const createReview = async (reviewData: unknown) => {
   const { data, error } = await supabase
     .from('reviews')
     .insert([{ ...reviewData, both_submitted: false }])
@@ -427,7 +427,7 @@ export const getUserAverageRating = async (userId: string) => {
 
 // ============ APPLICATIONS ============
 
-export const createApplication = async (applicationData: any) => {
+export const createApplication = async (applicationData: unknown) => {
   const { data, error } = await supabase
     .from('applications')
     .insert([{ ...applicationData, status: 'pending' }])
@@ -477,7 +477,7 @@ export const getFreelancerEarnings = async (freelancerId: string) => {
 
 // ============ TIME LOGS ============
 
-export const createTimeLog = async (timeLogData: any) => {
+export const createTimeLog = async (timeLogData: unknown) => {
   const { data, error } = await supabase
     .from('time_logs')
     .insert([timeLogData])
@@ -514,7 +514,7 @@ export const getSavedFreelancers = async (clientId: string) => {
 
 // ============ DISPUTES & RESOLUTION ============
 
-export const createDispute = async (disputeData: any) => {
+export const createDispute = async (disputeData: unknown) => {
   const { data, error } = await supabase
     .from('disputes')
     .insert([{ 
@@ -618,7 +618,7 @@ export const getMediationSession = async (sessionId: string) => {
   return { data, error };
 };
 
-export const updateMediationSession = async (sessionId: string, updates: any) => {
+export const updateMediationSession = async (sessionId: string, updates: unknown) => {
   const { data, error } = await supabase
     .from('mediation_sessions')
     .update({ ...updates, updated_at: new Date().toISOString() })
@@ -627,7 +627,7 @@ export const updateMediationSession = async (sessionId: string, updates: any) =>
   return { data: data?.[0], error };
 };
 
-export const recordMediationOutcome = async (disputeId: string, outcome: any) => {
+export const recordMediationOutcome = async (disputeId: string, outcome: unknown) => {
   const { data, error } = await supabase
     .from('mediation_outcomes')
     .insert([{
