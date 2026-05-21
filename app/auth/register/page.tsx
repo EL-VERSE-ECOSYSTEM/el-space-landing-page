@@ -121,35 +121,25 @@ export default function RegisterPage() {
     }
   };
 
-  const handleVerifyAndRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleVerifyAndRegister = async (e?: React.FormEvent, manualOtp?: string) => {
+    if (e) e.preventDefault();
+    const otpToVerify = manualOtp || otp;
+
+    if (!otpToVerify || otpToVerify.length !== 6) return;
+
     setLoading(true);
     setError("");
 
     try {
-      // Verify OTP
-      const verifyResponse = await fetch("/api/auth/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp, type: "register" }),
-      });
-
-      const verifyData = await verifyResponse.json();
-
-      if (!verifyResponse.ok) {
-        setError(verifyData.message || "Failed to verify OTP");
-        setLoading(false);
-        return;
-      }
-
       // Prepare registration data
       const registerData: any = {
         email,
-        name,
-        userType,
+        full_name: name,
+        user_type: userType,
         password,
         phoneNumber,
         countryCode,
+        otp: otpToVerify, // Pass OTP directly to registration
       };
 
       // Add client-specific fields
@@ -176,7 +166,7 @@ export default function RegisterPage() {
         }
       }
 
-      // Register user
+      // Register user - this now handles OTP verification too
       const registerResponse = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -192,7 +182,7 @@ export default function RegisterPage() {
       }
 
       // Update auth context
-      login(registerData_response.user, verifyData.token);
+      login(registerData_response.user, registerData_response.token);
 
       setSuccess("Registration successful! Welcome aboard.");
 
@@ -800,6 +790,10 @@ export default function RegisterPage() {
         onOTPCopied={(code) => {
           setOtp(code);
           toast.success("Code copied! Ready to verify.");
+        }}
+        onVerified={() => {
+          setOtp(generatedOtp);
+          handleVerifyAndRegister(undefined, generatedOtp);
         }}
       />
     </div>

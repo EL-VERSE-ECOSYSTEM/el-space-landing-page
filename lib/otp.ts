@@ -29,18 +29,15 @@ export async function storeOTP(
   try {
     // Try to store in Supabase first
     await supabase
-      .from('otp_sessions')
-      .upsert([{
+      .from('otp_codes')
+      .insert([{
         email,
-        otp_code: otp,
+        code: otp,
         expires_at: expiresAt.toISOString(),
-        attempts: 0,
         type,
         metadata,
         created_at: new Date().toISOString()
-      }], {
-        onConflict: 'email'
-      });
+      }]);
   } catch (error) {
     console.warn('Failed to store OTP in Supabase, using in-memory store:', error);
     // Fallback to in-memory store
@@ -56,12 +53,14 @@ export async function storeOTP(
 
 export async function verifyOTP(email: string, otp: string): Promise<{ valid: boolean; message: string; type?: string; metadata?: Record<string, any> }> {
   try {
-    // Try Supabase first
+    // Try Supabase first - get the latest OTP for this email
     const { data, error } = await supabase
-      .from('otp_sessions')
+      .from('otp_codes')
       .select('*')
       .eq('email', email)
-      .single();
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
 
     if (error || !data) {
       // Check in-memory store as fallback
@@ -97,25 +96,16 @@ export async function verifyOTP(email: string, otp: string): Promise<{ valid: bo
     // Verify with Supabase data
     const expiresAt = new Date(data.expires_at).getTime();
     if (Date.now() > expiresAt) {
-      await supabase.from('otp_sessions').delete().eq('email', email);
+      await supabase.from('otp_codes').delete().eq('email', email);
       return { valid: false, message: 'OTP has expired. Please request a new one.' };
     }
 
-    if (data.attempts >= 5) {
-      await supabase.from('otp_sessions').delete().eq('email', email);
-      return { valid: false, message: 'Too many attempts. Please request a new OTP.' };
-    }
-
-    if (data.otp_code !== otp) {
-      await supabase
-        .from('otp_sessions')
-        .update({ attempts: data.attempts + 1 })
-        .eq('email', email);
-      return { valid: false, message: `Invalid OTP. ${5 - data.attempts} attempts remaining.` };
+    if (data.code !== otp) {
+      return { valid: false, message: `Invalid OTP. Please check the code and try again.` };
     }
 
     // OTP is valid, delete it
-    await supabase.from('otp_sessions').delete().eq('email', email);
+    await supabase.from('otp_codes').delete().eq('email', email);
     return { 
       valid: true, 
       message: 'OTP verified successfully.', 
@@ -159,7 +149,7 @@ export async function verifyOTP(email: string, otp: string): Promise<{ valid: bo
 
 export async function deleteOTP(email: string): Promise<void> {
   try {
-    await supabase.from('otp_sessions').delete().eq('email', email);
+    await supabase.from('otp_codes').delete().eq('email', email);
   } catch (error) {
     otpStore.delete(email);
   }
@@ -167,18 +157,9 @@ export async function deleteOTP(email: string): Promise<void> {
 
 export async function getOTPAttempts(email: string): Promise<number> {
   try {
-    const { data, error } = await supabase
-      .from('otp_sessions')
-      .select('attempts')
-      .eq('email', email)
-      .single();
-    
-    if (error || !data) {
-      const storedOTP = otpStore.get(email);
-      return storedOTP ? storedOTP.attempts : 0;
-    }
-    
-    return data.attempts || 0;
+    // attempts column doesn't exist in otp_codes
+    const storedOTP = otpStore.get(email);
+    return storedOTP ? storedOTP.attempts : 0;
   } catch (error) {
     const storedOTP = otpStore.get(email);
     return storedOTP ? storedOTP.attempts : 0;
@@ -188,10 +169,12 @@ export async function getOTPAttempts(email: string): Promise<number> {
 export async function getOTPType(email: string): Promise<string | undefined> {
   try {
     const { data, error } = await supabase
-      .from('otp_sessions')
+      .from('otp_codes')
       .select('type')
       .eq('email', email)
-      .single();
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
     
     if (error || !data) {
       const storedOTP = otpStore.get(email);

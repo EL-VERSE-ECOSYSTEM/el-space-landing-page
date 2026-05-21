@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
 
     // Generate OTP
     const otp = generateOTP(6);
-    storeOTP(email, otp, 900, type, metadata); // 15 minutes
+    await storeOTP(email, otp, 900, type, metadata); // 15 minutes
 
     // Try to send email, but don't fail if email is not configured
     let emailSent = false;
