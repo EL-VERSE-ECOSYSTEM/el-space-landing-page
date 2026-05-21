@@ -99,8 +99,12 @@ export default function LoginPage() {
     }
   };
 
-  const handleVerifyOTP = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleVerifyOTP = async (e?: React.FormEvent, manualOtp?: string) => {
+    if (e) e.preventDefault();
+    const otpToVerify = manualOtp || otp;
+
+    if (!otpToVerify || otpToVerify.length !== 6) return;
+
     setLoading(true);
     setError("");
 
@@ -108,7 +112,7 @@ export default function LoginPage() {
       const response = await fetch("/api/auth/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp, type: "login", password }),
+        body: JSON.stringify({ email, otp: otpToVerify, type: "login", password }),
       });
 
       const data = await response.json();
@@ -122,7 +126,7 @@ export default function LoginPage() {
       setSuccess("Login successful!");
 
       // Update auth context
-      login(data.user, data.token);
+      await login(data.user, data.token);
 
       // Redirect based on user type
       setTimeout(() => {
@@ -402,6 +406,7 @@ export default function LoginPage() {
         }}
         onVerified={() => {
           setOtp(generatedOtp);
+          handleVerifyOTP(undefined, generatedOtp);
         }}
         showCopyButton={true}
         expiryMinutes={15}

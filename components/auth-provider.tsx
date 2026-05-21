@@ -15,9 +15,9 @@ interface AuthContextType {
   user: AuthUser | null
   loading: boolean
   isAuthenticated: boolean
-  login: (email: string, password: string) => Promise<void>
+  login: (emailOrUser: any, passwordOrToken?: string) => Promise<void>
   logout: () => Promise<void>
-  register: (data: any) => Promise<void>
+  register: (dataOrUser: any, token?: string) => Promise<void>
   updateUser: (data: Partial<AuthUser>) => Promise<void>
 }
 
@@ -45,10 +45,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     checkAuth()
   }, [])
 
-  const login = async (email: string, password: string) => {
+  const login = async (emailOrUser: any, passwordOrToken?: string) => {
     try {
       setLoading(true)
-      // Call login API
+
+      // Support direct login with user object and token (from OTP verification)
+      if (typeof emailOrUser === 'object' && emailOrUser !== null) {
+        const user = emailOrUser;
+        const token = passwordOrToken;
+        setUser(user);
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('userId', user.id);
+        localStorage.setItem('email', user.email);
+        if (token) localStorage.setItem('authToken', token);
+        return;
+      }
+
+      // Traditional email/password login
+      const email = emailOrUser;
+      const password = passwordOrToken;
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -61,6 +76,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem('user', JSON.stringify(data.user))
         localStorage.setItem('userId', data.user.id)
         localStorage.setItem('email', data.user.email)
+        if (data.token) localStorage.setItem('authToken', data.token);
       }
     } finally {
       setLoading(false)
@@ -79,13 +95,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }
 
-  const register = async (data: any) => {
+  const register = async (dataOrUser: any, token?: string) => {
     try {
       setLoading(true)
+
+      // Support direct registration with user object and token (from OTP verification)
+      if (dataOrUser && dataOrUser.id && token) {
+        const user = dataOrUser;
+        setUser(user);
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('userId', user.id);
+        localStorage.setItem('email', user.email);
+        localStorage.setItem('authToken', token);
+        return;
+      }
+
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify(dataOrUser),
       })
 
       const result = await response.json()
@@ -94,6 +122,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem('user', JSON.stringify(result.user))
         localStorage.setItem('userId', result.user.id)
         localStorage.setItem('email', result.user.email)
+        if (result.token) localStorage.setItem('authToken', result.token);
       }
     } finally {
       setLoading(false)
