@@ -51,19 +51,12 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    if (!user) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      );
-    }
-
     // Create JWT token
-    const payload = {
+    const payload: any = {
       email,
-      userId: user.id,
-      userType: user.user_type,
-      elSpaceId: user.el_space_id,
+      userId: user?.id,
+      userType: user?.user_type,
+      elSpaceId: user?.el_space_id,
       type: result.type || type,
       verified: true,
       timestamp: Date.now()

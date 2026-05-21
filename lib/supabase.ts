@@ -91,14 +91,14 @@ export const createUser = async (email: string, name: string, userType: 'client'
     .from('users')
     .insert([{ 
       email, 
-      name, 
+      full_name: name,
       user_type: userType, 
       verified_badge: 0, 
       role: 'user',
       el_space_id,
-      created_at: new Date(),
-      updated_at: new Date()
-    }])
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    } as any])
     .select();
   return { data: data?.[0], error };
 };

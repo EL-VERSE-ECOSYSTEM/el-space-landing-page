@@ -9,29 +9,39 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing transfer details' }, { status: 400 });
     }
 
-    // 1. Verify Transaction PIN (In real app, this would be hashed in DB)
+    // 1. Get user data
     const { data: user, error: userError } = await supabase
       .from('users')
-      .select('transaction_pin, balance')
+      .select('transaction_pin, full_name')
       .eq('id', senderId)
-      .single();
+      .single() as any;
 
     if (userError || !user) throw new Error('Sender not found');
+
+    // 2. Verify Transaction PIN
     if (user.transaction_pin !== transactionPin) {
       return NextResponse.json({ error: 'Invalid Transaction PIN' }, { status: 403 });
     }
 
-    // 2. Check balance
-    if (user.balance < amount) {
+    // 3. Check wallet balance
+    const { data: wallet, error: walletError } = await supabase
+      .from('wallets')
+      .select('balance')
+      .eq('user_id', senderId)
+      .single() as any;
+
+    if (walletError || !wallet) throw new Error('Wallet not found');
+
+    if (wallet.balance < amount) {
       return NextResponse.json({ error: 'Insufficient funds' }, { status: 400 });
     }
 
-    // 3. Find recipient by Space ID
+    // 4. Find recipient by Space ID
     const { data: recipient, error: recError } = await supabase
       .from('users')
       .select('id, full_name')
       .eq('el_space_id', recipientSpaceId)
-      .single();
+      .single() as any;
 
     if (recError || !recipient) {
       return NextResponse.json({ error: 'Recipient Space ID not found' }, { status: 404 });
