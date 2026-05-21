@@ -6,17 +6,23 @@ import Link from 'next/link'
 
 export default function PricingPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <Navbar />
       
-      <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 relative">
+        {/* Background Decorative Elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-cyan-500/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
+        </div>
+
         {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">
-            Transparent Pricing
+        <div className="text-center mb-24 relative z-10">
+          <h1 className="text-6xl font-black mb-6 tracking-tight text-slate-900">
+            Predictable <span className="bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">Economics</span>
           </h1>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            No hidden fees. No surprises. Our pricing is simple, transparent, and designed to work for projects of any size.
+          <p className="text-slate-500 text-xl max-w-2xl mx-auto font-medium leading-relaxed">
+            Eliminating the complexity of global hiring with zero hidden costs and total transparency.
           </p>
         </div>
 
@@ -24,69 +30,66 @@ export default function PricingPage() {
         <Pricing />
 
         {/* Pricing Details */}
-        <section className="mt-16">
-          <h2 className="text-3xl font-bold text-white mb-8 text-center">How Our Pricing Works</h2>
+        <section className="mt-24 relative z-10">
+          <h2 className="text-4xl font-black text-slate-900 mb-16 text-center tracking-tight">Structured For Success</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
             {/* For Clients */}
-            <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700 rounded-lg p-8">
-              <h3 className="text-2xl font-bold text-white mb-6">For Clients</h3>
+            <div className="bg-white/80 backdrop-blur-xl border border-slate-200 rounded-[3rem] p-12 shadow-2xl shadow-slate-200/40 hover:-translate-y-2 transition-all duration-500">
+              <div className="w-16 h-16 bg-cyan-100 rounded-2xl flex items-center justify-center mb-8">
+                 <span className="text-3xl">🏢</span>
+              </div>
+              <h3 className="text-3xl font-black text-slate-900 mb-8 tracking-tight">Enterprise Scale</h3>
               
-              <div className="space-y-4">
-                <div>
-                  <p className="text-slate-300 font-semibold mb-2">Project Size: Micro (Under $500)</p>
-                  <p className="text-cyan-400 font-bold">Free</p>
-                  <p className="text-slate-400 text-sm">Perfect for small bug fixes and minimal changes</p>
-                </div>
-
-                <div className="border-t border-slate-600 pt-4">
-                  <p className="text-slate-300 font-semibold mb-2">Project Size: Small ($500 - $2,500)</p>
-                  <p className="text-cyan-400 font-bold">$25-50</p>
-                  <p className="text-slate-400 text-sm">Great for website redesigns and small applications</p>
-                </div>
-
-                <div className="border-t border-slate-600 pt-4">
-                  <p className="text-slate-300 font-semibold mb-2">Project Size: Medium ($2,500 - $10,000)</p>
-                  <p className="text-cyan-400 font-bold">$100-500</p>
-                  <p className="text-slate-400 text-sm">Ideal for full builds and custom features</p>
-                </div>
-
-                <div className="border-t border-slate-600 pt-4">
-                  <p className="text-slate-300 font-semibold mb-2">Project Size: Large ($10,000+)</p>
-                  <p className="text-cyan-400 font-bold">Flat rate (Negotiable)</p>
-                  <p className="text-slate-400 text-sm">Perfect for enterprise solutions and scaling</p>
-                </div>
+              <div className="space-y-8">
+                {[
+                  { label: 'Micro Projects', budget: 'Under $500', fee: 'Free', desc: 'Maintenance and small fixes' },
+                  { label: 'Standard Builds', budget: '$500 - $5k', fee: '$25 - $100', desc: 'Web apps and UI/UX design' },
+                  { label: 'Strategic Ops', budget: '$5k - $20k', fee: '2% Flat', desc: 'Full-stack infrastructure' }
+                ].map((item, i) => (
+                  <div key={i} className="group">
+                    <div className="flex justify-between items-end mb-2">
+                       <p className="text-slate-400 font-black text-[10px] uppercase tracking-[0.2em]">{item.label}</p>
+                       <p className="text-cyan-600 font-black text-xl">{item.fee}</p>
+                    </div>
+                    <div className="flex justify-between items-center mb-3">
+                       <p className="text-slate-900 font-bold">{item.budget}</p>
+                    </div>
+                    <p className="text-slate-500 text-sm">{item.desc}</p>
+                    {i < 2 && <div className="mt-8 border-t border-slate-100" />}
+                  </div>
+                ))}
               </div>
             </div>
 
             {/* For Freelancers */}
-            <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700 rounded-lg p-8">
-              <h3 className="text-2xl font-bold text-white mb-6">For Freelancers</h3>
+            <div className="bg-slate-900 rounded-[3rem] p-12 shadow-2xl shadow-slate-900/20 hover:-translate-y-2 transition-all duration-500 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-700">
+                <span className="text-9xl">🚀</span>
+              </div>
+              <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-8 backdrop-blur-md">
+                 <span className="text-3xl">💎</span>
+              </div>
+              <h3 className="text-3xl font-black text-white mb-8 tracking-tight">Creator Earnings</h3>
               
-              <div className="space-y-4">
-                <div>
-                  <p className="text-slate-300 font-semibold mb-2">Starter: 0 - $1,000/month</p>
-                  <p className="text-green-400 font-bold">10% Commission</p>
-                  <p className="text-slate-400 text-sm">Perfect while building your reputation</p>
-                </div>
-
-                <div className="border-t border-slate-600 pt-4">
-                  <p className="text-slate-300 font-semibold mb-2">Professional: $1,000 - $5,000/month</p>
-                  <p className="text-green-400 font-bold">8% Commission</p>
-                  <p className="text-slate-400 text-sm">For established professionals</p>
-                </div>
-
-                <div className="border-t border-slate-600 pt-4">
-                  <p className="text-slate-300 font-semibold mb-2">Expert: $5,000+/month</p>
-                  <p className="text-green-400 font-bold">5% Commission</p>
-                  <p className="text-slate-400 text-sm">Reward for top-rated freelancers</p>
-                </div>
-
-                <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-4 mt-4">
-                  <p className="text-slate-300 text-sm">
-                    <strong>Bonus:</strong> Higher tier commission rates unlock exclusive opportunities and priority support!
-                  </p>
-                </div>
+              <div className="space-y-8 relative z-10">
+                {[
+                  { label: 'Network Entry', volume: '$0 - $2k/mo', commission: '10%', desc: 'Building your elite reputation' },
+                  { label: 'Established Elite', volume: '$2k - $10k/mo', commission: '7%', desc: 'Preferential marketplace placement' },
+                  { label: 'The 1% Club', volume: '$10k+/mo', commission: '5%', desc: 'Lowest fees in the industry' }
+                ].map((item, i) => (
+                  <div key={i}>
+                    <div className="flex justify-between items-end mb-2">
+                       <p className="text-slate-500 font-black text-[10px] uppercase tracking-[0.2em]">{item.label}</p>
+                       <p className="text-cyan-400 font-black text-xl">{item.commission}</p>
+                    </div>
+                    <div className="flex justify-between items-center mb-3">
+                       <p className="text-white font-bold">{item.volume}</p>
+                    </div>
+                    <p className="text-slate-400 text-sm">{item.desc}</p>
+                    {i < 2 && <div className="mt-8 border-t border-white/5" />}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -186,16 +189,17 @@ export default function PricingPage() {
         </section>
 
         {/* CTA */}
-        <section className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-lg p-12 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">Start Today</h2>
-          <p className="text-slate-400 mb-8">
-            Join thousands of successful professionals. No credit card required.
+        <section className="bg-gradient-to-r from-cyan-600 to-blue-700 rounded-[2.5rem] p-16 text-center shadow-2xl shadow-cyan-600/20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20 pointer-events-none" />
+          <h2 className="text-5xl font-black text-white mb-6 relative z-10 tracking-tight">Global. Digital. Absolute.</h2>
+          <p className="text-cyan-100 mb-10 text-xl font-medium relative z-10 max-w-xl mx-auto">
+            Ready to experience the future of professional commerce?
           </p>
           <Link
             href="/auth/register"
-            className="inline-block px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold rounded-lg transition-colors"
+            className="inline-block px-12 py-5 bg-white text-slate-900 font-black rounded-2xl transition-all hover:bg-slate-900 hover:text-white hover:shadow-2xl uppercase tracking-[0.2em] text-sm relative z-10"
           >
-            Sign Up Now
+            Initiate Account
           </Link>
         </section>
 
