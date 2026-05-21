@@ -56,19 +56,19 @@ export interface Wallet {
   balance: number;
   currency: string;
   escrow_balance?: number;
+  pending_balance?: number;
+  total_earned?: number;
 }
 
-// Check if we're in a build environment where env vars might not be fully available
+// Check if we're in a build environment
 const isBuildTime = () => {
   return typeof process !== 'undefined' && 
          typeof process.env !== 'undefined' &&
          process.env.NEXT_PHASE === 'phase-production-build';
 };
 
-// Create a mock Supabase client for build time or missing environment variables
 const createMockClient = () => {
   const mockResponse = { data: null, error: null, count: 0 };
-  
   const builder: any = {
     select: () => builder,
     insert: () => builder,
@@ -127,46 +127,27 @@ const createMockClient = () => {
   };
 };
 
-// Initialize Supabase client lazily to avoid build-time errors
 let supabaseInstance: any = null;
 
 const getSupabaseClient = () => {
-  // Return mock client during build time
-  if (isBuildTime()) {
-    return createMockClient();
-  }
-
-  // Return cached instance if available
-  if (supabaseInstance) {
-    return supabaseInstance;
-  }
+  if (isBuildTime()) return createMockClient();
+  if (supabaseInstance) return supabaseInstance;
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  // Check if we have valid environment variables
-  if (!supabaseUrl || !supabaseAnonKey ||
-      supabaseUrl.includes('placeholder') ||
-      supabaseAnonKey.includes('placeholder')) {
+  if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('placeholder')) {
     return createMockClient();
-  } else {
-    supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);
   }
-
+  supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);
   return supabaseInstance;
 };
 
-// Export a proxy that intercepts all method calls
 export const supabase = new Proxy({} as any, {
   get(target, prop) {
     const client = getSupabaseClient();
     const value = Reflect.get(client, prop);
-    
-    // If it's a function, bind it to the client
-    if (typeof value === 'function') {
-      return value.bind(client);
-    }
-    
+    if (typeof value === 'function') return value.bind(client);
     return value;
   }
 });
@@ -174,63 +155,32 @@ export const supabase = new Proxy({} as any, {
 // ============ USERS ============
 
 export const createUser = async (email: string, name: string, userType: 'client' | 'freelancer') => {
-  let el_space_id = `EL-${Math.floor(10000000 + Math.random() * 90000000)}`;
-  
-  // Try to ensure uniqueness
-  const { data: existing } = await getUserBySpaceId(el_space_id);
-  if (existing) {
-    el_space_id = `EL-${Math.floor(10000000 + Math.random() * 90000000)}`;
-  }
-
+  const el_space_id = `EL-${Math.floor(10000000 + Math.random() * 90000000)}`;
   const { data, error } = await supabase
     .from('users')
-    .insert([{ 
-      email, 
-      full_name: name,
-      user_type: userType, 
-      verified_badge: 0, 
-      role: 'user',
-      el_space_id,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    }])
+    .insert([{ email, full_name: name, user_type: userType, verified_badge: 0, role: 'user', el_space_id, created_at: new Date().toISOString(), updated_at: new Date().toISOString() }])
     .select();
   return { data: (data?.[0] as User) || null, error };
 };
 
-export const deleteUser = async (userId: string) => {
-  const { error } = await supabase
-    .from('users')
-    .delete()
-    .eq('id', userId);
-  return { error };
-};
-
 export const getUser = async (email: string) => {
-  const { data, error } = await supabase
-    .from('users')
-    .select('*')
-    .eq('email', email)
-    .maybeSingle();
+  const { data, error } = await supabase.from('users').select('*').eq('email', email).maybeSingle();
   return { data: (data as User) || null, error };
 };
 
 export const getUserById = async (id: string) => {
-  const { data, error } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', id)
-    .maybeSingle();
+  const { data, error } = await supabase.from('users').select('*').eq('id', id).maybeSingle();
   return { data: (data as User) || null, error };
 };
 
 export const getUserBySpaceId = async (spaceId: string) => {
-  const { data, error } = await supabase
-    .from('users')
-    .select('*')
-    .eq('el_space_id', spaceId)
-    .maybeSingle();
+  const { data, error } = await supabase.from('users').select('*').eq('el_space_id', spaceId).maybeSingle();
   return { data: (data as User) || null, error };
+};
+
+export const deleteUser = async (userId: string) => {
+  const { error } = await supabase.from('users').delete().eq('id', userId);
+  return { error };
 };
 
 // ============ PROJECTS & FEED ============
@@ -362,7 +312,7 @@ export const getFreelancersBySkills = async (skills: string[], limit = 10) => {
 export const updateFreelancerProfile = async (userId: string, updates: any) => {
   const { data, error } = await supabase
     .from('freelancer_profiles')
-    .update({ ...updates, updated_at: new Date().toISOString() })
+    .update({ ...updates, updated_at: new Date() })
     .eq('user_id', userId)
     .select();
   return { data: data?.[0] || null, error };
@@ -424,13 +374,16 @@ export const createWallet = async (userId: string) => {
   return { data: (data?.[0] as Wallet) || null, error };
 };
 
-export const updateWalletBalance = async (userId: string, amount: number) => {
-  // Use a RPC call for atomic increment to avoid race conditions
-  const { data, error } = await supabase.rpc('increment_wallet_balance', {
-    user_id_param: userId,
-    amount_param: amount
-  });
-  return { data, error };
+export const updateWalletBalance = async (userId: string, balance: number, pending_balance: number = 0, total_earned?: number) => {
+  const updateData: any = { balance, pending_balance };
+  if (total_earned !== undefined) updateData.total_earned = total_earned;
+
+  const { data, error } = await supabase
+    .from('wallets')
+    .update(updateData)
+    .eq('user_id', userId)
+    .select();
+  return { data: data?.[0], error };
 };
 
 export const internalTransfer = async (fromUserId: string, toSpaceId: string, amount: number) => {
@@ -732,15 +685,6 @@ export const recordMediationOutcome = async (disputeId: string, outcome: any) =>
     }])
     .select();
   return { data: data?.[0] || null, error };
-};
-
-export const getMediationOutcome = async (disputeId: string) => {
-  const { data, error } = await supabase
-    .from('mediation_outcomes')
-    .select('*')
-    .eq('dispute_id', disputeId)
-    .maybeSingle();
-  return { data, error };
 };
 
 export const escalateDispute = async (disputeId: string, escalationReason: string) => {

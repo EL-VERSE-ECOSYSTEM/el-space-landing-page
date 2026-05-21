@@ -7,8 +7,10 @@ interface AuthUser {
   el_space_id?: string
   email: string
   name: string
+  full_name?: string
   role: 'client' | 'freelancer' | 'admin'
   avatar?: string
+  avatar_url?: string
 }
 
 interface AuthContextType {

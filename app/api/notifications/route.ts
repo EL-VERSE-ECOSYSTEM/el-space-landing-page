@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: true,
       notifications: notifications || [],
-      unread: notifications?.filter(n => n.status === 'unread').length || 0
+      unread: (notifications as any[])?.filter((n: any) => n.status === 'unread').length || 0
     });
   } catch (error) {
     console.error('[Notifications] Error fetching:', error);

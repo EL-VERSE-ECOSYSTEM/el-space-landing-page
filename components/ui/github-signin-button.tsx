@@ -8,19 +8,21 @@ import { toast } from 'sonner'
 interface GitHubSignInProps {
   onSuccess?: (token: string) => void
   onError?: (error: string) => void
-  size?: 'sm' | 'md' | 'lg'
-  variant?: 'default' | 'outline'
+  size?: 'sm' | 'default' | 'lg' | 'icon'
+  variant?: 'default' | 'outline' | 'ghost'
   fullWidth?: boolean
   text?: string
+  className?: string
 }
 
 export function GitHubSignInButton({
   onSuccess,
   onError,
-  size = 'md',
+  size = 'default',
   variant = 'outline',
   fullWidth = false,
   text = 'Continue with GitHub',
+  className = '',
 }: GitHubSignInProps) {
   const [loading, setLoading] = useState(false)
 
@@ -51,8 +53,8 @@ export function GitHubSignInButton({
       onClick={handleGitHubSignIn}
       disabled={loading}
       variant={variant}
-      size={size}
-      className={fullWidth ? 'w-full' : ''}
+      size={size as any}
+      className={`${fullWidth ? 'w-full' : ''} ${className}`}
     >
       {loading ? (
         <>

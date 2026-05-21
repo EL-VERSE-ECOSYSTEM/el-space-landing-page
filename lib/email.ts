@@ -49,7 +49,7 @@ export async function sendEmail({
 }
 
 // Welcome Emails
-export async function sendClientWelcomeEmail(email: string, data: unknown) {
+export async function sendClientWelcomeEmail(email: string, data: any) {
   const subject = 'Welcome to EL SPACE - Your Freelancer Marketplace';
   const text = `
 Welcome ${data.clientName}!
@@ -69,7 +69,7 @@ The EL SPACE Team
   return sendEmail({ to: email, subject, text: replacePlaceholders(text, data) });
 }
 
-export async function sendFreelancerWelcomeEmail(email: string, data: unknown) {
+export async function sendFreelancerWelcomeEmail(email: string, data: any) {
   const subject = 'Welcome to EL SPACE - Start Earning';
   const text = `
 Welcome ${data.freelancerName}!
@@ -276,7 +276,7 @@ export async function sendOTPEmail(email: string, otp: string, type: 'register' 
 }
 
 // Milestone Funded Email
-export async function sendMilestoneFundedEmail(to: string, type: 'client' | 'freelancer', data: unknown) {
+export async function sendMilestoneFundedEmail(to: string, type: 'client' | 'freelancer', data: any) {
   const subject = type === 'client'
     ? `✅ Milestone Funded – "${data.projectTitle}"`
     : `💰 Milestone Funded – Start Working on "${data.projectTitle}"`;
@@ -320,7 +320,7 @@ Dashboard: {{dashboardUrl}}
 }
 
 // Daily Standup Reminder
-export async function sendDailyStandupReminderEmail(to: string, data: unknown) {
+export async function sendDailyStandupReminderEmail(to: string, data: any) {
   const subject = `⏰ Daily Standup Reminder – "${data.projectTitle}"`;
   
   const text = `
@@ -341,8 +341,8 @@ Dashboard: {{dashboardUrl}}
 }
 
 // Payment Received
-export async function sendPaymentReceivedEmail(to: string, data: unknown) {
-  const subject = `💵 Payment Received – $${data.yourEarnings} for "${data.projectTitle}"`;
+export async function sendPaymentReceivedEmail(to: string, data: any) {
+  const subject = `💵 Payment Received – $${(data as any).yourEarnings} for "${(data as any).projectTitle}"`;
   
   const text = `
 Hi {{freelancerName}},
@@ -365,7 +365,7 @@ The EL SPACE Team
 }
 
 // Project Completion
-export async function sendProjectCompleteWithReviewEmail(to: string, type: 'client' | 'freelancer', data: unknown) {
+export async function sendProjectCompleteWithReviewEmail(to: string, type: 'client' | 'freelancer', data: any) {
   const subject = type === 'client'
     ? `🎉 Project Complete – Leave a Review`
     : `🎉 Project Complete – Leave a Review`;
@@ -403,7 +403,7 @@ export async function sendProjectCompletionEmail(to: string, type: 'client' | 'f
 }
 
 // Post-Match Notifications
-export async function sendPostMatchEmail(to: string, type: 'client' | 'freelancer', data: unknown) {
+export async function sendPostMatchEmail(to: string, type: 'client' | 'freelancer', data: any) {
   const subject = type === 'client'
     ? `🎯 Your Matches Are Ready for "{{projectTitle}}"`
     : `🎯 New Match – Client Interested in Your Profile`;

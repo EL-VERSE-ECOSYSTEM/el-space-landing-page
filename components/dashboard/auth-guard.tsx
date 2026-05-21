@@ -76,9 +76,10 @@ export function AuthGuard({ children, userType, redirectPath }: {
   }
 
   // Check user type if specified
-  if (userType && user.user_type !== userType && user.userType !== userType) {
+  const u = user as any;
+  if (userType && u.user_type !== userType && u.userType !== userType) {
     // Redirect to correct dashboard
-    window.location.href = user.user_type === "freelancer" ? "/freelancer" : "/client";
+    window.location.href = u.user_type === "freelancer" ? "/freelancer" : "/client";
     return null;
   }
 
@@ -99,8 +100,9 @@ export function DashboardLayout({
 
   if (!user) return null;
 
-  const userName = user.name || user.email || "User";
-  const elSpaceId = user.el_space_id || "EL-XXXXXXXX";
+  const u = user as any;
+  const userName = u.name || u.email || "User";
+  const elSpaceId = u.el_space_id || "EL-XXXXXXXX";
 
   return (
     <div className="min-h-screen bg-slate-900">

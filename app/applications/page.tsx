@@ -150,7 +150,7 @@ export default function ApplicationsPage() {
         </div>
 
         {/* View Mode Tabs */}
-        <Tabs defaultValue="list" onValueChange={(value) => setViewMode(value)} className="space-y-4">
+        <Tabs defaultValue="list" onValueChange={(value) => setViewMode(value as any)} className="space-y-4">
           <TabsList className="bg-slate-800 border border-slate-700">
             <TabsTrigger value="list" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
