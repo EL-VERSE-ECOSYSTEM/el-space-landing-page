@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
     
     try {
       // First try to decode the ID token (it's a JWT)
-      const decoded = jwt.decode(id_token, { complete: false });
+      const decoded = jwt.decode(tokenData.id_token) as any;
       userInfo = {
         id: decoded.sub,
         email: decoded.email,

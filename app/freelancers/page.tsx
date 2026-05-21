@@ -7,7 +7,7 @@ import { FeaturedTalent } from '@/components/sections/FeaturedTalent'
 import { Footer } from '@/components/sections/Footer'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Search, Filter, Star, MapPin, Briefcase, DollarSign } from 'lucide-react'
+import { Search, Filter, Star, MapPin, Briefcase, DollarSign, ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 
 export default function FreelancersPage() {
@@ -22,6 +22,7 @@ export default function FreelancersPage() {
     badges: string[];
     completedProjects: number;
     responseTime: string;
+    avatar_url?: string;
   }
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedSkill, setSelectedSkill] = useState('')
@@ -63,33 +64,39 @@ export default function FreelancersPage() {
     })
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <Navbar />
       
-      <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 relative">
+        {/* Gradients */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-cyan-500/5 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 right-10 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
+        </div>
+
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">
-            Browse Talented Freelancers
+        <div className="mb-16 relative z-10">
+          <h1 className="text-6xl font-black mb-6 tracking-tight text-slate-900">
+            The <span className="bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">Global Elite</span>
           </h1>
-          <p className="text-slate-400 text-lg">
-            Find the perfect professional for your project. All freelancers are verified and vetted.
+          <p className="text-slate-500 text-xl font-medium max-w-2xl">
+            Access the top 1% of specialized talent. Every professional in our network is rigorously vetted for technical excellence.
           </p>
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-gradient-to-r from-slate-800/50 to-slate-900/50 border border-slate-700 rounded-lg p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="bg-white/80 backdrop-blur-xl border border-slate-200 rounded-[2rem] p-8 mb-12 shadow-2xl shadow-slate-200/50 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {/* Search */}
             <div className="md:col-span-2">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
                 <Input
                   type="text"
                   placeholder="Search by name, title, or skill..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 bg-slate-700/50 border-slate-600 text-white placeholder-slate-500"
+                  className="pl-12 h-14 bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400 rounded-2xl focus:ring-cyan-500 focus:border-cyan-500"
                 />
               </div>
             </div>
@@ -98,7 +105,7 @@ export default function FreelancersPage() {
             <select
               value={selectedSkill}
               onChange={(e) => setSelectedSkill(e.target.value)}
-              className="px-4 py-2 bg-slate-700/50 border border-slate-600 text-white rounded-lg hover:border-slate-500 transition-colors"
+              className="px-4 h-14 bg-slate-50 border-slate-200 text-slate-900 rounded-2xl hover:border-slate-300 transition-all appearance-none cursor-pointer focus:ring-cyan-500"
             >
               <option value="">All Skills</option>
               {allSkills.map(skill => (
@@ -110,7 +117,7 @@ export default function FreelancersPage() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 bg-slate-700/50 border border-slate-600 text-white rounded-lg hover:border-slate-500 transition-colors"
+              className="px-4 h-14 bg-slate-50 border-slate-200 text-slate-900 rounded-2xl hover:border-slate-300 transition-all appearance-none cursor-pointer focus:ring-cyan-500"
             >
               <option value="rating">Top Rated</option>
               <option value="price">Price: Low to High</option>
@@ -120,87 +127,87 @@ export default function FreelancersPage() {
         </div>
 
         {/* Results Count */}
-        <div className="mb-6 flex items-center justify-between">
-          <p className="text-slate-400">
-            Found <strong className="text-white">{filteredFreelancers.length}</strong> freelancers
+        <div className="mb-8 flex items-center justify-between relative z-10 px-2">
+          <p className="text-slate-500 font-medium">
+            Found <strong className="text-slate-900 font-black">{filteredFreelancers.length}</strong> available professionals
           </p>
           <div className="flex gap-2">
-            <button className="px-4 py-2 bg-slate-700/50 border border-slate-600 text-slate-300 rounded-lg hover:bg-slate-700 transition-colors flex items-center gap-2">
+            <button className="px-6 py-3 bg-white border border-slate-200 text-slate-700 font-bold rounded-2xl hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm">
               <Filter className="w-4 h-4" />
-              More Filters
+              Refine Search
             </button>
           </div>
         </div>
 
         {/* Freelancers Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20 relative z-10">
           {filteredFreelancers.length > 0 ? (
             filteredFreelancers.map((freelancer) => (
-              <Link key={freelancer.id} href={`/freelancer/${freelancer.id}`}>
-                <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700 rounded-lg p-6 hover:border-cyan-500/50 transition-all hover:shadow-lg hover:shadow-cyan-500/20 cursor-pointer h-full">
-                  {/* Header */}
-                  <div className="mb-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <div>
-                        <h3 className="text-lg font-bold text-white">{freelancer.name}</h3>
-                        <p className="text-slate-400 text-sm">{freelancer.title}</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-cyan-400 font-bold">{freelancer.hourlyRate}</p>
-                      </div>
-                    </div>
+              <Link key={freelancer.id} href={`/freelancer/${freelancer.id}`} className="group">
+                <div className="bg-white border border-slate-200 rounded-[2.5rem] p-8 hover:border-transparent transition-all duration-500 hover:shadow-2xl hover:shadow-slate-200/50 flex flex-col h-full relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                     <ArrowUpRight className="w-6 h-6 text-cyan-600" />
+                  </div>
 
-                    {/* Rating */}
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-1">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        <span className="font-bold text-white">{freelancer.rating}</span>
-                      </div>
-                      <span className="text-slate-400 text-sm">({freelancer.reviews} reviews)</span>
+                  {/* Avatar & Header */}
+                  <div className="flex items-center gap-5 mb-8">
+                    <div className="w-20 h-20 rounded-3xl bg-slate-100 flex items-center justify-center border-2 border-white shadow-lg overflow-hidden shrink-0">
+                      {freelancer.avatar_url ? (
+                        <img src={freelancer.avatar_url} alt="" className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-2xl font-black text-slate-300">{(freelancer.name || 'U').charAt(0)}</span>
+                      )}
+                    </div>
+                    <div className="overflow-hidden">
+                      <h3 className="text-xl font-black text-slate-900 truncate tracking-tight">{freelancer.name}</h3>
+                      <p className="text-slate-500 text-xs font-bold uppercase tracking-widest truncate">{freelancer.title}</p>
                     </div>
                   </div>
 
-                  {/* Stats */}
-                  <div className="grid grid-cols-2 gap-2 mb-4 p-3 bg-slate-700/20 rounded-lg">
+                  {/* Pricing & Rating */}
+                  <div className="flex justify-between items-center mb-8 bg-slate-50 p-4 rounded-2xl border border-slate-100">
                     <div>
-                      <p className="text-slate-400 text-xs">Projects Completed</p>
-                      <p className="text-white font-bold">{freelancer.completedProjects}</p>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Rate</p>
+                      <p className="text-slate-900 font-black text-lg">{freelancer.hourlyRate}</p>
                     </div>
-                    <div>
-                      <p className="text-slate-400 text-xs">Response Time</p>
-                      <p className="text-white font-bold">{freelancer.responseTime}</p>
+                    <div className="text-right">
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Reputation</p>
+                      <div className="flex items-center gap-1">
+                        <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                        <span className="font-black text-slate-900">{freelancer.rating}</span>
+                      </div>
                     </div>
                   </div>
 
                   {/* Skills */}
-                  <div className="mb-4">
-                    <p className="text-slate-400 text-xs mb-2">Skills</p>
+                  <div className="mb-8 flex-1">
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Core Tech Stack</p>
                     <div className="flex flex-wrap gap-2">
-                      {freelancer.skills.slice(0, 3).map(skill => (
-                        <span key={skill} className="px-2 py-1 bg-cyan-500/20 border border-cyan-500/50 text-cyan-400 text-xs rounded">
+                      {freelancer.skills.slice(0, 4).map(skill => (
+                        <span key={skill} className="px-3 py-1.5 bg-white border border-slate-200 text-slate-600 text-xs font-bold rounded-xl shadow-sm">
                           {skill}
                         </span>
                       ))}
-                      {freelancer.skills.length > 3 && (
-                        <span className="px-2 py-1 bg-slate-700/50 border border-slate-600 text-slate-400 text-xs rounded">
-                          +{freelancer.skills.length - 3}
+                      {freelancer.skills.length > 4 && (
+                        <span className="px-3 py-1.5 bg-slate-900 text-white text-xs font-black rounded-xl">
+                          +{freelancer.skills.length - 4}
                         </span>
                       )}
                     </div>
                   </div>
 
                   {/* Badges */}
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div className="flex flex-wrap gap-2 mb-8">
                     {freelancer.badges.map(badge => (
-                      <span key={badge} className="px-2 py-1 bg-green-500/20 border border-green-500/50 text-green-400 text-xs rounded-full">
+                      <span key={badge} className="px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-100">
                         {badge}
                       </span>
                     ))}
                   </div>
 
                   {/* CTA Button */}
-                  <Button className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold">
-                    View Profile
+                  <Button className="w-full h-14 bg-slate-900 hover:bg-cyan-600 text-white font-black text-lg rounded-2xl transition-all duration-300">
+                    Engage Talent
                   </Button>
                 </div>
               </Link>
@@ -222,20 +229,23 @@ export default function FreelancersPage() {
         </div>
 
         {/* Featured Talent Section */}
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold text-white mb-8">Featured Talent</h2>
+        <section className="mb-24 relative z-10">
+          <h2 className="text-4xl font-black text-slate-900 mb-12 tracking-tight">Featured <span className="text-cyan-600">Talent</span></h2>
           <FeaturedTalent />
         </section>
 
         {/* Categories */}
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold text-white mb-8">Popular Categories</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <section className="mb-24 relative z-10">
+          <h2 className="text-4xl font-black text-slate-900 mb-12 tracking-tight">Industry <span className="text-purple-600">Specializations</span></h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {['Web Development', 'Mobile Development', 'UI/UX Design', 'Cloud Architecture', 'Data Science', 'Blockchain', 'DevOps', 'AI/ML'].map(category => (
               <button
                 key={category}
-                className="p-4 bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700 rounded-lg hover:border-cyan-500/50 transition-colors text-white hover:bg-slate-800/70"
+                className="p-8 bg-white border border-slate-200 rounded-[2rem] hover:border-transparent hover:shadow-xl transition-all text-slate-900 font-black text-lg text-left group"
               >
+                <div className="mb-4 w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center group-hover:bg-cyan-50 transition-colors">
+                  <Briefcase className="w-6 h-6 text-slate-400 group-hover:text-cyan-600" />
+                </div>
                 {category}
               </button>
             ))}
@@ -243,26 +253,29 @@ export default function FreelancersPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-lg p-12 text-center mb-12">
-          <h2 className="text-3xl font-bold text-white mb-4">Can&apos;t Find What You&apos;re Looking For?</h2>
-          <p className="text-slate-400 mb-8">
-            Post your project and let freelancers apply. You&apos;ll find the perfect match in no time.
-          </p>
-          <Link
-            href="/jobs/post"
-            className="inline-block px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold rounded-lg transition-colors"
-          >
-            Post a Project
-          </Link>
+        <section className="bg-slate-900 rounded-[3rem] p-16 text-center mb-24 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/20 rounded-full blur-[100px] -mr-48 -mt-48" />
+          <div className="relative z-10 max-w-3xl mx-auto">
+            <h2 className="text-5xl font-black text-white mb-6">Can&apos;t find the right match?</h2>
+            <p className="text-slate-400 text-xl mb-10 font-medium">
+              Launch a custom project request and let our elite network of verified professionals bid for your vision.
+            </p>
+            <Link
+              href="/jobs/post"
+              className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white font-black text-xl rounded-2xl transition-all shadow-xl shadow-cyan-500/20"
+            >
+              Post a Project Request <ArrowUpRight className="w-6 h-6" />
+            </Link>
+          </div>
         </section>
 
         {/* Back Link */}
-        <div className="pt-8 border-t border-slate-700">
+        <div className="pt-12 border-t border-slate-100 flex justify-center">
           <Link
             href="/"
-            className="text-cyan-400 hover:text-cyan-300 transition-colors"
+            className="text-slate-500 hover:text-slate-900 font-bold flex items-center gap-2 transition-colors"
           >
-            ← Back to Home
+            ← Return to Hub
           </Link>
         </div>
       </main>

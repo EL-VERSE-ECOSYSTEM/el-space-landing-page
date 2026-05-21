@@ -1,5 +1,63 @@
 import { createClient } from '@supabase/supabase-js';
 
+// Define core interfaces to improve type safety
+export interface User {
+  id: string;
+  email: string;
+  full_name: string;
+  name?: string; // Legacy alias
+  user_type: 'client' | 'freelancer';
+  role: string;
+  el_space_id: string;
+  avatar_url?: string;
+  profile_picture?: string;
+  verified_badge?: number;
+  password_hash?: string;
+  created_at: string;
+  updated_at: string;
+  user_metadata?: any;
+}
+
+export interface Project {
+  id: string;
+  client_id: string;
+  title: string;
+  description: string;
+  budget_min: number;
+  budget_max: number;
+  total_budget?: number;
+  category: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+  client?: {
+    full_name?: string;
+    name?: string;
+    avatar_url?: string;
+  };
+}
+
+export interface Application {
+  id: string;
+  project_id: string;
+  freelancer_id: string;
+  status: string;
+  proposed_rate?: number;
+  estimated_days?: number;
+  created_at: string;
+  updated_at: string;
+  project?: Project;
+  milestones?: any[];
+}
+
+export interface Wallet {
+  id: string;
+  user_id: string;
+  balance: number;
+  currency: string;
+  escrow_balance?: number;
+}
+
 // Check if we're in a build environment where env vars might not be fully available
 const isBuildTime = () => {
   return typeof process !== 'undefined' && 
@@ -7,31 +65,70 @@ const isBuildTime = () => {
          process.env.NEXT_PHASE === 'phase-production-build';
 };
 
-// Create a mock Supabase client for build time
+// Create a mock Supabase client for build time or missing environment variables
 const createMockClient = () => {
-  const mockResponse = Promise.resolve({ data: null, error: null });
+  const mockResponse = { data: null, error: null, count: 0 };
   
-  const queryBuilder = {
-    select: () => mockResponse,
-    insert: () => mockResponse,
-    update: () => mockResponse,
-    delete: () => mockResponse,
-    eq: function() { return this; },
-    single: () => mockResponse,
-    order: function() { return this; },
-    limit: function() { return this; },
-    contains: function() { return this; },
+  const builder: any = {
+    select: () => builder,
+    insert: () => builder,
+    update: () => builder,
+    delete: () => builder,
+    eq: () => builder,
+    neq: () => builder,
+    gt: () => builder,
+    lt: () => builder,
+    gte: () => builder,
+    lte: () => builder,
+    like: () => builder,
+    ilike: () => builder,
+    is: () => builder,
+    in: () => builder,
+    contains: () => builder,
+    containedBy: () => builder,
+    rangeGt: () => builder,
+    rangeGte: () => builder,
+    rangeLt: () => builder,
+    rangeLte: () => builder,
+    rangeAdjacent: () => builder,
+    overlaps: () => builder,
+    match: () => builder,
+    not: () => builder,
+    or: () => builder,
+    filter: () => builder,
+    order: () => builder,
+    limit: () => builder,
+    range: () => builder,
+    abortSignal: () => builder,
+    single: () => Promise.resolve(mockResponse),
+    maybeSingle: () => Promise.resolve(mockResponse),
+    then: (onfulfilled: any) => Promise.resolve(mockResponse).then(onfulfilled),
   };
 
   return {
-    from: () => queryBuilder,
-    rpc: () => mockResponse,
+    from: () => builder,
+    rpc: () => Promise.resolve(mockResponse),
+    auth: {
+      getUser: () => Promise.resolve({ data: { user: null }, error: null }),
+      getSession: () => Promise.resolve({ data: { session: null }, error: null }),
+      signInWithPassword: () => Promise.resolve({ data: { user: null, session: null }, error: null }),
+      signUp: () => Promise.resolve({ data: { user: null, session: null }, error: null }),
+      signOut: () => Promise.resolve({ error: null }),
+      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
+    },
+    storage: {
+      from: () => ({
+        upload: () => Promise.resolve({ data: null, error: null }),
+        getPublicUrl: () => ({ data: { publicUrl: '' } }),
+        remove: () => Promise.resolve({ data: null, error: null }),
+        list: () => Promise.resolve({ data: [], error: null }),
+      })
+    }
   };
 };
 
 // Initialize Supabase client lazily to avoid build-time errors
-let supabaseInstance: ReturnType<typeof createClient> | null = null;
-let isMockClient = false;
+let supabaseInstance: any = null;
 
 const getSupabaseClient = () => {
   // Return mock client during build time
@@ -51,9 +148,7 @@ const getSupabaseClient = () => {
   if (!supabaseUrl || !supabaseAnonKey ||
       supabaseUrl.includes('placeholder') ||
       supabaseAnonKey.includes('placeholder')) {
-    console.warn('Warning: Supabase environment variables are not properly configured. Using mock client.');
-    isMockClient = true;
-    supabaseInstance = createClient('https://placeholder.supabase.co', 'placeholder-anon-key');
+    return createMockClient();
   } else {
     supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);
   }
@@ -62,7 +157,7 @@ const getSupabaseClient = () => {
 };
 
 // Export a proxy that intercepts all method calls
-export const supabase = new Proxy({} as ReturnType<typeof createClient>, {
+export const supabase = new Proxy({} as any, {
   get(target, prop) {
     const client = getSupabaseClient();
     const value = Reflect.get(client, prop);
@@ -81,7 +176,7 @@ export const supabase = new Proxy({} as ReturnType<typeof createClient>, {
 export const createUser = async (email: string, name: string, userType: 'client' | 'freelancer') => {
   let el_space_id = `EL-${Math.floor(10000000 + Math.random() * 90000000)}`;
   
-  // Try to ensure uniqueness (simple check, though in production you'd use a DB constraint)
+  // Try to ensure uniqueness
   const { data: existing } = await getUserBySpaceId(el_space_id);
   if (existing) {
     el_space_id = `EL-${Math.floor(10000000 + Math.random() * 90000000)}`;
@@ -98,9 +193,9 @@ export const createUser = async (email: string, name: string, userType: 'client'
       el_space_id,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
-    } as any])
+    }])
     .select();
-  return { data: data?.[0], error };
+  return { data: (data?.[0] as User) || null, error };
 };
 
 export const deleteUser = async (userId: string) => {
@@ -116,8 +211,8 @@ export const getUser = async (email: string) => {
     .from('users')
     .select('*')
     .eq('email', email)
-    .single();
-  return { data, error };
+    .maybeSingle();
+  return { data: (data as User) || null, error };
 };
 
 export const getUserById = async (id: string) => {
@@ -125,8 +220,8 @@ export const getUserById = async (id: string) => {
     .from('users')
     .select('*')
     .eq('id', id)
-    .single();
-  return { data, error };
+    .maybeSingle();
+  return { data: (data as User) || null, error };
 };
 
 export const getUserBySpaceId = async (spaceId: string) => {
@@ -134,18 +229,18 @@ export const getUserBySpaceId = async (spaceId: string) => {
     .from('users')
     .select('*')
     .eq('el_space_id', spaceId)
-    .single();
-  return { data, error };
+    .maybeSingle();
+  return { data: (data as User) || null, error };
 };
 
 // ============ PROJECTS & FEED ============
 
-export const createProject = async (projectData: unknown) => {
+export const createProject = async (projectData: any) => {
   const { data, error } = await supabase
     .from('projects')
     .insert([{ ...projectData, status: 'open' }])
     .select();
-  return { data: data?.[0], error };
+  return { data: (data?.[0] as Project) || null, error };
 };
 
 export const getProject = async (projectId: string) => {
@@ -153,8 +248,8 @@ export const getProject = async (projectId: string) => {
     .from('projects')
     .select('*')
     .eq('id', projectId)
-    .single();
-  return { data, error };
+    .maybeSingle();
+  return { data: (data as Project) || null, error };
 };
 
 export const getProjectsByClient = async (clientId: string) => {
@@ -163,7 +258,7 @@ export const getProjectsByClient = async (clientId: string) => {
     .select('*')
     .eq('client_id', clientId)
     .order('created_at', { ascending: false });
-  return { data, error };
+  return { data: (data as Project[]) || [], error };
 };
 
 export const getOpenProjects = async () => {
@@ -172,7 +267,7 @@ export const getOpenProjects = async () => {
     .select('*')
     .eq('status', 'open')
     .order('created_at', { ascending: false });
-  return { data, error };
+  return { data: (data as Project[]) || [], error };
 };
 
 export const getProjectFeed = async (limit = 20) => {
@@ -180,29 +275,29 @@ export const getProjectFeed = async (limit = 20) => {
     .from('projects')
     .select(`
       *,
-      client:users!client_id(name, avatar_url)
+      client:users!client_id(full_name, avatar_url)
     `)
     .eq('status', 'open')
     .order('created_at', { ascending: false })
     .limit(limit);
-  return { data, error };
+  return { data: (data as any[]) || [], error };
 };
 
 export const updateProjectStatus = async (projectId: string, status: string) => {
   const { data, error } = await supabase
     .from('projects')
-    .update({ status, updated_at: new Date() })
+    .update({ status, updated_at: new Date().toISOString() })
     .eq('id', projectId)
     .select();
-  return { data: data?.[0], error };
+  return { data: (data?.[0] as Project) || null, error };
 };
 
-export const createClientProfile = async (userId: string, profileData: unknown) => {
+export const createClientProfile = async (userId: string, profileData: any) => {
   const { data, error } = await supabase
     .from('client_profiles')
     .insert([{ ...profileData, user_id: userId }])
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
 export const getClientProfile = async (userId: string) => {
@@ -210,27 +305,27 @@ export const getClientProfile = async (userId: string) => {
     .from('client_profiles')
     .select('*')
     .eq('user_id', userId)
-    .single();
+    .maybeSingle();
   return { data, error };
 };
 
-export const updateClientProfile = async (userId: string, updates: unknown) => {
+export const updateClientProfile = async (userId: string, updates: any) => {
   const { data, error } = await supabase
     .from('client_profiles')
-    .update({ ...updates, updated_at: new Date() })
+    .update({ ...updates, updated_at: new Date().toISOString() })
     .eq('user_id', userId)
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
 // ============ FREELANCER PROFILES ============
 
-export const createFreelancerProfile = async (userId: string, profileData: unknown) => {
+export const createFreelancerProfile = async (userId: string, profileData: any) => {
   const { data, error } = await supabase
     .from('freelancer_profiles')
     .insert([{ ...profileData, user_id: userId }])
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
 export const getFreelancerProfile = async (userId: string) => {
@@ -238,8 +333,8 @@ export const getFreelancerProfile = async (userId: string) => {
     .from('freelancer_profiles')
     .select('*')
     .eq('user_id', userId)
-    .single();
-  return { data, error };
+    .maybeSingle();
+  return { data: data || null, error };
 };
 
 export const getFreelancers = async (limit = 10) => {
@@ -247,11 +342,11 @@ export const getFreelancers = async (limit = 10) => {
     .from('freelancer_profiles')
     .select(`
       *,
-      user:users!user_id(name, email, avatar_url)
+      user:users!user_id(full_name, email, avatar_url)
     `)
     .order('avg_rating', { ascending: false })
     .limit(limit);
-  return { data, error };
+  return { data: (data as any[]) || [], error };
 };
 
 export const getFreelancersBySkills = async (skills: string[], limit = 10) => {
@@ -261,26 +356,26 @@ export const getFreelancersBySkills = async (skills: string[], limit = 10) => {
     .contains('skills', skills)
     .limit(limit)
     .order('avg_rating', { ascending: false });
-  return { data, error };
+  return { data: (data as any[]) || [], error };
 };
 
-export const updateFreelancerProfile = async (userId: string, updates: unknown) => {
+export const updateFreelancerProfile = async (userId: string, updates: any) => {
   const { data, error } = await supabase
     .from('freelancer_profiles')
-    .update({ ...updates, updated_at: new Date() })
+    .update({ ...updates, updated_at: new Date().toISOString() })
     .eq('user_id', userId)
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
 // ============ MILESTONES ============
 
-export const createMilestone = async (milestoneData: unknown) => {
+export const createMilestone = async (milestoneData: any) => {
   const { data, error } = await supabase
     .from('milestones')
     .insert([{ ...milestoneData, status: 'pending' }])
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
 export const getMilestonesByProject = async (projectId: string) => {
@@ -289,7 +384,7 @@ export const getMilestonesByProject = async (projectId: string) => {
     .select('*')
     .eq('project_id', projectId)
     .order('due_date', { ascending: true });
-  return { data, error };
+  return { data: (data as any[]) || [], error };
 };
 
 export const updateMilestoneStatus = async (milestoneId: string, status: string) => {
@@ -297,12 +392,12 @@ export const updateMilestoneStatus = async (milestoneId: string, status: string)
     .from('milestones')
     .update({ 
       status, 
-      updated_at: new Date(),
-      ...(status === 'released' && { released_at: new Date() })
+      updated_at: new Date().toISOString(),
+      ...(status === 'released' && { released_at: new Date().toISOString() })
     })
     .eq('id', milestoneId)
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
 // ============ WALLETS & TRANSFERS ============
@@ -312,13 +407,13 @@ export const getWallet = async (userId: string) => {
     .from('wallets')
     .select('*')
     .eq('user_id', userId)
-    .single();
+    .maybeSingle();
   
-  if (error && error.code === 'PGRST116') {
+  if (!error && !data) {
     // Wallet doesn't exist, create one
     return createWallet(userId);
   }
-  return { data, error };
+  return { data: (data as Wallet) || null, error };
 };
 
 export const createWallet = async (userId: string) => {
@@ -326,7 +421,7 @@ export const createWallet = async (userId: string) => {
     .from('wallets')
     .insert([{ user_id: userId, balance: 0, currency: 'USD' }])
     .select();
-  return { data: data?.[0], error };
+  return { data: (data?.[0] as Wallet) || null, error };
 };
 
 export const updateWalletBalance = async (userId: string, amount: number) => {
@@ -355,7 +450,7 @@ export const internalTransfer = async (fromUserId: string, toSpaceId: string, am
 
 // ============ PAYMENTS ============
 
-export const createPayment = async (paymentData: unknown) => {
+export const createPayment = async (paymentData: any) => {
   const { data, error } = await supabase
     .from('payments')
     .insert([{ 
@@ -364,7 +459,7 @@ export const createPayment = async (paymentData: unknown) => {
       created_at: new Date()
     }])
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
 export const getPaymentsByProject = async (projectId: string) => {
@@ -382,26 +477,26 @@ export const getAllUserPayments = async (userId: string) => {
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
     .limit(100);
-  return data || [];
+  return (data as any[]) || [];
 };
 
 export const updatePaymentStatus = async (paymentId: string, status: string) => {
   const { data, error } = await supabase
     .from('payments')
-    .update({ status, updated_at: new Date() })
+    .update({ status, updated_at: new Date().toISOString() })
     .eq('id', paymentId)
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
 // ============ REVIEWS ============
 
-export const createReview = async (reviewData: unknown) => {
+export const createReview = async (reviewData: any) => {
   const { data, error } = await supabase
     .from('reviews')
     .insert([{ ...reviewData, both_submitted: false }])
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
 export const getReviewsByUser = async (userId: string) => {
@@ -421,18 +516,18 @@ export const getUserAverageRating = async (userId: string) => {
     .eq('visibility', 'public');
   
   if (error || !data || data.length === 0) return 0;
-  const avgRating = data.reduce((sum, r) => sum + r.rating, 0) / data.length;
+  const avgRating = (data as any[]).reduce((sum, r) => sum + r.rating, 0) / data.length;
   return parseFloat(avgRating.toFixed(1));
 };
 
 // ============ APPLICATIONS ============
 
-export const createApplication = async (applicationData: unknown) => {
+export const createApplication = async (applicationData: any) => {
   const { data, error } = await supabase
     .from('applications')
     .insert([{ ...applicationData, status: 'pending' }])
     .select();
-  return { data: data?.[0], error };
+  return { data: (data?.[0] as Application) || null, error };
 };
 
 export const getApplicationsByProject = async (projectId: string) => {
@@ -441,7 +536,7 @@ export const getApplicationsByProject = async (projectId: string) => {
     .select('*')
     .eq('project_id', projectId)
     .order('created_at', { ascending: false });
-  return { data, error };
+  return { data: (data as Application[]) || [], error };
 };
 
 export const getApplicationsByFreelancer = async (freelancerId: string) => {
@@ -449,16 +544,16 @@ export const getApplicationsByFreelancer = async (freelancerId: string) => {
     .from('applications')
     .select('*')
     .eq('freelancer_id', freelancerId);
-  return { data, error };
+  return { data: (data as Application[]) || [], error };
 };
 
 export const updateApplicationStatus = async (applicationId: string, status: string) => {
   const { data, error } = await supabase
     .from('applications')
-    .update({ status, updated_at: new Date() })
+    .update({ status, updated_at: new Date().toISOString() })
     .eq('id', applicationId)
     .select();
-  return { data: data?.[0], error };
+  return { data: (data?.[0] as Application) || null, error };
 };
 
 // ============ EARNINGS ============
@@ -471,18 +566,18 @@ export const getFreelancerEarnings = async (freelancerId: string) => {
     .eq('status', 'completed');
   
   if (error || !data) return { total: 0, earnings: [] };
-  const total = data.reduce((sum, p) => sum + (p.amount - p.fee_amount), 0);
+  const total = (data as any[]).reduce((sum, p) => sum + (p.amount - p.fee_amount), 0);
   return { total, earnings: data };
 };
 
 // ============ TIME LOGS ============
 
-export const createTimeLog = async (timeLogData: unknown) => {
+export const createTimeLog = async (timeLogData: any) => {
   const { data, error } = await supabase
     .from('time_logs')
     .insert([timeLogData])
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
 export const getTimeLogs = async (projectId: string) => {
@@ -501,7 +596,7 @@ export const saveFreelancer = async (clientId: string, freelancerId: string) => 
     .from('saved_freelancers')
     .insert([{ client_id: clientId, freelancer_id: freelancerId }])
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
 export const getSavedFreelancers = async (clientId: string) => {
@@ -514,7 +609,7 @@ export const getSavedFreelancers = async (clientId: string) => {
 
 // ============ DISPUTES & RESOLUTION ============
 
-export const createDispute = async (disputeData: unknown) => {
+export const createDispute = async (disputeData: any) => {
   const { data, error } = await supabase
     .from('disputes')
     .insert([{ 
@@ -524,7 +619,7 @@ export const createDispute = async (disputeData: unknown) => {
       updated_at: new Date().toISOString()
     }])
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
 export const getDisputesByProject = async (projectId: string) => {
@@ -550,7 +645,7 @@ export const getDispute = async (disputeId: string) => {
     .from('disputes')
     .select('*')
     .eq('id', disputeId)
-    .single();
+    .maybeSingle();
   return { data, error };
 };
 
@@ -570,7 +665,7 @@ export const updateDisputeStatus = async (disputeId: string, status: string, res
     .update(updateData)
     .eq('id', disputeId)
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
 export const addDisputeEvidence = async (disputeId: string, userId: string, evidence: string, attachmentUrl?: string) => {
@@ -584,7 +679,7 @@ export const addDisputeEvidence = async (disputeId: string, userId: string, evid
       created_at: new Date().toISOString()
     }])
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
 export const getDisputeEvidence = async (disputeId: string) => {
@@ -606,7 +701,7 @@ export const createMediationSession = async (disputeId: string, mediatorId: stri
       created_at: new Date().toISOString()
     }])
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
 export const getMediationSession = async (sessionId: string) => {
@@ -614,20 +709,20 @@ export const getMediationSession = async (sessionId: string) => {
     .from('mediation_sessions')
     .select('*')
     .eq('id', sessionId)
-    .single();
+    .maybeSingle();
   return { data, error };
 };
 
-export const updateMediationSession = async (sessionId: string, updates: unknown) => {
+export const updateMediationSession = async (sessionId: string, updates: any) => {
   const { data, error } = await supabase
     .from('mediation_sessions')
     .update({ ...updates, updated_at: new Date().toISOString() })
     .eq('id', sessionId)
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
-export const recordMediationOutcome = async (disputeId: string, outcome: unknown) => {
+export const recordMediationOutcome = async (disputeId: string, outcome: any) => {
   const { data, error } = await supabase
     .from('mediation_outcomes')
     .insert([{
@@ -636,7 +731,7 @@ export const recordMediationOutcome = async (disputeId: string, outcome: unknown
       created_at: new Date().toISOString()
     }])
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
 export const getMediationOutcome = async (disputeId: string) => {
@@ -644,7 +739,7 @@ export const getMediationOutcome = async (disputeId: string) => {
     .from('mediation_outcomes')
     .select('*')
     .eq('dispute_id', disputeId)
-    .single();
+    .maybeSingle();
   return { data, error };
 };
 
@@ -659,7 +754,7 @@ export const escalateDispute = async (disputeId: string, escalationReason: strin
     })
     .eq('id', disputeId)
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
 export const resolveDispute = async (
@@ -680,7 +775,7 @@ export const resolveDispute = async (
     })
     .eq('id', disputeId)
     .select();
-  return { data: data?.[0], error };
+  return { data: data?.[0] || null, error };
 };
 
 // ============ ADMIN HELPERS ============
@@ -690,7 +785,7 @@ export const getAllUsers = async () => {
     .from('users')
     .select('*')
     .order('created_at', { ascending: false });
-  return data || [];
+  return (data as User[]) || [];
 };
 
 export const getAllPayments = async () => {
@@ -698,7 +793,7 @@ export const getAllPayments = async () => {
     .from('payments')
     .select('*')
     .order('created_at', { ascending: false });
-  return data || [];
+  return (data as any[]) || [];
 };
 
 export const getAllJobs = async () => {
@@ -706,5 +801,5 @@ export const getAllJobs = async () => {
     .from('projects')
     .select('*')
     .order('created_at', { ascending: false });
-  return data || [];
+  return (data as Project[]) || [];
 };

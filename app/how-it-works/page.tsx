@@ -6,27 +6,33 @@ import Link from 'next/link'
 
 export default function HowItWorksPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <Navbar />
       
-      <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 relative">
+        {/* Decorative Background Orbs */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[100px]" />
+          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-[100px]" />
+        </div>
+
         {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">
-            How EL SPACE Works
+        <div className="text-center mb-20 relative z-10">
+          <h1 className="text-6xl font-black mb-6 tracking-tight text-slate-900">
+            How <span className="bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">EL SPACE</span> Works
           </h1>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Whether you&apos;re a client looking to hire top talent or a freelancer ready to earn, our platform makes it simple and secure.
+          <p className="text-slate-500 text-xl max-w-2xl mx-auto font-medium leading-relaxed">
+            The friction-less ecosystem for the world&apos;s top tech talent and most ambitious companies.
           </p>
         </div>
 
         {/* Tabs */}
-        <div className="mb-12 flex justify-center gap-4">
-          <button className="px-6 py-2 bg-cyan-500/20 border border-cyan-500/50 text-cyan-400 rounded-lg font-semibold">
-            For Clients
+        <div className="mb-16 flex justify-center gap-4 relative z-10">
+          <button className="px-8 py-3 bg-cyan-600 text-white shadow-xl shadow-cyan-600/20 rounded-2xl font-black text-sm uppercase tracking-widest transition-all hover:scale-105 active:scale-95">
+            Client Hub
           </button>
-          <button className="px-6 py-2 bg-slate-700/50 border border-slate-600 text-slate-300 rounded-lg font-semibold hover:bg-slate-700 transition-colors">
-            For Freelancers
+          <button className="px-8 py-3 bg-slate-100 text-slate-400 rounded-2xl font-black text-sm uppercase tracking-widest transition-all hover:bg-slate-200 hover:text-slate-600">
+            Freelancer Hub
           </button>
         </div>
 
@@ -46,77 +52,47 @@ export default function HowItWorksPage() {
         </section>
 
         {/* Key Features Section */}
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold text-white mb-8 text-center">Why Choose EL SPACE?</h2>
+        <section className="mb-24 relative z-10">
+          <h2 className="text-4xl font-black text-slate-900 mb-12 text-center tracking-tight">The EL SPACE Edge</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700 rounded-lg p-8">
-              <div className="text-4xl mb-4">🔒</div>
-              <h3 className="text-xl font-bold text-white mb-2">Secure Escrow</h3>
-              <p className="text-slate-400">
-                All payments are held securely in escrow until both parties are satisfied with the work.
-              </p>
-            </div>
-
-            <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700 rounded-lg p-8">
-              <div className="text-4xl mb-4">⚡</div>
-              <h3 className="text-xl font-bold text-white mb-2">Fast Payouts</h3>
-              <p className="text-slate-400">
-                Get paid instantly after project completion. Multiple payment methods available.
-              </p>
-            </div>
-
-            <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700 rounded-lg p-8">
-              <div className="text-4xl mb-4">✓</div>
-              <h3 className="text-xl font-bold text-white mb-2">Verified Professionals</h3>
-              <p className="text-slate-400">
-                All users are verified to ensure quality and reliability across the platform.
-              </p>
-            </div>
-
-            <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700 rounded-lg p-8">
-              <div className="text-4xl mb-4">💬</div>
-              <h3 className="text-xl font-bold text-white mb-2">Real-Time Messaging</h3>
-              <p className="text-slate-400">
-                Communicate seamlessly with your team. Keep all conversations in one place.
-              </p>
-            </div>
-
-            <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700 rounded-lg p-8">
-              <div className="text-4xl mb-4">📊</div>
-              <h3 className="text-xl font-bold text-white mb-2">Milestone Tracking</h3>
-              <p className="text-slate-400">
-                Break projects into manageable milestones for better progress tracking and accountability.
-              </p>
-            </div>
-
-            <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700 rounded-lg p-8">
-              <div className="text-4xl mb-4">⭐</div>
-              <h3 className="text-xl font-bold text-white mb-2">Ratings & Reviews</h3>
-              <p className="text-slate-400">
-                Transparent feedback system builds trust and helps you make informed decisions.
-              </p>
-            </div>
+            {[
+              { icon: '🔒', title: 'Secure Escrow', desc: 'Enterprise-grade payment protection for every milestone.' },
+              { icon: '⚡', title: 'Instant Liquidity', desc: 'Get paid immediately upon approval. No net-30 wait times.' },
+              { icon: '💎', title: 'Top 1% Talent', desc: 'Rigorous vetting process ensures elite quality for every hire.' },
+              { icon: '💬', title: 'Contextual Chat', desc: 'Direct, real-time communication built into the workspace.' },
+              { icon: '🎯', title: 'Precision Milestones', desc: 'Granular project tracking for maximum accountability.' },
+              { icon: '⭐', title: 'Verified Reputation', desc: 'Transparent history and peer-reviewed work quality.' }
+            ].map((feature, i) => (
+              <div key={i} className="bg-white/60 backdrop-blur-xl border border-slate-200 rounded-[2.5rem] p-10 hover:shadow-2xl hover:shadow-slate-200/50 transition-all group duration-500">
+                <div className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-500">{feature.icon}</div>
+                <h3 className="text-2xl font-black text-slate-900 mb-3 tracking-tight">{feature.title}</h3>
+                <p className="text-slate-500 font-medium leading-relaxed">
+                  {feature.desc}
+                </p>
+              </div>
+            ))}
           </div>
         </section>
 
         {/* CTA Section */}
-        <section className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-lg p-12 text-center mb-12">
-          <h2 className="text-3xl font-bold text-white mb-4">Ready to Get Started?</h2>
-          <p className="text-slate-400 mb-8 max-w-2xl mx-auto">
-            Join thousands of successful clients and freelancers who have found the perfect match on EL SPACE.
+        <section className="bg-slate-900 rounded-[3rem] p-16 text-center mb-24 relative overflow-hidden shadow-2xl shadow-slate-900/20">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-cyan-500/20 via-transparent to-purple-500/20 pointer-events-none" />
+          <h2 className="text-5xl font-black text-white mb-6 relative z-10 tracking-tight">Ready to transcend?</h2>
+          <p className="text-slate-400 mb-12 max-w-2xl mx-auto text-xl font-medium relative z-10">
+            Join the decentralized workforce where quality is the only currency that matters.
           </p>
-          <div className="flex gap-4 justify-center flex-wrap">
+          <div className="flex gap-6 justify-center flex-wrap relative z-10">
             <Link
               href="/auth/register"
-              className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold rounded-lg transition-colors"
+              className="px-10 py-5 bg-white text-slate-900 font-black rounded-2xl transition-all hover:bg-cyan-400 hover:text-white hover:shadow-xl hover:shadow-cyan-500/30 uppercase tracking-widest text-sm"
             >
               Post a Project
             </Link>
             <Link
               href="/auth/register"
-              className="px-8 py-3 border border-cyan-500 text-cyan-400 hover:bg-cyan-500/10 font-semibold rounded-lg transition-colors"
+              className="px-10 py-5 border-2 border-white/10 text-white font-black rounded-2xl transition-all hover:bg-white/5 uppercase tracking-widest text-sm"
             >
-              Find Work
+              Browse Network
             </Link>
           </div>
         </section>
