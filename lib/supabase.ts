@@ -154,7 +154,7 @@ export const supabase = new Proxy({} as any, {
 
 // ============ USERS ============
 
-export const createUser = async (email: string, name: string, userType: 'client' | 'freelancer') => {
+export const createUser = async (email: string, name: string, userType: 'client' | 'entrepreneur' | 'business' | 'enterprise' | 'freelancer') => {
   const el_space_id = `EL-${Math.floor(10000000 + Math.random() * 90000000)}`;
   const { data, error } = await supabase
     .from('users')

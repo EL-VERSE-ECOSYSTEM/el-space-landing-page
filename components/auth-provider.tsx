@@ -8,7 +8,7 @@ interface AuthUser {
   email: string
   name: string
   full_name?: string
-  role: 'client' | 'freelancer' | 'admin'
+  role: 'client' | 'entrepreneur' | 'business' | 'enterprise' | 'freelancer' | 'admin'
   avatar?: string
   avatar_url?: string
 }

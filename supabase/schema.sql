@@ -130,6 +130,9 @@ CREATE TABLE IF NOT EXISTS wallets (
   user_id UUID REFERENCES users(id) ON DELETE CASCADE UNIQUE NOT NULL,
   balance NUMERIC DEFAULT 0,
   escrow_balance NUMERIC DEFAULT 0,
+  pending_balance NUMERIC DEFAULT 0,
+  total_earned NUMERIC DEFAULT 0,
+  total_withdrawn NUMERIC DEFAULT 0,
   currency TEXT DEFAULT 'USD',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -164,7 +167,7 @@ CREATE TABLE IF NOT EXISTS reviews (
   rating INTEGER CHECK (rating >= 1 AND rating <= 5) NOT NULL,
   comment TEXT,
   visibility TEXT CHECK (visibility IN ('public', 'private')) DEFAULT 'public',
-  reviewer_role TEXT CHECK (reviewer_role IN ('client', 'freelancer')) NOT NULL,
+  reviewer_role TEXT CHECK (reviewer_role IN ('client', 'entrepreneur', 'business', 'enterprise', 'freelancer')) NOT NULL,
   both_submitted BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()

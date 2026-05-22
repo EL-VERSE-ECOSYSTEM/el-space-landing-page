@@ -89,6 +89,7 @@ export default function FreelancerHub() {
           <nav className="hidden md:flex items-center gap-8">
             <button className="text-slate-900 font-black text-sm border-b-2 border-slate-900 pb-1">Dashboard</button>
             <button onClick={() => router.push('/jobs')} className="text-slate-400 hover:text-slate-900 transition-colors font-bold text-sm">Opportunities</button>
+            <button onClick={() => router.push('/portfolio')} className="text-slate-400 hover:text-slate-900 transition-colors font-bold text-sm">Dossier</button>
             <button onClick={() => router.push('/wallet')} className="text-slate-400 hover:text-slate-900 transition-colors font-bold text-sm">Vault</button>
             <button onClick={() => router.push('/messages')} className="text-slate-400 hover:text-slate-900 transition-colors font-bold text-sm">Messages</button>
           </nav>
@@ -221,11 +222,11 @@ export default function FreelancerHub() {
                    </div>
                    <p className="text-slate-900 font-black text-sm tracking-tight">Secure Comms</p>
                 </button>
-                <button onClick={() => router.push('/wallet')} className="bg-white border border-slate-100 hover:border-transparent hover:shadow-2xl hover:shadow-slate-100 transition-all p-8 rounded-[2.5rem] text-center group">
-                   <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mx-auto mb-4 group-hover:bg-emerald-50 transition-colors">
-                      <DollarSign className="w-6 h-6 text-slate-400 group-hover:text-emerald-600" />
+                <button onClick={() => router.push('/portfolio')} className="bg-white border border-slate-100 hover:border-transparent hover:shadow-2xl hover:shadow-slate-100 transition-all p-8 rounded-[2.5rem] text-center group">
+                   <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-50 transition-colors">
+                      <Briefcase className="w-6 h-6 text-slate-400 group-hover:text-purple-600" />
                    </div>
-                   <p className="text-slate-900 font-black text-sm tracking-tight">The Vault</p>
+                   <p className="text-slate-900 font-black text-sm tracking-tight">Dossier</p>
                 </button>
              </div>
           </div>

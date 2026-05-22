@@ -1,6 +1,6 @@
 // Type definitions for the EL SPACE platform
 
-export type UserType = 'client' | 'freelancer';
+export type UserType = 'client' | 'entrepreneur' | 'business' | 'enterprise' | 'freelancer';
 export type UserRole = 'admin' | 'moderator' | 'user';
 export type VerificationBadge = 0 | 1 | 2 | 3; // None, Portfolio, Test Passed, ELACCESS
 export type ProjectStatus = 'draft' | 'open' | 'in_progress' | 'completed' | 'cancelled';
