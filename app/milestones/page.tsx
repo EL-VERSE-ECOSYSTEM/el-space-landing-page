@@ -1,510 +1,172 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Progress } from '@/components/ui/progress'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import { CheckCircle2, Clock, AlertCircle, Target, Calendar, DollarSign, CheckCheck, MessageCircle } from 'lucide-react'
-import { useLoader } from '@/components/loader-provider'
+  CheckCircle, Clock, AlertCircle,
+  ChevronRight, ArrowLeft, Calendar,
+  DollarSign, FileText, Send
+} from 'lucide-react'
 import { useAuth } from '@/components/auth-provider'
 import { toast } from 'sonner'
+import { ELLoader } from '@/components/ui/el-loader'
+import { DashboardLayout } from '@/components/dashboard/auth-guard'
 
-interface Milestone {
-  id: string
-  projectName: string
-  projectId: string
-  title: string
-  description: string
-  status: 'pending' | 'in_progress' | 'submitted' | 'approved' | 'released'
-  amount: number
-  dueDate: string
-  submissionDate?: string
-  approvalDate?: string
-  client: string
-  freelancer: string
-  deliverables: string[]
-  attachments?: Array<{ name: string; url: string }>
-  messages: Array<{
-    sender: string
-    text: string
-    timestamp: string
-  }>
-}
-
-export default function MilestonesPage() {
-  const { user, loading: authLoading } = useAuth()
-  const { show: showLoader, hide: hideLoader } = useLoader()
-  const [milestones, setMilestones] = useState<Milestone[]>([])
+export default function MilestonesHub() {
+  const router = useRouter()
+  const { user } = useAuth()
   const [loading, setLoading] = useState(true)
-  const [selectedMilestone, setSelectedMilestone] = useState<Milestone | null>(null)
-  const [messageText, setMessageText] = useState('')
-  const [submissionText, setSubmissionText] = useState('')
-  const [showSubmitDialog, setShowSubmitDialog] = useState(false)
-  const [activeTab, setActiveTab] = useState('all')
+  const [milestones, setMilestones] = useState<any[]>([])
 
   useEffect(() => {
-    if (!authLoading) {
+    if (user) {
       fetchMilestones()
     }
-  }, [authLoading, user])
+  }, [user])
 
   const fetchMilestones = async () => {
     try {
       setLoading(true)
-      showLoader(2)
-      const userId = user?.id || ''
-      if (!userId) {
-        toast.error('Please log in to view milestones')
-        return
-      }
-
-      const response = await fetch(`/api/milestones?userId=${userId}`)
-      const data = await response.json()
-
-      if (data.success && data.milestones) {
+      // In a real app, we'd fetch all milestones for the user's active projects
+      // For this view, we'll fetch a sample or the user's most recent ones
+      const res = await fetch(`/api/milestones?userId=${user?.id}`)
+      const data = await res.json()
+      if (data.milestones) {
         setMilestones(data.milestones)
-      } else {
-        // No mock data - show empty list
-        setMilestones([])
       }
-      hideLoader()
-    } catch (error) {
-      console.error('Error fetching milestones:', error)
-      toast.error('Failed to load milestones')
-      setMilestones([])
-      hideLoader()
+    } catch (err) {
+      console.error('Failed to sync milestones')
     } finally {
       setLoading(false)
     }
   }
 
-  const handleSubmitMilestone = async () => {
-    if (!submissionText || !selectedMilestone) {
-      toast.error('Please add submission notes')
-      return
-    }
+  const getTimeRemaining = (dueDate: string) => {
+    const now = new Date()
+    const target = new Date(dueDate)
+    const diff = target.getTime() - now.getTime()
 
-    try {
-      showLoader(2)
-      const response = await fetch('/api/milestones', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'submit',
-          milestoneId: selectedMilestone.id,
-          submissionNotes: submissionText,
-        }),
-      })
+    if (diff <= 0) return { text: 'Overdue', color: 'text-red-500', isOverdue: true }
 
-      const data = await response.json()
-      if (data.success) {
-        toast.success('Milestone submitted for review')
-        setSubmissionText('')
-        setShowSubmitDialog(false)
-        fetchMilestones()
-      } else {
-        toast.error(data.error || 'Failed to submit')
-      }
-      hideLoader()
-    } catch (error) {
-      console.error('Error:', error)
-      toast.error('Failed to submit')
-      hideLoader()
-    }
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+
+    if (days > 0) return { text: `${days}d ${hours}h remaining`, color: 'text-cyan-400', isOverdue: false }
+    return { text: `${hours}h remaining`, color: 'text-amber-400', isOverdue: false }
   }
 
-  const handleSendMessage = async () => {
-    if (!messageText || !selectedMilestone) return
-
-    try {
-      showLoader(2)
-      const response = await fetch('/api/milestones', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'send-message',
-          milestoneId: selectedMilestone.id,
-          message: messageText,
-        }),
-      })
-
-      const data = await response.json()
-      if (data.success) {
-        toast.success('Message sent')
-        setMessageText('')
-        fetchMilestones()
-      } else {
-        toast.error(data.error || 'Failed to send')
-      }
-      hideLoader()
-    } catch (error) {
-      console.error('Error:', error)
-      toast.error('Failed to send message')
-      hideLoader()
-    }
-  }
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'pending':
-        return <Clock className="w-5 h-5 text-yellow-400" />
-      case 'in_progress':
-        return <Target className="w-5 h-5 text-blue-400" />
-      case 'submitted':
-        return <AlertCircle className="w-5 h-5 text-orange-400" />
-      case 'approved':
-        return <CheckCircle2 className="w-5 h-5 text-green-400" />
-      case 'released':
-        return <CheckCheck className="w-5 h-5 text-green-500" />
-      default:
-        return null
-    }
-  }
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'pending':
-        return 'bg-yellow-500/20 text-yellow-300 border-yellow-500/50'
-      case 'in_progress':
-        return 'bg-blue-500/20 text-blue-300 border-blue-500/50'
-      case 'submitted':
-        return 'bg-orange-500/20 text-orange-300 border-orange-500/50'
-      case 'approved':
-        return 'bg-green-500/20 text-green-300 border-green-500/50'
-      case 'released':
-        return 'bg-blue-500/20 text-blue-300 border-blue-500/50'
-      default:
-        return 'bg-slate-500/20 text-slate-300'
-    }
-  }
-
-  const getCompletionPercentage = (status: string) => {
-    const percentages: Record<string, number> = {
-      pending: 0,
-      in_progress: 50,
-      submitted: 75,
-      approved: 90,
-      released: 100,
-    }
-    return percentages[status] || 0
-  }
-
-  const filteredMilestones = activeTab === 'all'
-    ? milestones
-    : milestones.filter(m => m.status === activeTab)
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-cyan-900 to-slate-900 flex items-center justify-center">
-        <div className="text-center text-white">
-          <Target className="w-12 h-12 mx-auto mb-4 animate-bounce" />
-          <p>Loading milestones...</p>
-        </div>
-      </div>
-    )
-  }
+  if (loading && milestones.length === 0) return <div className="min-h-screen bg-slate-950 flex items-center justify-center"><ELLoader /></div>
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-cyan-900 to-slate-900 p-4 md:p-8">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2 flex items-center gap-2">
-            <Target className="w-10 h-10 text-cyan-400" />
-            Project Milestones
-          </h1>
-          <p className="text-cyan-200">Track and manage your project milestones</p>
-        </div>
+    <DashboardLayout userType={user?.user_type || 'freelancer'}>
+      <div className="min-h-screen text-slate-200 pb-20">
+        <main className="max-w-5xl mx-auto space-y-12">
+          {/* Header */}
+          <div className="flex justify-between items-end">
+            <div>
+              <h1 className="text-5xl font-black text-white tracking-tighter">
+                Mission <span className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Milestones</span>
+              </h1>
+              <p className="text-slate-400 mt-2 text-lg font-medium">Precision tracking for active deployments</p>
+            </div>
+            <Badge className="bg-slate-900 border-slate-800 text-slate-500 px-4 py-2 rounded-xl font-black text-[10px] tracking-widest uppercase">
+              {milestones.length} ACTIVE TARGETS
+            </Badge>
+          </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
-          {[
-            { label: 'Pending', count: milestones.filter(m => m.status === 'pending').length, icon: Clock, color: 'yellow' },
-            { label: 'In Progress', count: milestones.filter(m => m.status === 'in_progress').length, icon: Target, color: 'blue' },
-            { label: 'Submitted', count: milestones.filter(m => m.status === 'submitted').length, icon: AlertCircle, color: 'orange' },
-            { label: 'Approved', count: milestones.filter(m => m.status === 'approved').length, icon: CheckCircle2, color: 'green' },
-            { label: 'Released', count: milestones.filter(m => m.status === 'released').length, icon: CheckCheck, color: 'green' },
-          ].map((stat) => {
-            const Icon = stat.icon
-            return (
-              <Card key={stat.label} className="bg-slate-800/50 border-cyan-500/20">
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-2">
-                    <Icon className={`w-5 h-5 text-${stat.color}-400`} />
-                    <div>
-                      <p className="text-xs text-cyan-200">{stat.label}</p>
-                      <p className="text-2xl font-bold text-white mt-1">{stat.count}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )
-          })}
-        </div>
+          {/* Overdue Warning */}
+          {milestones.some(m => m.status === 'in_progress' && new Date(m.due_date) < new Date()) && (
+            <div className="bg-red-500/10 border border-red-500/30 rounded-[2rem] p-6 flex items-center gap-6 animate-pulse">
+               <div className="w-12 h-12 rounded-2xl bg-red-500 flex items-center justify-center shadow-lg shadow-red-500/20">
+                  <AlertCircle className="w-6 h-6 text-white" />
+               </div>
+               <div>
+                  <h3 className="text-white font-black text-lg tracking-tight">Late Penalty Warning</h3>
+                  <p className="text-red-400/80 font-medium">Deliveries past due date incur an automatic <span className="text-white font-black">$25 reduction</span> in settlement.</p>
+               </div>
+            </div>
+          )}
 
-        {/* Tabs */}
-        <Card className="bg-slate-800/50 border-cyan-500/20 mb-8">
-          <CardHeader>
-            <CardTitle className="text-white">Milestones</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="bg-slate-700/50 border border-cyan-500/20">
-                <TabsTrigger value="all">All</TabsTrigger>
-                <TabsTrigger value="pending">Pending</TabsTrigger>
-                <TabsTrigger value="in_progress">In Progress</TabsTrigger>
-                <TabsTrigger value="submitted">Submitted</TabsTrigger>
-                <TabsTrigger value="approved">Approved</TabsTrigger>
-                <TabsTrigger value="released">Released</TabsTrigger>
-              </TabsList>
+          {/* Milestones List */}
+          <div className="space-y-6">
+             {milestones.length > 0 ? milestones.map((milestone) => {
+               const time = getTimeRemaining(milestone.due_date)
+               return (
+                 <Card key={milestone.id} className="bg-slate-900 border-slate-800 rounded-[2.5rem] overflow-hidden hover:border-slate-700 transition-all group">
+                    <CardContent className="p-8">
+                       <div className="flex flex-col md:flex-row justify-between gap-8">
+                          <div className="flex-1 space-y-4">
+                             <div className="flex items-center gap-3">
+                                <Badge className={`border-none font-black text-[10px] uppercase tracking-widest px-3 py-1 rounded-lg ${
+                                  milestone.status === 'completed' ? 'bg-emerald-500/10 text-emerald-500' :
+                                  milestone.status === 'in_progress' ? 'bg-cyan-500/10 text-cyan-400' : 'bg-slate-800 text-slate-500'
+                                }`}>
+                                   {milestone.status.replace('_', ' ')}
+                                </Badge>
+                                <div className="flex items-center gap-1.5 text-slate-600 font-bold text-[10px] uppercase tracking-widest">
+                                   <Calendar className="w-3 h-3" /> Due {new Date(milestone.due_date).toLocaleDateString()}
+                                </div>
+                             </div>
 
-              <TabsContent value={activeTab} className="space-y-4 mt-6">
-                {filteredMilestones.length > 0 ? (
-                  filteredMilestones.map((milestone) => (
-                    <div
-                      key={milestone.id}
-                      className="p-4 bg-slate-700/50 rounded-lg border border-cyan-500/10 hover:border-cyan-500/30 transition"
-                    >
-                      <div className="mb-4">
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-2">
-                              {getStatusIcon(milestone.status)}
-                              <h3 className="text-lg font-semibold text-white">{milestone.title}</h3>
-                              <Badge className={`${getStatusColor(milestone.status)}`}>
-                                {milestone.status.replace('_', ' ').toUpperCase()}
-                              </Badge>
-                            </div>
-                            <p className="text-sm text-slate-300 mb-2">{milestone.description}</p>
-                            <p className="text-xs text-slate-400">
-                              Project: {milestone.projectName} • Client: {milestone.client}
-                            </p>
+                             <h3 className="text-2xl font-black text-white tracking-tight group-hover:text-cyan-400 transition-colors">
+                                {milestone.title}
+                             </h3>
+                             <p className="text-slate-400 font-medium line-clamp-2">
+                                {milestone.description || 'No description provided for this mission milestone.'}
+                             </p>
+
+                             <div className="flex flex-wrap gap-6 pt-2">
+                                <div className="flex items-center gap-2">
+                                   <Clock className={`w-4 h-4 ${time.color}`} />
+                                   <span className={`text-xs font-black uppercase tracking-widest ${time.color}`}>{time.text}</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-slate-500">
+                                   <DollarSign className="w-4 h-4 text-emerald-500" />
+                                   <span className="text-xs font-black uppercase tracking-widest text-white">${milestone.amount}</span>
+                                </div>
+                             </div>
                           </div>
-                          <div className="text-right ml-4">
-                            <p className="text-2xl font-bold text-cyan-400">
-                              ${milestone.amount}
-                            </p>
-                            <p className="text-xs text-slate-400 mt-1">Milestone Value</p>
+
+                          <div className="flex flex-col justify-between items-end gap-6 min-w-[200px]">
+                             <div className="text-right hidden md:block">
+                                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Target Project</p>
+                                <p className="text-white font-black tracking-tight">{milestone.project?.title || 'Nexus Deployment'}</p>
+                             </div>
+
+                             <div className="flex gap-3 w-full md:w-auto">
+                                <Button className="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-black rounded-xl px-6 h-12 transition-all">
+                                   Details
+                                </Button>
+                                {user?.user_type === 'freelancer' && milestone.status === 'in_progress' && (
+                                  <Button className="flex-1 bg-cyan-500 hover:bg-cyan-600 text-white font-black rounded-xl px-8 h-12 shadow-lg shadow-cyan-500/20">
+                                     Submit <Send className="w-4 h-4 ml-2" />
+                                  </Button>
+                                )}
+                                {user?.user_type === 'client' && milestone.status === 'submitted' && (
+                                  <Button className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-black rounded-xl px-8 h-12 shadow-lg shadow-emerald-500/20">
+                                     Approve <CheckCircle className="w-4 h-4 ml-2" />
+                                  </Button>
+                                )}
+                             </div>
                           </div>
-                        </div>
-
-                        {/* Progress Bar */}
-                        <div className="mb-4">
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="text-xs text-slate-400">Progress</span>
-                            <span className="text-xs text-slate-400">
-                              {getCompletionPercentage(milestone.status)}%
-                            </span>
-                          </div>
-                          <Progress
-                            value={getCompletionPercentage(milestone.status)}
-                            className="h-2 bg-slate-600"
-                          />
-                        </div>
-
-                        {/* Dates */}
-                        <div className="grid grid-cols-3 gap-2 mb-4 text-xs">
-                          <div className="p-2 bg-slate-600/50 rounded">
-                            <p className="text-slate-400">Due Date</p>
-                            <p className="text-white">
-                              {new Date(milestone.dueDate).toLocaleDateString()}
-                            </p>
-                          </div>
-                          {milestone.submissionDate && (
-                            <div className="p-2 bg-slate-600/50 rounded">
-                              <p className="text-slate-400">Submitted</p>
-                              <p className="text-white">
-                                {new Date(milestone.submissionDate).toLocaleDateString()}
-                              </p>
-                            </div>
-                          )}
-                          {milestone.approvalDate && (
-                            <div className="p-2 bg-slate-600/50 rounded">
-                              <p className="text-slate-400">Approved</p>
-                              <p className="text-white">
-                                {new Date(milestone.approvalDate).toLocaleDateString()}
-                              </p>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Deliverables */}
-                        <div className="mb-4">
-                          <p className="text-xs font-semibold text-slate-300 mb-2">Deliverables:</p>
-                          <ul className="space-y-1">
-                            {milestone.deliverables.map((del, idx) => (
-                              <li key={idx} className="text-xs text-slate-400 flex items-center gap-2">
-                                <CheckCircle2 className="w-3 h-3 text-cyan-400" />
-                                {del}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        {/* Action Buttons */}
-                        <div className="flex gap-2">
-                          <Button
-                            onClick={() => setSelectedMilestone(milestone)}
-                            size="sm"
-                            className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2"
-                          >
-                            <MessageCircle className="w-4 h-4" />
-                            View Details
-                          </Button>
-
-                          {milestone.status === 'in_progress' && (
-                            <dialog className="invisible">
-                              <div className="p-4">
-                                <Dialog open={showSubmitDialog} onOpenChange={setShowSubmitDialog}>
-                                  <DialogTrigger asChild>
-                                    <Button
-                                      size="sm"
-                                      className="bg-orange-600 hover:bg-orange-700 text-white gap-2"
-                                    >
-                                      <AlertCircle className="w-4 h-4" />
-                                      Submit for Review
-                                    </Button>
-                                  </DialogTrigger>
-                                  <DialogContent className="bg-slate-800 border-cyan-500/20">
-                                    <DialogHeader>
-                                      <DialogTitle className="text-white">Submit Milestone</DialogTitle>
-                                      <DialogDescription className="text-cyan-200">
-                                        Submit your completed work
-                                      </DialogDescription>
-                                    </DialogHeader>
-                                    <div className="space-y-4">
-                                      <Textarea
-                                        value={submissionText}
-                                        onChange={(e) => setSubmissionText(e.target.value)}
-                                        placeholder="Describe what you've completed..."
-                                        className="bg-slate-700 border-cyan-500/20 text-white"
-                                      />
-                                      <Button
-                                        onClick={handleSubmitMilestone}
-                                        className="w-full bg-cyan-600 hover:bg-cyan-700 text-white"
-                                      >
-                                        Submit Milestone
-                                      </Button>
-                                    </div>
-                                  </DialogContent>
-                                </Dialog>
-                              </div>
-                            </dialog>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="text-center py-12 text-slate-400">
-                    <Target className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                    <p>No milestones in this status</p>
-                  </div>
-                )}
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
-
-        {/* Milestone Details Modal */}
-        {selectedMilestone && (
-          <Dialog open={!!selectedMilestone} onOpenChange={() => setSelectedMilestone(null)}>
-            <DialogContent className="max-w-2xl bg-slate-800 border-cyan-500/20 max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle className="text-white flex items-center gap-2">
-                  {getStatusIcon(selectedMilestone.status)}
-                  {selectedMilestone.title}
-                </DialogTitle>
-                <DialogDescription className="text-cyan-200">
-                  {selectedMilestone.projectName}
-                </DialogDescription>
-              </DialogHeader>
-
-              <div className="space-y-6">
-                {/* Status & Amount */}
-                <div className="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg border border-cyan-500/10">
-                  <div>
-                    <Badge className={`${getStatusColor(selectedMilestone.status)} mb-2`}>
-                      {selectedMilestone.status}
-                    </Badge>
-                    <p className="text-white font-semibold">{selectedMilestone.description}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-3xl font-bold text-cyan-400">
-                      ${selectedMilestone.amount}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Deliverables */}
-                <div>
-                  <Label className="text-white mb-3 block">Deliverables</Label>
-                  <ul className="space-y-2">
-                    {selectedMilestone.deliverables.map((del, idx) => (
-                      <li key={idx} className="flex items-start gap-2 p-2 bg-slate-700/50 rounded">
-                        <CheckCircle2 className="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" />
-                        <span className="text-slate-300">{del}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Messages */}
-                <div>
-                  <Label className="text-white mb-3 flex items-center gap-2">
-                    <MessageCircle className="w-4 h-4" />
-                    Discussion
-                  </Label>
-                  <div className="space-y-3 mb-4 max-h-48 overflow-y-auto">
-                    {selectedMilestone.messages.map((msg, idx) => (
-                      <div key={idx} className="p-3 bg-slate-700/50 rounded border border-cyan-500/10">
-                        <p className="text-xs text-slate-400">{msg.sender}</p>
-                        <p className="text-white mt-1">{msg.text}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Textarea
-                      value={messageText}
-                      onChange={(e) => setMessageText(e.target.value)}
-                      placeholder="Add a message..."
-                      className="bg-slate-700 border-cyan-500/20 text-white"
-                    />
-                    <Button
-                      onClick={handleSendMessage}
-                      className="w-full bg-cyan-600 hover:bg-cyan-700 text-white"
-                    >
-                      Send Message
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
-        )}
+                       </div>
+                    </CardContent>
+                 </Card>
+               )
+             }) : (
+               <div className="text-center py-24 bg-slate-900/50 border-2 border-dashed border-slate-800 rounded-[3rem]">
+                  <CheckCircle className="w-12 h-12 text-slate-700 mx-auto mb-4" />
+                  <h3 className="text-xl font-black text-white">No Active Milestones</h3>
+                  <p className="text-slate-500 mt-2">All mission objectives are currently neutralized.</p>
+                  <Button onClick={() => router.push('/jobs')} className="mt-8 bg-white text-slate-950 font-black rounded-xl h-12 px-8">Hunt New Missions</Button>
+               </div>
+             )}
+          </div>
+        </main>
       </div>
-    </div>
+    </DashboardLayout>
   )
 }

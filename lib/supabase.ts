@@ -747,3 +747,60 @@ export const getAllJobs = async () => {
     .order('created_at', { ascending: false });
   return (data as Project[]) || [];
 };
+
+// ============ SOCIAL POSTS ============
+
+export const createPost = async (postData: { user_id: string; content: string; media_urls?: string[]; media_type?: 'image' | 'video' | 'none' }) => {
+  const { data, error } = await supabase
+    .from('social_posts')
+    .insert([postData])
+    .select();
+  return { data: data?.[0] || null, error };
+};
+
+export const getPosts = async (limit = 20) => {
+  const { data, error } = await supabase
+    .from('social_posts')
+    .select(`
+      *,
+      user:users!user_id(full_name, avatar_url, el_space_id)
+    `)
+    .order('created_at', { ascending: false })
+    .limit(limit);
+  return { data: (data as any[]) || [], error };
+};
+
+export const likePost = async (postId: string, userId: string) => {
+  // Check if already liked
+  const { data: existingLike } = await supabase
+    .from('social_likes')
+    .select('*')
+    .eq('post_id', postId)
+    .eq('user_id', userId)
+    .maybeSingle();
+
+  if (existingLike) {
+    // Unlike
+    await supabase.from('social_likes').delete().eq('post_id', postId).eq('user_id', userId);
+    await supabase.rpc('decrement_likes', { post_id: postId });
+    return { liked: false };
+  } else {
+    // Like
+    await supabase.from('social_likes').insert([{ post_id: postId, user_id: userId }]);
+    await supabase.rpc('increment_likes', { post_id: postId });
+    return { liked: true };
+  }
+};
+
+export const addComment = async (postId: string, userId: string, content: string) => {
+  const { data, error } = await supabase
+    .from('social_comments')
+    .insert([{ post_id: postId, user_id: userId, content }])
+    .select();
+
+  if (!error) {
+    await supabase.rpc('increment_comments', { post_id: postId });
+  }
+
+  return { data: data?.[0] || null, error };
+};

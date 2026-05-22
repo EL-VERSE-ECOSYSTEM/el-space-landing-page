@@ -1,0 +1,37 @@
+
+> my-project@0.1.0 dev
+> next dev
+
+   ▲ Next.js 15.1.0
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.0.2:3000
+
+ ✓ Starting...
+ ✓ Ready in 1964ms
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 1523ms (153 modules)
+ ○ Compiling /feed ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (101kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (231kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ✓ Compiled /feed in 8.6s (793 modules)
+ GET /feed 200 in 9540ms
+ ○ Compiling /api/posts ...
+ ✓ Compiled /api/posts in 3.6s (960 modules)
+ GET /api/posts 200 in 3974ms
+ GET /api/freelancers?limit=10 200 in 3982ms
+ GET /auth/login 200 in 4140ms
+ ○ Compiling /api/projects ...
+ ✓ Compiled /api/projects in 1001ms (1013 modules)
+ GET /api/projects?limit=10&status=open 200 in 1232ms
+ GET /auth/login 200 in 1308ms
+ ○ Compiling /wallet ...
+ ✓ Compiled /wallet in 775ms (1052 modules)
+ GET /wallet 200 in 1111ms
+ ○ Compiling /disputes ...
+ ✓ Compiled /disputes in 1973ms (1079 modules)
+ GET /disputes 200 in 2158ms
+ GET /auth/login 200 in 30ms
+ ○ Compiling /todos ...
+ ✓ Compiled /todos in 636ms (1100 modules)
+ GET /todos 200 in 791ms
+ GET /auth/login 200 in 26ms

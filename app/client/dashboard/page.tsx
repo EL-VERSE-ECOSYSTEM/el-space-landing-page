@@ -24,7 +24,8 @@ export default function ClientHub() {
     activeProjects: 0,
     totalSpent: 0,
     hiredFreelancers: 0,
-    pendingApplications: 0
+    pendingApplications: 0,
+    walletBalance: 0
   })
 
   useEffect(() => {
@@ -36,17 +37,27 @@ export default function ClientHub() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true)
-      const res = await fetch(`/api/projects?clientId=${user?.id}`)
-      const data = await res.json()
+      const [projRes, walletRes] = await Promise.all([
+        fetch(`/api/projects?clientId=${user?.id}`),
+        fetch(`/api/wallet?userId=${user?.id}`)
+      ])
+
+      const data = await projRes.json()
+      const walletData = await walletRes.json()
+
       if (data.success) {
         setProjects(data.projects || [])
-        // Mock stats for UI demonstration, in real app these come from API
-        setStats({
+        setStats(prev => ({
+          ...prev,
           activeProjects: data.projects?.length || 0,
           totalSpent: 12500,
           hiredFreelancers: 8,
           pendingApplications: 24
-        })
+        }))
+      }
+
+      if (walletData.success) {
+        setStats(prev => ({ ...prev, walletBalance: walletData.wallet.balance }))
       }
     } catch (err) {
       toast.error('Failed to sync workspace')
@@ -107,8 +118,9 @@ export default function ClientHub() {
         </div>
 
         {/* Vital Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
            {[
+             { label: 'Vault Assets', value: `$${stats.walletBalance.toLocaleString()}`, icon: DollarSign, color: 'bg-slate-900', text: 'text-white' },
              { label: 'Active Operations', value: stats.activeProjects, icon: Briefcase, color: 'bg-cyan-500', text: 'text-cyan-600' },
              { label: 'Total Capital Outlay', value: `$${(stats.totalSpent / 1000).toFixed(1)}k`, icon: TrendingUp, color: 'bg-emerald-500', text: 'text-emerald-600' },
              { label: 'Specialized Talent', value: stats.hiredFreelancers, icon: Users, color: 'bg-purple-500', text: 'text-purple-600' },

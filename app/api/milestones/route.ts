@@ -75,28 +75,41 @@ export async function PATCH(request: NextRequest) {
         const { data: freelancer } = await getUserById(milestone.freelancer_id);
         const { data: client } = await getUserById(project.client_id);
 
-        // Auto-detect lateness if not provided
+        // Auto-detect lateness: strictly check against due_date
         let lateFlag = isLate;
         if (lateFlag === undefined && milestone.due_date) {
-            lateFlag = new Date() > new Date(milestone.due_date);
+            // Milestone is late if it was submitted after due date, or if it's being approved now and was never "submitted" officially but is past due
+            const submittedDate = milestone.submitted_at ? new Date(milestone.submitted_at) : new Date();
+            lateFlag = submittedDate > new Date(milestone.due_date);
         }
 
         const payout = calculateFreelancerPayout(milestone.amount, lateFlag);
+        const penaltyAmount = lateFlag ? LATE_SUBMISSION_PENALTY : 0;
         
         // 2. Update freelancer wallet
-        await updateWalletBalance(milestone.freelancer_id, payout);
+        // Need to handle balance update carefully - typically adding to existing
+        const { data: currentWallet } = await getWallet(milestone.freelancer_id);
+        const newBalance = (currentWallet?.balance || 0) + payout;
+        const newTotalEarned = (currentWallet?.total_earned || 0) + payout;
+
+        await updateWalletBalance(milestone.freelancer_id, newBalance, currentWallet?.pending_balance || 0, newTotalEarned);
 
         // 3. Create payment record
         await createPayment({
             user_id: milestone.freelancer_id,
             project_id: milestone.project_id,
             milestone_id: milestone.id,
-            amount: milestone.amount,
-            fee_amount: milestone.amount - payout,
+            amount: payout,
+            fee_amount: milestone.amount - payout - penaltyAmount,
             currency: 'USD',
             status: 'completed',
             payment_type: 'payout',
-            metadata: { is_late: isLate, late_penalty: isLate ? LATE_SUBMISSION_PENALTY : 0 }
+            metadata: {
+              is_late: lateFlag,
+              late_penalty: penaltyAmount,
+              original_amount: milestone.amount,
+              base_payout: milestone.amount - (milestone.amount - payout - penaltyAmount)
+            }
         });
 
         // 4. Send emails
