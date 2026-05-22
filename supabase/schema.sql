@@ -1,10 +1,9 @@
--- EL SPACE Supabase Schema (Comprehensive)
+-- EL SPACE Supabase Schema (Comprehensive & Audited)
 
--- 1. Users & Authentication Extensions
+-- 1. Extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- 2. Users Table
--- Note: id is UUID matching auth.users.id
 CREATE TABLE IF NOT EXISTS users (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   el_space_id TEXT UNIQUE NOT NULL,
@@ -12,15 +11,16 @@ CREATE TABLE IF NOT EXISTS users (
   full_name TEXT NOT NULL,
   user_type TEXT CHECK (user_type IN ('client', 'entrepreneur', 'business', 'enterprise', 'freelancer')) NOT NULL,
   role TEXT CHECK (role IN ('admin', 'moderator', 'user')) DEFAULT 'user',
+  status TEXT DEFAULT 'active',
   avatar_url TEXT,
   bio TEXT,
-  password_hash TEXT, -- For legacy/OTP fallback if needed
+  password_hash TEXT,
   transaction_pin_hash TEXT,
   id_type TEXT,
   id_serial TEXT,
   id_url TEXT,
   is_verified BOOLEAN DEFAULT FALSE,
-  verified_badge INTEGER DEFAULT 0, -- 0: None, 1: Portfolio, 2: Test Passed, 3: ELACCESS
+  verified_badge INTEGER DEFAULT 0,
   verified_at TIMESTAMPTZ,
   phone_number TEXT,
   location TEXT,
@@ -40,12 +40,12 @@ CREATE TABLE IF NOT EXISTS freelancer_profiles (
   project_links TEXT[] DEFAULT '{}',
   linkedin_url TEXT,
   skills TEXT[] DEFAULT '{}',
+  bio TEXT,
   total_earnings NUMERIC DEFAULT 0,
   total_projects INTEGER DEFAULT 0,
   avg_rating NUMERIC DEFAULT 0,
   total_reviews INTEGER DEFAULT 0,
   availability_status TEXT CHECK (availability_status IN ('available', 'busy', 'unavailable')) DEFAULT 'available',
-  bio TEXT,
   timezone TEXT,
   languages TEXT[] DEFAULT '{}',
   verified_test_project_id UUID,
@@ -88,11 +88,11 @@ CREATE TABLE IF NOT EXISTS projects (
   category TEXT NOT NULL,
   budget_min NUMERIC NOT NULL,
   budget_max NUMERIC NOT NULL,
+  total_budget NUMERIC DEFAULT 0,
   required_skills TEXT[] DEFAULT '{}',
   timeline TEXT,
   status TEXT CHECK (status IN ('draft', 'open', 'in_progress', 'completed', 'cancelled')) DEFAULT 'draft',
   accepted_freelancer_id UUID REFERENCES users(id),
-  total_budget NUMERIC DEFAULT 0,
   fixed_fee_amount NUMERIC,
   hourly_rate NUMERIC,
   estimated_hours NUMERIC,
@@ -156,16 +156,17 @@ CREATE TABLE IF NOT EXISTS payments (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   project_id UUID REFERENCES projects(id),
   milestone_id UUID REFERENCES milestones(id),
-  user_id UUID REFERENCES users(id) NOT NULL, -- The user initiating the payment
+  user_id UUID REFERENCES users(id) NOT NULL,
   recipient_id UUID REFERENCES users(id),
   amount NUMERIC NOT NULL,
   fee_amount NUMERIC DEFAULT 0,
   currency TEXT DEFAULT 'USD',
   status TEXT CHECK (status IN ('pending', 'processing', 'completed', 'failed', 'refunded', 'escrowed')) DEFAULT 'pending',
   payment_method TEXT CHECK (payment_method IN ('card', 'bank_transfer', 'mobile_money', 'crypto', 'wallet')),
-  payment_type TEXT CHECK (payment_type IN ('wallet_funding', 'milestone_funding', 'payout', 'withdrawal', 'internal_transfer')),
+  payment_type TEXT CHECK (payment_type IN ('wallet_funding', 'milestone_funding', 'payout', 'withdrawal', 'internal_transfer', 'late_penalty')),
   reference TEXT UNIQUE,
   korapay_reference TEXT UNIQUE,
+  description TEXT,
   metadata JSONB DEFAULT '{}',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -186,7 +187,7 @@ CREATE TABLE IF NOT EXISTS reviews (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 11. Messages & Chat
+-- 11. Messaging
 CREATE TABLE IF NOT EXISTS chat_rooms (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   project_id UUID REFERENCES projects(id) ON DELETE SET NULL,
@@ -205,9 +206,13 @@ CREATE TABLE IF NOT EXISTS messages (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   room_id UUID REFERENCES chat_rooms(id) ON DELETE CASCADE,
   sender_id UUID REFERENCES users(id) NOT NULL,
+  recipient_id UUID REFERENCES users(id),
+  project_id UUID REFERENCES projects(id) ON DELETE CASCADE,
   content TEXT NOT NULL,
   attachment_urls TEXT[] DEFAULT '{}',
   is_system_message BOOLEAN DEFAULT FALSE,
+  read BOOLEAN DEFAULT FALSE,
+  read_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -218,18 +223,23 @@ CREATE TABLE IF NOT EXISTS notifications (
   type TEXT NOT NULL,
   title TEXT NOT NULL,
   message TEXT NOT NULL,
-  related_id UUID, -- project_id, milestone_id, etc.
-  read BOOLEAN DEFAULT FALSE,
-  link TEXT,
-  created_at TIMESTAMPTZ DEFAULT NOW()
+  status TEXT DEFAULT 'unread',
+  action_url TEXT,
+  data JSONB DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS push_subscriptions (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
-  subscription_json JSONB NOT NULL,
+  endpoint TEXT NOT NULL,
+  auth TEXT NOT NULL,
+  p256dh TEXT NOT NULL,
   device_type TEXT,
-  created_at TIMESTAMPTZ DEFAULT NOW()
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id, endpoint)
 );
 
 -- 13. Time Tracking
@@ -276,6 +286,26 @@ CREATE TABLE IF NOT EXISTS dispute_evidence (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS mediation_sessions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  dispute_id UUID REFERENCES disputes(id) ON DELETE CASCADE NOT NULL,
+  mediator_id UUID REFERENCES users(id) NOT NULL,
+  status TEXT CHECK (status IN ('scheduled', 'active', 'completed', 'cancelled')) DEFAULT 'scheduled',
+  scheduled_date TIMESTAMPTZ,
+  notes TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS mediation_outcomes (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  dispute_id UUID REFERENCES disputes(id) ON DELETE CASCADE NOT NULL,
+  outcome TEXT NOT NULL,
+  compensation_amount NUMERIC,
+  compensation_to UUID REFERENCES users(id),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- 15. Verified Tests
 CREATE TABLE IF NOT EXISTS test_projects (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -303,7 +333,7 @@ CREATE TABLE IF NOT EXISTS referrals (
   completed_at TIMESTAMPTZ
 );
 
--- 17. Contact Requests
+-- 17. Contact & Support
 CREATE TABLE IF NOT EXISTS contact_requests (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
@@ -314,16 +344,7 @@ CREATE TABLE IF NOT EXISTS contact_requests (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 18. Miscellaneous
-CREATE TABLE IF NOT EXISTS saved_freelancers (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  client_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
-  freelancer_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
-  folder_name TEXT,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(client_id, freelancer_id)
-);
-
+-- 18. Social Features
 CREATE TABLE IF NOT EXISTS social_posts (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
@@ -351,6 +372,7 @@ CREATE TABLE IF NOT EXISTS social_comments (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- 19. Productivity
 CREATE TABLE IF NOT EXISTS todos (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES users(id) ON DELETE CASCADE,
@@ -359,6 +381,17 @@ CREATE TABLE IF NOT EXISTS todos (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS reminders (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+  title TEXT NOT NULL,
+  message TEXT NOT NULL,
+  remind_at TIMESTAMPTZ NOT NULL,
+  is_sent BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 20. Portfolio & Assets
 CREATE TABLE IF NOT EXISTS portfolio_items (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
@@ -371,7 +404,6 @@ CREATE TABLE IF NOT EXISTS portfolio_items (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Custom Storage Tracking
 CREATE TABLE IF NOT EXISTS storage_assets (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES users(id) ON DELETE CASCADE,
@@ -383,6 +415,7 @@ CREATE TABLE IF NOT EXISTS storage_assets (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- 21. Authentication Fallbacks
 CREATE TABLE IF NOT EXISTS otp_codes (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   email TEXT NOT NULL,
@@ -393,7 +426,16 @@ CREATE TABLE IF NOT EXISTS otp_codes (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 19. Row Level Security (RLS) Policies
+CREATE TABLE IF NOT EXISTS saved_freelancers (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  client_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+  freelancer_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+  folder_name TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(client_id, freelancer_id)
+);
+
+-- 22. Row Level Security (RLS)
 
 -- Enable RLS on all tables
 DO $$
@@ -411,7 +453,7 @@ CREATE POLICY "Users can update own profile." ON users FOR UPDATE USING (auth.ui
 
 -- Profiles Policies
 CREATE POLICY "Freelancer profiles are public." ON freelancer_profiles FOR SELECT USING (true);
-CREATE POLICY "Clients can update own profile." ON freelancer_profiles FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "Freelancers can update own profile." ON freelancer_profiles FOR UPDATE USING (auth.uid() = user_id);
 
 CREATE POLICY "Client profiles are public." ON client_profiles FOR SELECT USING (true);
 CREATE POLICY "Clients can update own client profile." ON client_profiles FOR UPDATE USING (auth.uid() = user_id);
@@ -420,22 +462,182 @@ CREATE POLICY "Clients can update own client profile." ON client_profiles FOR UP
 CREATE POLICY "Open projects are viewable by everyone." ON projects FOR SELECT USING (status = 'open' OR visibility = 'public' OR auth.uid() = client_id OR auth.uid() = accepted_freelancer_id);
 CREATE POLICY "Clients can manage own projects." ON projects FOR ALL USING (auth.uid() = client_id);
 
--- Messages Policies
+-- Applications Policies
+CREATE POLICY "Users can view relevant applications." ON applications FOR SELECT USING (auth.uid() = freelancer_id OR EXISTS (SELECT 1 FROM projects WHERE id = project_id AND client_id = auth.uid()));
+CREATE POLICY "Freelancers can manage own applications." ON applications FOR ALL USING (auth.uid() = freelancer_id);
+
+-- Milestones Policies
+CREATE POLICY "Users can view relevant milestones." ON milestones FOR SELECT USING (auth.uid() = freelancer_id OR EXISTS (SELECT 1 FROM projects WHERE id = project_id AND client_id = auth.uid()));
+
+-- Wallet & Payments Policies
+CREATE POLICY "Users can view own wallet." ON wallets FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Users can manage own wallet." ON wallets FOR ALL USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can view own payments." ON payments FOR SELECT USING (auth.uid() = user_id OR auth.uid() = recipient_id);
+CREATE POLICY "Users can insert own payments." ON payments FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+-- Messaging Policies
 CREATE POLICY "Participants can view room messages." ON messages FOR SELECT USING (
   EXISTS (SELECT 1 FROM chat_participants WHERE room_id = messages.room_id AND user_id = auth.uid())
+  OR sender_id = auth.uid()
+  OR recipient_id = auth.uid()
 );
-CREATE POLICY "Participants can send messages." ON messages FOR INSERT WITH CHECK (
+CREATE POLICY "Participants can manage messages." ON messages FOR ALL USING (
   EXISTS (SELECT 1 FROM chat_participants WHERE room_id = messages.room_id AND user_id = auth.uid())
+  OR sender_id = auth.uid()
+  OR recipient_id = auth.uid()
 );
-
--- Wallet Policies
-CREATE POLICY "Users can view own wallet." ON wallets FOR SELECT USING (auth.uid() = user_id);
 
 -- Notifications Policies
 CREATE POLICY "Users can view own notifications." ON notifications FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY "Users can update own notifications." ON notifications FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "Users can update own notifications." ON notifications FOR ALL USING (auth.uid() = user_id);
+CREATE POLICY "Users can manage own push subs." ON push_subscriptions FOR ALL USING (auth.uid() = user_id);
 
--- 20. Useful Functions & Triggers
+-- Social Policies
+CREATE POLICY "Social posts are viewable by everyone." ON social_posts FOR SELECT USING (true);
+CREATE POLICY "Users can manage own posts." ON social_posts FOR ALL USING (auth.uid() = user_id);
+
+CREATE POLICY "Social engagement is public." ON social_likes FOR SELECT USING (true);
+CREATE POLICY "Users can like/unlike." ON social_likes FOR ALL USING (auth.uid() = user_id);
+
+CREATE POLICY "Social comments are public." ON social_comments FOR SELECT USING (true);
+CREATE POLICY "Users can manage own comments." ON social_comments FOR ALL USING (auth.uid() = user_id);
+
+-- Portfolio Policies
+CREATE POLICY "Portfolio items are public." ON portfolio_items FOR SELECT USING (true);
+CREATE POLICY "Users can manage own portfolio." ON portfolio_items FOR ALL USING (auth.uid() = user_id);
+
+-- Productivity Policies
+CREATE POLICY "Users can manage own todos." ON todos FOR ALL USING (auth.uid() = user_id);
+CREATE POLICY "Users can manage own reminders." ON reminders FOR ALL USING (auth.uid() = user_id);
+
+-- Disputes Policies
+CREATE POLICY "Users can view relevant disputes." ON disputes FOR SELECT USING (auth.uid() = initiated_by OR auth.uid() = initiated_against);
+CREATE POLICY "Users can manage relevant disputes." ON disputes FOR ALL USING (auth.uid() = initiated_by OR auth.uid() = initiated_against);
+
+CREATE POLICY "Users can view dispute evidence." ON dispute_evidence FOR SELECT USING (EXISTS (SELECT 1 FROM disputes WHERE id = dispute_id AND (initiated_by = auth.uid() OR initiated_against = auth.uid())));
+CREATE POLICY "Users can manage dispute evidence." ON dispute_evidence FOR ALL USING (user_id = auth.uid());
+
+CREATE POLICY "Users can view relevant mediation sessions." ON mediation_sessions FOR SELECT USING (EXISTS (SELECT 1 FROM disputes WHERE id = dispute_id AND (initiated_by = auth.uid() OR initiated_against = auth.uid())));
+CREATE POLICY "Users can view relevant mediation outcomes." ON mediation_outcomes FOR SELECT USING (EXISTS (SELECT 1 FROM disputes WHERE id = dispute_id AND (initiated_by = auth.uid() OR initiated_against = auth.uid())));
+
+-- Storage Policies
+CREATE POLICY "Users can manage own storage assets." ON storage_assets FOR ALL USING (auth.uid() = user_id);
+CREATE POLICY "Public can view storage assets." ON storage_assets FOR SELECT USING (true);
+
+-- Time Logs Policies
+CREATE POLICY "Users can view relevant time logs." ON time_logs FOR SELECT USING (freelancer_id = auth.uid() OR EXISTS (SELECT 1 FROM projects WHERE id = project_id AND client_id = auth.uid()));
+CREATE POLICY "Freelancers can manage own time logs." ON time_logs FOR ALL USING (freelancer_id = auth.uid());
+
+-- Reviews Policies
+CREATE POLICY "Public reviews are viewable by everyone." ON reviews FOR SELECT USING (visibility = 'public');
+CREATE POLICY "Users can view private reviews they are part of." ON reviews FOR SELECT USING (reviewer_id = auth.uid() OR reviewee_id = auth.uid());
+CREATE POLICY "Users can manage own reviews." ON reviews FOR ALL USING (reviewer_id = auth.uid());
+
+-- Test Projects Policies
+CREATE POLICY "Freelancers can view own test projects." ON test_projects FOR SELECT USING (freelancer_id = auth.uid());
+
+-- Referrals Policies
+CREATE POLICY "Users can view own referrals." ON referrals FOR SELECT USING (referrer_id = auth.uid() OR referred_user_email = (SELECT email FROM users WHERE id = auth.uid()));
+
+-- Contact Requests Policies
+CREATE POLICY "Anyone can submit contact requests." ON contact_requests FOR INSERT WITH CHECK (true);
+
+-- Saved Freelancers Policies
+CREATE POLICY "Clients can manage own saved freelancers." ON saved_freelancers FOR ALL USING (client_id = auth.uid());
+
+-- chat_rooms & chat_participants Policies
+CREATE POLICY "Users can view own chat rooms." ON chat_rooms FOR SELECT USING (EXISTS (SELECT 1 FROM chat_participants WHERE room_id = id AND user_id = auth.uid()));
+CREATE POLICY "Users can view chat participants." ON chat_participants FOR SELECT USING (EXISTS (SELECT 1 FROM chat_participants cp2 WHERE cp2.room_id = room_id AND cp2.user_id = auth.uid()));
+
+-- 23. RPC Functions
+
+-- Atomic Internal Transfer
+CREATE OR REPLACE FUNCTION process_internal_transfer(
+  p_sender_id UUID,
+  p_recipient_id UUID,
+  p_amount NUMERIC
+) RETURNS VOID AS $$
+DECLARE
+  v_sender_balance NUMERIC;
+BEGIN
+  -- Get sender balance and lock the row
+  SELECT balance INTO v_sender_balance
+  FROM wallets
+  WHERE user_id = p_sender_id
+  FOR UPDATE;
+
+  IF v_sender_balance IS NULL THEN
+    RAISE EXCEPTION 'Sender wallet not found';
+  END IF;
+
+  IF v_sender_balance < p_amount THEN
+    RAISE EXCEPTION 'Insufficient funds';
+  END IF;
+
+  -- Deduct from sender
+  UPDATE wallets
+  SET balance = balance - p_amount,
+      updated_at = NOW()
+  WHERE user_id = p_sender_id;
+
+  -- Add to recipient
+  UPDATE wallets
+  SET balance = balance + p_amount,
+      updated_at = NOW()
+  WHERE user_id = p_recipient_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Social Counters
+CREATE OR REPLACE FUNCTION increment_likes(p_post_id UUID) RETURNS VOID AS $$
+BEGIN
+  UPDATE social_posts SET likes_count = likes_count + 1 WHERE id = p_post_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION decrement_likes(p_post_id UUID) RETURNS VOID AS $$
+BEGIN
+  UPDATE social_posts SET likes_count = GREATEST(0, likes_count - 1) WHERE id = p_post_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION increment_comments(p_post_id UUID) RETURNS VOID AS $$
+BEGIN
+  UPDATE social_posts SET comments_count = comments_count + 1 WHERE id = p_post_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Admin Stats
+CREATE OR REPLACE FUNCTION get_admin_stats()
+RETURNS JSONB AS $$
+DECLARE
+  v_total_users BIGINT;
+  v_total_payments NUMERIC;
+  v_total_jobs BIGINT;
+  v_pending_withdrawals BIGINT;
+  v_active_disputes BIGINT;
+BEGIN
+  SELECT COUNT(*) INTO v_total_users FROM users;
+  SELECT COALESCE(SUM(amount), 0) INTO v_total_payments FROM payments WHERE status = 'completed';
+  SELECT COUNT(*) INTO v_total_jobs FROM projects;
+  SELECT COUNT(*) INTO v_pending_withdrawals FROM payments WHERE payment_type = 'withdrawal' AND status = 'pending';
+  SELECT COUNT(*) INTO v_active_disputes FROM disputes WHERE status = 'open';
+
+  RETURN jsonb_build_object(
+    'totalUsers', v_total_users,
+    'totalPayments', v_total_payments,
+    'totalJobListings', v_total_jobs,
+    'pendingWithdrawals', v_pending_withdrawals,
+    'activeDisputes', v_active_disputes,
+    'pendingPayments', 0,
+    'pendingApprovals', 0,
+    'totalWithdrawals', 0
+  );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 24. Triggers
 
 -- Update updated_at timestamp automatically
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -450,7 +652,8 @@ DO $$
 DECLARE
     t text;
 BEGIN
-    FOR t IN (SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE' AND column_name = 'updated_at') LOOP
+    FOR t IN (SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE') LOOP
+        EXECUTE format('DROP TRIGGER IF EXISTS update_updated_at ON %I', t);
         EXECUTE format('CREATE TRIGGER update_updated_at BEFORE UPDATE ON %I FOR EACH ROW EXECUTE FUNCTION update_updated_at_column()', t);
     END LOOP;
 END $$;

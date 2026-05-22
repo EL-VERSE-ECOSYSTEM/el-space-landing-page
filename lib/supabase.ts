@@ -393,9 +393,9 @@ export const internalTransfer = async (fromUserId: string, toSpaceId: string, am
 
   // 2. Perform atomic transfer via RPC
   const { data, error } = await supabase.rpc('process_internal_transfer', {
-    sender_id: fromUserId,
-    recipient_id: recipient.id,
-    transfer_amount: amount
+    p_sender_id: fromUserId,
+    p_recipient_id: recipient.id,
+    p_amount: amount
   });
   
   return { data, error, recipient };
@@ -588,7 +588,7 @@ export const getDisputesByUser = async (userId: string) => {
   const { data, error } = await supabase
     .from('disputes')
     .select('*')
-    .or(`plaintiff_id.eq.${userId},defendant_id.eq.${userId}`)
+    .or(`initiated_by.eq.${userId},initiated_against.eq.${userId}`)
     .order('created_at', { ascending: false });
   return { data, error };
 };
@@ -782,12 +782,12 @@ export const likePost = async (postId: string, userId: string) => {
   if (existingLike) {
     // Unlike
     await supabase.from('social_likes').delete().eq('post_id', postId).eq('user_id', userId);
-    await supabase.rpc('decrement_likes', { post_id: postId });
+    await supabase.rpc('decrement_likes', { p_post_id: postId });
     return { liked: false };
   } else {
     // Like
     await supabase.from('social_likes').insert([{ post_id: postId, user_id: userId }]);
-    await supabase.rpc('increment_likes', { post_id: postId });
+    await supabase.rpc('increment_likes', { p_post_id: postId });
     return { liked: true };
   }
 };
@@ -799,7 +799,7 @@ export const addComment = async (postId: string, userId: string, content: string
     .select();
 
   if (!error) {
-    await supabase.rpc('increment_comments', { post_id: postId });
+    await supabase.rpc('increment_comments', { p_post_id: postId });
   }
 
   return { data: data?.[0] || null, error };
