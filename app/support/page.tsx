@@ -21,11 +21,31 @@ export default function SupportHub() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    // Simulate API call
-    await new Promise(r => setTimeout(r, 1500))
-    setSubmitted(true)
-    setLoading(false)
-    toast.success('Your message has been received by our response team.')
+
+    try {
+      const formData = new FormData(e.currentTarget as HTMLFormElement)
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formData.get('email'),
+          subject: formData.get('subject'),
+          message: formData.get('message'),
+          name: 'Support User'
+        }),
+      })
+
+      if (res.ok) {
+        setSubmitted(true)
+        toast.success('Your message has been received by our response team.')
+      } else {
+        toast.error('Failed to transmit intel. Please try again.')
+      }
+    } catch (err) {
+      toast.error('Connection failure to Support Nexus')
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (submitted) {
@@ -114,6 +134,7 @@ export default function SupportHub() {
                   <div className="space-y-3">
                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Mission Identifier (Email)</label>
                      <Input
+                        name="email"
                         required
                         type="email"
                         placeholder="you@domain.com"
@@ -123,6 +144,7 @@ export default function SupportHub() {
                   <div className="space-y-3">
                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Subject Protocol</label>
                      <Input
+                        name="subject"
                         required
                         placeholder="Technical Anomaly, Billing, etc."
                         className="bg-slate-800 border-slate-700 h-16 text-white font-bold rounded-2xl px-6 focus:ring-cyan-500"
@@ -131,6 +153,7 @@ export default function SupportHub() {
                   <div className="space-y-3">
                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Detailed Intelligence</label>
                      <Textarea
+                        name="message"
                         required
                         placeholder="Please describe the situation in detail..."
                         className="bg-slate-800 border-slate-700 min-h-[160px] text-white font-bold rounded-2xl p-6 focus:ring-cyan-500"

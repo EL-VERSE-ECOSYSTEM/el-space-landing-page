@@ -21,6 +21,8 @@ interface Review {
   comment: string
   reviewer_role: 'client' | 'freelancer'
   created_at: string
+  project_id: string
+  reviewee_id: string
   project?: {
     title: string
   }
@@ -35,6 +37,14 @@ export default function ReviewsPage() {
   const { user } = useAuth()
   const [reviews, setReviews] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
+  const [showSubmitModal, setShowSubmitModal] = useState(false)
+  const [newReview, setNewReview] = useState({
+    projectId: '',
+    revieweeId: '',
+    rating: 5,
+    comment: '',
+    isPublic: true
+  })
 
   useEffect(() => {
     if (user) {
@@ -52,6 +62,37 @@ export default function ReviewsPage() {
       }
     } catch (error) {
       console.error('Error fetching reviews:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleSubmitReview = async () => {
+    if (!newReview.projectId || !newReview.comment) {
+      toast.error('Please complete all review fields')
+      return
+    }
+
+    try {
+      setLoading(true)
+      const res = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...newReview,
+          authorId: user?.id
+        })
+      })
+      const data = await res.json()
+      if (data.success) {
+        toast.success('Review submitted to the Reputation Matrix')
+        setShowSubmitModal(false)
+        fetchReviews()
+      } else {
+        toast.error(data.error || 'Failed to submit review')
+      }
+    } catch (err) {
+      toast.error('Reputation sync failed')
     } finally {
       setLoading(false)
     }

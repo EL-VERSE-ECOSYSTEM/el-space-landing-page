@@ -14,7 +14,7 @@ import {
   CheckCircle, XCircle, BarChart3, TrendingUp, Activity, Bell,
   Eye, Shield, Wallet, MessageSquare, Briefcase, ChevronRight,
   ArrowUpRight, ArrowDownLeft, Clock, Search, Filter, MoreVertical,
-  Loader, Rocket
+  Loader, Rocket, ShieldCheck, Building, User
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { ELLoader } from '@/components/ui/el-loader'
@@ -34,6 +34,7 @@ export default function AdminDashboard() {
     pendingWithdrawals: 0
   })
   const [users, setUsers] = useState<any[]>([])
+  const [verifications, setVerifications] = useState<any[]>([])
   const [payments, setPayments] = useState<any[]>([])
   const [jobs, setJobs] = useState<any[]>([])
   const [withdrawals, setWithdrawals] = useState<any[]>([])
@@ -93,20 +94,22 @@ export default function AdminDashboard() {
   const fetchAdminData = async () => {
     try {
       setLoading(true)
-      const [statsRes, usersRes, paymentsRes, jobsRes, withdrawalsRes] = await Promise.all([
+      const [statsRes, usersRes, paymentsRes, jobsRes, withdrawalsRes, verificationsRes] = await Promise.all([
         fetch('/api/admin/stats'),
         fetch('/api/admin/users'),
         fetch('/api/admin/payments'),
         fetch('/api/admin/jobs'),
-        fetch('/api/admin/withdrawals')
+        fetch('/api/admin/withdrawals'),
+        fetch('/api/admin/verifications')
       ])
 
-      const [statsData, usersData, paymentsData, jobsData, withdrawalsData] = await Promise.all([
+      const [statsData, usersData, paymentsData, jobsData, withdrawalsData, verificationsData] = await Promise.all([
         statsRes.json(),
         usersRes.json(),
         paymentsRes.json(),
         jobsRes.json(),
-        withdrawalsRes.json()
+        withdrawalsRes.json(),
+        verificationsRes.json()
       ])
 
       if (statsData.success) setStats(statsData.stats)
@@ -114,6 +117,7 @@ export default function AdminDashboard() {
       if (paymentsData.success) setPayments(paymentsData.payments || [])
       if (jobsData.success) setJobs(jobsData.jobs || [])
       if (withdrawalsData.success) setWithdrawals(withdrawalsData.withdrawals || [])
+      if (verificationsData.success) setVerifications(verificationsData.verifications || [])
 
     } catch (error) {
       console.error('Admin data load error:', error)
@@ -229,6 +233,7 @@ export default function AdminDashboard() {
             { id: 'users', icon: Users, label: 'User Ecosystem' },
             { id: 'payments', icon: DollarSign, label: 'Global Ledger' },
             { id: 'withdrawals', icon: Wallet, label: 'Capital Outflow' },
+            { id: 'verifications', icon: ShieldCheck, label: 'Verification Queue' },
             { id: 'jobs', icon: Briefcase, label: 'Deployment Board' },
           ].map((item) => (
             <button
@@ -661,8 +666,95 @@ export default function AdminDashboard() {
               </div>
             )}
 
+            {activeTab === 'verifications' && (
+              <div className="space-y-8 animate-in fade-in duration-700">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                  <div>
+                    <h2 className="text-5xl font-black text-white tracking-tighter">VERIFICATION QUEUE</h2>
+                    <p className="text-slate-400 mt-3 font-bold uppercase tracking-[0.2em] text-xs">Identity & Business Document Audit Pipeline</p>
+                  </div>
+                </div>
+
+                <div className="grid gap-6">
+                  {verifications.length > 0 ? verifications.map((v) => (
+                    <Card key={v.id} className="bg-slate-900/40 border-white/5 overflow-hidden rounded-[2.5rem] group hover:border-cyan-500/30 transition-all duration-500">
+                      <CardContent className="p-10">
+                         <div className="flex flex-col lg:flex-row gap-10">
+                            <div className="flex-1 space-y-6">
+                               <div className="flex items-center gap-6">
+                                  <div className="w-20 h-20 rounded-3xl bg-slate-800 flex-shrink-0 overflow-hidden border-2 border-white/5">
+                                     {v.avatar_url ? (
+                                       <Image src={v.avatar_url} alt="" width={80} height={80} className="object-cover" />
+                                     ) : (
+                                       <User className="w-10 h-10 text-slate-600 m-5" />
+                                     )}
+                                  </div>
+                                  <div>
+                                     <h3 className="text-2xl font-black text-white">{v.full_name}</h3>
+                                     <p className="text-slate-500 font-bold">{v.email}</p>
+                                     <Badge className="mt-2 bg-cyan-500/10 text-cyan-400 border-cyan-500/20 font-black uppercase text-[10px] tracking-widest">{v.user_type}</Badge>
+                                  </div>
+                               </div>
+
+                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                  <div className="p-6 bg-white/[0.02] rounded-3xl border border-white/5">
+                                     <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-2">ID Details</p>
+                                     <p className="text-white font-bold">{v.id_type?.toUpperCase() || 'N/A'}</p>
+                                     <p className="text-slate-400 font-mono text-sm mt-1">{v.id_serial || 'NO SERIAL'}</p>
+                                     {v.id_url && (
+                                       <a href={v.id_url} target="_blank" className="inline-flex items-center gap-2 mt-4 text-cyan-400 hover:text-cyan-300 font-black text-xs uppercase tracking-widest">
+                                         <Eye className="w-4 h-4" /> View ID Document
+                                       </a>
+                                     )}
+                                  </div>
+                                  {v.user_type !== 'freelancer' && (
+                                    <div className="p-6 bg-white/[0.02] rounded-3xl border border-white/5">
+                                       <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-2">Business Proof</p>
+                                       <p className="text-white font-bold truncate">{v.business_name || 'N/A'}</p>
+                                       <p className="text-slate-400 text-sm mt-1">{v.business_type || 'N/A'}</p>
+                                       {v.business_reg_url && (
+                                         <a href={v.business_reg_url} target="_blank" className="inline-flex items-center gap-2 mt-4 text-purple-400 hover:text-purple-300 font-black text-xs uppercase tracking-widest">
+                                           <Building className="w-4 h-4" /> View Registration
+                                         </a>
+                                       )}
+                                    </div>
+                                  )}
+                               </div>
+                            </div>
+
+                            <div className="w-full lg:w-72 flex flex-col gap-3 justify-center p-8 bg-white/[0.01] rounded-[2rem] border border-white/5">
+                               <Button
+                                 className="h-14 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-2xl shadow-lg shadow-emerald-500/20"
+                                 onClick={() => handleAction('/api/admin/verifications', 'POST', { userId: v.id, status: 'verified' }, 'User verified successfully')}
+                               >
+                                 <CheckCircle className="w-5 h-5 mr-3" />
+                                 APPROVE
+                               </Button>
+                               <Button
+                                 variant="ghost"
+                                 className="h-14 text-red-400 hover:text-red-300 hover:bg-red-500/10 font-black rounded-2xl"
+                                 onClick={() => handleAction('/api/admin/verifications', 'POST', { userId: v.id, status: 'rejected' }, 'Verification rejected')}
+                               >
+                                 <XCircle className="w-5 h-5 mr-3" />
+                                 REJECT
+                               </Button>
+                            </div>
+                         </div>
+                      </CardContent>
+                    </Card>
+                  )) : (
+                    <div className="text-center py-32 bg-slate-900/20 border-2 border-dashed border-white/5 rounded-[3rem]">
+                       <ShieldCheck className="w-16 h-16 text-slate-700 mx-auto mb-6" />
+                       <h3 className="text-2xl font-black text-white">NO PENDING VERIFICATIONS</h3>
+                       <p className="text-slate-500 font-bold uppercase tracking-widest text-xs mt-2">All network entities are currently synchronized</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Other tabs follow similar premium patterns... */}
-            {activeTab !== 'overview' && activeTab !== 'users' && activeTab !== 'withdrawals' && (
+            {activeTab !== 'overview' && activeTab !== 'users' && activeTab !== 'withdrawals' && activeTab !== 'verifications' && (
               <div className="flex flex-col items-center justify-center h-[60vh] text-slate-500">
                 <Settings className="w-16 h-16 mb-4 opacity-20" />
                 <h3 className="text-xl font-bold text-white mb-2">{activeTab.toUpperCase()} Module</h3>

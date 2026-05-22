@@ -4,9 +4,13 @@ import bcrypt from 'bcryptjs';
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password, full_name, user_type, otp } = await request.json();
+    const data = await request.json();
+    const {
+      email, password, full_name, user_type, phoneNumber,
+      transaction_pin, id_type, id_serial, id_url
+    } = data;
 
-    if (!email || !password || !full_name || !user_type || !otp) {
+    if (!email || !password || !full_name || !user_type) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -23,8 +27,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'User already exists' }, { status: 400 });
     }
 
-    // 3. Hash password
+    // 3. Hash password and PIN
     const password_hash = await bcrypt.hash(password, 12);
+    let transaction_pin_hash = null;
+    if (transaction_pin) {
+      transaction_pin_hash = await bcrypt.hash(transaction_pin, 10);
+    }
 
     // 4. Generate EL Space ID
     const el_space_id = `EL-${Math.floor(10000000 + Math.random() * 90000000)}`;
@@ -35,9 +43,14 @@ export async function POST(request: NextRequest) {
       .insert([{
         email,
         password_hash,
+        transaction_pin_hash,
         full_name,
         user_type,
         el_space_id,
+        phone_number: phoneNumber,
+        id_type,
+        id_serial,
+        id_url,
         role: 'user',
         status: 'active',
         created_at: new Date()
@@ -49,11 +62,26 @@ export async function POST(request: NextRequest) {
 
     // 6. Create profile based on user type
     if (user_type === 'freelancer') {
-      await supabase.from('freelancer_profiles').insert([{ user_id: user.id, created_at: new Date() }]);
+      await supabase.from('freelancer_profiles').insert([{
+        user_id: user.id,
+        skills: data.tech_stack || [],
+        bio: data.about_you,
+        github_url: data.github_url,
+        project_links: data.project_links || [],
+        created_at: new Date()
+      }]);
     } else {
       // For client, entrepreneur, business, enterprise
       await supabase.from('client_profiles').insert([{
         user_id: user.id,
+        business_name: data.business_name,
+        business_type: data.business_type,
+        business_sector: data.business_sector,
+        business_phone: data.business_phone,
+        business_email: data.business_email,
+        business_reg_url: data.business_reg_url,
+        company_url: data.business_website,
+        company_size: data.company_size,
         verification_status: 'unverified',
         created_at: new Date()
       }]);
