@@ -13,11 +13,13 @@ export default function FreelancerProfilePage() {
   const router = useRouter();
   const [profile, setProfile] = useState<any>(null);
   const [reviews, setReviews] = useState<any[]>([]);
+  const [portfolio, setPortfolio] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchProfile();
     fetchReviews();
+    fetchPortfolio();
   }, [params.id]);
 
   const fetchProfile = async () => {
@@ -36,9 +38,19 @@ export default function FreelancerProfilePage() {
     try {
       const response = await fetch(`/api/reviews?userId=${params.id}`);
       const data = await response.json();
-      setReviews(data.reviews);
+      if (data.reviews) setReviews(data.reviews);
     } catch (error) {
       console.error('Error fetching reviews:', error);
+    }
+  };
+
+  const fetchPortfolio = async () => {
+    try {
+      const response = await fetch(`/api/portfolio?userId=${params.id}`);
+      const data = await response.json();
+      if (data.items) setPortfolio(data.items);
+    } catch (error) {
+      console.error('Error fetching portfolio:', error);
     }
   };
 
@@ -162,12 +174,41 @@ export default function FreelancerProfilePage() {
           </TabsContent>
 
           <TabsContent value="portfolio">
-            <Card className="bg-slate-800 border-slate-700">
-              <CardContent className="py-12 text-center">
-                <Briefcase className="mx-auto h-12 w-12 text-slate-600 mb-4" />
-                <p className="text-slate-400">Portfolio items will be displayed here</p>
-              </CardContent>
-            </Card>
+            <div className="grid md:grid-cols-2 gap-6">
+              {portfolio.length > 0 ? (
+                portfolio.map((item) => (
+                  <Card key={item.id} className="bg-slate-800 border-slate-700 overflow-hidden group">
+                    <div className="aspect-video bg-slate-700 relative">
+                       {item.image_url ? (
+                         <img src={item.image_url} alt={item.title} className="w-full h-full object-cover" />
+                       ) : (
+                         <div className="flex items-center justify-center h-full text-slate-600">
+                            <Briefcase className="w-12 h-12" />
+                         </div>
+                       )}
+                    </div>
+                    <CardContent className="p-6">
+                      <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
+                      <p className="text-slate-400 text-sm line-clamp-2 mb-4">{item.description}</p>
+                      <div className="flex flex-wrap gap-2">
+                        {item.skills?.map((skill: string) => (
+                          <Badge key={skill} variant="outline" className="text-[10px] border-slate-600 text-slate-400">
+                            {skill}
+                          </Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <Card className="col-span-full bg-slate-800 border-slate-700">
+                  <CardContent className="py-12 text-center">
+                    <Briefcase className="mx-auto h-12 w-12 text-slate-600 mb-4" />
+                    <p className="text-slate-400">No portfolio items available</p>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
           </TabsContent>
 
           <TabsContent value="reviews">

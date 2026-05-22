@@ -804,3 +804,39 @@ export const addComment = async (postId: string, userId: string, content: string
 
   return { data: data?.[0] || null, error };
 };
+
+// ============ PORTFOLIO ============
+
+export const getPortfolio = async (userId: string) => {
+  const { data, error } = await supabase
+    .from('portfolio_items')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+  return { data: (data as any[]) || [], error };
+};
+
+export const createPortfolioItem = async (userId: string, itemData: any) => {
+  const { data, error } = await supabase
+    .from('portfolio_items')
+    .insert([{ ...itemData, user_id: userId }])
+    .select();
+  return { data: data?.[0] || null, error };
+};
+
+// ============ STORAGE ASSETS ============
+
+export const trackStorageAsset = async (assetData: {
+  user_id: string;
+  file_path: string;
+  file_name: string;
+  file_type?: string;
+  file_size?: number;
+  bucket_name: string;
+}) => {
+  const { data, error } = await supabase
+    .from('storage_assets')
+    .insert([assetData])
+    .select();
+  return { data: data?.[0] || null, error };
+};

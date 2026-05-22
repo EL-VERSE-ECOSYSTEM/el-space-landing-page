@@ -18,8 +18,8 @@ export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuth();
 
-  // Step management: email -> password -> otp
-  const [step, setStep] = useState<"email" | "password" | "otp">("email");
+  // Step management: email -> password
+  const [step, setStep] = useState<"email" | "password">("email");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -61,64 +61,26 @@ export default function LoginPage() {
     }
   };
 
-  const handleSendOTP = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      const response = await fetch("/api/auth/send-otp", {
+      const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email,
-          type: "login",
-          metadata: { password }
+          password,
+          otp: '000000' // Mock OTP for API compatibility
         }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || "Failed to send OTP. Check your password.");
-        setLoading(false);
-        return;
-      }
-
-      if (data.otp) {
-        setGeneratedOtp(data.otp);
-        setShowOtpPopup(true);
-      }
-
-      setSuccess("Verification code sent to your email!");
-      setStep("otp");
-    } catch (err: any) {
-      setError(err.message || "An error occurred");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleVerifyOTP = async (e?: React.FormEvent, manualOtp?: string) => {
-    if (e) e.preventDefault();
-    const otpToVerify = manualOtp || otp;
-
-    if (!otpToVerify || otpToVerify.length !== 6) return;
-
-    setLoading(true);
-    setError("");
-
-    try {
-      const response = await fetch("/api/auth/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp: otpToVerify, type: "login", password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.message || "Failed to verify OTP");
+        setError(data.error || "Login failed. Please check your credentials.");
         setLoading(false);
         return;
       }
@@ -126,7 +88,7 @@ export default function LoginPage() {
       setSuccess("Login successful!");
 
       // Update auth context
-      await login(data.user, data.token);
+      await login(data.user, data.token || 'temp-token');
 
       // Redirect based on user type
       setTimeout(() => {
@@ -167,8 +129,8 @@ export default function LoginPage() {
         {/* Progress Tracker */}
         <div className="flex justify-center mb-8 px-8">
            <div className="flex items-center w-full max-w-[240px]">
-              {["email", "password", "otp"].map((s, i) => {
-                const steps = ["email", "password", "otp"];
+              {["email", "password"].map((s, i) => {
+                const steps = ["email", "password"];
                 const currentIndex = steps.indexOf(step);
                 const isActive = i <= currentIndex;
                 const isCompleted = i < currentIndex;
@@ -181,7 +143,7 @@ export default function LoginPage() {
                     }`}>
                       {isCompleted ? <ShieldCheck className="w-5 h-5" /> : <span className="text-sm font-black">{i + 1}</span>}
                     </div>
-                    {i < 2 && (
+                    {i < 1 && (
                       <div className={`flex-1 h-1 mx-2 rounded-full transition-all duration-500 ${
                         i < currentIndex ? 'bg-cyan-500' : 'bg-slate-100'
                       }`} />
@@ -262,7 +224,7 @@ export default function LoginPage() {
 
           {/* Step 2: Password */}
           {step === "password" && (
-            <form onSubmit={handleSendOTP} className="space-y-6">
+            <form onSubmit={handleLogin} className="space-y-6">
               <div className="bg-slate-50 p-4 rounded-2xl text-center mb-2">
                 <p className="text-sm font-bold text-slate-600">
                   Signing in as <span className="text-cyan-600">{email}</span>
@@ -298,11 +260,11 @@ export default function LoginPage() {
                 {loading ? (
                   <span className="flex items-center gap-2">
                     <Loader className="w-5 h-5 animate-spin" />
-                    Sending OTP...
+                    Authenticating...
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
-                    Request OTP <Zap className="w-5 h-5" />
+                    Sign In <ShieldCheck className="w-5 h-5" />
                   </span>
                 )}
               </Button>
@@ -318,58 +280,6 @@ export default function LoginPage() {
                 className="w-full py-2 text-sm font-bold text-slate-400 hover:text-slate-600 flex items-center justify-center gap-2 transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" /> Change email address
-              </button>
-            </form>
-          )}
-
-          {/* Step 3: OTP */}
-          {step === "otp" && (
-            <form onSubmit={handleVerifyOTP} className="space-y-6">
-              <div className="bg-slate-50 p-4 rounded-2xl text-center mb-2">
-                <p className="text-sm font-bold text-slate-600">
-                  Enter 6-digit code sent to <br/><span className="text-cyan-600">{email}</span>
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1 text-center block">Verification Code</Label>
-                <Input
-                  type="text"
-                  placeholder="000000"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                  maxLength={6}
-                  required
-                  className="h-16 bg-slate-50 border-slate-100 text-slate-900 text-center text-3xl tracking-[0.5em] font-black rounded-2xl focus:border-cyan-500 focus:ring-cyan-500/10"
-                />
-              </div>
-
-              <Button
-                type="submit"
-                disabled={loading || otp.length !== 6}
-                className="w-full h-14 bg-slate-900 hover:bg-cyan-600 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-cyan-500/20"
-              >
-                {loading ? (
-                  <span className="flex items-center gap-2">
-                    <Loader className="w-5 h-5 animate-spin" />
-                    Verifying...
-                  </span>
-                ) : (
-                  "Verify & Sign In"
-                )}
-              </Button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setStep("password");
-                  setOtp("");
-                  setError("");
-                  setSuccess("");
-                }}
-                className="w-full py-2 text-sm font-bold text-slate-400 hover:text-slate-600 flex items-center justify-center gap-2 transition-colors"
-              >
-                <ArrowLeft className="w-4 h-4" /> Back to password
               </button>
             </form>
           )}

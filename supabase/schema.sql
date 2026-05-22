@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
   el_space_id TEXT UNIQUE NOT NULL,
   email TEXT UNIQUE NOT NULL,
   full_name TEXT NOT NULL,
-  user_type TEXT CHECK (user_type IN ('client', 'freelancer')) NOT NULL,
+  user_type TEXT CHECK (user_type IN ('client', 'entrepreneur', 'business', 'enterprise', 'freelancer')) NOT NULL,
   role TEXT CHECK (role IN ('admin', 'moderator', 'user')) DEFAULT 'user',
   avatar_url TEXT,
   bio TEXT,
@@ -340,6 +340,30 @@ CREATE TABLE IF NOT EXISTS todos (
   user_id UUID REFERENCES users(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
   is_completed BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS portfolio_items (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT,
+  image_url TEXT,
+  project_url TEXT,
+  skills TEXT[] DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Custom Storage Tracking
+CREATE TABLE IF NOT EXISTS storage_assets (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  file_path TEXT NOT NULL,
+  file_name TEXT NOT NULL,
+  file_type TEXT,
+  file_size INTEGER,
+  bucket_name TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
