@@ -19,9 +19,9 @@ export default async function DashboardRedirect() {
     .eq('id', user.id)
     .single()
 
-  if (profile?.user_type === 'client') {
-    redirect('/client/dashboard')
-  } else {
+  if (profile?.user_type === 'freelancer') {
     redirect('/freelancer/dashboard')
+  } else {
+    redirect('/client/dashboard')
   }
 }

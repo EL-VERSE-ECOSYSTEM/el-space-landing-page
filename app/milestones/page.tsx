@@ -19,6 +19,7 @@ export default function MilestonesHub() {
   const router = useRouter()
   const { user } = useAuth()
   const [loading, setLoading] = useState(true)
+  const [processing, setProcessing] = useState<string | null>(null)
   const [milestones, setMilestones] = useState<any[]>([])
 
   useEffect(() => {
@@ -30,8 +31,6 @@ export default function MilestonesHub() {
   const fetchMilestones = async () => {
     try {
       setLoading(true)
-      // In a real app, we'd fetch all milestones for the user's active projects
-      // For this view, we'll fetch a sample or the user's most recent ones
       const res = await fetch(`/api/milestones?userId=${user?.id}`)
       const data = await res.json()
       if (data.milestones) {
@@ -41,6 +40,29 @@ export default function MilestonesHub() {
       console.error('Failed to sync milestones')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleUpdateStatus = async (milestoneId: string, status: string) => {
+    try {
+      setProcessing(milestoneId)
+      const res = await fetch('/api/milestones', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ milestoneId, status }),
+      })
+
+      const data = await res.json()
+      if (data.success) {
+        toast.success(`Milestone ${status === 'submitted' ? 'submitted' : 'approved'} successfully`)
+        fetchMilestones()
+      } else {
+        toast.error(data.error || 'Failed to update milestone')
+      }
+    } catch (err) {
+      toast.error('Network error updating milestone')
+    } finally {
+      setProcessing(null)
     }
   }
 
@@ -141,13 +163,21 @@ export default function MilestonesHub() {
                                    Details
                                 </Button>
                                 {user?.user_type === 'freelancer' && milestone.status === 'in_progress' && (
-                                  <Button className="flex-1 bg-cyan-500 hover:bg-cyan-600 text-white font-black rounded-xl px-8 h-12 shadow-lg shadow-cyan-500/20">
-                                     Submit <Send className="w-4 h-4 ml-2" />
+                                  <Button
+                                    disabled={!!processing}
+                                    onClick={() => handleUpdateStatus(milestone.id, 'submitted')}
+                                    className="flex-1 bg-cyan-500 hover:bg-cyan-600 text-white font-black rounded-xl px-8 h-12 shadow-lg shadow-cyan-500/20"
+                                  >
+                                     {processing === milestone.id ? '...' : 'Submit'} <Send className="w-4 h-4 ml-2" />
                                   </Button>
                                 )}
                                 {user?.user_type === 'client' && milestone.status === 'submitted' && (
-                                  <Button className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-black rounded-xl px-8 h-12 shadow-lg shadow-emerald-500/20">
-                                     Approve <CheckCircle className="w-4 h-4 ml-2" />
+                                  <Button
+                                    disabled={!!processing}
+                                    onClick={() => handleUpdateStatus(milestone.id, 'approved')}
+                                    className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-black rounded-xl px-8 h-12 shadow-lg shadow-emerald-500/20"
+                                  >
+                                     {processing === milestone.id ? '...' : 'Approve'} <CheckCircle className="w-4 h-4 ml-2" />
                                   </Button>
                                 )}
                              </div>

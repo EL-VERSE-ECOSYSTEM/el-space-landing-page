@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import bcrypt from 'bcryptjs';
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,14 +13,15 @@ export async function POST(request: NextRequest) {
     // 1. Get user data
     const { data: user, error: userError } = await supabase
       .from('users')
-      .select('transaction_pin, full_name')
+      .select('transaction_pin_hash, full_name')
       .eq('id', senderId)
       .single() as any;
 
     if (userError || !user) throw new Error('Sender not found');
 
     // 2. Verify Transaction PIN
-    if (user.transaction_pin !== transactionPin) {
+    const isPinValid = await bcrypt.compare(transactionPin, user.transaction_pin_hash || "");
+    if (!isPinValid) {
       return NextResponse.json({ error: 'Invalid Transaction PIN' }, { status: 403 });
     }
 

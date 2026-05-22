@@ -15,11 +15,12 @@ export async function POST(request: NextRequest) {
 
     const reviewData = {
       project_id: projectId,
-      author_id: authorId,
+      reviewer_id: authorId,
       reviewee_id: revieweeId,
       rating,
       comment,
-      is_public: isPublic !== false, // Default to public
+      visibility: isPublic !== false ? 'public' : 'private',
+      reviewer_role: 'freelancer', // Should be dynamic based on caller
     };
 
     const { data, error } = await createReview(reviewData);
@@ -55,10 +56,10 @@ export async function GET(request: NextRequest) {
     const avgRating = data.length > 0 ? (data.reduce((sum: number, r: any) => sum + r.rating, 0) / data.length).toFixed(1) : "0";
 
     return NextResponse.json({
-      reviews: data.filter((r: any) => r.is_public),
+      reviews: data.filter((r: any) => r.visibility === 'public'),
       stats: {
         averageRating: parseFloat(avgRating),
-        totalReviews: data.filter((r: any) => r.is_public).length,
+        totalReviews: data.filter((r: any) => r.visibility === 'public').length,
       }
     });
   } catch (error: unknown) {

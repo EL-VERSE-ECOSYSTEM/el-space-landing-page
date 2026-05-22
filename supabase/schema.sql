@@ -15,6 +15,11 @@ CREATE TABLE IF NOT EXISTS users (
   avatar_url TEXT,
   bio TEXT,
   password_hash TEXT, -- For legacy/OTP fallback if needed
+  transaction_pin_hash TEXT,
+  id_type TEXT,
+  id_serial TEXT,
+  id_url TEXT,
+  is_verified BOOLEAN DEFAULT FALSE,
   verified_badge INTEGER DEFAULT 0, -- 0: None, 1: Portfolio, 2: Test Passed, 3: ELACCESS
   verified_at TIMESTAMPTZ,
   phone_number TEXT,
@@ -31,6 +36,8 @@ CREATE TABLE IF NOT EXISTS freelancer_profiles (
   years_experience INTEGER DEFAULT 0,
   portfolio_url TEXT,
   github_url TEXT,
+  github_portfolio_url TEXT,
+  project_links TEXT[] DEFAULT '{}',
   linkedin_url TEXT,
   skills TEXT[] DEFAULT '{}',
   total_earnings NUMERIC DEFAULT 0,
@@ -52,6 +59,12 @@ CREATE TABLE IF NOT EXISTS freelancer_profiles (
 CREATE TABLE IF NOT EXISTS client_profiles (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES users(id) ON DELETE CASCADE UNIQUE NOT NULL,
+  business_name TEXT,
+  business_type TEXT,
+  business_sector TEXT,
+  business_phone TEXT,
+  business_email TEXT,
+  business_reg_url TEXT,
   company_name TEXT,
   company_url TEXT,
   company_size TEXT,
@@ -130,6 +143,9 @@ CREATE TABLE IF NOT EXISTS wallets (
   user_id UUID REFERENCES users(id) ON DELETE CASCADE UNIQUE NOT NULL,
   balance NUMERIC DEFAULT 0,
   escrow_balance NUMERIC DEFAULT 0,
+  pending_balance NUMERIC DEFAULT 0,
+  total_earned NUMERIC DEFAULT 0,
+  total_withdrawn NUMERIC DEFAULT 0,
   currency TEXT DEFAULT 'USD',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -164,7 +180,7 @@ CREATE TABLE IF NOT EXISTS reviews (
   rating INTEGER CHECK (rating >= 1 AND rating <= 5) NOT NULL,
   comment TEXT,
   visibility TEXT CHECK (visibility IN ('public', 'private')) DEFAULT 'public',
-  reviewer_role TEXT CHECK (reviewer_role IN ('client', 'freelancer')) NOT NULL,
+  reviewer_role TEXT CHECK (reviewer_role IN ('client', 'entrepreneur', 'business', 'enterprise', 'freelancer')) NOT NULL,
   both_submitted BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()

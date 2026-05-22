@@ -1,6 +1,6 @@
 // Type definitions for the EL SPACE platform
 
-export type UserType = 'client' | 'freelancer';
+export type UserType = 'client' | 'entrepreneur' | 'business' | 'enterprise' | 'freelancer';
 export type UserRole = 'admin' | 'moderator' | 'user';
 export type VerificationBadge = 0 | 1 | 2 | 3; // None, Portfolio, Test Passed, ELACCESS
 export type ProjectStatus = 'draft' | 'open' | 'in_progress' | 'completed' | 'cancelled';
@@ -19,6 +19,11 @@ export interface User {
   role: UserRole;
   avatar_url?: string;
   bio?: string;
+  id_type?: string;
+  id_serial?: string;
+  id_url?: string;
+  is_verified: boolean;
+  transaction_pin_hash?: string;
   verified_badge: VerificationBadge;
   verified_at?: Date;
   created_at: Date;
@@ -33,6 +38,8 @@ export interface FreelancerProfile {
   years_experience: number;
   portfolio_url?: string;
   github_url?: string;
+  github_portfolio_url?: string;
+  project_links: string[];
   linkedin_url?: string;
   skills: string[];
   total_earnings: number;
@@ -53,6 +60,12 @@ export interface FreelancerProfile {
 export interface ClientProfile {
   id: string;
   user_id: string;
+  business_name?: string;
+  business_type?: string;
+  business_sector?: string;
+  business_phone?: string;
+  business_email?: string;
+  business_reg_url?: string;
   company_name?: string;
   company_url?: string;
   company_size?: string;

@@ -28,6 +28,7 @@ export default function WalletHub() {
 
   // Withdrawal State
   const [showWithdraw, setShowWithdraw] = useState(false)
+  const [showTransfer, setShowTransfer] = useState(false)
   const [withdrawMethod, setWithdrawMethod] = useState<'bank' | 'crypto'>('bank')
   const [withdrawData, setWithdrawData] = useState({
     amount: '',
@@ -35,6 +36,12 @@ export default function WalletHub() {
     bankName: '',
     walletAddress: '',
     network: 'Ethereum (ERC20)',
+    pin: ''
+  })
+
+  const [transferData, setTransferData] = useState({
+    recipientId: '',
+    amount: '',
     pin: ''
   })
 
@@ -79,6 +86,7 @@ export default function WalletHub() {
           userId: user?.id,
           type: 'withdraw',
           amount: parseFloat(withdrawData.amount),
+          transactionPin: withdrawData.pin,
           method: withdrawMethod,
           accountDetails: withdrawMethod === 'bank' ? {
             accountNumber: withdrawData.accountNumber,
@@ -86,20 +94,54 @@ export default function WalletHub() {
           } : {
             address: withdrawData.walletAddress,
             network: withdrawData.network
-          },
-          metadata: { pin: withdrawData.pin }
+          }
         })
       })
       const data = await res.json()
       if (data.success) {
         toast.success('Withdrawal request initiated!')
         setShowWithdraw(false)
+        setWithdrawData({ amount: '', accountNumber: '', bankName: '', walletAddress: '', network: 'Ethereum (ERC20)', pin: '' })
         fetchWalletData()
       } else {
         toast.error(data.error)
       }
     } catch (err) {
       toast.error('Withdrawal execution error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleTransfer = async () => {
+    if (!transferData.recipientId || !transferData.amount || !transferData.pin) {
+      toast.error('Please complete all transfer details')
+      return
+    }
+
+    try {
+      setLoading(true)
+      const res = await fetch('/api/wallet/transfer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          senderId: user?.id,
+          recipientSpaceId: transferData.recipientId,
+          amount: parseFloat(transferData.amount),
+          transactionPin: transferData.pin
+        })
+      })
+      const data = await res.json()
+      if (data.success) {
+        toast.success('Internal transfer successful!')
+        setShowTransfer(false)
+        setTransferData({ recipientId: '', amount: '', pin: '' })
+        fetchWalletData()
+      } else {
+        toast.error(data.error)
+      }
+    } catch (err) {
+      toast.error('Transfer execution failed')
     } finally {
       setLoading(false)
     }
@@ -123,11 +165,14 @@ export default function WalletHub() {
               <p className="text-slate-400 mt-2 text-lg font-medium">Secured liquidity & asset management</p>
             </div>
             <div className="flex gap-4 w-full md:w-auto">
+              <Button onClick={() => setShowTransfer(true)} className="flex-1 md:flex-none h-14 bg-slate-800 border border-slate-700 text-white hover:bg-slate-700 font-black px-8 rounded-2xl transition-all">
+                <Send className="w-5 h-5 mr-2" /> Transfer
+              </Button>
               <Button onClick={() => setShowWithdraw(true)} className="flex-1 md:flex-none h-14 bg-slate-800 border border-slate-700 text-white hover:bg-slate-700 font-black px-8 rounded-2xl transition-all">
                 <ArrowUpRight className="w-5 h-5 mr-2" /> Withdraw
               </Button>
               <Button onClick={() => router.push('/payments')} className="flex-1 md:flex-none h-14 bg-cyan-500 hover:bg-cyan-600 text-white font-black px-10 rounded-2xl shadow-xl shadow-cyan-500/20 transition-all">
-                <Plus className="w-5 h-5 mr-2" /> Fund Wallet
+                <Plus className="w-5 h-5 mr-2" /> Fund
               </Button>
             </div>
           </div>
@@ -272,6 +317,69 @@ export default function WalletHub() {
             </div>
           </div>
         </main>
+
+        {/* Transfer Modal */}
+        {showTransfer && (
+          <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-xl z-[100] flex items-center justify-center p-4">
+             <Card className="w-full max-w-xl bg-slate-900 border border-slate-800 shadow-2xl rounded-[3rem] relative overflow-hidden animate-in fade-in zoom-in-95 duration-300">
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-400 to-cyan-500" />
+                <CardHeader className="p-10 pb-4">
+                   <CardTitle className="text-3xl font-black text-white tracking-tight">Internal Transfer</CardTitle>
+                   <p className="text-slate-500 font-medium mt-1">Send funds instantly via EL SPACE ID.</p>
+                </CardHeader>
+                <CardContent className="p-10 pt-0 space-y-8">
+                   <div className="space-y-6">
+                      <div className="space-y-3">
+                         <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Recipient EL SPACE ID</label>
+                         <div className="relative">
+                            <Smartphone className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-600" />
+                            <Input
+                               placeholder="e.g. EL-12345678"
+                               className="bg-slate-800 border-slate-700 pl-14 h-16 text-white font-black text-xl rounded-2xl focus:ring-emerald-500"
+                               value={transferData.recipientId}
+                               onChange={e => setTransferData({...transferData, recipientId: e.target.value})}
+                            />
+                         </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-6">
+                         <div className="space-y-3">
+                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Amount ($)</label>
+                            <Input
+                               type="number"
+                               placeholder="0.00"
+                               className="bg-slate-800 border-slate-700 h-16 text-white font-black text-xl rounded-2xl focus:ring-emerald-500"
+                               value={transferData.amount}
+                               onChange={e => setTransferData({...transferData, amount: e.target.value})}
+                            />
+                         </div>
+                         <div className="space-y-3">
+                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Secure PIN</label>
+                            <Input
+                               type="password"
+                               placeholder="••••"
+                               maxLength={4}
+                               className="bg-slate-800 border-slate-700 h-16 text-white tracking-[0.5em] text-center font-black text-xl rounded-2xl focus:ring-emerald-500"
+                               value={transferData.pin}
+                               onChange={e => setTransferData({...transferData, pin: e.target.value})}
+                            />
+                         </div>
+                      </div>
+                   </div>
+
+                   <div className="flex gap-4 pt-6">
+                      <Button variant="ghost" className="flex-1 h-14 text-slate-500 font-black text-lg rounded-2xl hover:bg-slate-800" onClick={() => setShowTransfer(false)}>Cancel</Button>
+                      <Button
+                         className="flex-[2] h-14 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-lg rounded-2xl shadow-xl shadow-emerald-500/20 transition-all"
+                         onClick={handleTransfer}
+                      >
+                         Execute Transfer
+                      </Button>
+                   </div>
+                </CardContent>
+             </Card>
+          </div>
+        )}
 
         {/* Withdrawal Modal */}
         {showWithdraw && (

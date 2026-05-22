@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
 import { 
   getWallet, 
   updateWalletBalance, 
@@ -134,6 +135,27 @@ export async function POST(request: NextRequest) {
     }
 
     if (type === 'withdraw') {
+      // 1. Verify Transaction PIN
+      const { transactionPin } = body;
+      if (!transactionPin) {
+        return NextResponse.json({ error: 'Transaction PIN is required for withdrawals' }, { status: 403 });
+      }
+
+      const { data: user, error: userError } = await supabase
+        .from('users')
+        .select('transaction_pin_hash')
+        .eq('id', userId)
+        .single();
+
+      if (userError || !user) {
+        return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      }
+
+      const isPinValid = await bcrypt.compare(transactionPin, user.transaction_pin_hash || "");
+      if (!isPinValid) {
+        return NextResponse.json({ error: 'Invalid Transaction PIN' }, { status: 403 });
+      }
+
       // Validate sufficient funds
       const availableBalance = (wallet.balance || 0) - (wallet.pending_balance || 0);
       if (amount > availableBalance) {
