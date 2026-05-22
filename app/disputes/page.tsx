@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   Dialog,
   DialogContent,
@@ -14,37 +13,38 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
 import { Textarea } from '@/components/ui/textarea'
-import { AlertTriangle, Scale, MessageCircle, FileText, CheckCircle } from 'lucide-react'
+import {
+  AlertTriangle, Scale, MessageCircle,
+  FileText, CheckCircle, Send, Plus,
+  Shield, Clock, ChevronRight, Upload
+} from 'lucide-react'
 import { useLoader } from '@/components/loader-provider'
 import { useAuth } from '@/components/auth-provider'
 import { toast } from 'sonner'
+import { DashboardLayout } from '@/components/dashboard/auth-guard'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 interface Dispute {
   id: string
-  projectId: string
-  projectName: string
-  clientName: string
-  freelancerName: string
-  reason: string
-  amount: number
-  status: 'open' | 'in_review' | 'resolved' | 'closed'
-  createdAt: string
-  messages: Array<{
-    id: string
-    sender: string
-    message: string
-    timestamp: string
-  }>
+  project_id: string
+  title: string
+  description: string
+  status: 'open' | 'in_review' | 'resolved' | 'closed' | 'escalated'
+  created_at: string
+  plaintiff_id: string
+  defendant_id: string
+  project?: {
+    title: string
+  }
+}
+
+interface Evidence {
+  id: string
+  user_id: string
+  evidence: string
+  attachment_url?: string
+  created_at: string
 }
 
 export default function DisputesPage() {
@@ -53,10 +53,9 @@ export default function DisputesPage() {
   const [disputes, setDisputes] = useState<Dispute[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedDispute, setSelectedDispute] = useState<Dispute | null>(null)
-  const [messageText, setMessageText] = useState('')
-  const [reasonText, setReasonText] = useState('')
-  const [openNewDispute, setOpenNewDispute] = useState(false)
-  const [selectedProject, setSelectedProject] = useState('')
+  const [evidenceList, setEvidenceList] = useState<Evidence[]>([])
+  const [evidenceText, setEvidenceText] = useState('')
+  const [isSubmittingEvidence, setIsSubmittingEvidence] = useState(false)
 
   useEffect(() => {
     if (!authLoading) {
@@ -67,57 +66,65 @@ export default function DisputesPage() {
   const fetchDisputes = async () => {
     try {
       setLoading(true)
-      showLoader(2)
       const userId = user?.id || ''
       if (!userId) return
 
       const response = await fetch(`/api/disputes?userId=${userId}`)
-      const data = await response.json()
+      const resData = await response.json()
 
-      if (data.success && data.disputes) {
-        setDisputes(data.disputes)
+      if (resData.data) {
+        setDisputes(resData.data)
       } else {
         setDisputes([])
       }
-      hideLoader()
     } catch (error) {
       console.error('Error fetching disputes:', error)
       toast.error('Failed to load disputes')
-      hideLoader()
     } finally {
       setLoading(false)
     }
   }
 
-  const handleSendMessage = async () => {
-    if (!messageText || !selectedDispute) return
+  const fetchEvidence = async (disputeId: string) => {
+    try {
+      const response = await fetch(`/api/disputes?action=evidence&id=${disputeId}`)
+      const resData = await response.json()
+      if (resData.data) {
+        setEvidenceList(resData.data)
+      }
+    } catch (error) {
+      console.error('Error fetching evidence:', error)
+    }
+  }
+
+  const handleAddEvidence = async () => {
+    if (!evidenceText.trim() || !selectedDispute || !user) return
 
     try {
-      showLoader(2)
+      setIsSubmittingEvidence(true)
       const response = await fetch('/api/disputes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          action: 'add-message',
+          action: 'addEvidence',
           disputeId: selectedDispute.id,
-          message: messageText,
-          sender: user?.name || 'User',
+          userId: user.id,
+          evidence: evidenceText,
         }),
       })
 
       const data = await response.json()
       if (data.success) {
-        toast.success('Message sent')
-        setMessageText('')
-        fetchDisputes()
+        toast.success('Evidence submitted')
+        setEvidenceText('')
+        fetchEvidence(selectedDispute.id)
       } else {
-        toast.error(data.error || 'Failed to send message')
+        toast.error(data.error || 'Failed to submit evidence')
       }
-      hideLoader()
     } catch (error) {
-      console.error('Error sending message:', error)
-      toast.error('Failed to send message')
-      hideLoader()
+      toast.error('Failed to submit evidence')
+    } finally {
+      setIsSubmittingEvidence(false)
     }
   }
 
@@ -130,256 +137,235 @@ export default function DisputesPage() {
         body: JSON.stringify({
           action: 'escalate',
           disputeId,
+          reason: 'Parties unable to reach agreement through direct mediation.'
         }),
       })
 
       const data = await response.json()
       if (data.success) {
-        toast.success('Dispute escalated to admin')
+        toast.success('Dispute escalated to Admin panel')
         fetchDisputes()
+        if (selectedDispute) setSelectedDispute({...selectedDispute, status: 'escalated'})
       } else {
         toast.error(data.error || 'Failed to escalate')
       }
       hideLoader()
     } catch (error) {
-      console.error('Error:', error)
       toast.error('Failed to escalate')
       hideLoader()
     }
   }
 
-  const getStatusColor = (status: string) => {
+  const getStatusConfig = (status: string) => {
     switch (status) {
       case 'open':
-        return 'bg-yellow-500/20 text-yellow-300 border-yellow-500/50'
+        return { color: 'bg-amber-500/10 text-amber-500', label: 'OPEN' }
       case 'in_review':
-        return 'bg-blue-500/20 text-blue-300 border-blue-500/50'
+        return { color: 'bg-blue-500/10 text-blue-400', label: 'IN REVIEW' }
       case 'resolved':
-        return 'bg-green-500/20 text-green-300 border-green-500/50'
+        return { color: 'bg-emerald-500/10 text-emerald-500', label: 'RESOLVED' }
+      case 'escalated':
+        return { color: 'bg-red-500/10 text-red-500', label: 'ESCALATED' }
       case 'closed':
-        return 'bg-slate-500/20 text-slate-300 border-slate-500/50'
+        return { color: 'bg-slate-800 text-slate-500', label: 'CLOSED' }
       default:
-        return 'bg-slate-500/20 text-slate-300'
+        return { color: 'bg-slate-800 text-slate-500', label: status.toUpperCase() }
     }
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-red-900 to-slate-900 flex items-center justify-center">
-        <div className="text-center text-white">
-          <Scale className="w-12 h-12 mx-auto mb-4 animate-bounce" />
-          <p>Loading disputes...</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-red-900 to-slate-900 p-4 md:p-8">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2 flex items-center gap-2">
-            <Scale className="w-10 h-10 text-red-400" />
-            Dispute Management
-          </h1>
-          <p className="text-red-200">Handle and resolve project disputes</p>
-        </div>
+    <DashboardLayout userType={user?.user_type || 'freelancer'}>
+      <div className="min-h-screen text-slate-200 pb-20">
+        <main className="max-w-6xl mx-auto space-y-12">
+          {/* Header */}
+          <div className="flex justify-between items-end">
+            <div>
+              <h1 className="text-5xl font-black text-white tracking-tighter flex items-center gap-4">
+                <div className="w-14 h-14 rounded-2xl bg-red-500 flex items-center justify-center shadow-2xl shadow-red-500/20">
+                  <Scale className="w-7 h-7 text-white" />
+                </div>
+                Justice <span className="bg-gradient-to-r from-red-400 to-orange-500 bg-clip-text text-transparent">Center</span>
+              </h1>
+              <p className="text-slate-400 mt-2 text-lg font-medium">Impartial resolution for professional conflicts</p>
+            </div>
+            <Button className="bg-white text-slate-950 hover:bg-slate-200 font-black px-8 h-12 rounded-xl">
+               <Plus className="w-4 h-4 mr-2" /> File Dispute
+            </Button>
+          </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          {[
-            { label: 'Open', count: disputes.filter(d => d.status === 'open').length, color: 'yellow' },
-            { label: 'In Review', count: disputes.filter(d => d.status === 'in_review').length, color: 'blue' },
-            { label: 'Resolved', count: disputes.filter(d => d.status === 'resolved').length, color: 'green' },
-            { label: 'Closed', count: disputes.filter(d => d.status === 'closed').length, color: 'slate' },
-          ].map((stat) => (
-            <Card key={stat.label} className="bg-slate-800/50 border-slate-700/50">
-              <CardContent className="pt-6">
-                <div className={`text-2xl font-bold text-${stat.color}-400`}>{stat.count}</div>
-                <p className="text-sm text-slate-300">{stat.label} Disputes</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Disputes List */}
-        <Card className="bg-slate-800/50 border-slate-700/50">
-          <CardHeader>
-            <CardTitle className="text-white">Your Disputes</CardTitle>
-            <CardDescription className="text-slate-300">
-              View and manage all your active and resolved disputes
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {disputes.length > 0 ? (
-              <div className="space-y-4">
-                {disputes.map((dispute) => (
-                  <div
-                    key={dispute.id}
-                    className="p-4 bg-slate-700/50 rounded-lg border border-slate-600/50 hover:border-slate-500/50 transition cursor-pointer"
-                    onClick={() => setSelectedDispute(dispute)}
-                  >
-                    <div className="flex items-start justify-between mb-3">
-                      <div>
-                        <h3 className="text-lg font-semibold text-white">{dispute.projectName}</h3>
-                        <p className="text-sm text-slate-300">
-                          {dispute.status === 'open' || dispute.status === 'in_review'
-                            ? `Between you and ${dispute.clientName}`
-                            : `Dispute with ${dispute.clientName}`}
-                        </p>
-                      </div>
-                      <Badge className={`${getStatusColor(dispute.status)}`}>
-                        {dispute.status.replace('_', ' ').toUpperCase()}
-                      </Badge>
-                    </div>
-
-                    <p className="text-white mb-3">{dispute.reason}</p>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex gap-4">
-                        <div>
-                          <p className="text-xs text-slate-400">Amount in Dispute</p>
-                          <p className="text-lg font-bold text-red-400">${dispute.amount}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-slate-400">Created</p>
-                          <p className="text-sm text-slate-300">
-                            {new Date(dispute.createdAt).toLocaleDateString()}
-                          </p>
-                        </div>
-                      </div>
-                      <Button
-                        size="sm"
-                        className="bg-slate-600 hover:bg-slate-500 text-white"
-                      >
-                        View Details
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {[
+              { label: 'Active', count: disputes.filter(d => d.status === 'open' || d.status === 'in_review').length, color: 'text-amber-400', bg: 'bg-amber-400/5' },
+              { label: 'Escalated', count: disputes.filter(d => d.status === 'escalated').length, color: 'text-red-400', bg: 'bg-red-400/5' },
+              { label: 'Resolved', count: disputes.filter(d => d.status === 'resolved').length, color: 'text-emerald-400', bg: 'bg-emerald-400/5' },
+              { label: 'Total', count: disputes.length, color: 'text-white', bg: 'bg-slate-900' },
+            ].map((stat) => (
+              <div key={stat.label} className={`${stat.bg} border border-slate-800 rounded-[2rem] p-8`}>
+                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">{stat.label} Cases</p>
+                <h3 className={`text-4xl font-black ${stat.color} tracking-tighter`}>{stat.count}</h3>
               </div>
-            ) : (
-              <div className="text-center py-12 text-slate-400">
-                <Scale className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                <p>No disputes at the moment</p>
+            ))}
+          </div>
+
+          {/* Disputes List */}
+          <div className="space-y-6">
+            {disputes.length > 0 ? disputes.map((dispute) => {
+              const config = getStatusConfig(dispute.status)
+              return (
+                <Card
+                  key={dispute.id}
+                  className="bg-slate-900 border-slate-800 rounded-[2.5rem] hover:border-slate-700 transition-all cursor-pointer group"
+                  onClick={() => {
+                    setSelectedDispute(dispute)
+                    fetchEvidence(dispute.id)
+                  }}
+                >
+                  <CardContent className="p-8 flex flex-col md:flex-row justify-between gap-8">
+                    <div className="flex-1 space-y-4">
+                      <div className="flex items-center gap-3">
+                         <Badge className={`${config.color} border-none font-black text-[10px] tracking-widest px-3 py-1 rounded-lg`}>
+                            {config.label}
+                         </Badge>
+                         <span className="text-slate-600 text-[10px] font-black tracking-widest uppercase">CASE ID: {dispute.id.slice(0, 8)}</span>
+                      </div>
+                      <h3 className="text-2xl font-black text-white tracking-tight group-hover:text-red-400 transition-colors">{dispute.title}</h3>
+                      <p className="text-slate-400 font-medium line-clamp-2">{dispute.description}</p>
+
+                      <div className="flex items-center gap-6 pt-2">
+                         <div className="flex items-center gap-2 text-slate-500">
+                            <Clock className="w-4 h-4" />
+                            <span className="text-[10px] font-black uppercase tracking-widest">Filed {new Date(dispute.created_at).toLocaleDateString()}</span>
+                         </div>
+                         <div className="flex items-center gap-2 text-slate-500">
+                            <Shield className="w-4 h-4 text-cyan-500" />
+                            <span className="text-[10px] font-black uppercase tracking-widest">Platform Mediated</span>
+                         </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                       <Button className="bg-slate-800 hover:bg-slate-700 text-white font-black px-8 h-12 rounded-xl">
+                          Review Case <ChevronRight className="w-4 h-4 ml-2" />
+                       </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            }) : (
+              <div className="text-center py-24 bg-slate-900/50 border-2 border-dashed border-slate-800 rounded-[3rem]">
+                 <CheckCircle className="w-12 h-12 text-slate-700 mx-auto mb-4" />
+                 <h3 className="text-xl font-black text-white">All Clear</h3>
+                 <p className="text-slate-500 mt-2">No active disputes detected in your workspace.</p>
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </main>
 
         {/* Dispute Details Modal */}
         {selectedDispute && (
           <Dialog open={!!selectedDispute} onOpenChange={() => setSelectedDispute(null)}>
-            <DialogContent className="max-w-2xl bg-slate-800 border-slate-700/50 max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle className="text-white flex items-center gap-2">
-                  <AlertTriangle className="w-5 h-5 text-red-400" />
-                  {selectedDispute.projectName} - Dispute Details
-                </DialogTitle>
-                <DialogDescription className="text-slate-300">
-                  Manage and resolve this dispute
-                </DialogDescription>
-              </DialogHeader>
-
-              <div className="space-y-6">
-                {/* Dispute Info */}
-                <div className="p-4 bg-slate-700/50 rounded-lg border border-slate-600/50">
-                  <div className="grid grid-cols-2 gap-4">
+            <DialogContent className="max-w-4xl bg-slate-950 border-slate-800 text-white rounded-[3rem] p-0 overflow-hidden max-h-[90vh] flex flex-col">
+              <div className="p-10 border-b border-slate-900">
+                 <div className="flex justify-between items-start">
                     <div>
-                      <p className="text-xs text-slate-400">Status</p>
-                      <Badge className={`${getStatusColor(selectedDispute.status)} mt-1`}>
-                        {selectedDispute.status.replace('_', ' ').toUpperCase()}
-                      </Badge>
+                       <Badge className={`${getStatusConfig(selectedDispute.status).color} mb-4 font-black tracking-widest rounded-lg border-none`}>
+                          {getStatusConfig(selectedDispute.status).label}
+                       </Badge>
+                       <DialogTitle className="text-4xl font-black tracking-tighter">{selectedDispute.title}</DialogTitle>
+                       <p className="text-slate-500 mt-2 font-medium">Case details and evidence repository</p>
                     </div>
-                    <div>
-                      <p className="text-xs text-slate-400">Amount</p>
-                      <p className="text-lg font-bold text-red-400 mt-1">${selectedDispute.amount}</p>
+                    <div className="flex gap-2">
+                       {selectedDispute.status !== 'escalated' && selectedDispute.status !== 'resolved' && (
+                          <Button
+                             onClick={() => handleEscalate(selectedDispute.id)}
+                             variant="outline"
+                             className="border-red-500/30 text-red-400 hover:bg-red-500/10 font-black rounded-xl"
+                          >
+                             Escalate to Admin
+                          </Button>
+                       )}
                     </div>
-                    <div>
-                      <p className="text-xs text-slate-400">Client</p>
-                      <p className="text-white mt-1">{selectedDispute.clientName}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-slate-400">Created</p>
-                      <p className="text-white mt-1">
-                        {new Date(selectedDispute.createdAt).toLocaleDateString()}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Reason */}
-                <div>
-                  <Label className="text-white">Dispute Reason</Label>
-                  <div className="mt-2 p-3 bg-slate-700/50 rounded border border-slate-600/50 text-slate-200">
-                    {selectedDispute.reason}
-                  </div>
-                </div>
-
-                {/* Messages */}
-                <div>
-                  <Label className="text-white mb-3 flex items-center gap-2">
-                    <MessageCircle className="w-4 h-4" />
-                    Discussion Thread
-                  </Label>
-                  <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
-                    {selectedDispute.messages.map((msg) => (
-                      <div
-                        key={msg.id}
-                        className={`p-3 rounded border ${
-                          msg.sender === 'You'
-                            ? 'bg-blue-500/20 border-blue-500/50 ml-4'
-                            : 'bg-slate-700/50 border-slate-600/50 mr-4'
-                        }`}
-                      >
-                        <p className="text-xs text-slate-400">{msg.sender}</p>
-                        <p className="text-white mt-1">{msg.message}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  {selectedDispute.status === 'open' || selectedDispute.status === 'in_review' ? (
-                    <div className="space-y-2">
-                      <Textarea
-                        value={messageText}
-                        onChange={(e) => setMessageText(e.target.value)}
-                        placeholder="Add your response..."
-                        className="bg-slate-700 border-slate-600 text-white placeholder-slate-500"
-                      />
-                      <Button
-                        onClick={handleSendMessage}
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                      >
-                        Send Message
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="p-3 bg-green-500/20 border border-green-500/50 rounded text-green-300">
-                      <CheckCircle className="w-4 h-4 inline mr-2" />
-                      This dispute is in final status
-                    </div>
-                  )}
-                </div>
-
-                {/* Actions */}
-                {(selectedDispute.status === 'open' || selectedDispute.status === 'in_review') && (
-                  <div className="flex gap-2 pt-4">
-                    <Button
-                      onClick={() => handleEscalate(selectedDispute.id)}
-                      variant="outline"
-                      className="flex-1 border-red-500/50 text-red-300 hover:bg-red-500/10"
-                    >
-                      <AlertTriangle className="w-4 h-4 mr-2" />
-                      Escalate to Admin
-                    </Button>
-                  </div>
-                )}
+                 </div>
               </div>
+
+              <div className="flex-1 overflow-y-auto p-10 space-y-12">
+                 {/* Core Intel */}
+                 <div className="bg-slate-900 border border-slate-800 rounded-[2rem] p-8">
+                    <h4 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                       <FileText className="w-4 h-4 text-cyan-500" /> Case Statement
+                    </h4>
+                    <p className="text-slate-300 leading-relaxed text-lg">{selectedDispute.description}</p>
+                 </div>
+
+                 {/* Evidence Thread */}
+                 <div className="space-y-6">
+                    <h4 className="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2 px-2">
+                       <MessageCircle className="w-4 h-4 text-purple-500" /> Evidence Protocol
+                    </h4>
+
+                    <div className="space-y-4">
+                       {evidenceList.map((ev) => (
+                         <div key={ev.id} className={`flex gap-4 ${ev.user_id === user?.id ? 'flex-row-reverse' : ''}`}>
+                            <Avatar className="w-10 h-10 border border-slate-800">
+                               <AvatarFallback className="bg-slate-900 text-cyan-400 font-black text-xs">{(ev.user_id === user?.id ? 'YOU' : 'OP').slice(0, 2)}</AvatarFallback>
+                            </Avatar>
+                            <div className={`max-w-[70%] p-6 rounded-[2rem] ${
+                               ev.user_id === user?.id ? 'bg-cyan-500 text-white' : 'bg-slate-900 text-slate-300'
+                            }`}>
+                               <p className="font-medium">{ev.evidence}</p>
+                               {ev.attachment_url && (
+                                  <a href={ev.attachment_url} target="_blank" className="mt-4 block p-3 bg-black/20 rounded-xl flex items-center gap-2 text-xs font-black uppercase tracking-widest hover:bg-black/30 transition-all">
+                                     <Upload className="w-3 h-3" /> View Attachment
+                                  </a>
+                               )}
+                               <p className={`text-[9px] font-black uppercase tracking-widest mt-4 ${ev.user_id === user?.id ? 'text-white/50' : 'text-slate-600'}`}>
+                                  {new Date(ev.created_at).toLocaleString()}
+                               </p>
+                            </div>
+                         </div>
+                       ))}
+                    </div>
+                 </div>
+              </div>
+
+              {/* Input Area */}
+              {selectedDispute.status !== 'resolved' && selectedDispute.status !== 'closed' && (
+                <div className="p-8 bg-slate-900/50 border-t border-slate-900">
+                   <div className="flex gap-4">
+                      <div className="flex-1 relative">
+                         <Textarea
+                            placeholder="Submit further evidence or clarification..."
+                            className="bg-slate-900 border-slate-800 text-white placeholder-slate-600 rounded-[1.5rem] min-h-[60px] p-4 focus:ring-red-500"
+                            value={evidenceText}
+                            onChange={(e) => setEvidenceText(e.target.value)}
+                         />
+                         <div className="absolute right-4 bottom-4 flex gap-2">
+                            <Button variant="ghost" size="icon" className="text-slate-500 hover:text-white rounded-xl">
+                               <ImageIcon className="w-5 h-5" />
+                            </Button>
+                         </div>
+                      </div>
+                      <Button
+                         onClick={handleAddEvidence}
+                         disabled={!evidenceText.trim() || isSubmittingEvidence}
+                         className="bg-red-500 hover:bg-red-600 text-white font-black px-8 rounded-2xl h-auto"
+                      >
+                         {isSubmittingEvidence ? '...' : <Send className="w-5 h-5" />}
+                      </Button>
+                   </div>
+                </div>
+              )}
             </DialogContent>
           </Dialog>
         )}
       </div>
-    </div>
+    </DashboardLayout>
+  )
+}
+
+function ImageIcon({ className }: { className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
   )
 }

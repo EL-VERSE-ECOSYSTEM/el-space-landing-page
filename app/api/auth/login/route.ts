@@ -27,25 +27,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
 
-    // 3. If OTP is provided, verify it
-    if (otp) {
-      const verifyRes = await fetch(`${new URL(request.url).origin}/api/auth/verify-otp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, otp, type: 'login' })
-      });
+    // 3. OTP Verification Removed (Bypassed)
 
-      const verifyData = await verifyRes.json();
-      if (!verifyData.success) {
-        return NextResponse.json({ error: 'Invalid or expired security code' }, { status: 400 });
-      }
-    } else {
-      // If no OTP, return success but flag that OTP is needed
-      // (This assumes client-side first checks password, then requests OTP)
-      return NextResponse.json({ success: true, needsOTP: true });
-    }
-
-    // 4. Return user on successful verification
+    // 4. Return user on successful password verification
     return NextResponse.json({
       success: true,
       user: {

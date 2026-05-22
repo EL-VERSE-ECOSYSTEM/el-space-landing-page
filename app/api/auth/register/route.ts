@@ -10,17 +10,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // 1. Verify OTP first (internal call or lib logic)
-    const verifyRes = await fetch(`${new URL(request.url).origin}/api/auth/verify-otp`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, otp, type: 'register' })
-    });
-
-    const verifyData = await verifyRes.json();
-    if (!verifyData.success) {
-      return NextResponse.json({ error: verifyData.message || 'Invalid or expired OTP' }, { status: 400 });
-    }
+    // 1. OTP Verification Removed (Bypassed)
 
     // 2. Check if user already exists
     const { data: existingUser } = await supabase
@@ -61,7 +51,12 @@ export async function POST(request: NextRequest) {
     if (user_type === 'freelancer') {
       await supabase.from('freelancer_profiles').insert([{ user_id: user.id, created_at: new Date() }]);
     } else {
-      await supabase.from('client_profiles').insert([{ user_id: user.id, created_at: new Date() }]);
+      // For client, entrepreneur, business, enterprise
+      await supabase.from('client_profiles').insert([{
+        user_id: user.id,
+        verification_status: 'unverified',
+        created_at: new Date()
+      }]);
     }
 
     // 7. Initialize wallet
@@ -69,7 +64,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      token: verifyData.token,
+      token: 'temp-session-token', // Bypassed OTP token
       user: {
         id: user.id,
         email: user.email,

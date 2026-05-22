@@ -22,7 +22,7 @@ export function calculateInstantPayFee(amount: number): number {
   return amount * 0.05;
 }
 
-export const LATE_SUBMISSION_PENALTY = 20;
+export const LATE_SUBMISSION_PENALTY = 25;
 
 export function calculateFreelancerPayout(amount: number, isLate: boolean = false, isInstant: boolean = false): number {
   const baseFee = calculateFreelancerFee(amount);

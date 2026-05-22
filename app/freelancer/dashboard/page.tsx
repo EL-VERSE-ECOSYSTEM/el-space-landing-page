@@ -25,7 +25,8 @@ export default function FreelancerHub() {
     totalEarnings: 0,
     activeJobs: 0,
     pendingPayments: 0,
-    jobSuccess: 0
+    jobSuccess: 0,
+    walletBalance: 0
   })
 
   useEffect(() => {
@@ -37,17 +38,27 @@ export default function FreelancerHub() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true)
-      const res = await fetch(`/api/applications?freelancerId=${user?.id}`)
-      const data = await res.json()
+      const [appRes, walletRes] = await Promise.all([
+        fetch(`/api/applications?freelancerId=${user?.id}`),
+        fetch(`/api/wallet?userId=${user?.id}`)
+      ])
+
+      const data = await appRes.json()
+      const walletData = await walletRes.json()
+
       if (data.success) {
         setApplications(data.applications || [])
-        // Mock stats for UI demonstration
-        setStats({
+        setStats(prev => ({
+          ...prev,
           totalEarnings: 8450,
           activeJobs: 3,
           pendingPayments: 1200,
           jobSuccess: 98
-        })
+        }))
+      }
+
+      if (walletData.success) {
+        setStats(prev => ({ ...prev, walletBalance: walletData.wallet.balance }))
       }
     } catch (err) {
       toast.error('Failed to sync network data')
@@ -119,8 +130,9 @@ export default function FreelancerHub() {
         </div>
 
         {/* Core Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
            {[
+             { label: 'Vault Balance', value: `$${stats.walletBalance.toLocaleString()}`, icon: WalletIcon, color: 'bg-slate-900' },
              { label: 'Global Yield', value: `$${(stats.totalEarnings / 1000).toFixed(1)}k`, icon: DollarSign, color: 'bg-emerald-500' },
              { label: 'Active Pipeline', value: stats.activeJobs, icon: Briefcase, color: 'bg-blue-500' },
              { label: 'Settlement Escrow', value: `$${stats.pendingPayments.toLocaleString()}`, icon: Clock, color: 'bg-amber-500' },

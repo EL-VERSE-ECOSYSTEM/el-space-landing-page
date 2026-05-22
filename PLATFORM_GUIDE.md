@@ -322,7 +322,7 @@ The platform uses Korapay for secure payments and escrow.
 - **Instant Pay**: 5% withdrawal fee
 
 ### Penalties
-- **Late Submission**: $20 flat penalty deducted from freelancer profit.
+- **Late Submission**: $25 flat penalty deducted from freelancer profit.
 
 ---
 

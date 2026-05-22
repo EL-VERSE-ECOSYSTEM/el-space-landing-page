@@ -19,7 +19,7 @@ import { INDUSTRIES, TECH_STACKS, COMPANY_SIZES, BUSINESS_TYPES } from "@/lib/co
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
-import { AlertCircle, CheckCircle, Loader, Mail, Upload, Eye, EyeOff, ArrowLeft, ArrowRight, ShieldCheck, Zap, User, Briefcase, Rocket, Lock } from "lucide-react";
+import { AlertCircle, CheckCircle, Loader, Mail, Upload, Eye, EyeOff, ArrowLeft, ArrowRight, ShieldCheck, Zap, User, Briefcase, Rocket, Lock, Building2, Globe } from "lucide-react";
 import { toast } from "sonner";
 import { OTPNotification } from '@/components/ui/otp-notification';
 import { GoogleSignInButton } from '@/components/ui/google-signin-button';
@@ -30,13 +30,13 @@ export default function RegisterPage() {
   const router = useRouter();
   const { login } = useAuth();
 
-  // Step management: info -> details -> otp -> complete
-  const [step, setStep] = useState<"info" | "details" | "otp">("info");
+  // Step management: info -> details -> complete
+  const [step, setStep] = useState<"info" | "details">("info");
 
   // Common fields
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [userType, setUserType] = useState<"" | "client" | "freelancer">("");
+  const [userType, setUserType] = useState<"" | "client" | "entrepreneur" | "business" | "enterprise" | "freelancer">("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -121,11 +121,8 @@ export default function RegisterPage() {
     }
   };
 
-  const handleVerifyAndRegister = async (e?: React.FormEvent, manualOtp?: string) => {
+  const handleRegister = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    const otpToVerify = manualOtp || otp;
-
-    if (!otpToVerify || otpToVerify.length !== 6) return;
 
     setLoading(true);
     setError("");
@@ -139,7 +136,7 @@ export default function RegisterPage() {
         password,
         phoneNumber,
         countryCode,
-        otp: otpToVerify, // Pass OTP directly to registration
+        otp: '000000', // Mock OTP for API compatibility
       };
 
       // Add client-specific fields
@@ -166,7 +163,7 @@ export default function RegisterPage() {
         }
       }
 
-      // Register user - this now handles OTP verification too
+      // Register user
       const registerResponse = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -258,8 +255,8 @@ export default function RegisterPage() {
         {/* Progress Tracker */}
         <div className="flex justify-center mb-8 px-8">
            <div className="flex items-center w-full max-w-md">
-              {["info", "details", "otp"].map((s, i) => {
-                const steps = ["info", "details", "otp"];
+              {["info", "details"].map((s, i) => {
+                const steps = ["info", "details"];
                 const currentIndex = steps.indexOf(step);
                 const isActive = i <= currentIndex;
                 const isCompleted = i < currentIndex;
@@ -272,7 +269,7 @@ export default function RegisterPage() {
                     }`}>
                       {isCompleted ? <ShieldCheck className="w-6 h-6" /> : <span className="text-lg font-black">{i + 1}</span>}
                     </div>
-                    {i < 2 && (
+                    {i < 1 && (
                       <div className={`flex-1 h-1.5 mx-2 rounded-full transition-all duration-500 ${
                         i < currentIndex ? 'bg-cyan-500' : 'bg-slate-100'
                       }`} />
@@ -371,7 +368,7 @@ export default function RegisterPage() {
 
               <div className="space-y-2">
                 <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Choose Account Type *</Label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                    <button
                     type="button"
                     onClick={() => setUserType('client')}
@@ -388,7 +385,64 @@ export default function RegisterPage() {
                     </div>
                     <div>
                       <div className="font-black text-slate-900">Client</div>
-                      <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Hiring Talent</div>
+                      <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider text-nowrap">Standard Hiring</div>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setUserType('entrepreneur')}
+                    className={`group flex items-center gap-4 p-5 rounded-[1.5rem] border-2 transition-all duration-300 text-left ${
+                      userType === 'entrepreneur'
+                        ? 'border-cyan-500 bg-cyan-50 shadow-lg shadow-cyan-500/10'
+                        : 'border-slate-100 bg-slate-50 hover:border-slate-200'
+                    }`}
+                  >
+                    <div className={`flex h-12 w-12 items-center justify-center rounded-xl transition-all ${
+                      userType === 'entrepreneur' ? 'bg-cyan-500 text-white' : 'bg-slate-200 text-slate-500'
+                    }`}>
+                      <Zap className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <div className="font-black text-slate-900 text-sm">Entrepreneur</div>
+                      <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider text-nowrap">Rapid Growth</div>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setUserType('business')}
+                    className={`group flex items-center gap-4 p-5 rounded-[1.5rem] border-2 transition-all duration-300 text-left ${
+                      userType === 'business'
+                        ? 'border-cyan-500 bg-cyan-50 shadow-lg shadow-cyan-500/10'
+                        : 'border-slate-100 bg-slate-50 hover:border-slate-200'
+                    }`}
+                  >
+                    <div className={`flex h-12 w-12 items-center justify-center rounded-xl transition-all ${
+                      userType === 'business' ? 'bg-cyan-500 text-white' : 'bg-slate-200 text-slate-500'
+                    }`}>
+                      <Building2 className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <div className="font-black text-slate-900">Business</div>
+                      <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider text-nowrap">Established Org</div>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setUserType('enterprise')}
+                    className={`group flex items-center gap-4 p-5 rounded-[1.5rem] border-2 transition-all duration-300 text-left ${
+                      userType === 'enterprise'
+                        ? 'border-cyan-500 bg-cyan-50 shadow-lg shadow-cyan-500/10'
+                        : 'border-slate-100 bg-slate-50 hover:border-slate-200'
+                    }`}
+                  >
+                    <div className={`flex h-12 w-12 items-center justify-center rounded-xl transition-all ${
+                      userType === 'enterprise' ? 'bg-cyan-500 text-white' : 'bg-slate-200 text-slate-500'
+                    }`}>
+                      <Globe className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <div className="font-black text-slate-900">Enterprise</div>
+                      <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider text-nowrap">Global Solutions</div>
                     </div>
                   </button>
                   <button
@@ -407,7 +461,7 @@ export default function RegisterPage() {
                     </div>
                     <div>
                       <div className="font-black text-slate-900">Freelancer</div>
-                      <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Finding Work</div>
+                      <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider text-nowrap">Finding Work</div>
                     </div>
                   </button>
                 </div>
@@ -684,6 +738,7 @@ export default function RegisterPage() {
                 </Button>
                 <Button
                   type="button"
+                  disabled={loading}
                   onClick={() => {
                     if (userType === "client" && !industry) {
                       setError("Please select your industry");
@@ -694,70 +749,26 @@ export default function RegisterPage() {
                       return;
                     }
                     setError("");
-                    setStep("otp");
-                    handleSendOTP({ preventDefault: () => {} } as any);
+                    handleRegister();
                   }}
                   className="flex-2 sm:flex-[2] h-16 bg-slate-900 hover:bg-cyan-600 text-white font-black text-lg rounded-[1.5rem] transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/20 group"
                 >
-                  Verify Email
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  {loading ? (
+                    <span className="flex items-center gap-3 justify-center">
+                      <Loader className="w-6 h-6 animate-spin" />
+                      Launching Account...
+                    </span>
+                  ) : (
+                    <>
+                      Complete Registration
+                      <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
                 </Button>
               </div>
             </div>
           )}
 
-          {/* Step 3: OTP Verification */}
-          {step === "otp" && (
-            <form onSubmit={handleVerifyAndRegister} className="space-y-8">
-              <div className="bg-slate-50 p-6 rounded-[2rem] text-center">
-                <p className="text-slate-600 font-bold leading-relaxed">
-                  Enter the 6-digit verification code sent to <br/>
-                  <span className="text-cyan-600 font-black">{email}</span>
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                <Label className="text-xs font-black text-slate-400 uppercase tracking-widest text-center block mb-2">Security Code</Label>
-                <Input
-                  type="text"
-                  placeholder="000000"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                  maxLength={6}
-                  required
-                  className="h-20 bg-slate-50 border-slate-100 text-slate-900 text-center text-4xl tracking-[0.5em] font-black rounded-[2rem] focus:border-cyan-500 focus:ring-cyan-500/10"
-                />
-              </div>
-
-              <Button
-                type="submit"
-                disabled={loading || otp.length !== 6}
-                className="w-full h-16 bg-slate-900 hover:bg-cyan-600 text-white font-black text-xl rounded-[1.5rem] transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/20"
-              >
-                {loading ? (
-                  <span className="flex items-center gap-3 justify-center">
-                    <Loader className="w-6 h-6 animate-spin" />
-                    Launching Account...
-                  </span>
-                ) : (
-                  "Complete Registration"
-                )}
-              </Button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setStep("details");
-                  setOtp("");
-                  setError("");
-                  setSuccess("");
-                }}
-                className="w-full py-2 text-sm font-bold text-slate-400 hover:text-slate-600 flex items-center justify-center gap-2 transition-colors"
-              >
-                <ArrowLeft className="w-4 h-4" /> Edit details
-              </button>
-            </form>
-          )}
 
           <div className="mt-10 pt-10 border-t border-slate-100">
             <p className="text-center text-slate-500 font-bold text-base">
