@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { cookies } from 'next/headers';
+import { createClient } from '@/utils/supabase/server';
 
 export async function GET(request: NextRequest) {
   try {
-    const { data, error } = await supabase
+    const cookieStore = await cookies();
+    const supabase = createClient(cookieStore);
+    const userId = request.nextUrl.searchParams.get('userId');
+
+    let query = supabase
       .from('social_posts')
       .select(`
         *,
@@ -15,6 +20,12 @@ export async function GET(request: NextRequest) {
       `)
       .order('created_at', { ascending: false });
 
+    if (userId) {
+      query = query.eq('user_id', userId);
+    }
+
+    const { data, error } = await query;
+
     if (error) throw error;
     return NextResponse.json({ success: true, posts: data });
   } catch (error: any) {
@@ -22,11 +33,49 @@ export async function GET(request: NextRequest) {
   }
 }
 
+export async function DELETE(request: NextRequest) {
+  try {
+    const cookieStore = await cookies();
+    const supabase = createClient(cookieStore);
+
+    const id = request.nextUrl.searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: 'Post ID required' }, { status: 400 });
+    }
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { error } = await supabase
+      .from('social_posts')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', user.id);
+
+    if (error) throw error;
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
+    const cookieStore = await cookies();
+    const supabase = createClient(cookieStore);
+
     const { action, userId, content, mediaUrls, mediaType, postId, originalPostId } = await request.json();
 
+    const { data: { user: sessionUser } } = await supabase.auth.getUser();
+
     if (action === 'create') {
+      if (!sessionUser || sessionUser.id !== userId) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+
       const { data, error } = await supabase
         .from('social_posts')
         .insert([{
@@ -47,6 +96,8 @@ export async function POST(request: NextRequest) {
     }
 
     if (action === 'like') {
+      if (!sessionUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
       const { data: existing } = await supabase
         .from('social_likes')
         .select()

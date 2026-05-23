@@ -9,19 +9,45 @@ import { Badge } from '@/components/ui/badge'
 import {
   Star, Shield, Zap, Globe, Github,
   Linkedin, Mail, MessageSquare, Briefcase,
-  MapPin, Clock, Calendar, ChevronRight
+  MapPin, Clock, Calendar, ChevronRight, Heart, MessageCircle, Share2, Repeat, Trash2
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { ELLoader } from '@/components/ui/el-loader'
+import { useAuth } from '@/components/auth-provider'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+
+interface SocialPost {
+  id: string
+  user_id: string
+  content: string
+  media_urls: string[]
+  media_type: 'image' | 'video' | 'none'
+  likes_count: number
+  comments_count: number
+  shares_count: number
+  reposts_count: number
+  original_post_id?: string
+  created_at: string
+  user: {
+    full_name: string
+    avatar_url: string
+    el_space_id: string
+  }
+  original_post?: SocialPost
+}
 
 export default function ProfilePage() {
   const params = useParams()
   const router = useRouter()
+  const { user: currentUser } = useAuth()
   const [loading, setLoading] = useState(true)
   const [profile, setProfile] = useState<any>(null)
+  const [posts, setPosts] = useState<SocialPost[]>([])
+  const [postsLoading, setPostsLoading] = useState(true)
 
   useEffect(() => {
     fetchProfile()
+    fetchUserPosts()
   }, [params.id])
 
   const fetchProfile = async () => {
@@ -36,6 +62,41 @@ export default function ProfilePage() {
       toast.error('Failed to load profile')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchUserPosts = async () => {
+    try {
+      setPostsLoading(true)
+      const res = await fetch(`/api/posts?userId=${params.id}`)
+      const data = await res.json()
+      if (data.success) {
+        setPosts(data.posts)
+      }
+    } catch (err) {
+      console.error('Error fetching user posts:', err)
+    } finally {
+      setPostsLoading(false)
+    }
+  }
+
+  const handleDeletePost = async (postId: string) => {
+    if (!currentUser) return
+    if (!confirm('Are you sure you want to delete this post?')) return
+
+    try {
+      const response = await fetch(`/api/posts?id=${postId}&userId=${currentUser.id}`, {
+        method: 'DELETE'
+      })
+      const data = await response.json()
+      if (data.success) {
+        toast.success('Post deleted')
+        setPosts(posts.filter(p => p.id !== postId))
+      } else {
+        toast.error(data.error || 'Failed to delete post')
+      }
+    } catch (error) {
+      toast.error('Deletion failed')
     }
   }
 
@@ -156,6 +217,70 @@ export default function ProfilePage() {
                            <ChevronRight className="w-6 h-6 text-slate-700 group-hover:text-white transition-colors" />
                         </div>
                      </div>
+                  </div>
+
+                  {/* User Posts Section */}
+                  <div className="pt-10 border-t border-white/5">
+                     <h3 className="text-xl font-black text-white mb-6 flex items-center gap-2">
+                        <MessageSquare className="w-5 h-5 text-purple-400" />
+                        Feed Activity
+                     </h3>
+
+                     {postsLoading ? (
+                       <div className="flex justify-center py-10">
+                          <div className="animate-spin h-8 w-8 border-2 border-cyan-500 border-t-transparent rounded-full"></div>
+                       </div>
+                     ) : posts.length > 0 ? (
+                       <div className="space-y-6">
+                          {posts.map((post) => (
+                            <Card key={post.id} className="bg-white/5 border-white/10 rounded-[2rem] overflow-hidden">
+                               <CardContent className="p-6">
+                                  <div className="flex justify-between items-start mb-4">
+                                     <div className="flex gap-3">
+                                        <Avatar className="w-10 h-10 border border-white/10">
+                                           <AvatarImage src={post.user?.avatar_url} />
+                                           <AvatarFallback className="bg-slate-800 text-cyan-400 text-xs font-black uppercase">
+                                              {(post.user?.full_name || 'U').charAt(0)}
+                                           </AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                           <p className="text-white font-bold text-sm">{post.user?.full_name}</p>
+                                           <p className="text-slate-500 text-[10px] uppercase font-black tracking-widest">{new Date(post.created_at).toLocaleDateString()}</p>
+                                        </div>
+                                     </div>
+                                     {currentUser?.id === post.user_id && (
+                                       <Button
+                                          variant="ghost"
+                                          size="icon"
+                                          className="text-slate-500 hover:text-red-400 h-8 w-8"
+                                          onClick={() => handleDeletePost(post.id)}
+                                       >
+                                          <Trash2 className="w-4 h-4" />
+                                       </Button>
+                                     )}
+                                  </div>
+                                  <p className="text-slate-200 text-sm leading-relaxed mb-4 whitespace-pre-wrap">{post.content}</p>
+
+                                  {post.media_urls?.[0] && (
+                                    <div className="rounded-xl overflow-hidden mb-4 border border-white/10 relative h-64">
+                                       <Image src={post.media_urls[0]} alt="" fill className="object-cover" />
+                                    </div>
+                                  )}
+
+                                  <div className="flex items-center gap-6 pt-4 border-t border-white/5">
+                                     <span className="flex items-center gap-1.5 text-slate-500 text-xs font-bold"><Heart className="w-4 h-4" /> {post.likes_count}</span>
+                                     <span className="flex items-center gap-1.5 text-slate-500 text-xs font-bold"><MessageCircle className="w-4 h-4" /> {post.comments_count}</span>
+                                     <span className="flex items-center gap-1.5 text-slate-500 text-xs font-bold"><Repeat className="w-4 h-4" /> {post.reposts_count}</span>
+                                  </div>
+                               </CardContent>
+                            </Card>
+                          ))}
+                       </div>
+                     ) : (
+                       <div className="text-center py-12 bg-white/5 border-2 border-dashed border-white/5 rounded-[2rem]">
+                          <p className="text-slate-500 font-bold">No posts shared yet.</p>
+                       </div>
+                     )}
                   </div>
                </div>
             </div>
