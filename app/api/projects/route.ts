@@ -4,7 +4,7 @@ import { sendClientWelcomeEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
   try {
-    const { clientId, title, description, category, budget, skills, timeline } = await request.json();
+    const { clientId, title, description, category, budget, skills, timeline, visibility } = await request.json();
 
     if (!clientId || !title || !description || !budget) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
       required_skills: skills || [],
       timeline: timeline || 'Not specified',
       total_budget: budget.max || budget,
+      visibility: visibility || 'public',
     };
 
     const { data, error } = await createProject(projectData);

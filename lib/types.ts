@@ -7,6 +7,7 @@ export type ProjectStatus = 'draft' | 'open' | 'in_progress' | 'completed' | 'ca
 export type MilestoneStatus = 'pending' | 'in_progress' | 'submitted' | 'approved' | 'released' | 'disputed';
 export type PaymentStatus = 'pending' | 'processing' | 'completed' | 'failed' | 'refunded' | 'escrowed';
 export type ReviewVisibility = 'public' | 'private';
+export type ProjectVisibility = 'public' | 'private' | 'invite-only';
 export type AvailabilityStatus = 'available' | 'busy' | 'unavailable';
 
 // User Interface
@@ -94,6 +95,7 @@ export interface Project {
   status: ProjectStatus;
   accepted_freelancer_id?: string;
   total_budget: number;
+  visibility: ProjectVisibility;
   fixed_fee_amount?: number;
   hourly_rate?: number;
   estimated_hours?: number;
@@ -145,6 +147,10 @@ export interface Wallet {
   id: string;
   user_id: string;
   balance: number;
+  escrow_balance: number;
+  pending_balance: number;
+  total_earned: number;
+  total_withdrawn: number;
   currency: string;
   created_at: Date;
   updated_at: Date;
