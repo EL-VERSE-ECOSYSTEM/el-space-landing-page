@@ -29,3 +29,24 @@ To fix it:
 
 Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
 ✓ Compiled in 97.6s
+✓ Finished writing to filesystem cache in 10.9s
+
+<--- Last few GCs --->
+
+[264256:0x7504000]   852391 ms: Scavenge 3918.8 (4004.5) -> 3910.6 (4009.2) MB, pooled: 2 MB, 22.74 / 0.00 ms  (average mu = 0.294, current mu = 0.220) allocation failure;
+[264256:0x7504000]   856339 ms: Mark-Compact 3927.6 (4013.2) -> 3891.5 (4000.6) MB, pooled: 4 MB, 3839.46 / 25.32 ms  (average mu = 0.253, current mu = 0.211) allocation failure; scavenge might not succeed
+
+
+<--- JS stacktrace --->
+
+FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
+----- Native stack trace -----
+
+ 1: 0xe42d60 node::OOMErrorHandler(char const*, v8::OOMDetails const&) [next-server (v16.2.6)]
+ 2: 0x121ddd0 v8::Utils::ReportOOMFailure(v8::internal::Isolate*, char const*, v8::OOMDetails const&) [next-server (v16.2.6)]
+ 3: 0x121e0a7 v8::internal::V8::FatalProcessOutOfMemory(v8::internal::Isolate*, char const*, v8::OOMDetails const&) [next-server (v16.2.6)]
+ 4: 0x144ba05  [next-server (v16.2.6)]
+ 5: 0x144ba33  [next-server (v16.2.6)]
+ 6: 0x1464b0a  [next-server (v16.2.6)]
+ 7: 0x1467cd8  [next-server (v16.2.6)]
+ 8: 0x1ccd051  [next-server (v16.2.6)]
