@@ -19,7 +19,7 @@ import { INDUSTRIES, TECH_STACKS, COMPANY_SIZES, BUSINESS_TYPES } from "@/lib/co
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
-import { AlertCircle, CheckCircle, Loader, Mail, Upload, Eye, EyeOff, ArrowLeft, ArrowRight, ShieldCheck, Zap, User, Briefcase, Rocket, Lock, Building2, Globe } from "lucide-react";
+import { AlertCircle, CheckCircle, Loader, Mail, Upload, Eye, EyeOff, ArrowLeft, ArrowRight, ShieldCheck, Zap, User, Briefcase, Rocket, Lock, Building2, Globe, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { GoogleSignInButton } from '@/components/ui/google-signin-button';
 import { GitHubSignInButton } from '@/components/ui/github-signin-button';
@@ -629,11 +629,15 @@ export default function RegisterPage() {
                   </div>
 
                   <div className="md:col-span-2 space-y-2">
-                    <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Proof of Business Registration *</Label>
+                    <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Proof of Business Registration (Optional)</Label>
                     <div className="flex items-center gap-6">
                       {businessRegFilePreview ? (
-                        <div className="relative w-24 h-24 rounded-3xl overflow-hidden border-2 border-cyan-500/20 shadow-lg">
-                          <Image src={businessRegFilePreview} alt="Reg preview" fill className="object-cover" />
+                        <div className="relative w-24 h-24 rounded-3xl overflow-hidden border-2 border-cyan-500/20 shadow-lg flex items-center justify-center bg-slate-50">
+                          {businessRegFile?.type === "application/pdf" ? (
+                             <FileText className="w-10 h-10 text-cyan-500" />
+                          ) : (
+                             <Image src={businessRegFilePreview} alt="Reg preview" fill className="object-cover" />
+                          )}
                         </div>
                       ) : (
                         <div className="w-24 h-24 rounded-3xl bg-slate-100 flex items-center justify-center border-2 border-dashed border-slate-200">
@@ -643,10 +647,10 @@ export default function RegisterPage() {
                       <label className="flex-1 cursor-pointer">
                         <div className="border-2 border-dashed border-slate-200 rounded-[1.5rem] p-6 text-center hover:border-cyan-500 hover:bg-cyan-50 transition-all">
                           <Upload className="w-6 h-6 mx-auto mb-2 text-slate-400" />
-                          <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Upload Certificate</p>
+                          <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Upload (Image, PDF, DOC)</p>
                           <input
                             type="file"
-                            accept="image/*,application/pdf"
+                            accept="image/*,application/pdf,.doc,.docx"
                             onChange={(e) => handleFileUpload(e, setBusinessRegFile, setBusinessRegFilePreview, "*")}
                             className="hidden"
                           />
@@ -821,7 +825,7 @@ export default function RegisterPage() {
                       setError("Please fill all required verification fields");
                       return;
                     }
-                    if (userType !== "freelancer" && (!businessName || !businessType || !businessSector || !businessEmail || !businessRegFilePreview)) {
+                    if (userType !== "freelancer" && (!businessName || !businessType || !businessSector || !businessEmail)) {
                       setError("Please fill all required business fields");
                       return;
                     }

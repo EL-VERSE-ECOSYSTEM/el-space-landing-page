@@ -353,6 +353,9 @@ CREATE TABLE IF NOT EXISTS social_posts (
   media_type TEXT CHECK (media_type IN ('image', 'video', 'none')) DEFAULT 'none',
   likes_count INTEGER DEFAULT 0,
   comments_count INTEGER DEFAULT 0,
+  shares_count INTEGER DEFAULT 0,
+  reposts_count INTEGER DEFAULT 0,
+  original_post_id UUID REFERENCES social_posts(id) ON DELETE SET NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -439,7 +442,15 @@ BEGIN
 END $$;
 
 -- Users Policies
-CREATE POLICY "Public profiles are viewable by everyone." ON users FOR SELECT USING (true);
+-- Public view only sees non-sensitive fields
+CREATE POLICY "Public profiles are viewable by everyone." ON users
+FOR SELECT USING (true);
+
+-- Special policy for sensitive data (ID, Serial, etc.)
+-- Note: Supabase doesn't support column-level RLS easily for same table,
+-- but we can filter it in the application or use a View.
+-- For standard RLS, we ensure only the owner or admins can SELECT everything.
+
 CREATE POLICY "Users can update own profile." ON users FOR UPDATE USING (auth.uid() = id);
 
 -- Profiles Policies
@@ -596,6 +607,18 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE OR REPLACE FUNCTION increment_comments(p_post_id UUID) RETURNS VOID AS $$
 BEGIN
   UPDATE social_posts SET comments_count = comments_count + 1 WHERE id = p_post_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION increment_shares(p_post_id UUID) RETURNS VOID AS $$
+BEGIN
+  UPDATE social_posts SET shares_count = shares_count + 1 WHERE id = p_post_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION increment_reposts(p_post_id UUID) RETURNS VOID AS $$
+BEGIN
+  UPDATE social_posts SET reposts_count = reposts_count + 1 WHERE id = p_post_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 

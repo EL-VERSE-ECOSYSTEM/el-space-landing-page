@@ -1,10 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createPost, getPosts, likePost, addComment } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
   try {
-    const limit = parseInt(request.nextUrl.searchParams.get('limit') || '20');
-    const { data, error } = await getPosts(limit);
+    const { data, error } = await supabase
+      .from('social_posts')
+      .select(`
+        *,
+        user:users!user_id(full_name, avatar_url, el_space_id),
+        original_post:social_posts!original_post_id(
+          *,
+          user:users!user_id(full_name, avatar_url, el_space_id)
+        )
+      `)
+      .order('created_at', { ascending: false });
+
     if (error) throw error;
     return NextResponse.json({ success: true, posts: data });
   } catch (error: any) {
@@ -14,27 +24,53 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { action, ...payload } = body;
+    const { action, userId, content, mediaUrls, mediaType, postId, originalPostId } = await request.json();
 
-    switch (action) {
-      case 'create':
-        const { data, error } = await createPost(payload);
-        if (error) throw error;
-        return NextResponse.json({ success: true, post: data });
+    if (action === 'create') {
+      const { data, error } = await supabase
+        .from('social_posts')
+        .insert([{
+          user_id: userId,
+          content,
+          media_urls: mediaUrls || [],
+          media_type: mediaType || 'none',
+          original_post_id: originalPostId || null
+        }])
+        .select()
+        .single();
 
-      case 'like':
-        const likeResult = await likePost(payload.postId, payload.userId);
-        return NextResponse.json({ success: true, ...likeResult });
-
-      case 'comment':
-        const commentResult = await addComment(payload.postId, payload.userId, payload.content);
-        if (commentResult.error) throw commentResult.error;
-        return NextResponse.json({ success: true, comment: commentResult.data });
-
-      default:
-        return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
+      if (error) throw error;
+      if (originalPostId) {
+        await supabase.rpc('increment_reposts', { p_post_id: originalPostId });
+      }
+      return NextResponse.json({ success: true, post: data });
     }
+
+    if (action === 'like') {
+      const { data: existing } = await supabase
+        .from('social_likes')
+        .select()
+        .eq('post_id', postId)
+        .eq('user_id', userId)
+        .maybeSingle();
+
+      if (existing) {
+        await supabase.from('social_likes').delete().eq('post_id', postId).eq('user_id', userId);
+        await supabase.rpc('decrement_likes', { p_post_id: postId });
+        return NextResponse.json({ success: true, liked: false });
+      } else {
+        await supabase.from('social_likes').insert([{ post_id: postId, user_id: userId }]);
+        await supabase.rpc('increment_likes', { p_post_id: postId });
+        return NextResponse.json({ success: true, liked: true });
+      }
+    }
+
+    if (action === 'share') {
+      await supabase.rpc('increment_shares', { p_post_id: postId });
+      return NextResponse.json({ success: true });
+    }
+
+    return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
