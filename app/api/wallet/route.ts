@@ -6,7 +6,8 @@ import {
   createPayment, 
   getPaymentsByProject,
   getUserById,
-  getAllUserPayments 
+  getAllUserPayments,
+  supabase
 } from '@/lib/supabase';
 
 const INSTANT_WITHDRAWAL_FEE = 0.05; // 5%

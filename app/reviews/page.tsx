@@ -33,6 +33,12 @@ interface Review {
 }
 
 export default function ReviewsPage() {
+  const navItems = [
+    { label: 'Feed', href: '/feed' },
+    { label: 'Messages', href: '/messages' },
+    { label: 'Settings', href: '/settings' },
+  ]
+
   const router = useRouter()
   const { user } = useAuth()
   const [reviews, setReviews] = useState<Review[]>([])
@@ -103,7 +109,7 @@ export default function ReviewsPage() {
     : '5.0'
 
   return (
-    <DashboardLayout userType={user?.user_type || 'freelancer'}>
+    <DashboardLayout navItems={navItems} userType={(user?.user_type === "freelancer" ? "freelancer" : "client")}>
       <div className="min-h-screen text-slate-200 pb-20">
         <main className="max-w-6xl mx-auto space-y-12">
           {/* Header */}

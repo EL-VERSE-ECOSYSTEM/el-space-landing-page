@@ -20,6 +20,12 @@ interface Todo {
 }
 
 export default function TodosPage() {
+  const navItems = [
+    { label: 'Feed', href: '/feed' },
+    { label: 'Messages', href: '/messages' },
+    { label: 'Settings', href: '/settings' },
+  ]
+
   const { user } = useAuth()
   const [todos, setTodos] = useState<Todo[]>([])
   const [newTodo, setNewTodo] = useState('')
@@ -103,7 +109,7 @@ export default function TodosPage() {
   }
 
   return (
-    <DashboardLayout userType={user?.user_type || 'freelancer'}>
+    <DashboardLayout navItems={navItems} userType={(user?.user_type === "freelancer" ? "freelancer" : "client")}>
       <div className="min-h-screen text-slate-200 pb-20">
         <main className="max-w-4xl mx-auto space-y-12">
           {/* Header */}

@@ -16,6 +16,12 @@ import { DashboardLayout } from '@/components/dashboard/auth-guard'
 import { Input } from '@/components/ui/input'
 
 export default function FreelancersHub() {
+  const navItems = [
+    { label: 'Feed', href: '/feed' },
+    { label: 'Messages', href: '/messages' },
+    { label: 'Settings', href: '/settings' },
+  ]
+
   const router = useRouter()
   const { user } = useAuth()
   const [loading, setLoading] = useState(true)
@@ -44,7 +50,7 @@ export default function FreelancersHub() {
   if (loading && freelancers.length === 0) return <div className="min-h-screen bg-slate-950 flex items-center justify-center"><ELLoader /></div>
 
   return (
-    <DashboardLayout userType={user?.user_type || 'client'}>
+    <DashboardLayout navItems={navItems} userType={(user?.user_type === "freelancer" ? "freelancer" : "client")}>
       <div className="min-h-screen text-slate-200 pb-20">
         <main className="max-w-7xl mx-auto space-y-12">
           {/* Header */}
