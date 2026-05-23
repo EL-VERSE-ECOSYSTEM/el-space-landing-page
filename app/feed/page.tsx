@@ -10,7 +10,7 @@ import {
   Search, Star, MapPin, Briefcase, Users, Filter,
   Heart, MessageCircle, Share2, Image as ImageIcon,
   Video, Send, MoreHorizontal, DollarSign, Repeat,
-  Play, FileText
+  Play, FileText, Trash2
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
@@ -132,6 +132,26 @@ export default function FeedPage() {
     } catch (error) {}
   }
 
+  const handleDeletePost = async (postId: string) => {
+    if (!user) return
+    if (!confirm('Eliminate this record from the Nexus?')) return
+
+    try {
+      const response = await fetch(`/api/posts?id=${postId}&userId=${user.id}`, {
+        method: 'DELETE'
+      })
+      const data = await response.json()
+      if (data.success) {
+        toast.success('Post purged.')
+        setPosts(posts.filter(p => p.id !== postId))
+      } else {
+        toast.error(data.error || 'Failed to purge post')
+      }
+    } catch (error) {
+      toast.error('Purge failed')
+    }
+  }
+
   const navItems = [
     { label: 'Feed', href: '/feed' },
     { label: 'Messages', href: '/messages' },
@@ -154,9 +174,21 @@ export default function FeedPage() {
           </div>
         </div>
         {!isRepost && (
-          <Button variant="ghost" size="icon" className="text-slate-500 hover:text-white rounded-full">
-            <MoreHorizontal className="w-5 h-5" />
-          </Button>
+          <div className="flex gap-2">
+            {user?.id === post.user_id && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-slate-500 hover:text-red-400 rounded-full"
+                onClick={() => handleDeletePost(post.id)}
+              >
+                <Trash2 className="w-5 h-5" />
+              </Button>
+            )}
+            <Button variant="ghost" size="icon" className="text-slate-500 hover:text-white rounded-full">
+              <MoreHorizontal className="w-5 h-5" />
+            </Button>
+          </div>
         )}
       </div>
 
@@ -165,8 +197,8 @@ export default function FeedPage() {
       </p>
 
       {post.media_type === 'image' && post.media_urls?.[0] && (
-        <div className="rounded-2xl overflow-hidden mb-6 border border-slate-800">
-          <img src={post.media_urls[0]} alt="Post media" className="w-full object-cover max-h-[500px]" />
+        <div className="rounded-2xl overflow-hidden mb-6 border border-slate-800 relative h-[500px]">
+          <Image src={post.media_urls[0]} alt="Post media" fill className="object-cover" />
         </div>
       )}
 
