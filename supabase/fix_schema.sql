@@ -55,6 +55,20 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='messages' AND column_name='recipient_id') THEN
         ALTER TABLE messages ADD COLUMN recipient_id UUID REFERENCES users(id);
     END IF;
+
+    -- Ensure chat_rooms exists before adding room_id to messages
+    IF NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name='chat_rooms') THEN
+        CREATE TABLE chat_rooms (
+            id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+            project_id UUID,
+            created_at TIMESTAMPTZ DEFAULT NOW(),
+            updated_at TIMESTAMPTZ DEFAULT NOW()
+        );
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='messages' AND column_name='room_id') THEN
+        ALTER TABLE messages ADD COLUMN room_id UUID REFERENCES chat_rooms(id) ON DELETE CASCADE;
+    END IF;
 END $$;
 
 -- 3. Re-apply RLS Policies that might have failed
