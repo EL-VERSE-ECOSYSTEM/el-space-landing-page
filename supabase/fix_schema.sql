@@ -29,6 +29,18 @@ BEGIN
         ALTER TABLE wallets ADD COLUMN escrow_balance NUMERIC DEFAULT 0;
     END IF;
 
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='wallets' AND column_name='pending_balance') THEN
+        ALTER TABLE wallets ADD COLUMN pending_balance NUMERIC DEFAULT 0;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='wallets' AND column_name='total_earned') THEN
+        ALTER TABLE wallets ADD COLUMN total_earned NUMERIC DEFAULT 0;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='wallets' AND column_name='total_withdrawn') THEN
+        ALTER TABLE wallets ADD COLUMN total_withdrawn NUMERIC DEFAULT 0;
+    END IF;
+
     -- Projects table updates
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='projects' AND column_name='total_budget') THEN
         ALTER TABLE projects ADD COLUMN total_budget NUMERIC DEFAULT 0;

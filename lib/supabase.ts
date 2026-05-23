@@ -28,6 +28,7 @@ export interface Project {
   total_budget?: number;
   category: string;
   status: string;
+  visibility: string;
   created_at: string;
   updated_at: string;
   client?: {
@@ -55,9 +56,10 @@ export interface Wallet {
   user_id: string;
   balance: number;
   currency: string;
-  escrow_balance?: number;
-  pending_balance?: number;
-  total_earned?: number;
+  escrow_balance: number;
+  pending_balance: number;
+  total_earned: number;
+  total_withdrawn: number;
 }
 
 // Check if we're in a build environment
@@ -188,7 +190,11 @@ export const deleteUser = async (userId: string) => {
 export const createProject = async (projectData: any) => {
   const { data, error } = await supabase
     .from('projects')
-    .insert([{ ...projectData, status: 'open' }])
+    .insert([{
+      ...projectData,
+      status: 'open',
+      visibility: projectData.visibility || 'public'
+    }])
     .select();
   return { data: (data?.[0] as Project) || null, error };
 };
