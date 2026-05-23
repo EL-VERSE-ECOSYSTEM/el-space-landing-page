@@ -170,8 +170,9 @@ export const getUser = async (email: string) => {
   return { data: (data as User) || null, error };
 };
 
-export const getUserById = async (id: string) => {
-  const { data, error } = await supabase.from('users').select('*').eq('id', id).maybeSingle();
+export const getUserById = async (id: string, isPrivateRequest: boolean = false) => {
+  const query = supabase.from('users').select(isPrivateRequest ? '*' : 'id, el_space_id, full_name, user_type, role, avatar_url, bio, is_verified, verified_badge, location, created_at');
+  const { data, error } = await query.eq('id', id).maybeSingle();
   return { data: (data as User) || null, error };
 };
 
