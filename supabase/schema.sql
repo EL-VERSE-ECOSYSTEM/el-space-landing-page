@@ -472,7 +472,9 @@ CREATE POLICY "Freelancers can manage own applications." ON applications FOR ALL
 CREATE POLICY "Users can view relevant milestones." ON milestones FOR SELECT USING (auth.uid() = freelancer_id OR EXISTS (SELECT 1 FROM projects WHERE id = project_id AND client_id = auth.uid()));
 
 -- Wallet & Payments Policies
+DROP POLICY IF EXISTS "Users can view own wallet." ON wallets;
 CREATE POLICY "Users can view own wallet." ON wallets FOR SELECT USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Users can manage own wallet." ON wallets;
 CREATE POLICY "Users can manage own wallet." ON wallets FOR ALL USING (auth.uid() = user_id);
 
 CREATE POLICY "Users can view own payments." ON payments FOR SELECT USING (auth.uid() = user_id OR auth.uid() = recipient_id);
@@ -496,13 +498,19 @@ CREATE POLICY "Users can update own notifications." ON notifications FOR ALL USI
 CREATE POLICY "Users can manage own push subs." ON push_subscriptions FOR ALL USING (auth.uid() = user_id);
 
 -- Social Policies
+DROP POLICY IF EXISTS "Social posts are viewable by everyone." ON social_posts;
 CREATE POLICY "Social posts are viewable by everyone." ON social_posts FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Users can manage own posts." ON social_posts;
 CREATE POLICY "Users can manage own posts." ON social_posts FOR ALL USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Social engagement is public." ON social_likes;
 CREATE POLICY "Social engagement is public." ON social_likes FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Users can like/unlike." ON social_likes;
 CREATE POLICY "Users can like/unlike." ON social_likes FOR ALL USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Social comments are public." ON social_comments;
 CREATE POLICY "Social comments are public." ON social_comments FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Users can manage own comments." ON social_comments;
 CREATE POLICY "Users can manage own comments." ON social_comments FOR ALL USING (auth.uid() = user_id);
 
 -- Portfolio Policies
