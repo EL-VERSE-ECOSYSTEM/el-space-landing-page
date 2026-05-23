@@ -47,7 +47,7 @@ export function AuthenticatedNavbar() {
 
   const handleLogout = async () => {
     await logout()
-    window.location.href = '/'
+    // logout() already handles redirection to '/' in auth-provider.tsx
   }
 
   return (

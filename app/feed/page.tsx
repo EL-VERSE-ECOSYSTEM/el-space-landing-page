@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { DashboardLayout } from '@/components/dashboard/auth-guard'
 import { useAuth } from '@/components/auth-provider'
 import { Button } from '@/components/ui/button'

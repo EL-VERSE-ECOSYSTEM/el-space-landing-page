@@ -45,6 +45,16 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='projects' AND column_name='total_budget') THEN
         ALTER TABLE projects ADD COLUMN total_budget NUMERIC DEFAULT 0;
     END IF;
+
+    -- Payments table updates
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='payments' AND column_name='recipient_id') THEN
+        ALTER TABLE payments ADD COLUMN recipient_id UUID REFERENCES users(id);
+    END IF;
+
+    -- Messages table updates
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='messages' AND column_name='recipient_id') THEN
+        ALTER TABLE messages ADD COLUMN recipient_id UUID REFERENCES users(id);
+    END IF;
 END $$;
 
 -- 3. Re-apply RLS Policies that might have failed

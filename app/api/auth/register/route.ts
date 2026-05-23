@@ -57,6 +57,9 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (userError) throw userError;
+    if (!user) {
+      return NextResponse.json({ error: 'Failed to create user record' }, { status: 500 });
+    }
 
     // 6. Create profile based on user type
     if (user_type === 'freelancer') {
