@@ -8,17 +8,18 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { AlertCircle, CheckCircle, Save, LogOut, Lock, Bell, Eye, EyeOff, Upload, Moon, Sun, Monitor } from 'lucide-react'
+import { AlertCircle, CheckCircle, Save, LogOut, Lock, Bell, Eye, EyeOff, Upload, Moon, Sun, Monitor, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { useTheme } from 'next-themes'
 
 export default function SettingsPage() {
   const router = useRouter()
-  const { user, logout, updateUser } = useAuth()
+  const { user, loading: authLoading, logout, updateUser } = useAuth()
   const { theme, setTheme } = useTheme()
   const [activeTab, setActiveTab] = useState('profile')
   const [loading, setLoading] = useState(false)
+  const [showDeactivateDialog, setShowDeactivateDialog] = useState(false)
   const [profileData, setProfileData] = useState({
     email: '',
     phone_number: '',
@@ -36,6 +37,29 @@ export default function SettingsPage() {
       })
     }
   }, [user])
+
+  const handleDeactivateAccount = async () => {
+    setLoading(true)
+    try {
+      const response = await fetch('/api/user/deactivate', {
+        method: 'POST',
+      })
+
+      if (response.ok) {
+        toast.success('Account deactivated successfully')
+        await logout()
+        router.push('/')
+      } else {
+        const error = await response.json()
+        toast.error(error.error || 'Deactivation failed')
+      }
+    } catch (err) {
+      toast.error('Something went wrong')
+    } finally {
+      setLoading(false)
+      setShowDeactivateDialog(false)
+    }
+  }
 
   const handleSaveProfile = async () => {
     if (!user) return
@@ -70,6 +94,14 @@ export default function SettingsPage() {
     { label: 'Settings', href: '/settings' },
   ]
 
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
+      </div>
+    )
+  }
+
   return (
     <DashboardLayout navItems={navItems} userType={(user?.user_type === "freelancer" ? "freelancer" : "client")}>
       <div className="max-w-4xl mx-auto space-y-8">
@@ -83,6 +115,7 @@ export default function SettingsPage() {
             {[
               { id: 'profile', label: 'Identity', icon: Lock },
               { id: 'appearance', label: 'Interface', icon: Moon },
+              { id: 'danger', label: 'Danger Zone', icon: Trash2 },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -110,7 +143,7 @@ export default function SettingsPage() {
                     </div>
                     <div className="space-y-2">
                       <Label className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Business Name (Locked)</Label>
-                      <Input value={(user as any).business_name || 'N/A'} disabled className="bg-slate-800 border-slate-700 text-slate-500 rounded-xl" />
+                      <Input value={(user as any)?.business_name || 'N/A'} disabled className="bg-slate-800 border-slate-700 text-slate-500 rounded-xl" />
                     </div>
                     <div className="space-y-2">
                       <Label className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Email Address</Label>
@@ -172,10 +205,65 @@ export default function SettingsPage() {
                   </div>
                 </div>
               )}
+
+              {activeTab === 'danger' && (
+                <div className="space-y-8">
+                  <div>
+                    <h3 className="text-xl font-black text-red-500">Danger Zone</h3>
+                    <p className="text-slate-400 font-medium">Irreversible actions for your account.</p>
+                  </div>
+
+                  <div className="p-6 border border-red-500/20 bg-red-500/5 rounded-2xl space-y-4">
+                    <div className="flex items-start gap-4">
+                      <div className="p-3 bg-red-500/10 rounded-xl">
+                        <Trash2 className="w-6 h-6 text-red-500" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-white">Deactivate Account</h4>
+                        <p className="text-sm text-slate-400">This will disable your account and remove your profile from public search. You can reactivate it by contacting support.</p>
+                      </div>
+                    </div>
+                    <Button
+                      onClick={() => setShowDeactivateDialog(true)}
+                      variant="destructive"
+                      className="w-full h-12 font-bold rounded-xl"
+                    >
+                      Deactivate Account
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
+
+      <Dialog open={showDeactivateDialog} onOpenChange={setShowDeactivateDialog}>
+        <DialogContent className="bg-slate-900 border-slate-800 text-white">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-black text-white">Confirm Deactivation</DialogTitle>
+            <DialogDescription className="text-slate-400">
+              Are you sure you want to deactivate your account? This action will take your profile offline.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex gap-4 mt-6">
+            <Button
+              variant="ghost"
+              onClick={() => setShowDeactivateDialog(false)}
+              className="flex-1 text-slate-400 hover:text-white hover:bg-slate-800"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDeactivateAccount}
+              disabled={loading}
+              className="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold"
+            >
+              {loading ? 'Processing...' : 'Deactivate'}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   )
 }

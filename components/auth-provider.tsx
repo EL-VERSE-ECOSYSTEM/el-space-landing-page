@@ -92,7 +92,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.removeItem('user')
       localStorage.removeItem('userId')
       localStorage.removeItem('email')
+      localStorage.removeItem('authToken')
       setUser(null)
+      window.location.href = '/'
     } finally {
       setLoading(false)
     }
