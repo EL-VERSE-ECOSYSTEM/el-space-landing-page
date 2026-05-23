@@ -92,7 +92,7 @@ export default function ForgotPasswordPage() {
                 </button>
               </p>
 
-              <Link href="/login">
+              <Link href="/auth/login">
                 <Button className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white">
                   Back to Login
                 </Button>
@@ -168,7 +168,7 @@ export default function ForgotPasswordPage() {
               </Button>
 
               {/* Back to login */}
-              <Link href="/login">
+              <Link href="/auth/login">
                 <Button
                   type="button"
                   variant="ghost"

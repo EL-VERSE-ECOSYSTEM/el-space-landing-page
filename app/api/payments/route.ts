@@ -13,27 +13,18 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'el-space-secret-key';
 
-function verifyOTPToken(token: string, type: string) {
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET) as any;
-    return decoded.verified && decoded.type === type;
-  } catch (e) {
-    return false;
-  }
-}
-
 /**
  * Handle payment actions:
  * 1. fund-wallet: Initialize Korapay payment to fund client wallet
  * 2. verify-funding: Verify Korapay payment and update wallet balance
  * 3. fund-milestone: Move funds from wallet to project escrow
  * 4. release-payment: Release funds from escrow to freelancer (with fees/penalties)
- * 5. internal-transfer: Send funds between users via EL SPACE ID (OTP required)
- * 6. withdraw: Withdraw funds to bank or crypto (OTP required)
+ * 5. internal-transfer: Send funds between users via EL SPACE ID
+ * 6. withdraw: Withdraw funds to bank or crypto
  */
 export async function POST(request: NextRequest) {
   try {
-    const { action, otpToken, ...params } = await request.json();
+    const { action, ...params } = await request.json();
 
     switch (action) {
       case 'fund-wallet':
@@ -45,14 +36,8 @@ export async function POST(request: NextRequest) {
       case 'release-payment':
         return await handleReleasePayment(params);
       case 'internal-transfer':
-        if (!verifyOTPToken(otpToken, 'transfer')) {
-          return NextResponse.json({ error: 'OTP verification required for transfer' }, { status: 401 });
-        }
         return await handleInternalTransfer(params);
       case 'withdraw':
-        if (!verifyOTPToken(otpToken, 'withdrawal')) {
-          return NextResponse.json({ error: 'OTP verification required for withdrawal' }, { status: 401 });
-        }
         return await handleWithdraw(params);
       default:
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
