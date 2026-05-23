@@ -443,6 +443,7 @@ END $$;
 
 -- Users Policies
 -- Public view only sees non-sensitive fields
+DROP POLICY IF EXISTS "Public profiles are viewable by everyone." ON users;
 CREATE POLICY "Public profiles are viewable by everyone." ON users
 FOR SELECT USING (true);
 
@@ -451,24 +452,34 @@ FOR SELECT USING (true);
 -- but we can filter it in the application or use a View.
 -- For standard RLS, we ensure only the owner or admins can SELECT everything.
 
+DROP POLICY IF EXISTS "Users can update own profile." ON users;
 CREATE POLICY "Users can update own profile." ON users FOR UPDATE USING (auth.uid() = id);
 
 -- Profiles Policies
+DROP POLICY IF EXISTS "Freelancer profiles are public." ON freelancer_profiles;
 CREATE POLICY "Freelancer profiles are public." ON freelancer_profiles FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Freelancers can update own profile." ON freelancer_profiles;
 CREATE POLICY "Freelancers can update own profile." ON freelancer_profiles FOR UPDATE USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Client profiles are public." ON client_profiles;
 CREATE POLICY "Client profiles are public." ON client_profiles FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Clients can update own client profile." ON client_profiles;
 CREATE POLICY "Clients can update own client profile." ON client_profiles FOR UPDATE USING (auth.uid() = user_id);
 
 -- Projects Policies
+DROP POLICY IF EXISTS "Open projects are viewable by everyone." ON projects;
 CREATE POLICY "Open projects are viewable by everyone." ON projects FOR SELECT USING (status = 'open' OR visibility = 'public' OR auth.uid() = client_id OR auth.uid() = accepted_freelancer_id);
+DROP POLICY IF EXISTS "Clients can manage own projects." ON projects;
 CREATE POLICY "Clients can manage own projects." ON projects FOR ALL USING (auth.uid() = client_id);
 
 -- Applications Policies
+DROP POLICY IF EXISTS "Users can view relevant applications." ON applications;
 CREATE POLICY "Users can view relevant applications." ON applications FOR SELECT USING (auth.uid() = freelancer_id OR EXISTS (SELECT 1 FROM projects WHERE id = project_id AND client_id = auth.uid()));
+DROP POLICY IF EXISTS "Freelancers can manage own applications." ON applications;
 CREATE POLICY "Freelancers can manage own applications." ON applications FOR ALL USING (auth.uid() = freelancer_id);
 
 -- Milestones Policies
+DROP POLICY IF EXISTS "Users can view relevant milestones." ON milestones;
 CREATE POLICY "Users can view relevant milestones." ON milestones FOR SELECT USING (auth.uid() = freelancer_id OR EXISTS (SELECT 1 FROM projects WHERE id = project_id AND client_id = auth.uid()));
 
 -- Wallet & Payments Policies
@@ -477,15 +488,19 @@ CREATE POLICY "Users can view own wallet." ON wallets FOR SELECT USING (auth.uid
 DROP POLICY IF EXISTS "Users can manage own wallet." ON wallets;
 CREATE POLICY "Users can manage own wallet." ON wallets FOR ALL USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can view own payments." ON payments;
 CREATE POLICY "Users can view own payments." ON payments FOR SELECT USING (auth.uid() = user_id OR auth.uid() = recipient_id);
+DROP POLICY IF EXISTS "Users can insert own payments." ON payments;
 CREATE POLICY "Users can insert own payments." ON payments FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 -- Messaging Policies
+DROP POLICY IF EXISTS "Participants can view room messages." ON messages;
 CREATE POLICY "Participants can view room messages." ON messages FOR SELECT USING (
   EXISTS (SELECT 1 FROM chat_participants WHERE room_id = messages.room_id AND user_id = auth.uid())
   OR sender_id = auth.uid()
   OR recipient_id = auth.uid()
 );
+DROP POLICY IF EXISTS "Participants can manage messages." ON messages;
 CREATE POLICY "Participants can manage messages." ON messages FOR ALL USING (
   EXISTS (SELECT 1 FROM chat_participants WHERE room_id = messages.room_id AND user_id = auth.uid())
   OR sender_id = auth.uid()
@@ -493,8 +508,11 @@ CREATE POLICY "Participants can manage messages." ON messages FOR ALL USING (
 );
 
 -- Notifications Policies
+DROP POLICY IF EXISTS "Users can view own notifications." ON notifications;
 CREATE POLICY "Users can view own notifications." ON notifications FOR SELECT USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Users can update own notifications." ON notifications;
 CREATE POLICY "Users can update own notifications." ON notifications FOR ALL USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Users can manage own push subs." ON push_subscriptions;
 CREATE POLICY "Users can manage own push subs." ON push_subscriptions FOR ALL USING (auth.uid() = user_id);
 
 -- Social Policies
@@ -514,50 +532,73 @@ DROP POLICY IF EXISTS "Users can manage own comments." ON social_comments;
 CREATE POLICY "Users can manage own comments." ON social_comments FOR ALL USING (auth.uid() = user_id);
 
 -- Portfolio Policies
+DROP POLICY IF EXISTS "Portfolio items are public." ON portfolio_items;
 CREATE POLICY "Portfolio items are public." ON portfolio_items FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Users can manage own portfolio." ON portfolio_items;
 CREATE POLICY "Users can manage own portfolio." ON portfolio_items FOR ALL USING (auth.uid() = user_id);
 
 -- Productivity Policies
+DROP POLICY IF EXISTS "Users can manage own todos." ON todos;
 CREATE POLICY "Users can manage own todos." ON todos FOR ALL USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Users can manage own reminders." ON reminders;
 CREATE POLICY "Users can manage own reminders." ON reminders FOR ALL USING (auth.uid() = user_id);
 
 -- Disputes Policies
+DROP POLICY IF EXISTS "Users can view relevant disputes." ON disputes;
 CREATE POLICY "Users can view relevant disputes." ON disputes FOR SELECT USING (auth.uid() = initiated_by OR auth.uid() = initiated_against);
+DROP POLICY IF EXISTS "Users can manage relevant disputes." ON disputes;
 CREATE POLICY "Users can manage relevant disputes." ON disputes FOR ALL USING (auth.uid() = initiated_by OR auth.uid() = initiated_against);
 
+DROP POLICY IF EXISTS "Users can view dispute evidence." ON dispute_evidence;
 CREATE POLICY "Users can view dispute evidence." ON dispute_evidence FOR SELECT USING (EXISTS (SELECT 1 FROM disputes WHERE id = dispute_id AND (initiated_by = auth.uid() OR initiated_against = auth.uid())));
+DROP POLICY IF EXISTS "Users can manage dispute evidence." ON dispute_evidence;
 CREATE POLICY "Users can manage dispute evidence." ON dispute_evidence FOR ALL USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "Users can view relevant mediation sessions." ON mediation_sessions;
 CREATE POLICY "Users can view relevant mediation sessions." ON mediation_sessions FOR SELECT USING (EXISTS (SELECT 1 FROM disputes WHERE id = dispute_id AND (initiated_by = auth.uid() OR initiated_against = auth.uid())));
+DROP POLICY IF EXISTS "Users can view relevant mediation outcomes." ON mediation_outcomes;
 CREATE POLICY "Users can view relevant mediation outcomes." ON mediation_outcomes FOR SELECT USING (EXISTS (SELECT 1 FROM disputes WHERE id = dispute_id AND (initiated_by = auth.uid() OR initiated_against = auth.uid())));
 
 -- Storage Policies
+DROP POLICY IF EXISTS "Users can manage own storage assets." ON storage_assets;
 CREATE POLICY "Users can manage own storage assets." ON storage_assets FOR ALL USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Public can view storage assets." ON storage_assets;
 CREATE POLICY "Public can view storage assets." ON storage_assets FOR SELECT USING (true);
 
 -- Time Logs Policies
+DROP POLICY IF EXISTS "Users can view relevant time logs." ON time_logs;
 CREATE POLICY "Users can view relevant time logs." ON time_logs FOR SELECT USING (freelancer_id = auth.uid() OR EXISTS (SELECT 1 FROM projects WHERE id = project_id AND client_id = auth.uid()));
+DROP POLICY IF EXISTS "Freelancers can manage own time logs." ON time_logs;
 CREATE POLICY "Freelancers can manage own time logs." ON time_logs FOR ALL USING (freelancer_id = auth.uid());
 
 -- Reviews Policies
+DROP POLICY IF EXISTS "Public reviews are viewable by everyone." ON reviews;
 CREATE POLICY "Public reviews are viewable by everyone." ON reviews FOR SELECT USING (visibility = 'public');
+DROP POLICY IF EXISTS "Users can view private reviews they are part of." ON reviews;
 CREATE POLICY "Users can view private reviews they are part of." ON reviews FOR SELECT USING (reviewer_id = auth.uid() OR reviewee_id = auth.uid());
+DROP POLICY IF EXISTS "Users can manage own reviews." ON reviews;
 CREATE POLICY "Users can manage own reviews." ON reviews FOR ALL USING (reviewer_id = auth.uid());
 
 -- Test Projects Policies
+DROP POLICY IF EXISTS "Freelancers can view own test projects." ON test_projects;
 CREATE POLICY "Freelancers can view own test projects." ON test_projects FOR SELECT USING (freelancer_id = auth.uid());
 
 -- Referrals Policies
+DROP POLICY IF EXISTS "Users can view own referrals." ON referrals;
 CREATE POLICY "Users can view own referrals." ON referrals FOR SELECT USING (referrer_id = auth.uid() OR referred_user_email = (SELECT email FROM users WHERE id = auth.uid()));
 
 -- Contact Requests Policies
+DROP POLICY IF EXISTS "Anyone can submit contact requests." ON contact_requests;
 CREATE POLICY "Anyone can submit contact requests." ON contact_requests FOR INSERT WITH CHECK (true);
 
 -- Saved Freelancers Policies
+DROP POLICY IF EXISTS "Clients can manage own saved freelancers." ON saved_freelancers;
 CREATE POLICY "Clients can manage own saved freelancers." ON saved_freelancers FOR ALL USING (client_id = auth.uid());
 
 -- chat_rooms & chat_participants Policies
+DROP POLICY IF EXISTS "Users can view own chat rooms." ON chat_rooms;
 CREATE POLICY "Users can view own chat rooms." ON chat_rooms FOR SELECT USING (EXISTS (SELECT 1 FROM chat_participants WHERE room_id = id AND user_id = auth.uid()));
+DROP POLICY IF EXISTS "Users can view chat participants." ON chat_participants;
 CREATE POLICY "Users can view chat participants." ON chat_participants FOR SELECT USING (EXISTS (SELECT 1 FROM chat_participants cp2 WHERE cp2.room_id = room_id AND cp2.user_id = auth.uid()));
 
 -- 23. RPC Functions
