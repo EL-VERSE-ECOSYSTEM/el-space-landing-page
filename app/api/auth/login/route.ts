@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password, otp } = await request.json();
+    const { email, password } = await request.json();
 
     if (!email || !password) {
       return NextResponse.json({ error: 'Missing credentials' }, { status: 400 });
@@ -26,8 +26,6 @@ export async function POST(request: NextRequest) {
     if (!isValidPassword) {
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
-
-    // 3. OTP Verification Removed (Bypassed)
 
     // 4. Return user on successful password verification
     return NextResponse.json({

@@ -14,8 +14,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // 1. OTP Verification Removed (Bypassed)
-
     // 2. Check if user already exists
     const { data: existingUser } = await supabase
       .from('users')

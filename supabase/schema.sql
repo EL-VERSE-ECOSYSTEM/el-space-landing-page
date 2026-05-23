@@ -416,15 +416,6 @@ CREATE TABLE IF NOT EXISTS storage_assets (
 );
 
 -- 21. Authentication Fallbacks
-CREATE TABLE IF NOT EXISTS otp_codes (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  email TEXT NOT NULL,
-  code TEXT NOT NULL,
-  type TEXT NOT NULL,
-  metadata JSONB,
-  expires_at TIMESTAMPTZ NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
 
 CREATE TABLE IF NOT EXISTS saved_freelancers (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),

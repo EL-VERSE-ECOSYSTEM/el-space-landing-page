@@ -11,7 +11,6 @@ import { AlertCircle, CheckCircle, Loader, Mail, Eye, EyeOff, ArrowRight, ArrowL
 import { toast } from "sonner";
 import { GoogleSignInButton } from "@/components/ui/google-signin-button";
 import { GitHubSignInButton } from "@/components/ui/github-signin-button";
-import { OTPNotification } from "@/components/ui/otp-notification";
 import { useAuth } from "@/components/auth-provider";
 
 export default function LoginPage() {
@@ -23,12 +22,9 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [generatedOtp, setGeneratedOtp] = useState("");
-  const [showOtpPopup, setShowOtpPopup] = useState(false);
   const [userData, setUserData] = useState<any>(null);
 
   const handleCheckEmail = async (e: React.FormEvent) => {
@@ -40,7 +36,7 @@ export default function LoginPage() {
       const response = await fetch("/api/auth/check-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email })
       });
 
       const data = await response.json();
@@ -61,59 +57,7 @@ export default function LoginPage() {
     }
   };
 
-  const handleVerifyOTP = async (e?: React.FormEvent, directOtp?: string) => {
-    if (e) e.preventDefault();
-    setLoading(true);
-    setError("");
 
-    const otpToUse = directOtp || otp;
-
-    if (!otpToUse || otpToUse.length !== 6) {
-      setError("Please enter a valid 6-digit code.");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          password,
-          otp: otpToUse
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error || "Login failed. Please check your credentials.");
-        setLoading(false);
-        return;
-      }
-
-      setSuccess("Login successful!");
-
-      // Update auth context
-      await login(data.user, data.token || 'temp-token');
-
-      // Redirect based on user type
-      setTimeout(() => {
-        if (data.user?.user_type === "freelancer" || data.user?.role === "freelancer") {
-          router.push("/freelancer/dashboard");
-        } else if (data.user?.user_type === "client" || data.user?.role === "client") {
-          router.push("/client/dashboard");
-        } else {
-          router.push("/dashboard");
-        }
-      }, 1500);
-    } catch (err: any) {
-      setError(err.message || "An error occurred during verification");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -126,9 +70,8 @@ export default function LoginPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email,
-          password,
-          otp: '000000' // Mock OTP for API compatibility
-        }),
+          password
+        })
       });
 
       const data = await response.json();
@@ -357,24 +300,6 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* OTP Notification Popup */}
-      <OTPNotification
-        isOpen={showOtpPopup}
-        onOpenChange={setShowOtpPopup}
-        otp={generatedOtp}
-        email={email}
-        type="login"
-        onOTPCopied={(otpCode) => {
-          setOtp(otpCode);
-          toast.success('Code copied! Authenticating...');
-        }}
-        onVerified={() => {
-          setOtp(generatedOtp);
-          handleVerifyOTP(undefined, generatedOtp);
-        }}
-        showCopyButton={true}
-        expiryMinutes={15}
-      />
     </div>
   );
 }

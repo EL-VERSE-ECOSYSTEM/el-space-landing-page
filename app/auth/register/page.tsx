@@ -21,7 +21,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { AlertCircle, CheckCircle, Loader, Mail, Upload, Eye, EyeOff, ArrowLeft, ArrowRight, ShieldCheck, Zap, User, Briefcase, Rocket, Lock, Building2, Globe } from "lucide-react";
 import { toast } from "sonner";
-import { OTPNotification } from '@/components/ui/otp-notification';
 import { GoogleSignInButton } from '@/components/ui/google-signin-button';
 import { GitHubSignInButton } from '@/components/ui/github-signin-button';
 import { useAuth } from "@/components/auth-provider";
@@ -30,8 +29,8 @@ export default function RegisterPage() {
   const router = useRouter();
   const { login } = useAuth();
 
-  // Step management: info -> details -> security -> otp -> complete
-  const [step, setStep] = useState<"info" | "details" | "security" | "otp">("info");
+  // Step management: info -> details -> security -> complete
+  const [step, setStep] = useState<"info" | "details" | "security">("info");
 
   // Common fields
   const [email, setEmail] = useState("");
@@ -76,101 +75,10 @@ export default function RegisterPage() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [countryCode, setCountryCode] = useState("+1");
 
-  // OTP
-  const [otp, setOtp] = useState("");
-  const [generatedOtp, setGeneratedOtp] = useState("");
-  const [showOtpPopup, setShowOtpPopup] = useState(false);
-
   // State
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-
-  const handleSendOTP = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-
-    // Validation
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters");
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const response = await fetch("/api/auth/send-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          type: "register",
-          metadata: { name, userType }
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error || "Failed to send OTP");
-        setLoading(false);
-        return;
-      }
-
-      if (data.otp) {
-        setGeneratedOtp(data.otp);
-        setShowOtpPopup(true);
-      }
-
-      setSuccess("Verification code sent to your email!");
-      setStep("otp");
-    } catch (err: any) {
-      setError(err.message || "An error occurred");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleVerifyAndRegister = async (e?: React.FormEvent, directOtp?: string) => {
-    if (e) e.preventDefault();
-    setLoading(true);
-    setError("");
-
-    const otpToUse = directOtp || otp;
-
-    if (!otpToUse || otpToUse.length !== 6) {
-      setError("Please enter a valid 6-digit code.");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      // 1. First verify OTP
-      const verifyRes = await fetch("/api/auth/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, code: otpToUse, type: 'register' }),
-      });
-
-      const verifyData = await verifyRes.json();
-      if (!verifyRes.ok) {
-        setError(verifyData.error || "Invalid verification code");
-        setLoading(false);
-        return;
-      }
-
-      // 2. If OTP valid, proceed with registration
-      await handleRegister();
-    } catch (err: any) {
-      setError(err.message || "Verification failed");
-      setLoading(false);
-    }
-  };
 
   const handleRegister = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -187,7 +95,6 @@ export default function RegisterPage() {
         password,
         phoneNumber,
         countryCode,
-        otp: '000000', // Mock OTP for API compatibility
       };
 
       // Add transaction pin
@@ -1031,24 +938,6 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      {/* OTP Notification Popup */}
-      <OTPNotification
-        isOpen={showOtpPopup}
-        onOpenChange={setShowOtpPopup}
-        otp={generatedOtp}
-        email={email}
-        type="register"
-        showCopyButton={true}
-        expiryMinutes={15}
-        onOTPCopied={(code) => {
-          setOtp(code);
-          toast.success("Code copied! Ready to verify.");
-        }}
-        onVerified={() => {
-          setOtp(generatedOtp);
-          handleVerifyAndRegister(undefined, generatedOtp);
-        }}
-      />
     </div>
   );
 }
