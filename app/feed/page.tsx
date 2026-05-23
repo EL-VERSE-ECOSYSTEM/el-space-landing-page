@@ -175,7 +175,7 @@ export default function FeedPage() {
   ]
 
   return (
-    <DashboardLayout userType={user?.user_type || 'freelancer'} navItems={navItems}>
+    <DashboardLayout userType={(user?.user_type === "freelancer" ? "freelancer" : "client")} navItems={navItems}>
       <div className="space-y-8 max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-end">

@@ -16,6 +16,12 @@ import { useAuth } from '@/components/auth-provider';
 import { DashboardLayout } from '@/components/dashboard/auth-guard';
 
 export default function JobsPage() {
+  const navItems = [
+    { label: 'Feed', href: '/feed' },
+    { label: 'Messages', href: '/messages' },
+    { label: 'Settings', href: '/settings' },
+  ]
+
   const router = useRouter();
   const { user } = useAuth();
   const [jobs, setJobs] = useState<any[]>([]);
@@ -56,7 +62,7 @@ export default function JobsPage() {
   };
 
   return (
-    <DashboardLayout userType={user?.user_type || 'freelancer'}>
+    <DashboardLayout navItems={navItems} userType={(user?.user_type === "freelancer" ? "freelancer" : "client")}>
       <div className="min-h-screen text-slate-200 pb-20">
         <main className="max-w-7xl mx-auto space-y-12">
           {/* Header */}

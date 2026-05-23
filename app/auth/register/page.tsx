@@ -30,8 +30,8 @@ export default function RegisterPage() {
   const router = useRouter();
   const { login } = useAuth();
 
-  // Step management: info -> details -> security -> complete
-  const [step, setStep] = useState<"info" | "details" | "security">("info");
+  // Step management: info -> details -> security -> otp -> complete
+  const [step, setStep] = useState<"info" | "details" | "security" | "otp">("info");
 
   // Common fields
   const [email, setEmail] = useState("");
@@ -132,6 +132,42 @@ export default function RegisterPage() {
     } catch (err: any) {
       setError(err.message || "An error occurred");
     } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyAndRegister = async (e?: React.FormEvent, directOtp?: string) => {
+    if (e) e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    const otpToUse = directOtp || otp;
+
+    if (!otpToUse || otpToUse.length !== 6) {
+      setError("Please enter a valid 6-digit code.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // 1. First verify OTP
+      const verifyRes = await fetch("/api/auth/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, code: otpToUse, type: 'register' }),
+      });
+
+      const verifyData = await verifyRes.json();
+      if (!verifyRes.ok) {
+        setError(verifyData.error || "Invalid verification code");
+        setLoading(false);
+        return;
+      }
+
+      // 2. If OTP valid, proceed with registration
+      await handleRegister();
+    } catch (err: any) {
+      setError(err.message || "Verification failed");
       setLoading(false);
     }
   };

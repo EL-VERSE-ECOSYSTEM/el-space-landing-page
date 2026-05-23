@@ -8,6 +8,7 @@ interface AuthUser {
   email: string
   name: string
   full_name?: string
+  user_type?: 'client' | 'entrepreneur' | 'business' | 'enterprise' | 'freelancer'
   role: 'client' | 'entrepreneur' | 'business' | 'enterprise' | 'freelancer' | 'admin'
   avatar?: string
   avatar_url?: string

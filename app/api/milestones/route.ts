@@ -5,6 +5,7 @@ import {
   updateMilestoneStatus, 
   getProject, 
   getUserById, 
+  getWallet,
   updateWalletBalance, 
   createPayment 
 } from '@/lib/supabase';
