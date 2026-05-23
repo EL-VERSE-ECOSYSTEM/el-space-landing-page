@@ -70,7 +70,20 @@ const isBuildTime = () => {
 };
 
 const createMockClient = () => {
-  const mockResponse = { data: null, error: null, count: 0 };
+  const mockResponse = {
+    data: {
+      id: 'mock-id-' + Math.random().toString(36).substr(2, 9),
+      email: 'mock@example.com',
+      full_name: 'Mock User',
+      user_type: 'freelancer',
+      role: 'user',
+      el_space_id: 'EL-12345678',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    },
+    error: null,
+    count: 0
+  };
   const builder: any = {
     select: () => builder,
     insert: () => builder,
@@ -104,7 +117,7 @@ const createMockClient = () => {
     abortSignal: () => builder,
     single: () => Promise.resolve(mockResponse),
     maybeSingle: () => Promise.resolve(mockResponse),
-    then: (onfulfilled: any) => Promise.resolve(mockResponse).then(onfulfilled),
+    then: (onfulfilled: any) => Promise.resolve({ data: [mockResponse.data], error: null }).then(onfulfilled),
   };
 
   return {
