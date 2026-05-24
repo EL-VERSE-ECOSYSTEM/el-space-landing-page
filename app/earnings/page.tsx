@@ -24,10 +24,9 @@ export default function EarningsPage() {
   }, [authLoading, user]);
 
   const fetchEarnings = async () => {
+    if (!user?.id) return
     try {
-      const userId = user?.id || ''
-      if (!userId) return
-      const response = await fetch(`/api/earnings?freelancerId=${userId}`);
+      const response = await fetch(`/api/earnings?freelancerId=${user.id}`);
       const data = await response.json();
       setEarnings(data.earnings || []);
       setStats(data.stats);
@@ -39,18 +38,18 @@ export default function EarningsPage() {
   };
 
   const handleWithdrawal = async () => {
+    if (!user?.id) return;
     if (!withdrawalAmount || parseFloat(withdrawalAmount) <= 0) {
       toast.error('Enter a valid amount');
       return;
     }
 
     try {
-      const userId = user?.id || ''
       const response = await fetch('/api/earnings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          freelancerId: userId,
+          freelancerId: user.id,
           amount: parseFloat(withdrawalAmount),
           reason: 'Withdrawal request',
         }),

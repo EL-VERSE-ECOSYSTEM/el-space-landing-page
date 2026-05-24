@@ -117,7 +117,7 @@ export default function WalletHub() {
       if (data.success) {
         toast.success('Withdrawal request initiated!')
         setShowWithdraw(false)
-        setWithdrawData({ amount: '', accountNumber: '', bankName: '', walletAddress: '', network: 'Ethereum (ERC20)', pin: '' })
+        setWithdrawData({ amount: '', currency: 'USD', accountNumber: '', bankName: '', walletAddress: '', network: 'Ethereum (ERC20)', pin: '' })
         fetchWalletData()
       } else {
         toast.error(data.error)

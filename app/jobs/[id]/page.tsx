@@ -57,18 +57,21 @@ export default function ProjectDetailPage() {
   };
 
   const handleSubmitApplication = async () => {
+    if (!user?.id) {
+      toast.error('You must be logged in to apply');
+      return;
+    }
     if (!applyFormData.coverLetter || !applyFormData.proposedRate) {
       toast.error('Please fill all fields');
       return;
     }
 
     try {
-      const userId = user?.id || ''
       const response = await fetch('/api/applications', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          freelancerId: userId,
+          freelancerId: user.id,
           projectId: params.id,
           coverLetter: applyFormData.coverLetter,
           rate: parseFloat(applyFormData.proposedRate),
@@ -89,6 +92,7 @@ export default function ProjectDetailPage() {
   };
 
   const handleAcceptApplication = async (applicationId: string) => {
+    if (!user?.id) return;
     try {
       const response = await fetch('/api/applications', {
         method: 'PATCH',
@@ -96,7 +100,7 @@ export default function ProjectDetailPage() {
         body: JSON.stringify({
           applicationId,
           status: 'accepted',
-          clientId: user?.id || '',
+          clientId: user.id,
         }),
       });
 

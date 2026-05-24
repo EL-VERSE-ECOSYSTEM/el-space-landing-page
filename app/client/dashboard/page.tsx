@@ -36,11 +36,12 @@ export default function ClientHub() {
   }, [user])
 
   const fetchDashboardData = async () => {
+    if (!user?.id) return
     try {
       setLoading(true)
       const [projRes, walletRes] = await Promise.all([
-        fetch(`/api/projects?clientId=${user?.id}`),
-        fetch(`/api/wallet?userId=${user?.id}`)
+        fetch(`/api/projects?clientId=${user.id}`),
+        fetch(`/api/wallet?userId=${user.id}`)
       ])
 
       const data = await projRes.json()

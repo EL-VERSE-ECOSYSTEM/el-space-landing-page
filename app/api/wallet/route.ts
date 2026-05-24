@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { 
   getWallet, 
-  updateWalletBalance, 
+  updateWalletBalance,
+  updateWallet,
   createPayment, 
   getPaymentsByProject,
   getUserById,
@@ -402,14 +403,12 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Update wallet with new metadata
-    const updatedWallet = {
-      ...wallet,
-      ...updates,
-      updated_at: new Date().toISOString(),
-    };
+    const { data: updatedWallet, error: updateError } = await updateWallet(userId, updates);
 
-    // Note: You'll need to add updateWallet function to supabase.ts
-    // For now, return success
+    if (updateError) {
+      throw updateError;
+    }
+
     return NextResponse.json({
       success: true,
       wallet: updatedWallet,
