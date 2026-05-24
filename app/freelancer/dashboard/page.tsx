@@ -36,11 +36,12 @@ export default function FreelancerHub() {
   }, [user])
 
   const fetchDashboardData = async () => {
+    if (!user?.id) return
     try {
       setLoading(true)
       const [appRes, walletRes] = await Promise.all([
-        fetch(`/api/applications?freelancerId=${user?.id}`),
-        fetch(`/api/wallet?userId=${user?.id}`)
+        fetch(`/api/applications?freelancerId=${user.id}`),
+        fetch(`/api/wallet?userId=${user.id}`)
       ])
 
       const data = await appRes.json()

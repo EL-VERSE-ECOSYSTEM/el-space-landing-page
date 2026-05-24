@@ -40,15 +40,18 @@ export default function PostJobPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user?.id) {
+      toast.error('You must be logged in to post a job');
+      return;
+    }
     setLoading(true);
 
     try {
-      const userId = user?.id || ''
       const response = await fetch('/api/projects', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          clientId: userId,
+          clientId: user.id,
           title: formData.title,
           description: formData.description,
           category: formData.category,

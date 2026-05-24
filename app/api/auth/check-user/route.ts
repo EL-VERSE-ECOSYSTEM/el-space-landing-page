@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getUser } from '@/lib/supabase';
+import { getUser, getUserBySpaceId } from '@/lib/supabase';
 
 export async function POST(request: NextRequest) {
   try {

@@ -409,6 +409,15 @@ export const updateWalletBalance = async (userId: string, balance: number, pendi
   return { data: data?.[0], error };
 };
 
+export const updateWallet = async (userId: string, updates: any) => {
+  const { data, error } = await supabase
+    .from('wallets')
+    .update({ ...updates, updated_at: new Date().toISOString() })
+    .eq('user_id', userId)
+    .select();
+  return { data: data?.[0], error };
+};
+
 export const internalTransfer = async (fromUserId: string, toSpaceId: string, amount: number) => {
   // 1. Get recipient
   const { data: recipient, error: recError } = await getUserBySpaceId(toSpaceId);
