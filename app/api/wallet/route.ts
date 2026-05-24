@@ -202,6 +202,19 @@ export async function POST(request: NextRequest) {
 
       await updateWalletBalance(userId, newBalance, newPending);
 
+      // Log to dedicated withdrawals table
+      await supabase.from('withdrawals').insert([{
+        user_id: userId,
+        wallet_id: wallet.id,
+        payment_id: payment.id,
+        amount,
+        fee_amount: processingFee,
+        net_amount: netAmount,
+        method: method || 'bank',
+        account_details: accountDetails,
+        status: 'pending'
+      }]);
+
       return NextResponse.json({
         success: true,
         message: `Withdrawal request created - ${isInstant ? 'Instant' : 'Standard (3 days)'}`,

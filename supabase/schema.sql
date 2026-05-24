@@ -173,6 +173,27 @@ CREATE TABLE IF NOT EXISTS payments (
 );
 
 -- 10. Reviews
+-- 10. Withdrawals
+CREATE TABLE IF NOT EXISTS withdrawals (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+  wallet_id UUID REFERENCES wallets(id) ON DELETE CASCADE,
+  payment_id UUID REFERENCES payments(id) ON DELETE SET NULL,
+  amount NUMERIC NOT NULL,
+  currency TEXT DEFAULT 'USD',
+  fee_amount NUMERIC DEFAULT 0,
+  net_amount NUMERIC NOT NULL,
+  method TEXT NOT NULL, -- 'bank', 'crypto', etc.
+  account_details JSONB NOT NULL,
+  status TEXT CHECK (status IN ('pending', 'approved', 'completed', 'rejected')) DEFAULT 'pending',
+  admin_notes TEXT,
+  processed_at TIMESTAMPTZ,
+  processed_by UUID REFERENCES users(id),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 11. Reviews
 CREATE TABLE IF NOT EXISTS reviews (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   project_id UUID REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
@@ -595,6 +616,16 @@ CREATE POLICY "Anyone can submit contact requests." ON contact_requests FOR INSE
 DROP POLICY IF EXISTS "Clients can manage own saved freelancers." ON saved_freelancers;
 CREATE POLICY "Clients can manage own saved freelancers." ON saved_freelancers FOR ALL USING (client_id = auth.uid());
 
+-- Withdrawals Policies
+DROP POLICY IF EXISTS "Users can view own withdrawals." ON withdrawals;
+CREATE POLICY "Users can view own withdrawals." ON withdrawals FOR SELECT USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Users can insert own withdrawals." ON withdrawals;
+CREATE POLICY "Users can insert own withdrawals." ON withdrawals FOR INSERT WITH CHECK (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Admins can manage all withdrawals." ON withdrawals;
+CREATE POLICY "Admins can manage all withdrawals." ON withdrawals FOR ALL USING (
+  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
+);
+
 -- chat_rooms & chat_participants Policies
 DROP POLICY IF EXISTS "Users can view own chat rooms." ON chat_rooms;
 CREATE POLICY "Users can view own chat rooms." ON chat_rooms FOR SELECT USING (EXISTS (SELECT 1 FROM chat_participants WHERE room_id = id AND user_id = auth.uid()));
@@ -684,8 +715,9 @@ BEGIN
   SELECT COUNT(*) INTO v_total_users FROM users;
   SELECT COALESCE(SUM(amount), 0) INTO v_total_payments FROM payments WHERE status = 'completed';
   SELECT COUNT(*) INTO v_total_jobs FROM projects;
-  SELECT COUNT(*) INTO v_pending_withdrawals FROM payments WHERE payment_type = 'withdrawal' AND status = 'pending';
   SELECT COUNT(*) INTO v_active_disputes FROM disputes WHERE status = 'open';
+
+  SELECT COUNT(*) INTO v_pending_withdrawals FROM withdrawals WHERE status = 'pending';
 
   RETURN jsonb_build_object(
     'totalUsers', v_total_users,
