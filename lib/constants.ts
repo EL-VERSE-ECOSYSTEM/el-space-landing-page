@@ -639,7 +639,7 @@ export const FOOTER_SECTIONS = {
     links: [
       { label: "EL CODERS", href: "https://elcoders-devs.vercel.app/" },
       { label: "EL SPACE", href: "https://el-space-fpa.vercel.app/" },
-      { label: "ELITES", href: "https://elites-learn.vercel.app/" },
+      { label: "ELITES", href: "https://elites-connect.vercel.app/" },
       { label: "ELACCESS", href: "https://elaccess-interns.vercel.app/" },
       { label: "NEXEL", href: "https://nexel-sma.vercel.app/" },
     ],

@@ -103,7 +103,36 @@ BEGIN
             sender_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
             recipient_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
             amount NUMERIC NOT NULL,
+            fee_amount NUMERIC DEFAULT 0,
+            net_amount NUMERIC NOT NULL,
             currency TEXT DEFAULT 'USD',
+            status TEXT CHECK (status IN ('pending', 'approved', 'completed', 'rejected')) DEFAULT 'pending',
+            admin_notes TEXT,
+            processed_at TIMESTAMPTZ,
+            processed_by UUID REFERENCES users(id),
+            created_at TIMESTAMPTZ DEFAULT NOW(),
+            updated_at TIMESTAMPTZ DEFAULT NOW()
+        );
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='internal_transfers' AND column_name='fee_amount') THEN
+        ALTER TABLE internal_transfers ADD COLUMN fee_amount NUMERIC DEFAULT 0;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='internal_transfers' AND column_name='net_amount') THEN
+        ALTER TABLE internal_transfers ADD COLUMN net_amount NUMERIC DEFAULT 0;
+    END IF;
+
+    -- Ensure deposits table exists
+    IF NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name='deposits') THEN
+        CREATE TABLE deposits (
+            id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+            user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+            wallet_id UUID REFERENCES wallets(id) ON DELETE CASCADE,
+            amount NUMERIC NOT NULL,
+            currency TEXT DEFAULT 'USD',
+            method TEXT NOT NULL,
+            receipt_url TEXT NOT NULL,
             status TEXT CHECK (status IN ('pending', 'approved', 'completed', 'rejected')) DEFAULT 'pending',
             admin_notes TEXT,
             processed_at TIMESTAMPTZ,
