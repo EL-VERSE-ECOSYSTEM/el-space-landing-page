@@ -124,7 +124,10 @@ export default function ProfilePage() {
                         )}
                      </div>
                      <h1 className="mt-6 text-2xl font-black text-white">{profile.user?.full_name}</h1>
-                     <p className="text-cyan-400 font-bold text-xs uppercase tracking-widest mt-1">{profile.user?.user_type} Profile</p>
+                     <div className="flex flex-col items-center gap-1 mt-1">
+                        <p className="text-cyan-400 font-bold text-xs uppercase tracking-widest">{profile.user?.user_type} Profile</p>
+                        <p className="text-slate-500 font-mono text-[10px] font-bold">{profile.user?.el_space_id}</p>
+                     </div>
 
                      <div className="flex justify-center gap-4 mt-6">
                         <Button variant="ghost" size="icon" className="text-slate-500 hover:text-white bg-white/5"><Github className="w-5 h-5" /></Button>

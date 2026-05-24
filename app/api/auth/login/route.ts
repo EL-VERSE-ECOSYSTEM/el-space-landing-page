@@ -10,12 +10,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing credentials' }, { status: 400 });
     }
 
-    // 1. Get user
-    const { data: user, error: userError } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', email)
-      .single();
+    // 1. Get user (Support both email and el_space_id)
+    const identifier = email; // Front-end might send either email or ID in the email field
+    let query = supabase.from('users').select('*');
+
+    if (identifier.includes('@')) {
+      query = query.eq('email', identifier);
+    } else {
+      query = query.eq('el_space_id', identifier.toUpperCase());
+    }
+
+    const { data: user, error: userError } = await query.single();
 
     if (userError || !user) {
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });

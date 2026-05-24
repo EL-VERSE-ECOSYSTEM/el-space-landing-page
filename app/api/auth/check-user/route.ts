@@ -12,7 +12,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { data: user, error } = await getUser(email);
+    // Handle both email and el_space_id
+    let user = null;
+    let error = null;
+
+    if (email.includes('@')) {
+      const result = await getUser(email);
+      user = result.data;
+      error = result.error;
+    } else {
+      const result = await getUserBySpaceId(email.toUpperCase());
+      user = result.data;
+      error = result.error;
+    }
 
     if (error || !user) {
       return NextResponse.json(
