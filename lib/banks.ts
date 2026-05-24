@@ -64,6 +64,9 @@ export const BANKS_BY_COUNTRY: Record<CountryCode, Bank[]> = {
     { code: '809', name: 'Village Financial Services', currency: 'NGN' },
     { code: '038', name: 'Heritage Bank', currency: 'NGN' },
     { code: '037', name: 'Zenith Bank Alt Code', currency: 'NGN' },
+    { code: '100004', name: 'Opay (Digital)', currency: 'NGN' },
+    { code: '100033', name: 'Palmpay (Digital)', currency: 'NGN' },
+    { code: '50211', name: 'Kuda (Fintech)', currency: 'NGN' },
   ],
   GH: [
     { code: '010050', name: 'Ecobank Ghana', currency: 'GHS' },
@@ -88,14 +91,16 @@ export const BANKS_BY_COUNTRY: Record<CountryCode, Bank[]> = {
     { code: '010', name: 'Diamond Trust Bank', currency: 'KES' },
   ],
   US: [
-    { code: '021000021', name: 'Chase Bank', currency: 'USD' },
-    { code: '011000015', name: 'Bank of America', currency: 'USD' },
-    { code: '111000025', name: 'Wells Fargo', currency: 'USD' },
-    { code: '061000052', name: 'US Bank', currency: 'USD' },
-    { code: '091000022', name: 'Citibank', currency: 'USD' },
-    { code: '011600033', name: 'TD Bank', currency: 'USD' },
-    { code: '021001945', name: 'PNC Bank', currency: 'USD' },
-    { code: '104000016', name: 'RBC Bank', currency: 'USD' },
+    { code: 'CHAS', name: 'Chase Bank (JPMorgan)', currency: 'USD' },
+    { code: 'BOFA', name: 'Bank of America', currency: 'USD' },
+    { code: 'WFGO', name: 'Wells Fargo', currency: 'USD' },
+    { code: 'CITI', name: 'Citibank', currency: 'USD' },
+    { code: 'GS', name: 'Goldman Sachs', currency: 'USD' },
+    { code: 'MS', name: 'Morgan Stanley', currency: 'USD' },
+    { code: 'USB', name: 'U.S. Bank', currency: 'USD' },
+    { code: 'TDB', name: 'TD Bank', currency: 'USD' },
+    { code: 'PNC', name: 'PNC Bank', currency: 'USD' },
+    { code: 'COF', name: 'Capital One', currency: 'USD' },
   ],
   GB: [
     { code: 'BARC', name: 'Barclays Bank', currency: 'GBP' },
@@ -164,6 +169,15 @@ export const COUNTRY_CURRENCIES: Record<CountryCode, string> = {
   ET: 'ETB',
   UG: 'UGX',
 };
+
+export const CRYPTO_NETWORKS = [
+  { code: 'TRC20', name: 'USDT (TRC20)', asset: 'USDT' },
+  { code: 'ERC20', name: 'USDT (ERC20)', asset: 'USDT' },
+  { code: 'SOL', name: 'USDT (Solana)', asset: 'USDT' },
+  { code: 'BEP20', name: 'USDT (BSC)', asset: 'USDT' },
+  { code: 'SOL_NATIVE', name: 'Solana (Native)', asset: 'SOL' },
+  { code: 'ETH_NATIVE', name: 'Ethereum (Native)', asset: 'ETH' },
+];
 
 export const SUPPORTED_COUNTRIES = [
   { name: 'Nigeria', code: 'NG' },

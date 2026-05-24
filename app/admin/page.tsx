@@ -39,6 +39,7 @@ export default function AdminDashboard() {
   const [jobs, setJobs] = useState<any[]>([])
   const [withdrawals, setWithdrawals] = useState<any[]>([])
   const [transfers, setTransfers] = useState<any[]>([])
+  const [deposits, setDeposits] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
   const [activeTab, setActiveTab] = useState('overview')
   const [searchQuery, setSearchQuery] = useState('')
@@ -95,24 +96,26 @@ export default function AdminDashboard() {
   const fetchAdminData = async () => {
     try {
       setLoading(true)
-      const [statsRes, usersRes, paymentsRes, jobsRes, withdrawalsRes, verificationsRes, transfersRes] = await Promise.all([
+      const [statsRes, usersRes, paymentsRes, jobsRes, withdrawalsRes, verificationsRes, transfersRes, depositsRes] = await Promise.all([
         fetch('/api/admin/stats'),
         fetch('/api/admin/users'),
         fetch('/api/admin/payments'),
         fetch('/api/admin/jobs'),
         fetch('/api/admin/withdrawals'),
         fetch('/api/admin/verifications'),
-        fetch('/api/admin/transfers')
+        fetch('/api/admin/transfers'),
+        fetch('/api/admin/deposits')
       ])
 
-      const [statsData, usersData, paymentsData, jobsData, withdrawalsData, verificationsData, transfersData] = await Promise.all([
+      const [statsData, usersData, paymentsData, jobsData, withdrawalsData, verificationsData, transfersData, depositsData] = await Promise.all([
         statsRes.json(),
         usersRes.json(),
         paymentsRes.json(),
         jobsRes.json(),
         withdrawalsRes.json(),
         verificationsRes.json(),
-        transfersRes.json()
+        transfersRes.json(),
+        depositsRes.json()
       ])
 
       if (statsData.success) setStats(statsData.stats)
@@ -122,6 +125,7 @@ export default function AdminDashboard() {
       if (withdrawalsData.success) setWithdrawals(withdrawalsData.withdrawals || [])
       if (verificationsData.success) setVerifications(verificationsData.verifications || [])
       if (transfersData.success) setTransfers(transfersData.transfers || [])
+      if (depositsData.success) setDeposits(depositsData.deposits || [])
 
     } catch (error) {
       console.error('Admin data load error:', error)
@@ -238,6 +242,7 @@ export default function AdminDashboard() {
             { id: 'payments', icon: DollarSign, label: 'Global Ledger' },
             { id: 'withdrawals', icon: Wallet, label: 'Capital Outflow' },
             { id: 'transfers', icon: ArrowUpRight, label: 'Internal Transfers' },
+            { id: 'deposits', icon: TrendingUp, label: 'Funding Requests' },
             { id: 'verifications', icon: ShieldCheck, label: 'Verification Queue' },
             { id: 'jobs', icon: Briefcase, label: 'Deployment Board' },
           ].map((item) => (
@@ -565,6 +570,86 @@ export default function AdminDashboard() {
               </div>
             )}
 
+            {activeTab === 'deposits' && (
+              <div className="space-y-8 animate-in fade-in duration-700">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                  <div>
+                    <h2 className="text-5xl font-black text-white tracking-tighter">FUNDING REQUESTS</h2>
+                    <p className="text-slate-400 mt-3 font-bold uppercase tracking-[0.2em] text-xs">Manual Deposit Verification Pipeline</p>
+                  </div>
+                </div>
+
+                <div className="grid gap-6">
+                  {deposits.length > 0 ? deposits.map((dep) => (
+                    <Card key={dep.id} className="bg-slate-900/40 border-white/5 overflow-hidden rounded-[2.5rem] group hover:border-cyan-500/30 transition-all duration-500">
+                      <CardContent className="p-10">
+                        <div className="flex flex-col lg:flex-row gap-10">
+                           <div className="flex-1 space-y-6">
+                              <div className="flex items-center gap-6">
+                                 <div className="w-16 h-16 rounded-2xl bg-slate-800 flex items-center justify-center font-black text-xl border border-white/10">
+                                    {dep.user?.full_name?.charAt(0)}
+                                 </div>
+                                 <div>
+                                    <h3 className="text-2xl font-black text-white">{dep.user?.full_name}</h3>
+                                    <p className="text-slate-500 font-bold text-xs uppercase tracking-widest">{dep.user?.el_space_id} • {dep.currency}</p>
+                                 </div>
+                              </div>
+
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                 <div className="p-6 bg-white/[0.02] rounded-3xl border border-white/5">
+                                    <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-1">Volume</p>
+                                    <p className="text-3xl font-black text-white">${dep.amount.toLocaleString()}</p>
+                                 </div>
+                                 <div className="p-6 bg-white/[0.02] rounded-3xl border border-white/5">
+                                    <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-1">Method</p>
+                                    <p className="text-white font-bold uppercase">{dep.method?.replace('_', ' ')}</p>
+                                 </div>
+                              </div>
+
+                              <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
+                                 <a href={dep.receipt_url} target="_blank" className="flex items-center gap-3 text-cyan-400 hover:text-cyan-300 font-black text-xs uppercase tracking-widest">
+                                    <FileText className="w-5 h-5" /> View Payment Receipt
+                                 </a>
+                              </div>
+                           </div>
+
+                           <div className="w-full lg:w-72 flex flex-col gap-3 justify-center p-8 bg-white/[0.01] rounded-[2rem] border border-white/5">
+                              {dep.status === 'pending' ? (
+                                <>
+                                  <Button
+                                    className="h-14 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-2xl"
+                                    onClick={() => handleAction('/api/admin/deposits', 'PATCH', { depositId: dep.id, status: 'approved' }, 'Funding approved and credited')}
+                                  >
+                                    CONFIRM DEPOSIT
+                                  </Button>
+                                  <Button
+                                    variant="ghost"
+                                    className="h-14 text-red-400 hover:text-red-300 font-black rounded-2xl"
+                                    onClick={() => handleAction('/api/admin/deposits', 'PATCH', { depositId: dep.id, status: 'rejected' }, 'Deposit proof rejected')}
+                                  >
+                                    REJECT PROOF
+                                  </Button>
+                                </>
+                              ) : (
+                                <Badge className={`h-12 flex items-center justify-center rounded-xl font-black ${
+                                  dep.status === 'approved' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-red-500/10 text-red-500'
+                                }`}>
+                                  {dep.status.toUpperCase()}
+                                </Badge>
+                              )}
+                           </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )) : (
+                    <div className="text-center py-20 bg-slate-900/20 border-2 border-dashed border-white/5 rounded-[2rem]">
+                       <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">No active funding requests</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             {activeTab === 'transfers' && (
               <div className="space-y-8 animate-in fade-in duration-700">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -842,7 +927,7 @@ export default function AdminDashboard() {
             )}
 
             {/* Other tabs follow similar premium patterns... */}
-            {activeTab !== 'overview' && activeTab !== 'users' && activeTab !== 'withdrawals' && activeTab !== 'transfers' && activeTab !== 'verifications' && (
+            {activeTab !== 'overview' && activeTab !== 'users' && activeTab !== 'withdrawals' && activeTab !== 'transfers' && activeTab !== 'deposits' && activeTab !== 'verifications' && (
               <div className="flex flex-col items-center justify-center h-[60vh] text-slate-500">
                 <Settings className="w-16 h-16 mb-4 opacity-20" />
                 <h3 className="text-xl font-bold text-white mb-2">{activeTab.toUpperCase()} Module</h3>

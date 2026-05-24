@@ -35,6 +35,7 @@ export default function WalletHub() {
   // Withdrawal State
   const [showWithdraw, setShowWithdraw] = useState(false)
   const [showTransfer, setShowTransfer] = useState(false)
+  const [showFund, setShowFund] = useState(false)
   const [withdrawMethod, setWithdrawMethod] = useState<'bank' | 'crypto'>('bank')
   const [withdrawData, setWithdrawData] = useState({
     amount: '',
@@ -50,6 +51,13 @@ export default function WalletHub() {
     recipientId: '',
     amount: '',
     pin: ''
+  })
+
+  const [fundData, setFundData] = useState({
+    amount: '',
+    currency: 'USD',
+    method: 'bank_transfer',
+    receiptUrl: ''
   })
 
   useEffect(() => {
@@ -155,6 +163,40 @@ export default function WalletHub() {
     }
   }
 
+  const handleFund = async () => {
+    if (!fundData.amount || !fundData.receiptUrl) {
+      toast.error('Please provide amount and receipt proof')
+      return
+    }
+
+    try {
+      setLoading(true)
+      const res = await fetch('/api/wallet/deposit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: user?.id,
+          amount: parseFloat(fundData.amount),
+          currency: fundData.currency,
+          method: fundData.method,
+          receiptUrl: fundData.receiptUrl
+        })
+      })
+      const data = await res.json()
+      if (data.success) {
+        toast.success('Deposit submitted! Awaiting verification.')
+        setShowFund(false)
+        setFundData({ amount: '', currency: 'USD', method: 'bank_transfer', receiptUrl: '' })
+      } else {
+        toast.error(data.error)
+      }
+    } catch (err) {
+      toast.error('Funding process failed')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   if (loading && !wallet) return <div className="min-h-screen bg-slate-950 flex items-center justify-center"><ELLoader /></div>
 
   return (
@@ -179,7 +221,7 @@ export default function WalletHub() {
               <Button onClick={() => setShowWithdraw(true)} className="flex-1 md:flex-none h-14 bg-slate-800 border border-slate-700 text-white hover:bg-slate-700 font-black px-8 rounded-2xl transition-all">
                 <ArrowUpRight className="w-5 h-5 mr-2" /> Withdraw
               </Button>
-              <Button onClick={() => router.push('/payments')} className="flex-1 md:flex-none h-14 bg-cyan-500 hover:bg-cyan-600 text-white font-black px-10 rounded-2xl shadow-xl shadow-cyan-500/20 transition-all">
+              <Button onClick={() => setShowFund(true)} className="flex-1 md:flex-none h-14 bg-cyan-500 hover:bg-cyan-600 text-white font-black px-10 rounded-2xl shadow-xl shadow-cyan-500/20 transition-all">
                 <Plus className="w-5 h-5 mr-2" /> Fund
               </Button>
             </div>
@@ -336,7 +378,11 @@ export default function WalletHub() {
                    <p className="text-slate-500 font-medium mt-1">Send funds instantly via EL SPACE ID.</p>
                 </CardHeader>
                 <CardContent className="p-10 pt-0 space-y-8">
-                   <div className="space-y-6">
+                   <div className="p-10 pt-0 space-y-8">
+                      <div className="bg-amber-500/10 border border-amber-500/20 p-4 rounded-2xl flex items-center gap-3">
+                         <Info className="w-5 h-5 text-amber-500" />
+                         <p className="text-xs font-bold text-amber-200">Internal transfers attract a <span className="text-white">2.5% platform fee</span>.</p>
+                      </div>
                       <div className="space-y-3">
                          <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Recipient EL SPACE ID</label>
                          <div className="relative">
@@ -459,12 +505,51 @@ export default function WalletHub() {
                            <div className="grid grid-cols-1 gap-6">
                               <div className="space-y-3">
                                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Institution Name</label>
-                                 <Input
-                                    placeholder="e.g. GTBank, Chase, HSBC"
-                                    className="bg-slate-800 border-slate-700 h-14 text-white font-bold rounded-xl"
+                                 <select
+                                    className="w-full bg-slate-800 border-slate-700 h-14 text-white font-bold rounded-xl px-4 outline-none"
                                     value={withdrawData.bankName}
                                     onChange={e => setWithdrawData({...withdrawData, bankName: e.target.value})}
-                                 />
+                                 >
+                                    <option value="">Select your bank</option>
+                                    {withdrawData.currency === 'NGN' && (
+                                       <>
+                                          <option>Access Bank</option>
+                                          <option>GTBank</option>
+                                          <option>Zenith Bank</option>
+                                          <option>UBA</option>
+                                          <option>First Bank</option>
+                                          <option>Opay</option>
+                                          <option>Palmpay</option>
+                                          <option>Moniepoint</option>
+                                          <option>Kuda</option>
+                                       </>
+                                    )}
+                                    {withdrawData.currency === 'USD' && (
+                                       <>
+                                          <option>Chase Bank</option>
+                                          <option>Bank of America</option>
+                                          <option>Wells Fargo</option>
+                                          <option>Citibank</option>
+                                       </>
+                                    )}
+                                    {withdrawData.currency === 'GBP' && (
+                                       <>
+                                          <option>Barclays</option>
+                                          <option>HSBC UK</option>
+                                          <option>Lloyds Bank</option>
+                                          <option>NatWest</option>
+                                       </>
+                                    )}
+                                    {withdrawData.currency === 'EUR' && (
+                                       <>
+                                          <option>Deutsche Bank</option>
+                                          <option>BNP Paribas</option>
+                                          <option>Société Générale</option>
+                                          <option>Santander</option>
+                                       </>
+                                    )}
+                                    <option value="other">Other / Global Wire</option>
+                                 </select>
                               </div>
                               <div className="space-y-3">
                                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Account Number / IBAN</label>
@@ -486,10 +571,11 @@ export default function WalletHub() {
                                     onChange={e => setWithdrawData({...withdrawData, network: e.target.value})}
                                  >
                                     <option>Ethereum (ERC20)</option>
-                                    <option>Polygon (POS)</option>
-                                    <option>Solana (SPL)</option>
-                                    <option>Bitcoin (Native)</option>
                                     <option>TRON (TRC20)</option>
+                                    <option>Solana (SPL)</option>
+                                    <option>BSC (BEP20)</option>
+                                    <option>Polygon (POS)</option>
+                                    <option>Bitcoin (Native)</option>
                                  </select>
                               </div>
                               <div className="space-y-3">
@@ -515,6 +601,84 @@ export default function WalletHub() {
                          onClick={handleWithdraw}
                       >
                          Authorize Settlement
+                      </Button>
+                   </div>
+                </CardContent>
+             </Card>
+          </div>
+        )}
+
+        {/* Funding Modal */}
+        {showFund && (
+          <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-xl z-[100] flex items-center justify-center p-4">
+             <Card className="w-full max-w-xl bg-slate-900 border border-slate-800 shadow-2xl rounded-[3rem] relative overflow-hidden animate-in fade-in zoom-in-95 duration-300">
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-400 to-indigo-500" />
+                <CardHeader className="p-10 pb-4">
+                   <CardTitle className="text-3xl font-black text-white tracking-tight">Capital Injection</CardTitle>
+                   <p className="text-slate-500 font-medium mt-1">Upload transfer proof to fund your wallet.</p>
+                </CardHeader>
+                <CardContent className="p-10 pt-0 space-y-8">
+                   <div className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                         <div className="space-y-3">
+                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Asset Class</label>
+                            <select
+                               className="w-full bg-slate-800 border-slate-700 h-16 text-white font-black rounded-2xl px-4 outline-none"
+                               value={fundData.currency}
+                               onChange={e => setFundData({...fundData, currency: e.target.value})}
+                            >
+                               <option value="USD">USD - Dollar</option>
+                               <option value="NGN">NGN - Naira</option>
+                               <option value="GBP">GBP - Pound</option>
+                               <option value="EUR">EUR - Euro</option>
+                               <option value="USDT">USDT</option>
+                            </select>
+                         </div>
+                         <div className="space-y-3">
+                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Amount</label>
+                            <Input
+                               type="number"
+                               placeholder="0.00"
+                               className="bg-slate-800 border-slate-700 h-16 text-white font-black text-xl rounded-2xl focus:ring-blue-500"
+                               value={fundData.amount}
+                               onChange={e => setFundData({...fundData, amount: e.target.value})}
+                            />
+                         </div>
+                      </div>
+
+                      <div className="space-y-3">
+                         <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Payment Method</label>
+                         <Tabs value={fundData.method} onValueChange={(v: any) => setFundData({...fundData, method: v})} className="w-full">
+                            <TabsList className="bg-slate-800 border border-slate-700 p-1 rounded-2xl w-full">
+                               <TabsTrigger value="bank_transfer" className="flex-1 rounded-xl py-3 data-[state=active]:bg-blue-500 data-[state=active]:text-white font-black text-sm">
+                                  Bank Transfer
+                               </TabsTrigger>
+                               <TabsTrigger value="crypto_transfer" className="flex-1 rounded-xl py-3 data-[state=active]:bg-indigo-500 data-[state=active]:text-white font-black text-sm">
+                                  Crypto Pay
+                               </TabsTrigger>
+                            </TabsList>
+                         </Tabs>
+                      </div>
+
+                      <div className="space-y-3">
+                         <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Receipt URL / Link</label>
+                         <Input
+                            placeholder="Link to payment receipt/screenshot"
+                            className="bg-slate-800 border-slate-700 h-16 text-white font-medium rounded-2xl focus:ring-blue-500"
+                            value={fundData.receiptUrl}
+                            onChange={e => setFundData({...fundData, receiptUrl: e.target.value})}
+                         />
+                         <p className="text-[9px] text-slate-600 font-bold uppercase tracking-tighter">Please upload your receipt to a cloud storage and paste the link here.</p>
+                      </div>
+                   </div>
+
+                   <div className="flex gap-4 pt-6">
+                      <Button variant="ghost" className="flex-1 h-14 text-slate-500 font-black text-lg rounded-2xl hover:bg-slate-800" onClick={() => setShowFund(false)}>Cancel</Button>
+                      <Button
+                         className="flex-[2] h-14 bg-blue-600 hover:bg-blue-500 text-white font-black text-lg rounded-2xl shadow-xl shadow-blue-500/20 transition-all"
+                         onClick={handleFund}
+                      >
+                         Submit Proof
                       </Button>
                    </div>
                 </CardContent>

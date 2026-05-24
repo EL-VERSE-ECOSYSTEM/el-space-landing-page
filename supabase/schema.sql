@@ -199,6 +199,8 @@ CREATE TABLE IF NOT EXISTS internal_transfers (
   sender_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
   recipient_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
   amount NUMERIC NOT NULL,
+  fee_amount NUMERIC DEFAULT 0,
+  net_amount NUMERIC NOT NULL,
   currency TEXT DEFAULT 'USD',
   status TEXT CHECK (status IN ('pending', 'approved', 'completed', 'rejected')) DEFAULT 'pending',
   admin_notes TEXT,
@@ -208,7 +210,24 @@ CREATE TABLE IF NOT EXISTS internal_transfers (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 12. Reviews
+-- 12. Deposits (Manual Funding)
+CREATE TABLE IF NOT EXISTS deposits (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+  wallet_id UUID REFERENCES wallets(id) ON DELETE CASCADE,
+  amount NUMERIC NOT NULL,
+  currency TEXT DEFAULT 'USD',
+  method TEXT NOT NULL, -- 'bank_transfer', 'crypto_transfer'
+  receipt_url TEXT NOT NULL,
+  status TEXT CHECK (status IN ('pending', 'approved', 'completed', 'rejected')) DEFAULT 'pending',
+  admin_notes TEXT,
+  processed_at TIMESTAMPTZ,
+  processed_by UUID REFERENCES users(id),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 13. Reviews
 CREATE TABLE IF NOT EXISTS reviews (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   project_id UUID REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
@@ -651,6 +670,16 @@ CREATE POLICY "Admins can manage all transfers." ON internal_transfers FOR ALL U
   EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
 );
 
+-- Deposits Policies
+DROP POLICY IF EXISTS "Users can view own deposits." ON deposits;
+CREATE POLICY "Users can view own deposits." ON deposits FOR SELECT USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Users can insert own deposits." ON deposits;
+CREATE POLICY "Users can insert own deposits." ON deposits FOR INSERT WITH CHECK (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Admins can manage all deposits." ON deposits;
+CREATE POLICY "Admins can manage all deposits." ON deposits FOR ALL USING (
+  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
+);
+
 -- chat_rooms & chat_participants Policies
 DROP POLICY IF EXISTS "Users can view own chat rooms." ON chat_rooms;
 CREATE POLICY "Users can view own chat rooms." ON chat_rooms FOR SELECT USING (EXISTS (SELECT 1 FROM chat_participants WHERE room_id = id AND user_id = auth.uid()));
@@ -705,10 +734,11 @@ DECLARE
   v_sender_id UUID;
   v_recipient_id UUID;
   v_amount NUMERIC;
+  v_net_amount NUMERIC;
 BEGIN
   -- 1. Get and lock transfer record
-  SELECT sender_id, recipient_id, amount
-  INTO v_sender_id, v_recipient_id, v_amount
+  SELECT sender_id, recipient_id, amount, net_amount
+  INTO v_sender_id, v_recipient_id, v_amount, v_net_amount
   FROM internal_transfers
   WHERE id = p_transfer_id AND status = 'pending'
   FOR UPDATE;
@@ -717,13 +747,13 @@ BEGIN
     RAISE EXCEPTION 'Pending transfer not found';
   END IF;
 
-  -- 2. Update recipient balance
+  -- 2. Update recipient balance (gets net amount after fees)
   UPDATE wallets
-  SET balance = balance + v_amount,
+  SET balance = balance + v_net_amount,
       updated_at = NOW()
   WHERE user_id = v_recipient_id;
 
-  -- 3. Deduct from sender pending balance
+  -- 3. Deduct from sender pending balance (deducts full gross amount)
   UPDATE wallets
   SET pending_balance = GREATEST(0, pending_balance - v_amount),
       updated_at = NOW()

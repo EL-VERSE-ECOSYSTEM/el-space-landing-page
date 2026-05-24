@@ -53,13 +53,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Cannot transfer to yourself' }, { status: 400 });
     }
 
-    // 4. Create Pending Transfer Record
+    // 4. Create Pending Transfer Record (Applying 2.5% fee)
+    const transferFee = amount * 0.025;
+    const netTransferAmount = amount - transferFee;
+
     const { data: transfer, error: transferError } = await supabase
       .from('internal_transfers')
       .insert([{
         sender_id: senderId,
         recipient_id: recipient.id,
         amount,
+        fee_amount: transferFee,
+        net_amount: netTransferAmount,
         currency: 'USD',
         status: 'pending'
       }])

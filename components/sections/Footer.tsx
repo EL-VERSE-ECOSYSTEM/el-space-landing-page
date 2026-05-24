@@ -76,12 +76,14 @@ export function Footer() {
             <ul className="space-y-4">
               {FOOTER_SECTIONS.ecosystem.links.map((link) => (
                 <li key={link.label}>
-                  <Link
+                  <a
                     href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-sm text-slate-500 hover:text-blue-600 transition-colors duration-200"
                   >
                     {link.label}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>

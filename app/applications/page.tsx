@@ -1,403 +1,87 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { DashboardLayout } from '@/components/dashboard/auth-guard'
 import { useAuth } from '@/components/auth-provider'
+import { DashboardLayout } from '@/components/dashboard/auth-guard'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { 
-  Calendar, 
-  DollarSign, 
-  Globe, 
-  Trash2, 
-  MessageCircle,
-  Users,
-  TrendingUp,
-  Award,
-  FileText
-} from 'lucide-react'
-import { 
-  FreelancerComparison, 
-  SmartRecommendations, 
-  QuickHire, 
-  SkillEndorsement, 
-  ProjectTimeline, 
-  MilestonePaymentTracker, 
-  WorkSampleGallery 
-} from '@/components/freelancer'
-
-interface Freelancer {
-  id: string;
-  full_name: string;
-  hourly_rate: number;
-  years_experience: number;
-  avg_rating: number;
-  total_projects: number;
-  skills: string[];
-  bio: string;
-  cv_url?: string;
-  profile_picture?: string;
-  availability?: 'available' | 'busy' | 'unavailable';
-  response_time?: string;
-  completion_rate?: number;
-}
-
-interface Application {
-  id: string
-  jobTitle: string
-  company: string
-  budget: number
-  status: 'pending' | 'rejected' | 'accepted' | 'completed'
-  appliedDate: string
-  deadline: string
-  skills: string[]
-  freelancer?: Freelancer;
-  proposedRate?: number;
-  estimatedDays?: number;
-  coverLetter?: string;
-}
+import { Rocket, Clock, CheckCircle, XCircle, ChevronRight, Search } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 export default function ApplicationsPage() {
-  const { user, loading: authLoading } = useAuth()
-  const [userType] = useState<'freelancer' | 'client'>('client')
-  const [selectedApplicationId, setSelectedApplicationId] = useState<string | null>(null)
-  const [viewMode, setViewMode] = useState<'list' | 'comparison' | 'recommendations'>('list')
-  const [applications, setApplications] = useState<Application[]>([])
+  const router = useRouter()
+  const { user } = useAuth()
+  const [apps, setApps] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!authLoading) {
-      fetchApplications()
-    }
-  }, [authLoading, user])
+    if (user) fetchApps()
+  }, [user])
 
-  const fetchApplications = async () => {
+  const fetchApps = async () => {
     try {
-      setLoading(true)
-      const userId = user?.id || ''
-      const response = await fetch(`/api/applications?userId=${userId}`)
-      const data = await response.json()
-      
-      if (data.success && data.applications) {
-        setApplications(data.applications)
-        if (data.applications.length > 0) {
-          setSelectedApplicationId(data.applications[0].id)
-        }
-      } else {
-        setApplications([])
-      }
-    } catch (error) {
-      console.error('Error fetching applications:', error)
-      setApplications([])
+      const res = await fetch(`/api/applications?freelancerId=${user?.id}`)
+      const data = await res.json()
+      if (data.success) setApps(data.applications || [])
     } finally {
       setLoading(false)
     }
   }
 
-  const selectedApp = applications.find(app => app.id === selectedApplicationId)
-  const freelancer = selectedApp?.freelancer
-
-  const statusConfig = {
-    pending: { color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50', label: 'Pending' },
-    accepted: { color: 'bg-green-500/20 text-green-400 border-green-500/50', label: 'Accepted' },
-    rejected: { color: 'bg-red-500/20 text-red-400 border-red-500/50', label: 'Rejected' },
-    completed: { color: 'bg-blue-500/20 text-blue-400 border-blue-500/50', label: 'Completed' },
-  }
-
   const navItems = [
-    { label: 'Post Job', href: '/jobs/post' },
-    { label: 'Applications', href: '/applications' },
+    { label: 'Feed', href: '/feed' },
     { label: 'Messages', href: '/messages' },
+    { label: 'Settings', href: '/settings' },
   ]
 
   return (
-    <DashboardLayout userType={userType} navItems={navItems}>
-      <div className="space-y-6">
-        {/* Header */}
+    <DashboardLayout navItems={navItems} userType={(user?.user_type === "freelancer" ? "freelancer" : "client")}>
+      <div className="max-w-5xl mx-auto space-y-8">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">Applications</h1>
-          <p className="text-slate-400">Review and manage applicants for your projects</p>
+          <h1 className="text-4xl font-black text-white tracking-tighter">Mission <span className="text-cyan-500">Proposals</span></h1>
+          <p className="text-slate-400 font-medium">Track your technical deployment requests.</p>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-slate-800 border border-slate-700 rounded-lg p-4">
-            <p className="text-slate-400 text-sm mb-1">Total Applications</p>
-            <p className="text-3xl font-bold text-white">
-              {applications.length}
-            </p>
-          </div>
-          <div className="bg-slate-800 border border-slate-700 rounded-lg p-4">
-            <p className="text-slate-400 text-sm mb-1">Pending Review</p>
-            <p className="text-3xl font-bold text-yellow-400">
-              {applications.filter(a => a.status === 'pending').length}
-            </p>
-          </div>
-          <div className="bg-slate-800 border border-slate-700 rounded-lg p-4">
-            <p className="text-slate-400 text-sm mb-1">Accepted</p>
-            <p className="text-3xl font-bold text-green-400">
-              {applications.filter(a => a.status === 'accepted').length}
-            </p>
-          </div>
-          <div className="bg-slate-800 border border-slate-700 rounded-lg p-4">
-            <p className="text-slate-400 text-sm mb-1">Completed</p>
-            <p className="text-3xl font-bold text-blue-400">
-              {applications.filter(a => a.status === 'completed').length}
-            </p>
-          </div>
-        </div>
-
-        {/* View Mode Tabs */}
-        <Tabs defaultValue="list" onValueChange={(value) => setViewMode(value as any)} className="space-y-4">
-          <TabsList className="bg-slate-800 border border-slate-700">
-            <TabsTrigger value="list" className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              Applications List
-            </TabsTrigger>
-            <TabsTrigger value="comparison" className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4" />
-              Compare Freelancers
-            </TabsTrigger>
-            <TabsTrigger value="recommendations" className="flex items-center gap-2">
-              <Award className="h-4 w-4" />
-              Smart Recommendations
-            </TabsTrigger>
-          </TabsList>
-
-          {/* Applications List View */}
-          <TabsContent value="list" className="space-y-4">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Applications List */}
-              <div className="lg:col-span-1 space-y-2">
-                {applications.map((app) => (
-                  <Card
-                    key={app.id}
-                    className={`cursor-pointer transition-all ${
-                      selectedApplicationId === app.id
-                        ? 'bg-cyan-900/30 border-cyan-500'
-                        : 'bg-slate-800 border-slate-700 hover:border-cyan-500'
-                    }`}
-                    onClick={() => setSelectedApplicationId(app.id)}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-start gap-3 mb-2">
-                        <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
-                          {app.freelancer?.full_name?.charAt(0)}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-white font-semibold truncate text-sm">
-                            {app.freelancer?.full_name || 'Anonymous'}
-                          </p>
-                          <p className="text-slate-400 text-xs truncate">{app.jobTitle}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Badge className={`text-xs ${statusConfig[app.status as keyof typeof statusConfig].color}`}>
-                          {statusConfig[app.status as keyof typeof statusConfig].label}
-                        </Badge>
-                        {app.freelancer?.avg_rating && (
-                          <Badge variant="secondary" className="text-xs bg-yellow-600/20 text-yellow-300">
-                            ⭐ {app.freelancer.avg_rating}
-                          </Badge>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              {/* Details Panel */}
-              <div className="lg:col-span-2 space-y-4">
-                {selectedApp && freelancer ? (
-                  <>
-                    {/* Freelancer Header */}
-                    <Card className="bg-slate-800 border-slate-700">
-                      <CardContent className="pt-6">
-                        <div className="flex items-start gap-4 mb-4">
-                          <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center text-2xl font-bold text-white flex-shrink-0">
-                            {freelancer.full_name?.charAt(0)}
-                          </div>
-                          <div className="flex-1">
-                            <h2 className="text-xl font-bold text-white mb-1">{freelancer.full_name}</h2>
-                            <p className="text-slate-400 mb-2">{selectedApp.jobTitle}</p>
-                            <div className="flex flex-wrap gap-2">
-                              <Badge variant="secondary">${freelancer.hourly_rate}/hr</Badge>
-                              <Badge variant="secondary" className="bg-yellow-600/20 text-yellow-300">⭐ {freelancer.avg_rating}/5</Badge>
-                              <Badge variant="secondary" className="bg-green-600/20 text-green-300">{freelancer.total_projects} projects</Badge>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Quick Actions */}
-                        <div className="grid grid-cols-2 gap-2">
-                          {selectedApp.status === 'pending' && freelancer && (
-                            <>
-                              <QuickHire
-                                freelancerId={freelancer.id}
-                                freelancerName={freelancer.full_name}
-                                projectBudget={selectedApp.budget}
-                                proposedRate={selectedApp.proposedRate || 0}
-                                estimatedDays={selectedApp.estimatedDays || 0}
-                              />
-                              <Button variant="outline" size="sm" className="border-slate-600 text-slate-300 hover:bg-slate-700">
-                                <MessageCircle className="h-4 w-4 mr-2" />
-                                Message
-                              </Button>
-                            </>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    {/* Application Details Tabs */}
-                    <Tabs defaultValue="overview" className="space-y-4">
-                      <TabsList className="bg-slate-700 border-slate-600">
-                        <TabsTrigger value="overview">Overview</TabsTrigger>
-                        <TabsTrigger value="cv" className="flex items-center gap-1">
-                          <FileText className="h-4 w-4" />
-                          CV
-                        </TabsTrigger>
-                        <TabsTrigger value="samples">Work Samples</TabsTrigger>
-                        <TabsTrigger value="timeline">Timeline</TabsTrigger>
-                      </TabsList>
-
-                      <TabsContent value="overview" className="space-y-4">
-                        {/* Cover Letter */}
-                        <Card className="bg-slate-800 border-slate-700">
-                          <CardHeader>
-                            <CardTitle className="text-white">Cover Letter</CardTitle>
-                          </CardHeader>
-                          <CardContent>
-                            <p className="text-slate-300 text-sm">{selectedApp.coverLetter}</p>
-                          </CardContent>
-                        </Card>
-
-                        {/* Skills & Experience */}
-                        <Card className="bg-slate-800 border-slate-700">
-                          <CardHeader>
-                            <CardTitle className="text-white">Experience & Skills</CardTitle>
-                          </CardHeader>
-                          <CardContent className="space-y-4">
-                            <div className="grid grid-cols-2 gap-4">
-                              <div>
-                                <p className="text-slate-400 text-sm mb-1">Experience</p>
-                                <p className="text-2xl font-bold text-white">{freelancer.years_experience} years</p>
-                              </div>
-                              <div>
-                                <p className="text-slate-400 text-sm mb-1">Projects Completed</p>
-                                <p className="text-2xl font-bold text-white">{freelancer.total_projects}</p>
-                              </div>
-                            </div>
-                            <div>
-                              <p className="text-slate-400 text-sm mb-2">Skills Match</p>
-                              <div className="flex flex-wrap gap-2">
-                                {selectedApp.skills.map(skill => (
-                                  <Badge
-                                    key={skill}
-                                    className={freelancer.skills.includes(skill) ? 'bg-green-600 text-white' : 'bg-slate-700 text-slate-300'}
-                                  >
-                                    {freelancer.skills.includes(skill) ? '✓ ' : '○ '}{skill}
-                                  </Badge>
-                                ))}
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-
-                        {/* Skill Endorsements */}
-                        <SkillEndorsement
-                          freelancerId={freelancer.id}
-                          skills={freelancer.skills.slice(0, 5)}
-                          endorsements={{ 'React': 24, 'Node.js': 18, 'PostgreSQL': 15 }}
-                        />
-                      </TabsContent>
-
-                      <TabsContent value="cv">
-                        {freelancer.cv_url ? (
-                          <Card className="bg-slate-800 border-slate-700">
-                            <CardContent className="pt-6">
-                              <div className="border border-slate-600 rounded-lg overflow-hidden h-96 bg-slate-700">
-                                <iframe
-                                  src={`${freelancer.cv_url}#toolbar=0`}
-                                  className="w-full h-full"
-                                  title="Freelancer CV"
-                                />
-                              </div>
-                              <Button 
-                                onClick={() => window.open(freelancer.cv_url, '_blank')}
-                                className="mt-4 w-full bg-cyan-600 hover:bg-cyan-700 text-white"
-                              >
-                                Download CV
-                              </Button>
-                            </CardContent>
-                          </Card>
-                        ) : (
-                          <Card className="bg-slate-800 border-slate-700">
-                            <CardContent className="pt-6 text-center pb-6">
-                              <p className="text-slate-400">No CV provided</p>
-                            </CardContent>
-                          </Card>
-                        )}
-                      </TabsContent>
-
-                      <TabsContent value="samples">
-                        <WorkSampleGallery
-                          samples={[]}
-                          freelancerName={freelancer.full_name}
-                        />
-                      </TabsContent>
-
-                      <TabsContent value="timeline">
-                        <div className="space-y-4">
-                          <ProjectTimeline
-                            milestones={[]}
-                            projectDeadline={new Date(Date.now() + 21 * 24 * 60 * 60 * 1000)}
-                            estimatedDays={selectedApp.estimatedDays}
-                          />
-                          <MilestonePaymentTracker
-                            milestones={[]}
-                            totalBudget={selectedApp.budget}
-                          />
-                        </div>
-                      </TabsContent>
-                    </Tabs>
-                  </>
-                ) : (
-                  <Card className="bg-slate-800 border-slate-700">
-                    <CardContent className="pt-12 text-center pb-12">
-                      <p className="text-slate-400">Select an application to view details</p>
-                    </CardContent>
-                  </Card>
-                )}
-              </div>
+        <div className="space-y-4">
+          {apps.length > 0 ? apps.map((app) => (
+            <Card key={app.id} className="bg-slate-900 border-slate-800 rounded-[2rem] overflow-hidden hover:border-slate-700 transition-all group">
+              <CardContent className="p-8 flex items-center justify-between">
+                <div className="flex items-center gap-6">
+                  <div className="w-14 h-14 rounded-2xl bg-slate-800 flex items-center justify-center border border-slate-700 group-hover:bg-slate-700 transition-colors">
+                    <Rocket className="w-6 h-6 text-cyan-500" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-black text-white">{app.project?.title || 'Nexus Operation'}</h3>
+                    <div className="flex items-center gap-4 mt-1">
+                      <p className="text-slate-500 font-bold text-xs uppercase tracking-widest">Submitted {new Date(app.created_at).toLocaleDateString()}</p>
+                      <div className="w-1 h-1 bg-slate-700 rounded-full" />
+                      <p className="text-cyan-400 font-black text-xs uppercase tracking-widest">${app.proposed_rate}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-8">
+                  <Badge className={`px-4 py-1 rounded-full font-black text-[10px] uppercase tracking-widest ${
+                    app.status === 'pending' ? 'bg-amber-500/10 text-amber-500' :
+                    app.status === 'accepted' ? 'bg-emerald-500/10 text-emerald-500' :
+                    'bg-red-500/10 text-red-500'
+                  }`}>
+                    {app.status}
+                  </Badge>
+                  <Button variant="ghost" size="icon" className="text-slate-500 hover:text-white rounded-full">
+                    <ChevronRight className="w-6 h-6" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )) : !loading && (
+            <div className="py-24 text-center bg-slate-900/50 border-2 border-dashed border-slate-800 rounded-[3rem]">
+              <Search className="w-12 h-12 text-slate-700 mx-auto mb-4" />
+              <p className="text-slate-500 font-bold">No proposals found. Start scouting the board.</p>
+              <Button onClick={() => router.push('/jobs')} className="mt-8 bg-white text-slate-950 font-black rounded-xl h-12 px-8">Browse Missions</Button>
             </div>
-          </TabsContent>
-
-          {/* Comparison View */}
-          <TabsContent value="comparison">
-            <FreelancerComparison 
-              freelancers={applications.slice(0, 3).map(a => a.freelancer!).filter(Boolean)}
-              onSelectFreelancer={(freelancerId) => {
-                const app = applications.find(a => a.freelancer?.id === freelancerId);
-                if (app) setSelectedApplicationId(app.id);
-              }}
-            />
-          </TabsContent>
-
-          {/* Recommendations View */}
-          <TabsContent value="recommendations">
-            <SmartRecommendations 
-              projectSkills={['React', 'Node.js', 'PostgreSQL']}
-              recommendations={[]}
-              onSelectFreelancer={(freelancerId) => {
-                const app = applications.find(a => a.freelancer?.id === freelancerId);
-                if (app) setSelectedApplicationId(app.id);
-              }}
-            />
-          </TabsContent>
-        </Tabs>
+          )}
+        </div>
       </div>
     </DashboardLayout>
   )
