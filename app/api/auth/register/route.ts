@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      token: 'temp-session-token', // Bypassed OTP token
+      token: 'session-token',
       user: {
         id: user.id,
         email: user.email,
