@@ -246,7 +246,17 @@ export default function NotificationsPage() {
       const data = await response.json();
       
       if (data.success && data.notifications) {
-        setNotifications(data.notifications);
+        const mapped = data.notifications.map((n: any) => ({
+          id: n.id,
+          type: (['project', 'message', 'payment', 'system'].includes(n.type) ? n.type : 'system') as NotificationType,
+          title: n.title,
+          description: n.message,
+          timestamp: new Date(n.created_at),
+          read: n.status === 'read' || n.read === true,
+          avatarFallback: n.title.charAt(0),
+          relatedUrl: n.action_url
+        }));
+        setNotifications(mapped);
       } else {
         setNotifications([]);
       }
@@ -281,10 +291,29 @@ export default function NotificationsPage() {
   }, [notifications, activeFilter]);
 
   // Handlers
-  const toggleRead = (id: string) => {
+  const toggleRead = async (id: string) => {
+    const notification = notifications.find(n => n.id === id);
+    if (!notification) return;
+
+    const newReadStatus = !notification.read;
+
+    // Optimistic update
     setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: !n.read } : n))
+      prev.map((n) => (n.id === id ? { ...n, read: newReadStatus } : n))
     );
+
+    try {
+      await fetch('/api/notifications', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          notificationId: id,
+          status: newReadStatus ? 'read' : 'unread'
+        })
+      });
+    } catch (error) {
+      console.error('Failed to update notification status');
+    }
   };
 
   const markAllRead = () => {

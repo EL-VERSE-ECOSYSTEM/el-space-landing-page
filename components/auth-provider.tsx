@@ -52,7 +52,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setLoading(true)
 
-      // Support direct login with user object and token (from OTP verification)
+      // Support direct login with user object and token
       if (typeof emailOrUser === 'object' && emailOrUser !== null) {
         const user = emailOrUser;
         const token = passwordOrToken;
@@ -104,7 +104,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setLoading(true)
 
-      // Support direct registration with user object and token (from OTP verification)
+      // Support direct registration with user object and token
       if (dataOrUser && dataOrUser.id && token) {
         const user = dataOrUser;
         setUser(user);
