@@ -1,4 +1,5 @@
--- EL SPACE Supabase Schema (Comprehensive & Audited)
+-- EL SPACE Supabase Schema (Comprehensive, Idempotent & Audited)
+-- This single file contains the entire database structure for EL SPACE.
 
 -- 1. Extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -27,6 +28,22 @@ CREATE TABLE IF NOT EXISTS users (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Idempotent column updates for 'users'
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='full_name') THEN
+        ALTER TABLE users RENAME COLUMN name TO full_name;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='phone_number') THEN
+        ALTER TABLE users ADD COLUMN phone_number TEXT;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='transaction_pin_hash') THEN
+        ALTER TABLE users ADD COLUMN transaction_pin_hash TEXT;
+    END IF;
+END $$;
 
 -- 3. Freelancer Profiles
 CREATE TABLE IF NOT EXISTS freelancer_profiles (
@@ -103,6 +120,18 @@ CREATE TABLE IF NOT EXISTS projects (
   completed_at TIMESTAMPTZ
 );
 
+-- Idempotent column updates for 'projects'
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='projects' AND column_name='visibility') THEN
+        ALTER TABLE projects ADD COLUMN visibility TEXT CHECK (visibility IN ('public', 'private', 'invite-only')) DEFAULT 'public';
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='projects' AND column_name='total_budget') THEN
+        ALTER TABLE projects ADD COLUMN total_budget NUMERIC DEFAULT 0;
+    END IF;
+END $$;
+
 -- 6. Applications
 CREATE TABLE IF NOT EXISTS applications (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -151,6 +180,26 @@ CREATE TABLE IF NOT EXISTS wallets (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Idempotent column updates for 'wallets'
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='wallets' AND column_name='escrow_balance') THEN
+        ALTER TABLE wallets ADD COLUMN escrow_balance NUMERIC DEFAULT 0;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='wallets' AND column_name='pending_balance') THEN
+        ALTER TABLE wallets ADD COLUMN pending_balance NUMERIC DEFAULT 0;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='wallets' AND column_name='total_earned') THEN
+        ALTER TABLE wallets ADD COLUMN total_earned NUMERIC DEFAULT 0;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='wallets' AND column_name='total_withdrawn') THEN
+        ALTER TABLE wallets ADD COLUMN total_withdrawn NUMERIC DEFAULT 0;
+    END IF;
+END $$;
+
 -- 9. Payments & Transactions
 CREATE TABLE IF NOT EXISTS payments (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -172,7 +221,14 @@ CREATE TABLE IF NOT EXISTS payments (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 10. Reviews
+-- Idempotent column updates for 'payments'
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='payments' AND column_name='recipient_id') THEN
+        ALTER TABLE payments ADD COLUMN recipient_id UUID REFERENCES users(id);
+    END IF;
+END $$;
+
 -- 10. Withdrawals
 CREATE TABLE IF NOT EXISTS withdrawals (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -193,6 +249,14 @@ CREATE TABLE IF NOT EXISTS withdrawals (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Idempotent column updates for 'withdrawals'
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='withdrawals' AND column_name='payment_id') THEN
+        ALTER TABLE withdrawals ADD COLUMN payment_id UUID REFERENCES payments(id) ON DELETE SET NULL;
+    END IF;
+END $$;
+
 -- 11. Internal Transfers
 CREATE TABLE IF NOT EXISTS internal_transfers (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -209,6 +273,18 @@ CREATE TABLE IF NOT EXISTS internal_transfers (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Idempotent column updates for 'internal_transfers'
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='internal_transfers' AND column_name='fee_amount') THEN
+        ALTER TABLE internal_transfers ADD COLUMN fee_amount NUMERIC DEFAULT 0;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='internal_transfers' AND column_name='net_amount') THEN
+        ALTER TABLE internal_transfers ADD COLUMN net_amount NUMERIC DEFAULT 0;
+    END IF;
+END $$;
 
 -- 12. Deposits (Manual Funding)
 CREATE TABLE IF NOT EXISTS deposits (
@@ -242,7 +318,15 @@ CREATE TABLE IF NOT EXISTS reviews (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 11. Messaging
+-- Idempotent column updates for 'reviews'
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='reviews' AND column_name='visibility') THEN
+        ALTER TABLE reviews ADD COLUMN visibility TEXT CHECK (visibility IN ('public', 'private')) DEFAULT 'public';
+    END IF;
+END $$;
+
+-- 14. Messaging
 CREATE TABLE IF NOT EXISTS chat_rooms (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   project_id UUID REFERENCES projects(id) ON DELETE SET NULL,
@@ -271,7 +355,19 @@ CREATE TABLE IF NOT EXISTS messages (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 12. Notifications
+-- Idempotent column updates for 'messages'
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='messages' AND column_name='recipient_id') THEN
+        ALTER TABLE messages ADD COLUMN recipient_id UUID REFERENCES users(id);
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='messages' AND column_name='room_id') THEN
+        ALTER TABLE messages ADD COLUMN room_id UUID REFERENCES chat_rooms(id) ON DELETE CASCADE;
+    END IF;
+END $$;
+
+-- 15. Notifications
 CREATE TABLE IF NOT EXISTS notifications (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
@@ -297,7 +393,7 @@ CREATE TABLE IF NOT EXISTS push_subscriptions (
   UNIQUE(user_id, endpoint)
 );
 
--- 13. Time Tracking
+-- 16. Time Tracking
 CREATE TABLE IF NOT EXISTS time_logs (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   project_id UUID REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
@@ -313,7 +409,7 @@ CREATE TABLE IF NOT EXISTS time_logs (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 14. Disputes
+-- 17. Disputes
 CREATE TABLE IF NOT EXISTS disputes (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   project_id UUID REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
@@ -361,7 +457,7 @@ CREATE TABLE IF NOT EXISTS mediation_outcomes (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 15. Verified Tests
+-- 18. Verified Tests
 CREATE TABLE IF NOT EXISTS test_projects (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   freelancer_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
@@ -375,7 +471,7 @@ CREATE TABLE IF NOT EXISTS test_projects (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 16. Referrals
+-- 19. Referrals
 CREATE TABLE IF NOT EXISTS referrals (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   referrer_id UUID REFERENCES users(id) ON DELETE SET NULL,
@@ -388,7 +484,7 @@ CREATE TABLE IF NOT EXISTS referrals (
   completed_at TIMESTAMPTZ
 );
 
--- 17. Contact & Support
+-- 20. Contact & Support
 CREATE TABLE IF NOT EXISTS contact_requests (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
@@ -399,7 +495,7 @@ CREATE TABLE IF NOT EXISTS contact_requests (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 18. Social Features
+-- 21. Social Features
 CREATE TABLE IF NOT EXISTS social_posts (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
@@ -430,7 +526,7 @@ CREATE TABLE IF NOT EXISTS social_comments (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 19. Productivity
+-- 22. Productivity
 CREATE TABLE IF NOT EXISTS todos (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES users(id) ON DELETE CASCADE,
@@ -449,7 +545,7 @@ CREATE TABLE IF NOT EXISTS reminders (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 20. Portfolio & Assets
+-- 23. Portfolio & Assets
 CREATE TABLE IF NOT EXISTS portfolio_items (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
@@ -473,8 +569,7 @@ CREATE TABLE IF NOT EXISTS storage_assets (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 21. Authentication Fallbacks
-
+-- 24. Saved Freelancers
 CREATE TABLE IF NOT EXISTS saved_freelancers (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   client_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
@@ -484,7 +579,7 @@ CREATE TABLE IF NOT EXISTS saved_freelancers (
   UNIQUE(client_id, freelancer_id)
 );
 
--- 22. Row Level Security (RLS)
+-- 25. Row Level Security (RLS)
 
 -- Enable RLS on all tables
 DO $$
@@ -497,15 +592,8 @@ BEGIN
 END $$;
 
 -- Users Policies
--- Public view only sees non-sensitive fields
 DROP POLICY IF EXISTS "Public profiles are viewable by everyone." ON users;
-CREATE POLICY "Public profiles are viewable by everyone." ON users
-FOR SELECT USING (true);
-
--- Special policy for sensitive data (ID, Serial, etc.)
--- Note: Supabase doesn't support column-level RLS easily for same table,
--- but we can filter it in the application or use a View.
--- For standard RLS, we ensure only the owner or admins can SELECT everything.
+CREATE POLICY "Public profiles are viewable by everyone." ON users FOR SELECT USING (true);
 
 DROP POLICY IF EXISTS "Users can update own profile." ON users;
 CREATE POLICY "Users can update own profile." ON users FOR UPDATE USING (auth.uid() = id);
@@ -548,6 +636,36 @@ CREATE POLICY "Users can view own payments." ON payments FOR SELECT USING (auth.
 DROP POLICY IF EXISTS "Users can insert own payments." ON payments;
 CREATE POLICY "Users can insert own payments." ON payments FOR INSERT WITH CHECK (auth.uid() = user_id);
 
+-- Withdrawals Policies
+DROP POLICY IF EXISTS "Users can view own withdrawals." ON withdrawals;
+CREATE POLICY "Users can view own withdrawals." ON withdrawals FOR SELECT USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Users can insert own withdrawals." ON withdrawals;
+CREATE POLICY "Users can insert own withdrawals." ON withdrawals FOR INSERT WITH CHECK (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Admins can manage all withdrawals." ON withdrawals;
+CREATE POLICY "Admins can manage all withdrawals." ON withdrawals FOR ALL USING (
+  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
+);
+
+-- Internal Transfers Policies
+DROP POLICY IF EXISTS "Users can view own transfers." ON internal_transfers;
+CREATE POLICY "Users can view own transfers." ON internal_transfers FOR SELECT USING (auth.uid() = sender_id OR auth.uid() = recipient_id);
+DROP POLICY IF EXISTS "Users can insert own transfers." ON internal_transfers;
+CREATE POLICY "Users can insert own transfers." ON internal_transfers FOR INSERT WITH CHECK (auth.uid() = sender_id);
+DROP POLICY IF EXISTS "Admins can manage all transfers." ON internal_transfers;
+CREATE POLICY "Admins can manage all transfers." ON internal_transfers FOR ALL USING (
+  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
+);
+
+-- Deposits Policies
+DROP POLICY IF EXISTS "Users can view own deposits." ON deposits;
+CREATE POLICY "Users can view own deposits." ON deposits FOR SELECT USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Users can insert own deposits." ON deposits;
+CREATE POLICY "Users can insert own deposits." ON deposits FOR INSERT WITH CHECK (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Admins can manage all deposits." ON deposits;
+CREATE POLICY "Admins can manage all deposits." ON deposits FOR ALL USING (
+  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
+);
+
 -- Messaging Policies
 DROP POLICY IF EXISTS "Participants can view room messages." ON messages;
 CREATE POLICY "Participants can view room messages." ON messages FOR SELECT USING (
@@ -561,6 +679,11 @@ CREATE POLICY "Participants can manage messages." ON messages FOR ALL USING (
   OR sender_id = auth.uid()
   OR recipient_id = auth.uid()
 );
+
+DROP POLICY IF EXISTS "Users can view own chat rooms." ON chat_rooms;
+CREATE POLICY "Users can view own chat rooms." ON chat_rooms FOR SELECT USING (EXISTS (SELECT 1 FROM chat_participants WHERE room_id = id AND user_id = auth.uid()));
+DROP POLICY IF EXISTS "Users can view chat participants." ON chat_participants;
+CREATE POLICY "Users can view chat participants." ON chat_participants FOR SELECT USING (EXISTS (SELECT 1 FROM chat_participants cp2 WHERE cp2.room_id = room_id AND cp2.user_id = auth.uid()));
 
 -- Notifications Policies
 DROP POLICY IF EXISTS "Users can view own notifications." ON notifications;
@@ -650,43 +773,7 @@ CREATE POLICY "Anyone can submit contact requests." ON contact_requests FOR INSE
 DROP POLICY IF EXISTS "Clients can manage own saved freelancers." ON saved_freelancers;
 CREATE POLICY "Clients can manage own saved freelancers." ON saved_freelancers FOR ALL USING (client_id = auth.uid());
 
--- Withdrawals Policies
-DROP POLICY IF EXISTS "Users can view own withdrawals." ON withdrawals;
-CREATE POLICY "Users can view own withdrawals." ON withdrawals FOR SELECT USING (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Users can insert own withdrawals." ON withdrawals;
-CREATE POLICY "Users can insert own withdrawals." ON withdrawals FOR INSERT WITH CHECK (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Admins can manage all withdrawals." ON withdrawals;
-CREATE POLICY "Admins can manage all withdrawals." ON withdrawals FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
-
--- Internal Transfers Policies
-DROP POLICY IF EXISTS "Users can view own transfers." ON internal_transfers;
-CREATE POLICY "Users can view own transfers." ON internal_transfers FOR SELECT USING (auth.uid() = sender_id OR auth.uid() = recipient_id);
-DROP POLICY IF EXISTS "Users can insert own transfers." ON internal_transfers;
-CREATE POLICY "Users can insert own transfers." ON internal_transfers FOR INSERT WITH CHECK (auth.uid() = sender_id);
-DROP POLICY IF EXISTS "Admins can manage all transfers." ON internal_transfers;
-CREATE POLICY "Admins can manage all transfers." ON internal_transfers FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
-
--- Deposits Policies
-DROP POLICY IF EXISTS "Users can view own deposits." ON deposits;
-CREATE POLICY "Users can view own deposits." ON deposits FOR SELECT USING (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Users can insert own deposits." ON deposits;
-CREATE POLICY "Users can insert own deposits." ON deposits FOR INSERT WITH CHECK (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Admins can manage all deposits." ON deposits;
-CREATE POLICY "Admins can manage all deposits." ON deposits FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
-
--- chat_rooms & chat_participants Policies
-DROP POLICY IF EXISTS "Users can view own chat rooms." ON chat_rooms;
-CREATE POLICY "Users can view own chat rooms." ON chat_rooms FOR SELECT USING (EXISTS (SELECT 1 FROM chat_participants WHERE room_id = id AND user_id = auth.uid()));
-DROP POLICY IF EXISTS "Users can view chat participants." ON chat_participants;
-CREATE POLICY "Users can view chat participants." ON chat_participants FOR SELECT USING (EXISTS (SELECT 1 FROM chat_participants cp2 WHERE cp2.room_id = room_id AND cp2.user_id = auth.uid()));
-
--- 23. RPC Functions
+-- 26. RPC Functions
 
 -- Atomic Internal Transfer (Immediate)
 CREATE OR REPLACE FUNCTION process_internal_transfer(
@@ -869,7 +956,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- 24. Triggers
+-- 27. Triggers
 
 -- Update updated_at timestamp automatically
 CREATE OR REPLACE FUNCTION update_updated_at_column()
