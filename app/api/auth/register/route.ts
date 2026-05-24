@@ -32,8 +32,11 @@ export async function POST(request: NextRequest) {
       transaction_pin_hash = await bcrypt.hash(transaction_pin, 10);
     }
 
-    // 4. Generate EL Space ID
-    const el_space_id = `EL-${Math.floor(10000000 + Math.random() * 90000000)}`;
+    // 4. Generate EL Space ID (Format: 3 letters + 7 numbers, e.g., ELS1234567)
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const randomLetters = Array.from({ length: 3 }, () => letters[Math.floor(Math.random() * letters.length)]).join('');
+    const randomNumbers = Math.floor(1000000 + Math.random() * 9000000).toString();
+    const el_space_id = `${randomLetters}${randomNumbers}`;
 
     // 5. Create user
     const { data: user, error: userError } = await supabase

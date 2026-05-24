@@ -77,7 +77,7 @@ const createMockClient = () => {
       full_name: 'Mock User',
       user_type: 'freelancer',
       role: 'user',
-      el_space_id: 'EL-12345678',
+      el_space_id: 'ELS1234567',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     },
@@ -170,7 +170,10 @@ export const supabase = new Proxy({} as any, {
 // ============ USERS ============
 
 export const createUser = async (email: string, name: string, userType: 'client' | 'entrepreneur' | 'business' | 'enterprise' | 'freelancer') => {
-  const el_space_id = `EL-${Math.floor(10000000 + Math.random() * 90000000)}`;
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const randomLetters = Array.from({ length: 3 }, () => letters[Math.floor(Math.random() * letters.length)]).join('');
+  const randomNumbers = Math.floor(1000000 + Math.random() * 9000000).toString();
+  const el_space_id = `${randomLetters}${randomNumbers}`;
   const { data, error } = await supabase
     .from('users')
     .insert([{ email, full_name: name, user_type: userType, verified_badge: 0, role: 'user', el_space_id, created_at: new Date().toISOString(), updated_at: new Date().toISOString() }])
