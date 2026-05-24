@@ -29,22 +29,6 @@ CREATE TABLE IF NOT EXISTS users (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Idempotent column updates for 'users'
-DO $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='full_name') THEN
-        ALTER TABLE users RENAME COLUMN name TO full_name;
-    END IF;
-
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='phone_number') THEN
-        ALTER TABLE users ADD COLUMN phone_number TEXT;
-    END IF;
-
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='transaction_pin_hash') THEN
-        ALTER TABLE users ADD COLUMN transaction_pin_hash TEXT;
-    END IF;
-END $$;
-
 -- 3. Freelancer Profiles
 CREATE TABLE IF NOT EXISTS freelancer_profiles (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -120,18 +104,6 @@ CREATE TABLE IF NOT EXISTS projects (
   completed_at TIMESTAMPTZ
 );
 
--- Idempotent column updates for 'projects'
-DO $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='projects' AND column_name='visibility') THEN
-        ALTER TABLE projects ADD COLUMN visibility TEXT CHECK (visibility IN ('public', 'private', 'invite-only')) DEFAULT 'public';
-    END IF;
-
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='projects' AND column_name='total_budget') THEN
-        ALTER TABLE projects ADD COLUMN total_budget NUMERIC DEFAULT 0;
-    END IF;
-END $$;
-
 -- 6. Applications
 CREATE TABLE IF NOT EXISTS applications (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -155,7 +127,7 @@ CREATE TABLE IF NOT EXISTS milestones (
   title TEXT NOT NULL,
   description TEXT NOT NULL,
   amount NUMERIC NOT NULL,
-  status TEXT CHECK (status IN ('pending', 'in_progress', 'submitted', 'approved', 'released', 'disputed')) DEFAULT 'pending',
+  status TEXT CHECK (status IN ('pending', 'in_progress', 'submitted', 'approved', 'released', 'disputed', 'funded', 'completed')) DEFAULT 'pending',
   due_date TIMESTAMPTZ,
   submitted_at TIMESTAMPTZ,
   approved_at TIMESTAMPTZ,
@@ -180,26 +152,6 @@ CREATE TABLE IF NOT EXISTS wallets (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Idempotent column updates for 'wallets'
-DO $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='wallets' AND column_name='escrow_balance') THEN
-        ALTER TABLE wallets ADD COLUMN escrow_balance NUMERIC DEFAULT 0;
-    END IF;
-
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='wallets' AND column_name='pending_balance') THEN
-        ALTER TABLE wallets ADD COLUMN pending_balance NUMERIC DEFAULT 0;
-    END IF;
-
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='wallets' AND column_name='total_earned') THEN
-        ALTER TABLE wallets ADD COLUMN total_earned NUMERIC DEFAULT 0;
-    END IF;
-
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='wallets' AND column_name='total_withdrawn') THEN
-        ALTER TABLE wallets ADD COLUMN total_withdrawn NUMERIC DEFAULT 0;
-    END IF;
-END $$;
-
 -- 9. Payments & Transactions
 CREATE TABLE IF NOT EXISTS payments (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -212,7 +164,7 @@ CREATE TABLE IF NOT EXISTS payments (
   currency TEXT DEFAULT 'USD',
   status TEXT CHECK (status IN ('pending', 'processing', 'completed', 'failed', 'refunded', 'escrowed')) DEFAULT 'pending',
   payment_method TEXT CHECK (payment_method IN ('card', 'bank_transfer', 'mobile_money', 'crypto', 'wallet')),
-  payment_type TEXT CHECK (payment_type IN ('wallet_funding', 'milestone_funding', 'payout', 'withdrawal', 'internal_transfer', 'late_penalty')),
+  payment_type TEXT CHECK (payment_type IN ('wallet_funding', 'milestone_funding', 'payout', 'withdrawal', 'internal_transfer', 'late_penalty', 'income', 'hold', 'release')),
   reference TEXT UNIQUE,
   korapay_reference TEXT UNIQUE,
   description TEXT,
@@ -221,14 +173,6 @@ CREATE TABLE IF NOT EXISTS payments (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Idempotent column updates for 'payments'
-DO $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='payments' AND column_name='recipient_id') THEN
-        ALTER TABLE payments ADD COLUMN recipient_id UUID REFERENCES users(id);
-    END IF;
-END $$;
-
 -- 10. Withdrawals
 CREATE TABLE IF NOT EXISTS withdrawals (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -236,26 +180,18 @@ CREATE TABLE IF NOT EXISTS withdrawals (
   wallet_id UUID REFERENCES wallets(id) ON DELETE CASCADE,
   payment_id UUID REFERENCES payments(id) ON DELETE SET NULL,
   amount NUMERIC NOT NULL,
-  currency TEXT NOT NULL, -- 'USD', 'NGN', 'GBP', 'EUR', 'SOL', 'USDT', 'ETH'
+  currency TEXT NOT NULL,
   fee_amount NUMERIC DEFAULT 0,
   net_amount NUMERIC NOT NULL,
-  method TEXT NOT NULL, -- 'bank', 'crypto'
+  method TEXT NOT NULL,
   account_details JSONB NOT NULL,
-  status TEXT CHECK (status IN ('pending', 'approved', 'completed', 'rejected')) DEFAULT 'pending',
+  status TEXT CHECK (status IN ('pending', 'approved', 'completed', 'rejected', 'processing')) DEFAULT 'pending',
   admin_notes TEXT,
   processed_at TIMESTAMPTZ,
   processed_by UUID REFERENCES users(id),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
-
--- Idempotent column updates for 'withdrawals'
-DO $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='withdrawals' AND column_name='payment_id') THEN
-        ALTER TABLE withdrawals ADD COLUMN payment_id UUID REFERENCES payments(id) ON DELETE SET NULL;
-    END IF;
-END $$;
 
 -- 11. Internal Transfers
 CREATE TABLE IF NOT EXISTS internal_transfers (
@@ -274,18 +210,6 @@ CREATE TABLE IF NOT EXISTS internal_transfers (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Idempotent column updates for 'internal_transfers'
-DO $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='internal_transfers' AND column_name='fee_amount') THEN
-        ALTER TABLE internal_transfers ADD COLUMN fee_amount NUMERIC DEFAULT 0;
-    END IF;
-
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='internal_transfers' AND column_name='net_amount') THEN
-        ALTER TABLE internal_transfers ADD COLUMN net_amount NUMERIC DEFAULT 0;
-    END IF;
-END $$;
-
 -- 12. Deposits (Manual Funding)
 CREATE TABLE IF NOT EXISTS deposits (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -293,7 +217,7 @@ CREATE TABLE IF NOT EXISTS deposits (
   wallet_id UUID REFERENCES wallets(id) ON DELETE CASCADE,
   amount NUMERIC NOT NULL,
   currency TEXT DEFAULT 'USD',
-  method TEXT NOT NULL, -- 'bank_transfer', 'crypto_transfer'
+  method TEXT NOT NULL,
   receipt_url TEXT NOT NULL,
   status TEXT CHECK (status IN ('pending', 'approved', 'completed', 'rejected')) DEFAULT 'pending',
   admin_notes TEXT,
@@ -317,14 +241,6 @@ CREATE TABLE IF NOT EXISTS reviews (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
-
--- Idempotent column updates for 'reviews'
-DO $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='reviews' AND column_name='visibility') THEN
-        ALTER TABLE reviews ADD COLUMN visibility TEXT CHECK (visibility IN ('public', 'private')) DEFAULT 'public';
-    END IF;
-END $$;
 
 -- 14. Messaging
 CREATE TABLE IF NOT EXISTS chat_rooms (
@@ -355,18 +271,6 @@ CREATE TABLE IF NOT EXISTS messages (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Idempotent column updates for 'messages'
-DO $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='messages' AND column_name='recipient_id') THEN
-        ALTER TABLE messages ADD COLUMN recipient_id UUID REFERENCES users(id);
-    END IF;
-
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='messages' AND column_name='room_id') THEN
-        ALTER TABLE messages ADD COLUMN room_id UUID REFERENCES chat_rooms(id) ON DELETE CASCADE;
-    END IF;
-END $$;
-
 -- 15. Notifications
 CREATE TABLE IF NOT EXISTS notifications (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -375,6 +279,7 @@ CREATE TABLE IF NOT EXISTS notifications (
   title TEXT NOT NULL,
   message TEXT NOT NULL,
   status TEXT DEFAULT 'unread',
+  read BOOLEAN DEFAULT FALSE,
   action_url TEXT,
   data JSONB DEFAULT '{}',
   created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -393,7 +298,17 @@ CREATE TABLE IF NOT EXISTS push_subscriptions (
   UNIQUE(user_id, endpoint)
 );
 
--- 16. Time Tracking
+-- 16. OTP Codes
+CREATE TABLE IF NOT EXISTS otp_codes (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  email TEXT NOT NULL,
+  code TEXT NOT NULL,
+  type TEXT DEFAULT 'login',
+  expires_at TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 17. Time Tracking
 CREATE TABLE IF NOT EXISTS time_logs (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   project_id UUID REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
@@ -409,7 +324,7 @@ CREATE TABLE IF NOT EXISTS time_logs (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 17. Disputes
+-- 18. Disputes
 CREATE TABLE IF NOT EXISTS disputes (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   project_id UUID REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
@@ -457,45 +372,7 @@ CREATE TABLE IF NOT EXISTS mediation_outcomes (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 18. Verified Tests
-CREATE TABLE IF NOT EXISTS test_projects (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  freelancer_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
-  title TEXT NOT NULL,
-  description TEXT NOT NULL,
-  budget NUMERIC,
-  status TEXT CHECK (status IN ('assigned', 'in_progress', 'submitted', 'approved', 'rejected')) DEFAULT 'assigned',
-  submission_url TEXT,
-  feedback TEXT,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- 19. Referrals
-CREATE TABLE IF NOT EXISTS referrals (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  referrer_id UUID REFERENCES users(id) ON DELETE SET NULL,
-  referred_user_email TEXT NOT NULL,
-  referred_user_id UUID REFERENCES users(id) ON DELETE SET NULL,
-  referral_type TEXT CHECK (referral_type IN ('client', 'freelancer')),
-  status TEXT CHECK (status IN ('pending', 'completed')) DEFAULT 'pending',
-  reward_amount NUMERIC DEFAULT 0,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  completed_at TIMESTAMPTZ
-);
-
--- 20. Contact & Support
-CREATE TABLE IF NOT EXISTS contact_requests (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name TEXT NOT NULL,
-  email TEXT NOT NULL,
-  subject TEXT,
-  message TEXT NOT NULL,
-  status TEXT CHECK (status IN ('pending', 'responded', 'closed')) DEFAULT 'pending',
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- 21. Social Features
+-- 19. Social Features
 CREATE TABLE IF NOT EXISTS social_posts (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
@@ -526,7 +403,7 @@ CREATE TABLE IF NOT EXISTS social_comments (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 22. Productivity
+-- 20. Productivity
 CREATE TABLE IF NOT EXISTS todos (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES users(id) ON DELETE CASCADE,
@@ -545,7 +422,7 @@ CREATE TABLE IF NOT EXISTS reminders (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 23. Portfolio & Assets
+-- 21. Portfolio & Assets
 CREATE TABLE IF NOT EXISTS portfolio_items (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
@@ -569,7 +446,7 @@ CREATE TABLE IF NOT EXISTS storage_assets (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 24. Saved Freelancers
+-- 22. Saved Freelancers
 CREATE TABLE IF NOT EXISTS saved_freelancers (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   client_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
@@ -579,9 +456,7 @@ CREATE TABLE IF NOT EXISTS saved_freelancers (
   UNIQUE(client_id, freelancer_id)
 );
 
--- 25. Row Level Security (RLS)
-
--- Enable RLS on all tables
+-- 23. Row Level Security (RLS)
 DO $$
 DECLARE
     t text;
@@ -591,374 +466,13 @@ BEGIN
     END LOOP;
 END $$;
 
--- Users Policies
+-- Policies
 DROP POLICY IF EXISTS "Public profiles are viewable by everyone." ON users;
 CREATE POLICY "Public profiles are viewable by everyone." ON users FOR SELECT USING (true);
-
 DROP POLICY IF EXISTS "Users can update own profile." ON users;
 CREATE POLICY "Users can update own profile." ON users FOR UPDATE USING (auth.uid() = id);
 
--- Profiles Policies
-DROP POLICY IF EXISTS "Freelancer profiles are public." ON freelancer_profiles;
-CREATE POLICY "Freelancer profiles are public." ON freelancer_profiles FOR SELECT USING (true);
-DROP POLICY IF EXISTS "Freelancers can update own profile." ON freelancer_profiles;
-CREATE POLICY "Freelancers can update own profile." ON freelancer_profiles FOR UPDATE USING (auth.uid() = user_id);
-
-DROP POLICY IF EXISTS "Client profiles are public." ON client_profiles;
-CREATE POLICY "Client profiles are public." ON client_profiles FOR SELECT USING (true);
-DROP POLICY IF EXISTS "Clients can update own client profile." ON client_profiles;
-CREATE POLICY "Clients can update own client profile." ON client_profiles FOR UPDATE USING (auth.uid() = user_id);
-
--- Projects Policies
-DROP POLICY IF EXISTS "Open projects are viewable by everyone." ON projects;
-CREATE POLICY "Open projects are viewable by everyone." ON projects FOR SELECT USING (status = 'open' OR visibility = 'public' OR auth.uid() = client_id OR auth.uid() = accepted_freelancer_id);
-DROP POLICY IF EXISTS "Clients can manage own projects." ON projects;
-CREATE POLICY "Clients can manage own projects." ON projects FOR ALL USING (auth.uid() = client_id);
-
--- Applications Policies
-DROP POLICY IF EXISTS "Users can view relevant applications." ON applications;
-CREATE POLICY "Users can view relevant applications." ON applications FOR SELECT USING (auth.uid() = freelancer_id OR EXISTS (SELECT 1 FROM projects WHERE id = project_id AND client_id = auth.uid()));
-DROP POLICY IF EXISTS "Freelancers can manage own applications." ON applications;
-CREATE POLICY "Freelancers can manage own applications." ON applications FOR ALL USING (auth.uid() = freelancer_id);
-
--- Milestones Policies
-DROP POLICY IF EXISTS "Users can view relevant milestones." ON milestones;
-CREATE POLICY "Users can view relevant milestones." ON milestones FOR SELECT USING (auth.uid() = freelancer_id OR EXISTS (SELECT 1 FROM projects WHERE id = project_id AND client_id = auth.uid()));
-
--- Wallet & Payments Policies
-DROP POLICY IF EXISTS "Users can view own wallet." ON wallets;
-CREATE POLICY "Users can view own wallet." ON wallets FOR SELECT USING (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Users can manage own wallet." ON wallets;
-CREATE POLICY "Users can manage own wallet." ON wallets FOR ALL USING (auth.uid() = user_id);
-
-DROP POLICY IF EXISTS "Users can view own payments." ON payments;
-CREATE POLICY "Users can view own payments." ON payments FOR SELECT USING (auth.uid() = user_id OR auth.uid() = recipient_id);
-DROP POLICY IF EXISTS "Users can insert own payments." ON payments;
-CREATE POLICY "Users can insert own payments." ON payments FOR INSERT WITH CHECK (auth.uid() = user_id);
-
--- Withdrawals Policies
-DROP POLICY IF EXISTS "Users can view own withdrawals." ON withdrawals;
-CREATE POLICY "Users can view own withdrawals." ON withdrawals FOR SELECT USING (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Users can insert own withdrawals." ON withdrawals;
-CREATE POLICY "Users can insert own withdrawals." ON withdrawals FOR INSERT WITH CHECK (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Admins can manage all withdrawals." ON withdrawals;
-CREATE POLICY "Admins can manage all withdrawals." ON withdrawals FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
-
--- Internal Transfers Policies
-DROP POLICY IF EXISTS "Users can view own transfers." ON internal_transfers;
-CREATE POLICY "Users can view own transfers." ON internal_transfers FOR SELECT USING (auth.uid() = sender_id OR auth.uid() = recipient_id);
-DROP POLICY IF EXISTS "Users can insert own transfers." ON internal_transfers;
-CREATE POLICY "Users can insert own transfers." ON internal_transfers FOR INSERT WITH CHECK (auth.uid() = sender_id);
-DROP POLICY IF EXISTS "Admins can manage all transfers." ON internal_transfers;
-CREATE POLICY "Admins can manage all transfers." ON internal_transfers FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
-
--- Deposits Policies
-DROP POLICY IF EXISTS "Users can view own deposits." ON deposits;
-CREATE POLICY "Users can view own deposits." ON deposits FOR SELECT USING (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Users can insert own deposits." ON deposits;
-CREATE POLICY "Users can insert own deposits." ON deposits FOR INSERT WITH CHECK (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Admins can manage all deposits." ON deposits;
-CREATE POLICY "Admins can manage all deposits." ON deposits FOR ALL USING (
-  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
-);
-
--- Messaging Policies
-DROP POLICY IF EXISTS "Participants can view room messages." ON messages;
-CREATE POLICY "Participants can view room messages." ON messages FOR SELECT USING (
-  EXISTS (SELECT 1 FROM chat_participants WHERE room_id = messages.room_id AND user_id = auth.uid())
-  OR sender_id = auth.uid()
-  OR recipient_id = auth.uid()
-);
-DROP POLICY IF EXISTS "Participants can manage messages." ON messages;
-CREATE POLICY "Participants can manage messages." ON messages FOR ALL USING (
-  EXISTS (SELECT 1 FROM chat_participants WHERE room_id = messages.room_id AND user_id = auth.uid())
-  OR sender_id = auth.uid()
-  OR recipient_id = auth.uid()
-);
-
-DROP POLICY IF EXISTS "Users can view own chat rooms." ON chat_rooms;
-CREATE POLICY "Users can view own chat rooms." ON chat_rooms FOR SELECT USING (EXISTS (SELECT 1 FROM chat_participants WHERE room_id = id AND user_id = auth.uid()));
-DROP POLICY IF EXISTS "Users can view chat participants." ON chat_participants;
-CREATE POLICY "Users can view chat participants." ON chat_participants FOR SELECT USING (EXISTS (SELECT 1 FROM chat_participants cp2 WHERE cp2.room_id = room_id AND cp2.user_id = auth.uid()));
-
--- Notifications Policies
-DROP POLICY IF EXISTS "Users can view own notifications." ON notifications;
-CREATE POLICY "Users can view own notifications." ON notifications FOR SELECT USING (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Users can update own notifications." ON notifications;
-CREATE POLICY "Users can update own notifications." ON notifications FOR ALL USING (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Users can manage own push subs." ON push_subscriptions;
-CREATE POLICY "Users can manage own push subs." ON push_subscriptions FOR ALL USING (auth.uid() = user_id);
-
--- Social Policies
-DROP POLICY IF EXISTS "Social posts are viewable by everyone." ON social_posts;
-CREATE POLICY "Social posts are viewable by everyone." ON social_posts FOR SELECT USING (true);
-DROP POLICY IF EXISTS "Users can manage own posts." ON social_posts;
-CREATE POLICY "Users can manage own posts." ON social_posts FOR ALL USING (auth.uid() = user_id);
-
-DROP POLICY IF EXISTS "Social engagement is public." ON social_likes;
-CREATE POLICY "Social engagement is public." ON social_likes FOR SELECT USING (true);
-DROP POLICY IF EXISTS "Users can like/unlike." ON social_likes;
-CREATE POLICY "Users can like/unlike." ON social_likes FOR ALL USING (auth.uid() = user_id);
-
-DROP POLICY IF EXISTS "Social comments are public." ON social_comments;
-CREATE POLICY "Social comments are public." ON social_comments FOR SELECT USING (true);
-DROP POLICY IF EXISTS "Users can manage own comments." ON social_comments;
-CREATE POLICY "Users can manage own comments." ON social_comments FOR ALL USING (auth.uid() = user_id);
-
--- Portfolio Policies
-DROP POLICY IF EXISTS "Portfolio items are public." ON portfolio_items;
-CREATE POLICY "Portfolio items are public." ON portfolio_items FOR SELECT USING (true);
-DROP POLICY IF EXISTS "Users can manage own portfolio." ON portfolio_items;
-CREATE POLICY "Users can manage own portfolio." ON portfolio_items FOR ALL USING (auth.uid() = user_id);
-
--- Productivity Policies
-DROP POLICY IF EXISTS "Users can manage own todos." ON todos;
-CREATE POLICY "Users can manage own todos." ON todos FOR ALL USING (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Users can manage own reminders." ON reminders;
-CREATE POLICY "Users can manage own reminders." ON reminders FOR ALL USING (auth.uid() = user_id);
-
--- Disputes Policies
-DROP POLICY IF EXISTS "Users can view relevant disputes." ON disputes;
-CREATE POLICY "Users can view relevant disputes." ON disputes FOR SELECT USING (auth.uid() = initiated_by OR auth.uid() = initiated_against);
-DROP POLICY IF EXISTS "Users can manage relevant disputes." ON disputes;
-CREATE POLICY "Users can manage relevant disputes." ON disputes FOR ALL USING (auth.uid() = initiated_by OR auth.uid() = initiated_against);
-
-DROP POLICY IF EXISTS "Users can view dispute evidence." ON dispute_evidence;
-CREATE POLICY "Users can view dispute evidence." ON dispute_evidence FOR SELECT USING (EXISTS (SELECT 1 FROM disputes WHERE id = dispute_id AND (initiated_by = auth.uid() OR initiated_against = auth.uid())));
-DROP POLICY IF EXISTS "Users can manage dispute evidence." ON dispute_evidence;
-CREATE POLICY "Users can manage dispute evidence." ON dispute_evidence FOR ALL USING (user_id = auth.uid());
-
-DROP POLICY IF EXISTS "Users can view relevant mediation sessions." ON mediation_sessions;
-CREATE POLICY "Users can view relevant mediation sessions." ON mediation_sessions FOR SELECT USING (EXISTS (SELECT 1 FROM disputes WHERE id = dispute_id AND (initiated_by = auth.uid() OR initiated_against = auth.uid())));
-DROP POLICY IF EXISTS "Users can view relevant mediation outcomes." ON mediation_outcomes;
-CREATE POLICY "Users can view relevant mediation outcomes." ON mediation_outcomes FOR SELECT USING (EXISTS (SELECT 1 FROM disputes WHERE id = dispute_id AND (initiated_by = auth.uid() OR initiated_against = auth.uid())));
-
--- Storage Policies
-DROP POLICY IF EXISTS "Users can manage own storage assets." ON storage_assets;
-CREATE POLICY "Users can manage own storage assets." ON storage_assets FOR ALL USING (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Public can view storage assets." ON storage_assets;
-CREATE POLICY "Public can view storage assets." ON storage_assets FOR SELECT USING (true);
-
--- Time Logs Policies
-DROP POLICY IF EXISTS "Users can view relevant time logs." ON time_logs;
-CREATE POLICY "Users can view relevant time logs." ON time_logs FOR SELECT USING (freelancer_id = auth.uid() OR EXISTS (SELECT 1 FROM projects WHERE id = project_id AND client_id = auth.uid()));
-DROP POLICY IF EXISTS "Freelancers can manage own time logs." ON time_logs;
-CREATE POLICY "Freelancers can manage own time logs." ON time_logs FOR ALL USING (freelancer_id = auth.uid());
-
--- Reviews Policies
-DROP POLICY IF EXISTS "Public reviews are viewable by everyone." ON reviews;
-CREATE POLICY "Public reviews are viewable by everyone." ON reviews FOR SELECT USING (visibility = 'public');
-DROP POLICY IF EXISTS "Users can view private reviews they are part of." ON reviews;
-CREATE POLICY "Users can view private reviews they are part of." ON reviews FOR SELECT USING (reviewer_id = auth.uid() OR reviewee_id = auth.uid());
-DROP POLICY IF EXISTS "Users can manage own reviews." ON reviews;
-CREATE POLICY "Users can manage own reviews." ON reviews FOR ALL USING (reviewer_id = auth.uid());
-
--- Test Projects Policies
-DROP POLICY IF EXISTS "Freelancers can view own test projects." ON test_projects;
-CREATE POLICY "Freelancers can view own test projects." ON test_projects FOR SELECT USING (freelancer_id = auth.uid());
-
--- Referrals Policies
-DROP POLICY IF EXISTS "Users can view own referrals." ON referrals;
-CREATE POLICY "Users can view own referrals." ON referrals FOR SELECT USING (referrer_id = auth.uid() OR referred_user_email = (SELECT email FROM users WHERE id = auth.uid()));
-
--- Contact Requests Policies
-DROP POLICY IF EXISTS "Anyone can submit contact requests." ON contact_requests;
-CREATE POLICY "Anyone can submit contact requests." ON contact_requests FOR INSERT WITH CHECK (true);
-
--- Saved Freelancers Policies
-DROP POLICY IF EXISTS "Clients can manage own saved freelancers." ON saved_freelancers;
-CREATE POLICY "Clients can manage own saved freelancers." ON saved_freelancers FOR ALL USING (client_id = auth.uid());
-
--- 26. RPC Functions
-
--- Atomic Internal Transfer (Immediate)
-CREATE OR REPLACE FUNCTION process_internal_transfer(
-  p_sender_id UUID,
-  p_recipient_id UUID,
-  p_amount NUMERIC
-) RETURNS VOID AS $$
-DECLARE
-  v_sender_balance NUMERIC;
-BEGIN
-  -- Get sender balance and lock the row
-  SELECT balance INTO v_sender_balance
-  FROM wallets
-  WHERE user_id = p_sender_id
-  FOR UPDATE;
-
-  IF v_sender_balance IS NULL THEN
-    RAISE EXCEPTION 'Sender wallet not found';
-  END IF;
-
-  IF v_sender_balance < p_amount THEN
-    RAISE EXCEPTION 'Insufficient funds';
-  END IF;
-
-  -- Deduct from sender
-  UPDATE wallets
-  SET balance = balance - p_amount,
-      updated_at = NOW()
-  WHERE user_id = p_sender_id;
-
-  -- Add to recipient
-  UPDATE wallets
-  SET balance = balance + p_amount,
-      updated_at = NOW()
-  WHERE user_id = p_recipient_id;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
--- Complete Pending Transfer (Move from pending to recipient balance)
-CREATE OR REPLACE FUNCTION approve_internal_transfer(
-  p_transfer_id UUID,
-  p_admin_id UUID
-) RETURNS VOID AS $$
-DECLARE
-  v_sender_id UUID;
-  v_recipient_id UUID;
-  v_amount NUMERIC;
-  v_net_amount NUMERIC;
-BEGIN
-  -- 1. Get and lock transfer record
-  SELECT sender_id, recipient_id, amount, net_amount
-  INTO v_sender_id, v_recipient_id, v_amount, v_net_amount
-  FROM internal_transfers
-  WHERE id = p_transfer_id AND status = 'pending'
-  FOR UPDATE;
-
-  IF v_sender_id IS NULL THEN
-    RAISE EXCEPTION 'Pending transfer not found';
-  END IF;
-
-  -- 2. Update recipient balance (gets net amount after fees)
-  UPDATE wallets
-  SET balance = balance + v_net_amount,
-      updated_at = NOW()
-  WHERE user_id = v_recipient_id;
-
-  -- 3. Deduct from sender pending balance (deducts full gross amount)
-  UPDATE wallets
-  SET pending_balance = GREATEST(0, pending_balance - v_amount),
-      updated_at = NOW()
-  WHERE user_id = v_sender_id;
-
-  -- 4. Mark transfer as completed
-  UPDATE internal_transfers
-  SET status = 'completed',
-      processed_at = NOW(),
-      processed_by = p_admin_id,
-      updated_at = NOW()
-  WHERE id = p_transfer_id;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
--- Reject Pending Transfer (Return from pending to liquid balance)
-CREATE OR REPLACE FUNCTION reject_internal_transfer(
-  p_transfer_id UUID,
-  p_admin_id UUID,
-  p_notes TEXT
-) RETURNS VOID AS $$
-DECLARE
-  v_sender_id UUID;
-  v_amount NUMERIC;
-BEGIN
-  -- 1. Get and lock transfer record
-  SELECT sender_id, amount
-  INTO v_sender_id, v_amount
-  FROM internal_transfers
-  WHERE id = p_transfer_id AND status = 'pending'
-  FOR UPDATE;
-
-  IF v_sender_id IS NULL THEN
-    RAISE EXCEPTION 'Pending transfer not found';
-  END IF;
-
-  -- 2. Return funds to sender liquid balance
-  UPDATE wallets
-  SET balance = balance + v_amount,
-      pending_balance = GREATEST(0, pending_balance - v_amount),
-      updated_at = NOW()
-  WHERE user_id = v_sender_id;
-
-  -- 3. Mark transfer as rejected
-  UPDATE internal_transfers
-  SET status = 'rejected',
-      admin_notes = p_notes,
-      processed_at = NOW(),
-      processed_by = p_admin_id,
-      updated_at = NOW()
-  WHERE id = p_transfer_id;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
--- Social Counters
-CREATE OR REPLACE FUNCTION increment_likes(p_post_id UUID) RETURNS VOID AS $$
-BEGIN
-  UPDATE social_posts SET likes_count = likes_count + 1 WHERE id = p_post_id;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION decrement_likes(p_post_id UUID) RETURNS VOID AS $$
-BEGIN
-  UPDATE social_posts SET likes_count = GREATEST(0, likes_count - 1) WHERE id = p_post_id;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION increment_comments(p_post_id UUID) RETURNS VOID AS $$
-BEGIN
-  UPDATE social_posts SET comments_count = comments_count + 1 WHERE id = p_post_id;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION increment_shares(p_post_id UUID) RETURNS VOID AS $$
-BEGIN
-  UPDATE social_posts SET shares_count = shares_count + 1 WHERE id = p_post_id;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION increment_reposts(p_post_id UUID) RETURNS VOID AS $$
-BEGIN
-  UPDATE social_posts SET reposts_count = reposts_count + 1 WHERE id = p_post_id;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
--- Admin Stats
-CREATE OR REPLACE FUNCTION get_admin_stats()
-RETURNS JSONB AS $$
-DECLARE
-  v_total_users BIGINT;
-  v_total_payments NUMERIC;
-  v_total_jobs BIGINT;
-  v_pending_withdrawals BIGINT;
-  v_active_disputes BIGINT;
-BEGIN
-  SELECT COUNT(*) INTO v_total_users FROM users;
-  SELECT COALESCE(SUM(amount), 0) INTO v_total_payments FROM payments WHERE status = 'completed';
-  SELECT COUNT(*) INTO v_total_jobs FROM projects;
-  SELECT COUNT(*) INTO v_active_disputes FROM disputes WHERE status = 'open';
-
-  SELECT COUNT(*) INTO v_pending_withdrawals FROM withdrawals WHERE status = 'pending';
-
-  RETURN jsonb_build_object(
-    'totalUsers', v_total_users,
-    'totalPayments', v_total_payments,
-    'totalJobListings', v_total_jobs,
-    'pendingWithdrawals', v_pending_withdrawals,
-    'activeDisputes', v_active_disputes,
-    'pendingPayments', 0,
-    'pendingApprovals', 0,
-    'totalWithdrawals', 0
-  );
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
--- 27. Triggers
-
--- Update updated_at timestamp automatically
+-- 24. RPC Functions & Triggers
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN

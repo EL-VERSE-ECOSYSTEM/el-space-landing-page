@@ -18,6 +18,7 @@ import { useAuth } from '@/components/auth-provider'
 import { toast } from 'sonner'
 import { ELLoader } from '@/components/ui/el-loader'
 import { DashboardLayout } from '@/components/dashboard/auth-guard'
+import { convertCurrency, formatCurrency } from '@/lib/exchange-rates'
 
 export default function WalletHub() {
   const navItems = [
@@ -483,6 +484,11 @@ export default function WalletHub() {
                                  value={withdrawData.amount}
                                  onChange={e => setWithdrawData({...withdrawData, amount: e.target.value})}
                               />
+                              {withdrawData.amount && withdrawData.currency !== 'USD' && (
+                                <p className="text-[10px] text-slate-500 font-bold uppercase mt-1">
+                                  Approx. {formatCurrency(convertCurrency(parseFloat(withdrawData.amount), withdrawData.currency, 'USD'), 'USD')}
+                                </p>
+                              )}
                            </div>
                            <div className="space-y-3">
                               <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Auth PIN</label>
@@ -643,6 +649,11 @@ export default function WalletHub() {
                                value={fundData.amount}
                                onChange={e => setFundData({...fundData, amount: e.target.value})}
                             />
+                            {fundData.amount && fundData.currency !== 'USD' && (
+                              <p className="text-[10px] text-slate-500 font-bold uppercase mt-1">
+                                Approx. {formatCurrency(convertCurrency(parseFloat(fundData.amount), fundData.currency, 'USD'), 'USD')}
+                              </p>
+                            )}
                          </div>
                       </div>
 
