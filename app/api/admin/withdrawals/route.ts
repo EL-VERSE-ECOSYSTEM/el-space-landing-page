@@ -27,7 +27,16 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Missing required fields' }, { status: 400 });
     }
 
-    // 1. Update withdrawal record
+    // 1. Get old record to check status transition
+    const { data: oldWithdrawal, error: fetchError } = await supabase
+      .from('withdrawals')
+      .select('*')
+      .eq('id', withdrawalId)
+      .single() as any;
+
+    if (fetchError || !oldWithdrawal) throw new Error('Withdrawal record not found');
+
+    // 2. Update withdrawal record
     const { data: withdrawal, error: withdrawalError } = await supabase
       .from('withdrawals')
       .update({
@@ -47,10 +56,9 @@ export async function PATCH(request: NextRequest) {
       await supabase.from('payments').update({ status }).eq('id', withdrawal.payment_id);
     }
 
-    // 2. Handle Wallet balance based on status
-    if (status === 'completed' || status === 'approved') {
-       // Funds are already pending in wallet from the request.
-       // For 'completed', we deduct from pending and add to 'total_withdrawn'
+    // 3. Handle Wallet balance based on status transition
+    if (status === 'completed' && oldWithdrawal.status !== 'completed' && oldWithdrawal.status !== 'rejected') {
+       // Finalize: Deduct from pending and add to 'total_withdrawn'
        const { data: wallet } = await supabase.from('wallets').select('pending_balance, total_withdrawn').eq('user_id', withdrawal.user_id).single() as any;
        if (wallet) {
           await supabase.from('wallets').update({
@@ -58,8 +66,8 @@ export async function PATCH(request: NextRequest) {
             total_withdrawn: (wallet.total_withdrawn || 0) + withdrawal.amount
           }).eq('user_id', withdrawal.user_id);
        }
-    } else if (status === 'rejected') {
-       // Return funds to liquid balance from pending
+    } else if (status === 'rejected' && oldWithdrawal.status !== 'rejected' && oldWithdrawal.status !== 'completed') {
+       // Revert: Return funds to liquid balance from pending
        const { data: wallet } = await supabase.from('wallets').select('balance, pending_balance').eq('user_id', withdrawal.user_id).single() as any;
        if (wallet) {
           await supabase.from('wallets').update({

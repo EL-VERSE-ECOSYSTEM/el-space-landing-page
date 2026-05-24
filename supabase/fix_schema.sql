@@ -95,6 +95,23 @@ BEGIN
             updated_at TIMESTAMPTZ DEFAULT NOW()
         );
     END IF;
+
+    -- Ensure internal_transfers table exists
+    IF NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name='internal_transfers') THEN
+        CREATE TABLE internal_transfers (
+            id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+            sender_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+            recipient_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+            amount NUMERIC NOT NULL,
+            currency TEXT DEFAULT 'USD',
+            status TEXT CHECK (status IN ('pending', 'approved', 'completed', 'rejected')) DEFAULT 'pending',
+            admin_notes TEXT,
+            processed_at TIMESTAMPTZ,
+            processed_by UUID REFERENCES users(id),
+            created_at TIMESTAMPTZ DEFAULT NOW(),
+            updated_at TIMESTAMPTZ DEFAULT NOW()
+        );
+    END IF;
 END $$;
 
 -- 3. Re-apply RLS Policies that might have failed

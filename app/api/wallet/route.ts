@@ -40,9 +40,10 @@ export async function GET(request: NextRequest) {
         
         const formattedTransactions = transactions.map((tx: any) => ({
           id: tx.id,
-          type: tx.type === 'income' || tx.type === 'release' ? 'earning' : 
-                tx.type.includes('withdrawal') ? 'withdrawal' : 
-                tx.type === 'refund' ? 'refund' : 'fee',
+          type: tx.payment_type === 'income' || tx.payment_type === 'milestone_funding' ? 'earning' :
+                tx.payment_type === 'withdrawal' ? 'withdrawal' :
+                tx.payment_type === 'internal_transfer' ? 'transfer' :
+                tx.payment_type === 'refund' ? 'refund' : 'payment',
           amount: tx.amount,
           description: tx.description || 'Transaction',
           status: tx.status === 'completed' ? 'completed' : 
@@ -137,7 +138,7 @@ export async function POST(request: NextRequest) {
 
     if (type === 'withdraw') {
       // 1. Verify Transaction PIN
-      const { transactionPin } = body;
+      const { transactionPin, currency } = body;
       if (!transactionPin) {
         return NextResponse.json({ error: 'Transaction PIN is required for withdrawals' }, { status: 403 });
       }
@@ -171,13 +172,14 @@ export async function POST(request: NextRequest) {
       const processingFee = isInstant ? amount * INSTANT_WITHDRAWAL_FEE : 0;
       const netAmount = amount - processingFee;
 
-      // Create withdrawal payment
+      // Create withdrawal payment record (ledger)
       const { data: payment, error: paymentError } = await createPayment({
         user_id: userId,
         amount,
+        currency: currency || 'USD',
         type: 'withdrawal',
-        status: isInstant ? 'pending' : 'pending',
-        description: `${isInstant ? 'Instant' : 'Standard'} withdrawal - ${method || 'bank'}`,
+        status: 'pending',
+        description: `${isInstant ? 'Instant' : 'Standard'} withdrawal - ${currency} via ${method || 'bank'}`,
         metadata: {
           method: method || 'bank',
           account_details: accountDetails,
@@ -208,6 +210,7 @@ export async function POST(request: NextRequest) {
         wallet_id: wallet.id,
         payment_id: payment.id,
         amount,
+        currency: currency || 'USD',
         fee_amount: processingFee,
         net_amount: netAmount,
         method: method || 'bank',

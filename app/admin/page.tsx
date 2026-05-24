@@ -38,6 +38,7 @@ export default function AdminDashboard() {
   const [payments, setPayments] = useState<any[]>([])
   const [jobs, setJobs] = useState<any[]>([])
   const [withdrawals, setWithdrawals] = useState<any[]>([])
+  const [transfers, setTransfers] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
   const [activeTab, setActiveTab] = useState('overview')
   const [searchQuery, setSearchQuery] = useState('')
@@ -94,22 +95,24 @@ export default function AdminDashboard() {
   const fetchAdminData = async () => {
     try {
       setLoading(true)
-      const [statsRes, usersRes, paymentsRes, jobsRes, withdrawalsRes, verificationsRes] = await Promise.all([
+      const [statsRes, usersRes, paymentsRes, jobsRes, withdrawalsRes, verificationsRes, transfersRes] = await Promise.all([
         fetch('/api/admin/stats'),
         fetch('/api/admin/users'),
         fetch('/api/admin/payments'),
         fetch('/api/admin/jobs'),
         fetch('/api/admin/withdrawals'),
-        fetch('/api/admin/verifications')
+        fetch('/api/admin/verifications'),
+        fetch('/api/admin/transfers')
       ])
 
-      const [statsData, usersData, paymentsData, jobsData, withdrawalsData, verificationsData] = await Promise.all([
+      const [statsData, usersData, paymentsData, jobsData, withdrawalsData, verificationsData, transfersData] = await Promise.all([
         statsRes.json(),
         usersRes.json(),
         paymentsRes.json(),
         jobsRes.json(),
         withdrawalsRes.json(),
-        verificationsRes.json()
+        verificationsRes.json(),
+        transfersRes.json()
       ])
 
       if (statsData.success) setStats(statsData.stats)
@@ -118,6 +121,7 @@ export default function AdminDashboard() {
       if (jobsData.success) setJobs(jobsData.jobs || [])
       if (withdrawalsData.success) setWithdrawals(withdrawalsData.withdrawals || [])
       if (verificationsData.success) setVerifications(verificationsData.verifications || [])
+      if (transfersData.success) setTransfers(transfersData.transfers || [])
 
     } catch (error) {
       console.error('Admin data load error:', error)
@@ -233,6 +237,7 @@ export default function AdminDashboard() {
             { id: 'users', icon: Users, label: 'User Ecosystem' },
             { id: 'payments', icon: DollarSign, label: 'Global Ledger' },
             { id: 'withdrawals', icon: Wallet, label: 'Capital Outflow' },
+            { id: 'transfers', icon: ArrowUpRight, label: 'Internal Transfers' },
             { id: 'verifications', icon: ShieldCheck, label: 'Verification Queue' },
             { id: 'jobs', icon: Briefcase, label: 'Deployment Board' },
           ].map((item) => (
@@ -560,6 +565,86 @@ export default function AdminDashboard() {
               </div>
             )}
 
+            {activeTab === 'transfers' && (
+              <div className="space-y-8 animate-in fade-in duration-700">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                  <div>
+                    <h2 className="text-5xl font-black text-white tracking-tighter">INTERNAL TRANSFERS</h2>
+                    <p className="text-slate-400 mt-3 font-bold uppercase tracking-[0.2em] text-xs">Peer-to-Peer Transfer Authorization</p>
+                  </div>
+                </div>
+
+                <div className="grid gap-6">
+                  {transfers.length > 0 ? transfers.map((tx) => (
+                    <Card key={tx.id} className="bg-slate-900/40 border-white/5 overflow-hidden rounded-[2.5rem] group hover:border-cyan-500/30 transition-all duration-500">
+                      <CardContent className="p-10">
+                        <div className="flex flex-col xl:flex-row justify-between gap-10">
+                          <div className="flex-1 space-y-8">
+                             <div className="flex items-center gap-12">
+                                <div className="flex items-center gap-4">
+                                   <div className="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center font-black text-cyan-400">
+                                      {tx.sender?.full_name?.charAt(0)}
+                                   </div>
+                                   <div>
+                                      <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Sender</p>
+                                      <p className="text-white font-bold">{tx.sender?.full_name}</p>
+                                      <p className="text-xs text-slate-500 font-mono">{tx.sender?.el_space_id}</p>
+                                   </div>
+                                </div>
+                                <ArrowUpRight className="w-6 h-6 text-slate-700" />
+                                <div className="flex items-center gap-4">
+                                   <div className="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center font-black text-purple-400">
+                                      {tx.recipient?.full_name?.charAt(0)}
+                                   </div>
+                                   <div>
+                                      <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Recipient</p>
+                                      <p className="text-white font-bold">{tx.recipient?.full_name}</p>
+                                      <p className="text-xs text-slate-500 font-mono">{tx.recipient?.el_space_id}</p>
+                                   </div>
+                                </div>
+                             </div>
+
+                             <div className="flex items-center gap-4">
+                                <p className="text-4xl font-black text-white tracking-tighter">${tx.amount.toLocaleString()}</p>
+                                <Badge className={`px-4 py-1 rounded-full font-black text-xs ${
+                                  tx.status === 'pending' ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
+                                  tx.status === 'approved' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
+                                  'bg-red-500/10 text-red-400 border-red-500/20'
+                                }`}>
+                                  {tx.status.toUpperCase()}
+                                </Badge>
+                             </div>
+                          </div>
+
+                          {tx.status === 'pending' && (
+                             <div className="flex flex-col gap-3 justify-center">
+                                <Button
+                                  className="h-14 bg-cyan-600 hover:bg-cyan-500 text-white font-black rounded-2xl px-8"
+                                  onClick={() => handleAction('/api/admin/transfers', 'PATCH', { transferId: tx.id, status: 'approved' }, 'Transfer approved')}
+                                >
+                                  APPROVE TRANSFER
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  className="h-14 text-red-400 hover:text-red-300 font-black rounded-2xl"
+                                  onClick={() => handleAction('/api/admin/transfers', 'PATCH', { transferId: tx.id, status: 'rejected' }, 'Transfer rejected')}
+                                >
+                                  REJECT
+                                </Button>
+                             </div>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )) : (
+                    <div className="text-center py-20 bg-slate-900/20 border-2 border-dashed border-white/5 rounded-[2rem]">
+                       <p className="text-slate-500 font-bold">No pending transfers.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             {activeTab === 'withdrawals' && (
               <div className="space-y-8 animate-in fade-in duration-700">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -591,8 +676,11 @@ export default function AdminDashboard() {
                                 </div>
                                 <div>
                                    <div className="flex items-center gap-3">
-                                      <p className="text-4xl font-black text-white tracking-tighter">${req.amount.toLocaleString()}</p>
-                                      <Badge className="bg-white/5 text-slate-400 border-white/10 font-black px-3 py-1 rounded-full text-[10px]">USD</Badge>
+                                      <p className="text-4xl font-black text-white tracking-tighter">
+                                        {req.currency === 'NGN' ? '₦' : req.currency === 'GBP' ? '£' : req.currency === 'EUR' ? '€' : '$'}
+                                        {req.amount.toLocaleString()}
+                                      </p>
+                                      <Badge className="bg-white/5 text-slate-400 border-white/10 font-black px-3 py-1 rounded-full text-[10px]">{req.currency || 'USD'}</Badge>
                                    </div>
                                    <p className="text-slate-500 font-bold mt-1">Requested by <span className="text-white">{req.user?.name || req.user?.email}</span></p>
                                 </div>
@@ -754,7 +842,7 @@ export default function AdminDashboard() {
             )}
 
             {/* Other tabs follow similar premium patterns... */}
-            {activeTab !== 'overview' && activeTab !== 'users' && activeTab !== 'withdrawals' && activeTab !== 'verifications' && (
+            {activeTab !== 'overview' && activeTab !== 'users' && activeTab !== 'withdrawals' && activeTab !== 'transfers' && activeTab !== 'verifications' && (
               <div className="flex flex-col items-center justify-center h-[60vh] text-slate-500">
                 <Settings className="w-16 h-16 mb-4 opacity-20" />
                 <h3 className="text-xl font-bold text-white mb-2">{activeTab.toUpperCase()} Module</h3>
