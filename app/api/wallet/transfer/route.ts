@@ -53,36 +53,35 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Cannot transfer to yourself' }, { status: 400 });
     }
 
-    // 4. Atomic Transfer (using RPC for safety)
-    const { data: transferResult, error: xferError } = await supabase.rpc('process_internal_transfer', {
-      p_sender_id: senderId,
-      p_recipient_id: recipient.id,
-      p_amount: amount
+    // 4. Create Pending Transfer Record
+    const { data: transfer, error: transferError } = await supabase
+      .from('internal_transfers')
+      .insert([{
+        sender_id: senderId,
+        recipient_id: recipient.id,
+        amount,
+        currency: 'USD',
+        status: 'pending'
+      }])
+      .select()
+      .single();
+
+    if (transferError) throw transferError;
+
+    // 5. Lock funds in sender wallet (move to pending)
+    const newBalance = (wallet.balance || 0) - amount;
+    const newPending = (wallet.pending_balance || 0) + amount;
+
+    await supabase.from('wallets').update({
+      balance: newBalance,
+      pending_balance: newPending
+    }).eq('user_id', senderId);
+
+    return NextResponse.json({
+      success: true,
+      message: 'Transfer request submitted for admin approval',
+      transferId: (transfer as any).id
     });
-
-    if (xferError) throw xferError;
-
-    // 5. Log transaction
-    await supabase.from('payments').insert([
-      {
-        user_id: senderId,
-        amount: -amount,
-        payment_type: 'internal_transfer',
-        status: 'completed',
-        description: `Transfer to ${recipient.full_name} (${recipientSpaceId})`,
-        metadata: { recipient_id: recipient.id }
-      },
-      {
-        user_id: recipient.id,
-        amount: amount,
-        payment_type: 'internal_transfer',
-        status: 'completed',
-        description: `Transfer from ${user.full_name}`,
-        metadata: { sender_id: senderId }
-      }
-    ]);
-
-    return NextResponse.json({ success: true, message: 'Transfer completed successfully' });
 
   } catch (error: any) {
     console.error('Transfer error:', error);

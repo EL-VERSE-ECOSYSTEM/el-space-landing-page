@@ -38,6 +38,7 @@ export default function WalletHub() {
   const [withdrawMethod, setWithdrawMethod] = useState<'bank' | 'crypto'>('bank')
   const [withdrawData, setWithdrawData] = useState({
     amount: '',
+    currency: 'USD',
     accountNumber: '',
     bankName: '',
     walletAddress: '',
@@ -93,6 +94,7 @@ export default function WalletHub() {
           type: 'withdraw',
           amount: parseFloat(withdrawData.amount),
           transactionPin: withdrawData.pin,
+          currency: withdrawData.currency,
           method: withdrawMethod,
           accountDetails: withdrawMethod === 'bank' ? {
             accountNumber: withdrawData.accountNumber,
@@ -408,9 +410,26 @@ export default function WalletHub() {
                       </TabsList>
 
                       <div className="space-y-6">
-                        <div className="grid grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                            <div className="space-y-3">
-                              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Withdrawal Volume ($)</label>
+                              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Asset Class</label>
+                              <select
+                                 className="w-full bg-slate-800 border-slate-700 h-16 text-white font-black rounded-2xl px-4 outline-none"
+                                 value={withdrawData.currency}
+                                 onChange={e => setWithdrawData({...withdrawData, currency: e.target.value})}
+                              >
+                                 <option value="USD">USD - Dollar</option>
+                                 <option value="NGN">NGN - Naira</option>
+                                 <option value="GBP">GBP - Pound</option>
+                                 <option value="EUR">EUR - Euro</option>
+                                 <option value="USDT">USDT - Stable</option>
+                                 <option value="ETH">ETH - Ethereum</option>
+                                 <option value="SOL">SOL - Solana</option>
+                              </select>
+                           </div>
+                        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
+                           <div className="space-y-3">
+                              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Volume ({withdrawData.currency})</label>
                               <Input
                                  type="number"
                                  placeholder="0.00"
@@ -433,6 +452,7 @@ export default function WalletHub() {
                                  />
                               </div>
                            </div>
+                        </div>
                         </div>
 
                         {withdrawMethod === 'bank' ? (

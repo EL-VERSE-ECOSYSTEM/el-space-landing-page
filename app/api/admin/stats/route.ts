@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
         supabase.from('users').select('id', { count: 'exact' }),
         supabase.from('payments').select('amount'),
         supabase.from('projects').select('id', { count: 'exact' }),
-        supabase.from('payments').select('id', { count: 'exact' }).eq('payment_type', 'withdrawal').eq('status', 'pending')
+        supabase.from('withdrawals').select('id', { count: 'exact' }).eq('status', 'pending')
       ]);
 
       const totalPayments = (payments.data as any[])?.reduce((acc: number, p: any) => acc + (p.amount || 0), 0) || 0;

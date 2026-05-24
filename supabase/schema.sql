@@ -173,6 +173,42 @@ CREATE TABLE IF NOT EXISTS payments (
 );
 
 -- 10. Reviews
+-- 10. Withdrawals
+CREATE TABLE IF NOT EXISTS withdrawals (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+  wallet_id UUID REFERENCES wallets(id) ON DELETE CASCADE,
+  payment_id UUID REFERENCES payments(id) ON DELETE SET NULL,
+  amount NUMERIC NOT NULL,
+  currency TEXT NOT NULL, -- 'USD', 'NGN', 'GBP', 'EUR', 'SOL', 'USDT', 'ETH'
+  fee_amount NUMERIC DEFAULT 0,
+  net_amount NUMERIC NOT NULL,
+  method TEXT NOT NULL, -- 'bank', 'crypto'
+  account_details JSONB NOT NULL,
+  status TEXT CHECK (status IN ('pending', 'approved', 'completed', 'rejected')) DEFAULT 'pending',
+  admin_notes TEXT,
+  processed_at TIMESTAMPTZ,
+  processed_by UUID REFERENCES users(id),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 11. Internal Transfers
+CREATE TABLE IF NOT EXISTS internal_transfers (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  sender_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+  recipient_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+  amount NUMERIC NOT NULL,
+  currency TEXT DEFAULT 'USD',
+  status TEXT CHECK (status IN ('pending', 'approved', 'completed', 'rejected')) DEFAULT 'pending',
+  admin_notes TEXT,
+  processed_at TIMESTAMPTZ,
+  processed_by UUID REFERENCES users(id),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 12. Reviews
 CREATE TABLE IF NOT EXISTS reviews (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   project_id UUID REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
@@ -595,6 +631,26 @@ CREATE POLICY "Anyone can submit contact requests." ON contact_requests FOR INSE
 DROP POLICY IF EXISTS "Clients can manage own saved freelancers." ON saved_freelancers;
 CREATE POLICY "Clients can manage own saved freelancers." ON saved_freelancers FOR ALL USING (client_id = auth.uid());
 
+-- Withdrawals Policies
+DROP POLICY IF EXISTS "Users can view own withdrawals." ON withdrawals;
+CREATE POLICY "Users can view own withdrawals." ON withdrawals FOR SELECT USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Users can insert own withdrawals." ON withdrawals;
+CREATE POLICY "Users can insert own withdrawals." ON withdrawals FOR INSERT WITH CHECK (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Admins can manage all withdrawals." ON withdrawals;
+CREATE POLICY "Admins can manage all withdrawals." ON withdrawals FOR ALL USING (
+  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
+);
+
+-- Internal Transfers Policies
+DROP POLICY IF EXISTS "Users can view own transfers." ON internal_transfers;
+CREATE POLICY "Users can view own transfers." ON internal_transfers FOR SELECT USING (auth.uid() = sender_id OR auth.uid() = recipient_id);
+DROP POLICY IF EXISTS "Users can insert own transfers." ON internal_transfers;
+CREATE POLICY "Users can insert own transfers." ON internal_transfers FOR INSERT WITH CHECK (auth.uid() = sender_id);
+DROP POLICY IF EXISTS "Admins can manage all transfers." ON internal_transfers;
+CREATE POLICY "Admins can manage all transfers." ON internal_transfers FOR ALL USING (
+  EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin')
+);
+
 -- chat_rooms & chat_participants Policies
 DROP POLICY IF EXISTS "Users can view own chat rooms." ON chat_rooms;
 CREATE POLICY "Users can view own chat rooms." ON chat_rooms FOR SELECT USING (EXISTS (SELECT 1 FROM chat_participants WHERE room_id = id AND user_id = auth.uid()));
@@ -603,7 +659,7 @@ CREATE POLICY "Users can view chat participants." ON chat_participants FOR SELEC
 
 -- 23. RPC Functions
 
--- Atomic Internal Transfer
+-- Atomic Internal Transfer (Immediate)
 CREATE OR REPLACE FUNCTION process_internal_transfer(
   p_sender_id UUID,
   p_recipient_id UUID,
@@ -637,6 +693,88 @@ BEGIN
   SET balance = balance + p_amount,
       updated_at = NOW()
   WHERE user_id = p_recipient_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Complete Pending Transfer (Move from pending to recipient balance)
+CREATE OR REPLACE FUNCTION approve_internal_transfer(
+  p_transfer_id UUID,
+  p_admin_id UUID
+) RETURNS VOID AS $$
+DECLARE
+  v_sender_id UUID;
+  v_recipient_id UUID;
+  v_amount NUMERIC;
+BEGIN
+  -- 1. Get and lock transfer record
+  SELECT sender_id, recipient_id, amount
+  INTO v_sender_id, v_recipient_id, v_amount
+  FROM internal_transfers
+  WHERE id = p_transfer_id AND status = 'pending'
+  FOR UPDATE;
+
+  IF v_sender_id IS NULL THEN
+    RAISE EXCEPTION 'Pending transfer not found';
+  END IF;
+
+  -- 2. Update recipient balance
+  UPDATE wallets
+  SET balance = balance + v_amount,
+      updated_at = NOW()
+  WHERE user_id = v_recipient_id;
+
+  -- 3. Deduct from sender pending balance
+  UPDATE wallets
+  SET pending_balance = GREATEST(0, pending_balance - v_amount),
+      updated_at = NOW()
+  WHERE user_id = v_sender_id;
+
+  -- 4. Mark transfer as completed
+  UPDATE internal_transfers
+  SET status = 'completed',
+      processed_at = NOW(),
+      processed_by = p_admin_id,
+      updated_at = NOW()
+  WHERE id = p_transfer_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Reject Pending Transfer (Return from pending to liquid balance)
+CREATE OR REPLACE FUNCTION reject_internal_transfer(
+  p_transfer_id UUID,
+  p_admin_id UUID,
+  p_notes TEXT
+) RETURNS VOID AS $$
+DECLARE
+  v_sender_id UUID;
+  v_amount NUMERIC;
+BEGIN
+  -- 1. Get and lock transfer record
+  SELECT sender_id, amount
+  INTO v_sender_id, v_amount
+  FROM internal_transfers
+  WHERE id = p_transfer_id AND status = 'pending'
+  FOR UPDATE;
+
+  IF v_sender_id IS NULL THEN
+    RAISE EXCEPTION 'Pending transfer not found';
+  END IF;
+
+  -- 2. Return funds to sender liquid balance
+  UPDATE wallets
+  SET balance = balance + v_amount,
+      pending_balance = GREATEST(0, pending_balance - v_amount),
+      updated_at = NOW()
+  WHERE user_id = v_sender_id;
+
+  -- 3. Mark transfer as rejected
+  UPDATE internal_transfers
+  SET status = 'rejected',
+      admin_notes = p_notes,
+      processed_at = NOW(),
+      processed_by = p_admin_id,
+      updated_at = NOW()
+  WHERE id = p_transfer_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
@@ -684,8 +822,9 @@ BEGIN
   SELECT COUNT(*) INTO v_total_users FROM users;
   SELECT COALESCE(SUM(amount), 0) INTO v_total_payments FROM payments WHERE status = 'completed';
   SELECT COUNT(*) INTO v_total_jobs FROM projects;
-  SELECT COUNT(*) INTO v_pending_withdrawals FROM payments WHERE payment_type = 'withdrawal' AND status = 'pending';
   SELECT COUNT(*) INTO v_active_disputes FROM disputes WHERE status = 'open';
+
+  SELECT COUNT(*) INTO v_pending_withdrawals FROM withdrawals WHERE status = 'pending';
 
   RETURN jsonb_build_object(
     'totalUsers', v_total_users,

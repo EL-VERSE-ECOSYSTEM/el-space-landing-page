@@ -24,6 +24,10 @@ BEGIN
         ALTER TABLE users ADD COLUMN phone_number TEXT;
     END IF;
 
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='transaction_pin_hash') THEN
+        ALTER TABLE users ADD COLUMN transaction_pin_hash TEXT;
+    END IF;
+
     -- Wallets table updates
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='wallets' AND column_name='escrow_balance') THEN
         ALTER TABLE wallets ADD COLUMN escrow_balance NUMERIC DEFAULT 0;
@@ -68,6 +72,45 @@ BEGIN
 
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='messages' AND column_name='room_id') THEN
         ALTER TABLE messages ADD COLUMN room_id UUID REFERENCES chat_rooms(id) ON DELETE CASCADE;
+    END IF;
+
+    -- Ensure withdrawals table exists
+    IF NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name='withdrawals') THEN
+        CREATE TABLE withdrawals (
+            id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+            user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+            wallet_id UUID REFERENCES wallets(id) ON DELETE CASCADE,
+            payment_id UUID REFERENCES payments(id) ON DELETE SET NULL,
+            amount NUMERIC NOT NULL,
+            currency TEXT DEFAULT 'USD',
+            fee_amount NUMERIC DEFAULT 0,
+            net_amount NUMERIC NOT NULL,
+            method TEXT NOT NULL,
+            account_details JSONB NOT NULL,
+            status TEXT CHECK (status IN ('pending', 'approved', 'completed', 'rejected')) DEFAULT 'pending',
+            admin_notes TEXT,
+            processed_at TIMESTAMPTZ,
+            processed_by UUID REFERENCES users(id),
+            created_at TIMESTAMPTZ DEFAULT NOW(),
+            updated_at TIMESTAMPTZ DEFAULT NOW()
+        );
+    END IF;
+
+    -- Ensure internal_transfers table exists
+    IF NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name='internal_transfers') THEN
+        CREATE TABLE internal_transfers (
+            id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+            sender_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+            recipient_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+            amount NUMERIC NOT NULL,
+            currency TEXT DEFAULT 'USD',
+            status TEXT CHECK (status IN ('pending', 'approved', 'completed', 'rejected')) DEFAULT 'pending',
+            admin_notes TEXT,
+            processed_at TIMESTAMPTZ,
+            processed_by UUID REFERENCES users(id),
+            created_at TIMESTAMPTZ DEFAULT NOW(),
+            updated_at TIMESTAMPTZ DEFAULT NOW()
+        );
     END IF;
 END $$;
 
