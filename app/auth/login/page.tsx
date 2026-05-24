@@ -33,6 +33,16 @@ export default function LoginPage() {
     setError("");
 
     try {
+      // Validate email format or EL Space ID format
+      const isEmail = email.includes('@');
+      const isSpaceId = /^[A-Z]{3}[0-9]{7}$/.test(email.toUpperCase());
+
+      if (!isEmail && !isSpaceId) {
+        setError("Please enter a valid email or EL Space ID (e.g., ELS1234567)");
+        setLoading(false);
+        return;
+      }
+
       const response = await fetch("/api/auth/check-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -172,12 +182,12 @@ export default function LoginPage() {
           {step === "email" && (
             <form onSubmit={handleCheckEmail} className="space-y-6">
               <div className="space-y-2">
-                <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Email Address</Label>
+                <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Email or EL Space ID</Label>
                 <div className="relative">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                   <Input
-                    type="email"
-                    placeholder="you@example.com"
+                    type="text"
+                    placeholder="you@example.com or ELS1234567"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required

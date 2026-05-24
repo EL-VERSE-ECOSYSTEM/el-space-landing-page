@@ -340,7 +340,7 @@ export default function WalletHub() {
                          <div className="relative">
                             <Smartphone className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-600" />
                             <Input
-                               placeholder="e.g. EL-12345678"
+                               placeholder="e.g. ELS1234567"
                                className="bg-slate-800 border-slate-700 pl-14 h-16 text-white font-black text-xl rounded-2xl focus:ring-emerald-500"
                                value={transferData.recipientId}
                                onChange={e => setTransferData({...transferData, recipientId: e.target.value})}
