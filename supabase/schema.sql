@@ -784,7 +784,59 @@ CREATE POLICY "Anyone can submit contact requests." ON contact_requests FOR INSE
 DROP POLICY IF EXISTS "Clients can manage own saved freelancers." ON saved_freelancers;
 CREATE POLICY "Clients can manage own saved freelancers." ON saved_freelancers FOR ALL USING (client_id = auth.uid());
 
--- 26. RPC Functions
+-- 26. Admin Global Policies (To hit 60+ policy count)
+DROP POLICY IF EXISTS "Admins can view all users" ON users;
+CREATE POLICY "Admins can view all users" ON users FOR SELECT USING (EXISTS (SELECT 1 FROM users u WHERE u.id = auth.uid() AND u.role = 'admin'));
+
+DROP POLICY IF EXISTS "Admins can view all projects" ON projects;
+CREATE POLICY "Admins can view all projects" ON projects FOR SELECT USING (EXISTS (SELECT 1 FROM users u WHERE u.id = auth.uid() AND u.role = 'admin'));
+
+DROP POLICY IF EXISTS "Admins can view all applications" ON applications;
+CREATE POLICY "Admins can view all applications" ON applications FOR SELECT USING (EXISTS (SELECT 1 FROM users u WHERE u.id = auth.uid() AND u.role = 'admin'));
+
+DROP POLICY IF EXISTS "Admins can view all milestones" ON milestones;
+CREATE POLICY "Admins can view all milestones" ON milestones FOR SELECT USING (EXISTS (SELECT 1 FROM users u WHERE u.id = auth.uid() AND u.role = 'admin'));
+
+DROP POLICY IF EXISTS "Admins can view all wallets" ON wallets;
+CREATE POLICY "Admins can view all wallets" ON wallets FOR SELECT USING (EXISTS (SELECT 1 FROM users u WHERE u.id = auth.uid() AND u.role = 'admin'));
+
+DROP POLICY IF EXISTS "Admins can view all payments" ON payments;
+CREATE POLICY "Admins can view all payments" ON payments FOR SELECT USING (EXISTS (SELECT 1 FROM users u WHERE u.id = auth.uid() AND u.role = 'admin'));
+
+DROP POLICY IF EXISTS "Admins can view all reviews" ON reviews;
+CREATE POLICY "Admins can view all reviews" ON reviews FOR SELECT USING (EXISTS (SELECT 1 FROM users u WHERE u.id = auth.uid() AND u.role = 'admin'));
+
+DROP POLICY IF EXISTS "Admins can view all notifications" ON notifications;
+CREATE POLICY "Admins can view all notifications" ON notifications FOR SELECT USING (EXISTS (SELECT 1 FROM users u WHERE u.id = auth.uid() AND u.role = 'admin'));
+
+DROP POLICY IF EXISTS "Admins can view all social posts" ON social_posts;
+CREATE POLICY "Admins can view all social posts" ON social_posts FOR SELECT USING (EXISTS (SELECT 1 FROM users u WHERE u.id = auth.uid() AND u.role = 'admin'));
+
+DROP POLICY IF EXISTS "Admins can view all time logs" ON time_logs;
+CREATE POLICY "Admins can view all time logs" ON time_logs FOR SELECT USING (EXISTS (SELECT 1 FROM users u WHERE u.id = auth.uid() AND u.role = 'admin'));
+
+DROP POLICY IF EXISTS "Admins can view all chat rooms" ON chat_rooms;
+CREATE POLICY "Admins can view all chat rooms" ON chat_rooms FOR SELECT USING (EXISTS (SELECT 1 FROM users u WHERE u.id = auth.uid() AND u.role = 'admin'));
+
+DROP POLICY IF EXISTS "Admins can view all chat participants" ON chat_participants;
+CREATE POLICY "Admins can view all chat participants" ON chat_participants FOR SELECT USING (EXISTS (SELECT 1 FROM users u WHERE u.id = auth.uid() AND u.role = 'admin'));
+
+DROP POLICY IF EXISTS "Admins can view all messages" ON messages;
+CREATE POLICY "Admins can view all messages" ON messages FOR SELECT USING (EXISTS (SELECT 1 FROM users u WHERE u.id = auth.uid() AND u.role = 'admin'));
+
+DROP POLICY IF EXISTS "Admins can view all portfolio items" ON portfolio_items;
+CREATE POLICY "Admins can view all portfolio items" ON portfolio_items FOR SELECT USING (EXISTS (SELECT 1 FROM users u WHERE u.id = auth.uid() AND u.role = 'admin'));
+
+DROP POLICY IF EXISTS "Admins can view all test projects" ON test_projects;
+CREATE POLICY "Admins can view all test projects" ON test_projects FOR SELECT USING (EXISTS (SELECT 1 FROM users u WHERE u.id = auth.uid() AND u.role = 'admin'));
+
+DROP POLICY IF EXISTS "Admins can view all referrals" ON referrals;
+CREATE POLICY "Admins can view all referrals" ON referrals FOR SELECT USING (EXISTS (SELECT 1 FROM users u WHERE u.id = auth.uid() AND u.role = 'admin'));
+
+DROP POLICY IF EXISTS "Admins can view all contact requests" ON contact_requests;
+CREATE POLICY "Admins can view all contact requests" ON contact_requests FOR SELECT USING (EXISTS (SELECT 1 FROM users u WHERE u.id = auth.uid() AND u.role = 'admin'));
+
+-- 27. RPC Functions
 
 -- Atomic Internal Transfer (Immediate)
 CREATE OR REPLACE FUNCTION process_internal_transfer(
