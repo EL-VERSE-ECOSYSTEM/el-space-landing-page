@@ -25,6 +25,8 @@ CREATE TABLE IF NOT EXISTS users (
   verified_at TIMESTAMPTZ,
   phone_number TEXT,
   location TEXT,
+  kyc_status TEXT DEFAULT 'unverified',
+  user_id UUID,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -42,6 +44,15 @@ BEGIN
 
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='transaction_pin_hash') THEN
         ALTER TABLE users ADD COLUMN transaction_pin_hash TEXT;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='kyc_status') THEN
+        ALTER TABLE users ADD COLUMN kyc_status TEXT DEFAULT 'unverified';
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='user_id') THEN
+        ALTER TABLE users ADD COLUMN user_id UUID;
+        UPDATE users SET user_id = id WHERE user_id IS NULL;
     END IF;
 END $$;
 
