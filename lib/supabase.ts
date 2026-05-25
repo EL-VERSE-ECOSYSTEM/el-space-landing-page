@@ -78,6 +78,8 @@ const createMockClient = () => {
       user_type: 'freelancer',
       role: 'user',
       el_space_id: 'ELS1234567',
+      password_hash: '$2a$12$6ejSkfUB/kfHfxCtrivfVORjzxDbbYc9okr.zu6jVWN49MEzZ/1sS',
+      transaction_pin_hash: '$2a$10$eEwsQlxGm2uteINtVu9k8OBaoRvSJ3RW8R/.w41PJVZQx5fhIXjD6',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     },

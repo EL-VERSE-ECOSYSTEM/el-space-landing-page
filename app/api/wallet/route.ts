@@ -154,7 +154,10 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'User not found' }, { status: 404 });
       }
 
-      const isPinValid = await bcrypt.compare(transactionPin, user.transaction_pin_hash || "");
+      if (!user.transaction_pin_hash) {
+        return NextResponse.json({ error: 'Transaction PIN not set up' }, { status: 403 });
+      }
+      const isPinValid = await bcrypt.compare(transactionPin, user.transaction_pin_hash);
       if (!isPinValid) {
         return NextResponse.json({ error: 'Invalid Transaction PIN' }, { status: 403 });
       }
