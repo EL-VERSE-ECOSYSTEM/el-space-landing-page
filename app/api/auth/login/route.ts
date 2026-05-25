@@ -27,6 +27,9 @@ export async function POST(request: NextRequest) {
     }
 
     // 2. Verify password
+    if (!user.password_hash) {
+      return NextResponse.json({ error: 'Account not set up for password login' }, { status: 401 });
+    }
     const isValidPassword = await bcrypt.compare(password, user.password_hash);
     if (!isValidPassword) {
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });

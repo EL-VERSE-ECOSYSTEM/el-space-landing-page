@@ -20,7 +20,10 @@ export async function POST(request: NextRequest) {
     if (userError || !user) throw new Error('Sender not found');
 
     // 2. Verify Transaction PIN
-    const isPinValid = await bcrypt.compare(transactionPin, user.transaction_pin_hash || "");
+    if (!user.transaction_pin_hash) {
+      return NextResponse.json({ error: 'Transaction PIN not set up' }, { status: 403 });
+    }
+    const isPinValid = await bcrypt.compare(transactionPin, user.transaction_pin_hash);
     if (!isPinValid) {
       return NextResponse.json({ error: 'Invalid Transaction PIN' }, { status: 403 });
     }
