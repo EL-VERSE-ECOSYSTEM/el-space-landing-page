@@ -83,22 +83,22 @@ export default function FreelancerHub() {
     <div className="min-h-screen bg-white text-slate-900 selection:bg-cyan-100 relative overflow-hidden">
       {/* Background Gradients */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-24 -left-24 w-96 h-96 bg-cyan-500/5 rounded-full blur-[100px]" />
-        <div className="absolute top-1/2 -right-24 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-[120px]" />
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-purple-500/5 rounded-full blur-[100px]" />
+        <div className="absolute top-1/2 -right-24 w-[500px] h-[500px] bg-violet-500/5 rounded-full blur-[120px]" />
       </div>
 
       {/* Premium Navbar */}
       <header className="h-24 bg-white/70 backdrop-blur-2xl border-b border-slate-100 flex items-center justify-between px-12 sticky top-0 z-50">
         <div className="flex items-center gap-12">
           <div className="flex items-center gap-3 cursor-pointer group" onClick={() => router.push('/')}>
-            <div className="w-10 h-10 rounded-2xl bg-slate-900 flex items-center justify-center shadow-xl shadow-slate-200 transition-all group-hover:scale-110">
+            <div className="w-10 h-10 rounded-2xl bg-purple-600 flex items-center justify-center shadow-xl shadow-purple-200 transition-all group-hover:scale-110">
               <span className="text-white font-black text-sm">EL</span>
             </div>
-            <span className="text-xl font-black tracking-tighter text-slate-900 uppercase">Freelancer</span>
+            <span className="text-xl font-black tracking-tighter text-purple-900 uppercase">Freelancer</span>
           </div>
           <nav className="hidden md:flex items-center gap-8">
-            <button className="text-slate-900 font-black text-sm border-b-2 border-slate-900 pb-1">Dashboard</button>
-            <button onClick={() => router.push('/jobs')} className="text-slate-400 hover:text-slate-900 transition-colors font-bold text-sm">Opportunities</button>
+            <button className="text-purple-900 font-black text-sm border-b-2 border-purple-900 pb-1">Dashboard</button>
+            <button onClick={() => router.push('/jobs')} className="text-slate-400 hover:text-purple-900 transition-colors font-bold text-sm">Opportunities</button>
             <button onClick={() => router.push('/portfolio')} className="text-slate-400 hover:text-slate-900 transition-colors font-bold text-sm">Dossier</button>
             <button onClick={() => router.push('/wallet')} className="text-slate-400 hover:text-slate-900 transition-colors font-bold text-sm">Vault</button>
             <button onClick={() => router.push('/messages')} className="text-slate-400 hover:text-slate-900 transition-colors font-bold text-sm">Messages</button>
@@ -106,7 +106,7 @@ export default function FreelancerHub() {
         </div>
 
         <div className="flex items-center gap-6">
-          <Button onClick={() => router.push('/jobs')} className="bg-slate-900 hover:bg-cyan-600 text-white font-black px-8 h-12 rounded-2xl hidden sm:flex transition-all">
+          <Button onClick={() => router.push('/jobs')} className="bg-purple-600 hover:bg-purple-700 text-white font-black px-8 h-12 rounded-2xl hidden sm:flex transition-all shadow-lg shadow-purple-200">
              Hunt Opportunities
           </Button>
           <div className="h-12 w-12 rounded-2xl bg-slate-50 border-2 border-white shadow-lg flex items-center justify-center overflow-hidden">
@@ -118,36 +118,36 @@ export default function FreelancerHub() {
       <main className="max-w-7xl mx-auto px-12 py-16 space-y-16 relative z-10">
         {/* Profile Snapshot */}
         <div className="flex flex-col md:flex-row items-center gap-12 bg-white p-12 rounded-[3.5rem] border border-slate-100 shadow-2xl shadow-slate-100/50">
-           <div className="w-32 h-32 rounded-[2.5rem] bg-slate-900 flex items-center justify-center font-black text-5xl text-cyan-400 shadow-2xl shadow-slate-200">
+           <div className="w-32 h-32 rounded-[2.5rem] bg-purple-900 flex items-center justify-center font-black text-5xl text-purple-400 shadow-2xl shadow-purple-200">
               {(user?.full_name || 'U').charAt(0)}
            </div>
            <div className="flex-1 text-center md:text-left">
               <div className="flex flex-col md:flex-row md:items-center gap-4">
                  <h1 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tighter">{user?.full_name}</h1>
-                 <Badge className="w-fit mx-auto md:mx-0 bg-cyan-50 border-cyan-100 text-cyan-600 px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em]">
+                 <Badge className="w-fit mx-auto md:mx-0 bg-purple-50 border-purple-100 text-purple-600 px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em]">
                    TOP-RATED ELITE
                  </Badge>
               </div>
               <div className="text-slate-500 mt-4 text-base md:text-lg font-medium flex flex-col md:flex-row items-center justify-center md:justify-start gap-3 md:gap-6">
                  <span className="flex items-center gap-2"><Star className="w-5 h-5 text-amber-400 fill-amber-400" /> <span className="text-slate-900 font-black">4.98</span> (124 reviews)</span>
                  <div className="hidden md:block w-1.5 h-1.5 bg-slate-200 rounded-full" />
-                 <span className="flex items-center gap-2 text-cyan-600 font-black tracking-tight"><Zap className="w-5 h-5" /> Elite Vanguard Status</span>
+                 <span className="flex items-center gap-2 text-purple-600 font-black tracking-tight"><Zap className="w-5 h-5" /> Elite Vanguard Status</span>
               </div>
            </div>
            <div className="flex gap-4">
               <Button onClick={() => router.push('/settings')} variant="outline" className="h-14 border-2 border-slate-100 text-slate-900 font-black rounded-2xl px-8 hover:bg-slate-50">Workspace Settings</Button>
-              <Button className="h-14 bg-slate-900 hover:bg-cyan-600 text-white font-black px-10 rounded-2xl shadow-xl shadow-slate-200">Share Credentials</Button>
+              <Button className="h-14 bg-purple-900 hover:bg-purple-700 text-white font-black px-10 rounded-2xl shadow-xl shadow-purple-200">Share Credentials</Button>
            </div>
         </div>
 
         {/* Core Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
            {[
-             { label: 'Vault Balance', value: `$${stats.walletBalance.toLocaleString()}`, icon: WalletIcon, color: 'bg-slate-900' },
+             { label: 'Vault Balance', value: `$${stats.walletBalance.toLocaleString()}`, icon: WalletIcon, color: 'bg-purple-900' },
              { label: 'Global Yield', value: `$${(stats.totalEarnings / 1000).toFixed(1)}k`, icon: DollarSign, color: 'bg-emerald-500' },
              { label: 'Active Pipeline', value: stats.activeJobs, icon: Briefcase, color: 'bg-blue-500' },
              { label: 'Settlement Escrow', value: `$${stats.pendingPayments.toLocaleString()}`, icon: Clock, color: 'bg-amber-500' },
-             { label: 'Mission Success', value: `${stats.jobSuccess}%`, icon: CheckCircle, color: 'bg-cyan-500' }
+             { label: 'Mission Success', value: `${stats.jobSuccess}%`, icon: CheckCircle, color: 'bg-purple-500' }
            ].map((stat, i) => (
              <Card key={i} className="bg-white border border-slate-100 hover:border-transparent hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500 group rounded-[2.5rem] overflow-hidden">
                 <CardContent className="p-8">
@@ -175,7 +175,7 @@ export default function FreelancerHub() {
                   <Card key={app.id} className="bg-white border border-slate-100 hover:border-transparent hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500 cursor-pointer group rounded-[2.5rem]">
                      <CardContent className="p-8 flex items-center justify-between">
                         <div className="flex items-center gap-8">
-                           <div className="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center border border-slate-100 group-hover:bg-slate-900 transition-colors">
+                           <div className="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center border border-slate-100 group-hover:bg-purple-900 transition-colors">
                               <Rocket className="w-8 h-8 text-slate-400 group-hover:text-white" />
                            </div>
                            <div>
@@ -199,7 +199,7 @@ export default function FreelancerHub() {
                      </div>
                      <p className="text-slate-400 font-black text-2xl tracking-tight">Mission Board Empty</p>
                      <p className="text-slate-400 font-medium mt-2">Ready to deploy your technical prowess?</p>
-                     <Button onClick={() => router.push('/jobs')} className="mt-10 h-14 bg-slate-900 hover:bg-cyan-600 text-white font-black px-12 rounded-2xl transition-all shadow-xl shadow-slate-200">Scout Opportunities</Button>
+                     <Button onClick={() => router.push('/jobs')} className="mt-10 h-14 bg-purple-900 hover:bg-purple-700 text-white font-black px-12 rounded-2xl transition-all shadow-xl shadow-purple-200">Scout Opportunities</Button>
                   </div>
                 )}
              </div>
@@ -213,7 +213,7 @@ export default function FreelancerHub() {
                 </CardHeader>
                 <CardContent className="p-10 space-y-8 relative z-10">
                    <div className="p-8 bg-white/5 rounded-[2.5rem] border border-white/5 backdrop-blur-sm group hover:bg-white/[0.08] transition-all cursor-pointer">
-                      <p className="text-[10px] text-cyan-400 mb-4 font-black uppercase tracking-[0.2em]">Priority Match</p>
+                      <p className="text-[10px] text-purple-400 mb-4 font-black uppercase tracking-[0.2em]">Priority Match</p>
                       <p className="text-white font-medium text-lg leading-relaxed">"NextJS Expert" matches your profile.</p>
                       <button className="text-slate-400 text-[10px] font-black uppercase mt-6 tracking-widest group-hover:text-white transition-colors">Analyze Project →</button>
                    </div>
@@ -226,9 +226,9 @@ export default function FreelancerHub() {
              </Card>
 
              <div className="grid grid-cols-2 gap-6">
-                <button onClick={() => router.push('/messages')} className="bg-white border border-slate-100 hover:border-transparent hover:shadow-2xl hover:shadow-slate-100 transition-all p-8 rounded-[2.5rem] text-center group">
-                   <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mx-auto mb-4 group-hover:bg-cyan-50 transition-colors">
-                      <MessageSquare className="w-6 h-6 text-slate-400 group-hover:text-cyan-600" />
+                <button onClick={() => router.push('/messages')} className="bg-white border border-slate-100 hover:border-transparent hover:shadow-2xl hover:shadow-purple-100 transition-all p-8 rounded-[2.5rem] text-center group">
+                   <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-50 transition-colors">
+                      <MessageSquare className="w-6 h-6 text-slate-400 group-hover:text-purple-600" />
                    </div>
                    <p className="text-slate-900 font-black text-sm tracking-tight">Secure Comms</p>
                 </button>
