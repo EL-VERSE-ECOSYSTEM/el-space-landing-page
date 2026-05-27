@@ -32,11 +32,16 @@ export default function FreelancerHub() {
   useEffect(() => {
     if (user) {
       fetchDashboardData()
+    } else {
+      setLoading(false)
     }
   }, [user])
 
   const fetchDashboardData = async () => {
-    if (!user?.id) return
+    if (!user?.id) {
+      setLoading(false)
+      return
+    }
     try {
       setLoading(true)
       const [appRes, walletRes] = await Promise.all([
@@ -49,17 +54,21 @@ export default function FreelancerHub() {
 
       if (data.success) {
         setApplications(data.applications || [])
+        const activeCount = data.applications?.filter((a: any) => a.status === 'accepted').length || 0
         setStats(prev => ({
           ...prev,
-          totalEarnings: 8450,
-          activeJobs: 3,
-          pendingPayments: 1200,
-          jobSuccess: 98
+          activeJobs: activeCount,
         }))
       }
 
       if (walletData.success) {
-        setStats(prev => ({ ...prev, walletBalance: walletData.wallet.balance }))
+        setStats(prev => ({
+          ...prev,
+          walletBalance: walletData.wallet.balance,
+          totalEarnings: walletData.wallet.total_earned || 0,
+          pendingPayments: walletData.wallet.pending_balance || 0,
+          jobSuccess: 100 // placeholder for now, ideally from profile
+        }))
       }
     } catch (err) {
       toast.error('Failed to sync network data')
@@ -114,16 +123,16 @@ export default function FreelancerHub() {
            </div>
            <div className="flex-1 text-center md:text-left">
               <div className="flex flex-col md:flex-row md:items-center gap-4">
-                 <h1 className="text-5xl font-black text-slate-900 tracking-tighter">{user?.full_name}</h1>
+                 <h1 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tighter">{user?.full_name}</h1>
                  <Badge className="w-fit mx-auto md:mx-0 bg-cyan-50 border-cyan-100 text-cyan-600 px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em]">
                    TOP-RATED ELITE
                  </Badge>
               </div>
-              <p className="text-slate-500 mt-4 text-lg font-medium flex items-center justify-center md:justify-start gap-6">
+              <div className="text-slate-500 mt-4 text-base md:text-lg font-medium flex flex-col md:flex-row items-center justify-center md:justify-start gap-3 md:gap-6">
                  <span className="flex items-center gap-2"><Star className="w-5 h-5 text-amber-400 fill-amber-400" /> <span className="text-slate-900 font-black">4.98</span> (124 reviews)</span>
-                 <div className="w-1.5 h-1.5 bg-slate-200 rounded-full" />
+                 <div className="hidden md:block w-1.5 h-1.5 bg-slate-200 rounded-full" />
                  <span className="flex items-center gap-2 text-cyan-600 font-black tracking-tight"><Zap className="w-5 h-5" /> Elite Vanguard Status</span>
-              </p>
+              </div>
            </div>
            <div className="flex gap-4">
               <Button onClick={() => router.push('/settings')} variant="outline" className="h-14 border-2 border-slate-100 text-slate-900 font-black rounded-2xl px-8 hover:bg-slate-50">Workspace Settings</Button>

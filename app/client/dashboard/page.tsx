@@ -32,11 +32,16 @@ export default function ClientHub() {
   useEffect(() => {
     if (user) {
       fetchDashboardData()
+    } else {
+      setLoading(false)
     }
   }, [user])
 
   const fetchDashboardData = async () => {
-    if (!user?.id) return
+    if (!user?.id) {
+      setLoading(false)
+      return
+    }
     try {
       setLoading(true)
       const [projRes, walletRes] = await Promise.all([
@@ -51,15 +56,17 @@ export default function ClientHub() {
         setProjects(data.projects || [])
         setStats(prev => ({
           ...prev,
-          activeProjects: data.projects?.length || 0,
-          totalSpent: 12500,
-          hiredFreelancers: 8,
-          pendingApplications: 24
+          activeProjects: data.projects?.filter((p: any) => p.status === 'open' || p.status === 'in_progress').length || 0,
+          pendingApplications: 0 // Ideally this should be fetched from applications API
         }))
       }
 
       if (walletData.success) {
-        setStats(prev => ({ ...prev, walletBalance: walletData.wallet.balance }))
+        setStats(prev => ({
+          ...prev,
+          walletBalance: walletData.wallet.balance,
+          totalSpent: walletData.wallet.total_withdrawn || 0 // Assuming withdrawn means spent for client
+        }))
       }
     } catch (err) {
       toast.error('Failed to sync workspace')

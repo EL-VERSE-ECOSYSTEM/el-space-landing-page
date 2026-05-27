@@ -77,9 +77,9 @@ export function FeaturedTalent() {
 
                 {/* Skills */}
                 <div className="flex flex-wrap gap-2 mb-8 flex-grow">
-                  {freelancer.skills.slice(0, 3).map((skill: string) => (
+                  {freelancer.skills.slice(0, 3).map((skill: string, idx: number) => (
                     <span
-                      key={skill}
+                      key={`${freelancer.id}-${skill}-${idx}`}
                       className="rounded-xl bg-slate-100 px-4 py-1.5 text-xs font-bold text-slate-600 border border-slate-200 transition-colors group-hover:bg-cyan-50 group-hover:text-cyan-700 group-hover:border-cyan-100"
                     >
                       {skill}
