@@ -24,7 +24,10 @@ export default function EarningsPage() {
   }, [authLoading, user]);
 
   const fetchEarnings = async () => {
-    if (!user?.id) return
+    if (!user?.id) {
+      setLoading(false);
+      return;
+    }
     try {
       const response = await fetch(`/api/earnings?freelancerId=${user.id}`);
       const data = await response.json();
