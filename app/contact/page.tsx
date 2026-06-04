@@ -51,99 +51,100 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar />
 
       <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">
-            Get in Touch
+          <h1 className="text-4xl font-black mb-4 bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent uppercase tracking-tight">
+            Initiate Contact
           </h1>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Have questions or need support? We&apos;re here to help. Reach out to us using the form below or contact us directly.
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto font-medium">
+            Strategic support for the global technical workforce. Reach out to our core team below.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
           {/* Contact Information */}
           <div className="space-y-8">
-            <h2 className="text-2xl font-bold text-white mb-8">Contact Information</h2>
+            <h2 className="text-2xl font-black text-foreground mb-8 uppercase tracking-tight">System Access Points</h2>
 
             {/* Email */}
             <div className="flex gap-4">
               <div className="flex-shrink-0">
-                <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-cyan-500/20 border border-cyan-500/50">
-                  <Mail className="h-6 w-6 text-cyan-400" />
+                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-primary/10 border border-primary/20 shadow-sm">
+                  <Mail className="h-6 w-6 text-primary" />
                 </div>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white mb-1">Email</h3>
-                <p className="text-slate-400">support@elspace.com</p>
-                <p className="text-slate-400 text-sm">We typically respond within 24 hours</p>
+                <h3 className="text-lg font-bold text-foreground mb-1 uppercase tracking-tighter">Direct Transmission</h3>
+                <p className="text-muted-foreground font-medium">support@elspace.com</p>
+                <p className="text-muted-foreground text-xs uppercase font-black tracking-widest mt-1 opacity-60">Response Window: 24 Cycles</p>
               </div>
             </div>
 
             {/* Phone */}
             <div className="flex gap-4">
               <div className="flex-shrink-0">
-                <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-blue-500/20 border border-blue-500/50">
-                  <Phone className="h-6 w-6 text-blue-400" />
+                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-blue-500/10 border border-blue-500/20 shadow-sm">
+                  <Phone className="h-6 w-6 text-blue-500" />
                 </div>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white mb-1">Phone</h3>
-                <p className="text-slate-400">+1 (555) 123-4567</p>
-                <p className="text-slate-400 text-sm">Available Monday - Friday, 9 AM - 6 PM EST</p>
+                <h3 className="text-lg font-bold text-foreground mb-1 uppercase tracking-tighter">Voice Link</h3>
+                <p className="text-muted-foreground font-medium">+1 (555) 123-4567</p>
+                <p className="text-muted-foreground text-xs uppercase font-black tracking-widest mt-1 opacity-60">Mon - Fri, 0900 - 1800 EST</p>
               </div>
             </div>
 
             {/* Address */}
             <div className="flex gap-4">
               <div className="flex-shrink-0">
-                <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-amber-500/20 border border-amber-500/50">
-                  <MapPin className="h-6 w-6 text-amber-400" />
+                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-amber-500/10 border border-amber-500/20 shadow-sm">
+                  <MapPin className="h-6 w-6 text-amber-500" />
                 </div>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white mb-1">Office</h3>
-                <p className="text-slate-400">EL VERSE TECHNOLOGIES</p>
-                <p className="text-slate-400 text-sm">Remote-First Company</p>
+                <h3 className="text-lg font-bold text-foreground mb-1 uppercase tracking-tighter">HQ Node</h3>
+                <p className="text-muted-foreground font-medium">EL VERSE TECHNOLOGIES</p>
+                <p className="text-muted-foreground text-xs uppercase font-black tracking-widest mt-1 opacity-60">Remote-First Infrastructure</p>
               </div>
             </div>
 
             {/* Social Media */}
             <div className="flex gap-4 pt-4">
               <div className="flex-shrink-0">
-                <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-green-500/20 border border-green-500/50">
-                  <MessageSquare className="h-6 w-6 text-green-400" />
+                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 shadow-sm">
+                  <MessageSquare className="h-6 w-6 text-emerald-500" />
                 </div>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white mb-1">Follow Us</h3>
-                <div className="flex gap-4">
-                  <a href="https://twitter.com/elspace" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-cyan-400 transition-colors">Twitter</a>
-                  <a href="https://linkedin.com/company/elspace" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-cyan-400 transition-colors">LinkedIn</a>
-                  <a href="https://discord.gg/elspace" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-cyan-400 transition-colors">Discord</a>
+                <h3 className="text-lg font-bold text-foreground mb-1 uppercase tracking-tighter">Social Nexus</h3>
+                <div className="flex gap-6 mt-2">
+                  <a href="https://twitter.com/elspace" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors font-black uppercase text-xs tracking-widest">Twitter</a>
+                  <a href="https://linkedin.com/company/elspace" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors font-black uppercase text-xs tracking-widest">LinkedIn</a>
+                  <a href="https://discord.gg/elspace" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors font-black uppercase text-xs tracking-widest">Discord</a>
                 </div>
               </div>
             </div>
 
             {/* Response Time */}
-            <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 mt-8">
-              <p className="text-sm text-slate-300">
-                <strong>Average Response Time:</strong> Within 24 business hours. For urgent matters, please email our support team with &quot;URGENT&quot; in the subject line.
+            <div className="bg-muted/50 border border-border rounded-2xl p-6 mt-8 shadow-inner">
+              <p className="text-xs text-muted-foreground font-medium leading-relaxed uppercase tracking-wide">
+                <strong className="text-foreground">Average Sync Time:</strong> Within 24 business hours. For urgent mission friction, please subject your transmission with <span className="text-red-500 font-black">"URGENT"</span>.
               </p>
             </div>
           </div>
 
           {/* Contact Form */}
-          <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700 rounded-lg p-8">
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="bg-card border border-border rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16" />
+            <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
               {/* Name */}
-              <div>
-                <label className="block text-sm font-medium text-slate-200 mb-2">
-                  Full Name *
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">
+                  Entity Name *
                 </label>
                 <Input
                   type="text"
@@ -152,14 +153,14 @@ export default function ContactPage() {
                   onChange={handleChange}
                   required
                   placeholder="John Doe"
-                  className="bg-slate-700/50 border-slate-600 text-white placeholder-slate-500"
+                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 h-12 rounded-xl focus:ring-primary/20"
                 />
               </div>
 
               {/* Email */}
-              <div>
-                <label className="block text-sm font-medium text-slate-200 mb-2">
-                  Email Address *
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">
+                  Communication Endpoint *
                 </label>
                 <Input
                   type="email"
@@ -168,20 +169,20 @@ export default function ContactPage() {
                   onChange={handleChange}
                   required
                   placeholder="you@example.com"
-                  className="bg-slate-700/50 border-slate-600 text-white placeholder-slate-500"
+                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 h-12 rounded-xl focus:ring-primary/20"
                 />
               </div>
 
               {/* Type */}
-              <div>
-                <label className="block text-sm font-medium text-slate-200 mb-2">
-                  Inquiry Type *
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">
+                  Inquiry Protocol *
                 </label>
                 <select
                   name="type"
                   value={formData.type}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 text-white rounded-lg hover:border-slate-500 transition-colors"
+                  className="w-full px-4 h-12 bg-muted/50 border border-border text-foreground rounded-xl hover:border-primary/50 transition-colors outline-none font-bold text-sm"
                 >
                   <option value="general">General Inquiry</option>
                   <option value="support">Support Request</option>
@@ -192,9 +193,9 @@ export default function ContactPage() {
               </div>
 
               {/* Subject */}
-              <div>
-                <label className="block text-sm font-medium text-slate-200 mb-2">
-                  Subject *
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">
+                  Transmission Subject *
                 </label>
                 <Input
                   type="text"
@@ -202,24 +203,24 @@ export default function ContactPage() {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  placeholder="What is this about?"
-                  className="bg-slate-700/50 border-slate-600 text-white placeholder-slate-500"
+                  placeholder="Query objective"
+                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 h-12 rounded-xl focus:ring-primary/20"
                 />
               </div>
 
               {/* Message */}
-              <div>
-                <label className="block text-sm font-medium text-slate-200 mb-2">
-                  Message *
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">
+                  Data Packet *
                 </label>
                 <Textarea
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  placeholder="Tell us more about your inquiry..."
+                  placeholder="Describe your inquiry in detail..."
                   rows={5}
-                  className="bg-slate-700/50 border-slate-600 text-white placeholder-slate-500 resize-none"
+                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 rounded-xl focus:ring-primary/20 resize-none p-4 font-medium"
                 />
               </div>
 
@@ -227,58 +228,58 @@ export default function ContactPage() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold py-2"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-black py-4 h-14 rounded-2xl shadow-xl shadow-primary/20 transition-all uppercase text-sm tracking-widest"
               >
                 {loading ? (
                   <>
                     <Loader className="w-4 h-4 mr-2 animate-spin" />
-                    Sending...
+                    Transmitting...
                   </>
                 ) : (
-                  'Send Message'
+                  'Authorize Send'
                 )}
               </Button>
 
-              <p className="text-xs text-slate-400 text-center">
-                We&apos;ll get back to you as soon as possible. Please expect a response within 24 business hours.
+              <p className="text-[10px] text-muted-foreground text-center font-bold uppercase tracking-tighter">
+                Secure link active. Please expect a response within 24 operational hours.
               </p>
             </form>
           </div>
         </div>
 
         {/* FAQ Section */}
-        <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-white mb-8">Frequently Asked Questions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="font-semibold text-white mb-2">How do I get help with my account?</h3>
-              <p className="text-slate-400 text-sm">
-                You can contact our support team by email or through this contact form. We&apos;re available 24/7 to help.
+        <div className="bg-card border border-border rounded-[2.5rem] p-10 shadow-xl">
+          <h2 className="text-2xl font-black text-foreground mb-8 uppercase tracking-tight">Frequent Queries</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div className="space-y-2">
+              <h3 className="font-black text-foreground uppercase text-sm tracking-widest">Account Support</h3>
+              <p className="text-muted-foreground text-sm font-medium leading-relaxed">
+                You can contact our support team by email or through this contact form. We&apos;re available 24/7 to maintain your operational status.
               </p>
             </div>
-            <div>
-              <h3 className="font-semibold text-white mb-2">What&apos;s your typical response time?</h3>
-              <p className="text-slate-400 text-sm">
-                We aim to respond to all inquiries within 24 business hours. Urgent matters may receive faster responses.
+            <div className="space-y-2">
+              <h3 className="font-black text-foreground uppercase text-sm tracking-widest">Response Velocity</h3>
+              <p className="text-muted-foreground text-sm font-medium leading-relaxed">
+                We aim to respond to all inquiries within 24 business cycles. Urgent mission parameters may receive priority synchronization.
               </p>
             </div>
-            <div>
-              <h3 className="font-semibold text-white mb-2">How do I report a problem?</h3>
-              <p className="text-slate-400 text-sm">
-                Please use the form above with &quot;Support Request&quot; as the inquiry type and describe the issue in detail.
+            <div className="space-y-2">
+              <h3 className="font-black text-foreground uppercase text-sm tracking-widest">System Anomalies</h3>
+              <p className="text-muted-foreground text-sm font-medium leading-relaxed">
+                Please use the form above with &quot;Support Request&quot; as the protocol type and describe the anomaly in granular detail.
               </p>
             </div>
-            <div>
-              <h3 className="font-semibold text-white mb-2">Can I schedule a call?</h3>
-              <p className="text-slate-400 text-sm">
-                For partnership or enterprise inquiries, please mention it in your message and we&apos;ll arrange a call.
+            <div className="space-y-2">
+              <h3 className="font-black text-foreground uppercase text-sm tracking-widest">Strategic Partnership</h3>
+              <p className="text-muted-foreground text-sm font-medium leading-relaxed">
+                For enterprise or high-volume integration queries, please mention it in your message and we&apos;ll arrange a secure call.
               </p>
             </div>
           </div>
         </div>
 
         {/* Back Link */}
-        <div className="mt-12 pt-8 border-t border-slate-700">
+        <div className="mt-12 pt-8 border-t border-border">
           <Link
             href="/"
             className="text-cyan-400 hover:text-cyan-300 transition-colors"

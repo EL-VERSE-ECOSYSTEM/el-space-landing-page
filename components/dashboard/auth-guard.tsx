@@ -62,10 +62,10 @@ export function AuthGuard({ children, userType, redirectPath }: {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-900">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
-          <p className="text-white mt-4">Loading...</p>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          <p className="text-foreground mt-4">Loading...</p>
         </div>
       </div>
     );
@@ -79,7 +79,7 @@ export function AuthGuard({ children, userType, redirectPath }: {
   const u = user as any;
   if (userType && u.user_type !== userType && u.userType !== userType) {
     // Redirect to correct dashboard
-    window.location.href = u.user_type === "freelancer" ? "/freelancer" : "/client";
+    window.location.href = u.user_type === "freelancer" ? "/freelancer/dashboard" : "/client/dashboard";
     return null;
   }
 
@@ -101,15 +101,20 @@ export function DashboardLayout({
   if (!user) return null;
 
   const u = user as any;
-  const userName = u.name || u.email || "User";
+  const userName = u.name || u.full_name || u.email || "User";
   const elSpaceId = u.el_space_id || "EL-XXXXXXXX";
 
+  // Role-specific theme colors
+  const activeColorClass = userType === 'client' ? 'text-success' : 'text-accent';
+  const sidebarBg = 'bg-card';
+  const borderClass = 'border-border';
+
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-background">
       {/* Mobile sidebar toggle */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-slate-800 rounded-md text-white"
+        className={`lg:hidden fixed top-4 left-4 z-50 p-2 ${sidebarBg} border ${borderClass} rounded-md text-foreground`}
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -117,27 +122,29 @@ export function DashboardLayout({
       </button>
 
       {/* Sidebar */}
-      <aside className={`fixed top-0 left-0 h-full w-64 bg-slate-800 border-r border-slate-700 z-40 transform transition-transform duration-200 lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+      <aside className={`fixed top-0 left-0 h-full w-64 ${sidebarBg} border-r ${borderClass} z-40 transform transition-transform duration-200 lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
         <div className="p-6">
           <Link href="/" className="flex items-center gap-2 mb-8">
-            <span className="text-2xl font-bold">
-              <span className="text-cyan-500">EL</span>
-              <span className="text-white"> SPACE</span>
+            <span className="text-2xl font-black tracking-tighter">
+              <span className={activeColorClass}>EL</span>
+              <span className="text-foreground"> SPACE</span>
             </span>
           </Link>
           
-          <div className="mb-6 p-3 bg-slate-700/50 rounded-lg">
-            <p className="text-white font-semibold truncate">{userName}</p>
-            <p className="text-xs text-cyan-400 font-mono">{elSpaceId}</p>
-            <p className="text-xs text-slate-400 capitalize">{userType}</p>
+          <div className="mb-6 p-4 bg-secondary rounded-2xl border border-border">
+            <p className="text-foreground font-black truncate text-sm uppercase">{userName}</p>
+            <p className={`text-[10px] font-mono font-bold ${activeColorClass}`}>{elSpaceId}</p>
+            <Badge className={`mt-2 ${userType === 'client' ? 'bg-success/10 text-success' : 'bg-accent/10 text-accent'} border-none text-[10px] font-black uppercase tracking-widest`}>
+              {userType}
+            </Badge>
           </div>
 
-          <nav className="space-y-1">
+          <nav className="space-y-2">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center gap-3 px-3 py-2 text-slate-300 hover:bg-slate-700 hover:text-white rounded-md transition-colors"
+                className="flex items-center gap-3 px-4 py-3 text-muted-foreground hover:bg-secondary hover:text-foreground rounded-xl transition-all font-bold text-sm uppercase tracking-wider"
                 onClick={() => setSidebarOpen(false)}
               >
                 {item.icon}
@@ -147,12 +154,12 @@ export function DashboardLayout({
           </nav>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-slate-700">
+        <div className={`absolute bottom-0 left-0 right-0 p-6 border-t ${borderClass}`}>
           <button
             onClick={logout}
-            className="w-full px-3 py-2 text-red-400 hover:bg-slate-700 rounded-md transition-colors text-left"
+            className="w-full px-4 py-3 text-destructive hover:bg-destructive/10 rounded-xl transition-all text-left font-black text-xs uppercase tracking-widest"
           >
-            Logout
+            Terminal Out
           </button>
         </div>
       </aside>
@@ -160,14 +167,18 @@ export function DashboardLayout({
       {/* Overlay for mobile */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-30 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Main content */}
-      <main className="lg:ml-64 min-h-screen">
-        <div className="p-4 lg:p-8">
+      <main className="lg:ml-64 min-h-screen relative">
+         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
+            <div className={`absolute -top-24 -left-24 w-96 h-96 ${userType === 'client' ? 'bg-success/5' : 'bg-accent/5'} rounded-full blur-[100px]`} />
+            <div className={`absolute top-1/2 -right-24 w-[500px] h-[500px] ${userType === 'client' ? 'bg-success/5' : 'bg-accent/5'} rounded-full blur-[120px]`} />
+         </div>
+        <div className="p-6 lg:p-12 max-w-7xl mx-auto">
           {children}
         </div>
       </main>

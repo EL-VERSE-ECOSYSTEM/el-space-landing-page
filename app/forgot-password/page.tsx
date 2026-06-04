@@ -47,53 +47,59 @@ export default function ForgotPasswordPage() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-900/20 to-slate-950 flex items-center justify-center p-4 relative overflow-hidden">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden text-foreground">
         {/* Animated background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
         </div>
 
         <div className="w-full max-w-md relative z-10">
-          <Card className="bg-slate-900/80 backdrop-blur-xl border-slate-700/50 shadow-2xl">
+          <Card className="bg-card/80 backdrop-blur-xl border-border shadow-2xl">
             <CardContent className="py-12 text-center space-y-6">
               <div className="flex justify-center">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full blur-xl opacity-50 animate-pulse"></div>
-                  <div className="relative bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full p-4">
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary to-blue-600 rounded-full blur-xl opacity-50 animate-pulse"></div>
+                  <div className="relative bg-gradient-to-br from-primary to-blue-600 rounded-full p-4">
                     <CheckCircle className="w-12 h-12 text-white" />
                   </div>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <h2 className="text-2xl font-bold text-white">Check Your Email</h2>
-                <p className="text-slate-400">
-                  We&apos;ve sent a password reset link to <span className="text-cyan-400 font-semibold">{email}</span>
+                <h2 className="text-2xl font-black text-foreground">Check Your Email</h2>
+                <p className="text-muted-foreground">
+                  We&apos;ve sent a password reset link to <span className="text-primary font-black">{email}</span>
                 </p>
               </div>
 
-              <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-4 space-y-2 text-left">
-                <p className="text-sm text-slate-300 font-semibold">Next steps:</p>
-                <ol className="text-sm text-slate-400 space-y-1">
-                  <li>1. Check your email inbox</li>
-                  <li>2. Click the reset link (valid for 24 hours)</li>
-                  <li>3. Create a new password</li>
+              <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6 space-y-3 text-left">
+                <p className="text-sm text-foreground font-black uppercase tracking-widest">Next steps:</p>
+                <ol className="text-sm text-muted-foreground space-y-2 font-medium">
+                  <li className="flex gap-3">
+                    <span className="text-primary font-black">01</span> Check your email inbox
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="text-primary font-black">02</span> Click the reset link
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="text-primary font-black">03</span> Create a new password
+                  </li>
                 </ol>
               </div>
 
-              <p className="text-xs text-slate-500">
-                Didn&apos;t receive the email? Check your spam folder or{' '}
+              <p className="text-xs text-muted-foreground font-medium">
+                Didn&apos;t receive the email?{' '}
                 <button
                   onClick={() => setIsSubmitted(false)}
-                  className="text-cyan-400 hover:text-cyan-300 transition-colors"
+                  className="text-primary hover:text-primary/80 font-black transition-colors"
                 >
-                  try again
+                  Try Again
                 </button>
               </p>
 
               <Link href="/auth/login">
-                <Button className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white">
+                <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-black h-12 rounded-xl">
                   Back to Login
                 </Button>
               </Link>
@@ -105,48 +111,47 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-900/20 to-slate-950 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden text-foreground">
       {/* Animated background gradient orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute top-1/2 right-1/3 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl animate-pulse" />
       </div>
 
       {/* Main card */}
       <div className="w-full max-w-md relative z-10">
         {/* Logo area */}
-        <div className="text-center mb-8 space-y-3">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/20">
-            <span className="text-3xl font-black text-white">EL</span>
+        <div className="text-center mb-10 space-y-4">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary via-blue-600 to-purple-700 shadow-xl shadow-primary/20 transition-transform hover:scale-110">
+            <span className="text-2xl font-black text-white">EL</span>
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">Reset Password</h1>
-            <p className="text-slate-400">Get back to your account</p>
+            <h1 className="text-4xl font-black text-foreground tracking-tight mb-2">Reset Password</h1>
+            <p className="text-muted-foreground font-bold uppercase tracking-widest text-[10px]">Premium Recovery Protocol</p>
           </div>
         </div>
 
-        <Card className="bg-slate-900/80 backdrop-blur-xl border-slate-700/50 shadow-2xl">
+        <Card className="bg-card/80 backdrop-blur-xl border-border shadow-2xl">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-white text-2xl">Forgot Password?</CardTitle>
-            <CardDescription className="text-slate-400">
+            <CardTitle className="text-foreground text-2xl font-black">Identify Account</CardTitle>
+            <CardDescription className="text-muted-foreground font-medium">
               Enter your email to receive a password reset link
             </CardDescription>
           </CardHeader>
 
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email Input */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Email Address</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Email Address</label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input
                     type="email"
                     placeholder="your@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 bg-slate-800/50 border-slate-700 text-white placeholder-slate-500 focus:border-cyan-500 focus:ring-cyan-500/20 transition-all"
+                    className="pl-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/30 focus:border-primary focus:ring-primary/10 transition-all rounded-2xl font-bold"
                   />
                 </div>
               </div>
@@ -155,12 +160,12 @@ export default function ForgotPasswordPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/40 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full h-14 bg-primary hover:bg-primary/90 text-primary-foreground font-black text-lg rounded-2xl shadow-xl shadow-primary/20 transition-all duration-300 active:scale-95 disabled:opacity-50"
               >
                 {isLoading ? (
                   <span className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Sending...
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Transmitting...
                   </span>
                 ) : (
                   'Send Reset Link'
@@ -172,24 +177,24 @@ export default function ForgotPasswordPage() {
                 <Button
                   type="button"
                   variant="ghost"
-                  className="w-full text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/10"
+                  className="w-full text-primary hover:text-primary/80 hover:bg-primary/5 font-black text-xs uppercase tracking-widest h-12"
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back to Login
+                  Return to Matrix
                 </Button>
               </Link>
             </form>
 
             {/* Security Notice */}
-            <div className="mt-6 p-3 rounded-lg bg-cyan-500/5 border border-cyan-500/20">
-              <p className="text-xs text-slate-400 text-center">
-                🔒 This is a secure form. Check your email within 5 minutes.
+            <div className="mt-8 p-4 rounded-2xl bg-muted/50 border border-border">
+              <p className="text-[10px] text-muted-foreground font-black uppercase tracking-tighter text-center">
+                🔒 Secure transmission active. Check your email within 5 minutes.
               </p>
             </div>
           </CardContent>
         </Card>
 
-        <div className="mt-8 text-center text-xs text-slate-500">
+        <div className="mt-10 text-center text-[10px] font-black text-muted-foreground uppercase tracking-[0.4em]">
           <p>© 2026 EL VERSE TECHNOLOGIES</p>
         </div>
       </div>

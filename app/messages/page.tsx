@@ -6,7 +6,7 @@ import { useAuth } from '@/components/auth-provider'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Search, Send, Plus, MoreVertical, Clock } from 'lucide-react'
+import { Search, Send, Plus, MoreVertical, Clock, MessageCircle } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface Conversation {
@@ -32,7 +32,6 @@ export default function MessagesPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null)
   const [messageInput, setMessageInput] = useState('')
-  const [userType] = useState<'client' | 'freelancer'>('client')
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState(true)
@@ -110,33 +109,33 @@ export default function MessagesPage() {
   ]
 
   return (
-    <DashboardLayout userType={userType} navItems={navItems}>
-      <div className="space-y-6">
+    <DashboardLayout userType={user?.user_type || 'freelancer'} navItems={navItems}>
+      <div className="space-y-8 text-foreground">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">Messages</h1>
-            <p className="text-slate-400">Connect and collaborate with your team</p>
+            <h1 className="text-4xl font-black text-foreground tracking-tighter uppercase">Comms <span className="text-primary">Nexus</span></h1>
+            <p className="text-muted-foreground font-medium">Real-time strategic synchronization</p>
           </div>
-          <Button className="bg-cyan-500 hover:bg-cyan-600 text-white">
+          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-black rounded-2xl h-12 px-6 shadow-xl shadow-primary/20 uppercase tracking-widest text-xs transition-all">
             <Plus className="w-4 h-4 mr-2" />
-            New Message
+            New Link
           </Button>
         </div>
 
         {/* Main Chat Area */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[600px]">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-[700px]">
           {/* Conversations List */}
-          <div className="bg-slate-800 border border-slate-700 rounded-lg flex flex-col">
-            <div className="p-4 border-b border-slate-700">
+          <div className="bg-card border border-border rounded-[2.5rem] flex flex-col overflow-hidden shadow-2xl shadow-black/5">
+            <div className="p-6 border-b border-border bg-muted/30">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   type="text"
-                  placeholder="Search conversations..."
+                  placeholder="Scan active links..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 bg-slate-700 border-slate-600 text-white placeholder-slate-500"
+                  className="pl-12 bg-background border-border text-foreground rounded-2xl h-12 focus:ring-primary/20"
                 />
               </div>
             </div>
@@ -145,26 +144,26 @@ export default function MessagesPage() {
                 <button
                   key={conv.id}
                   onClick={() => setSelectedConversation(conv.id)}
-                  className={`w-full text-left p-4 border-b border-slate-700/50 hover:bg-slate-700/50 transition-colors ${
-                    selectedConversation === conv.id ? 'bg-slate-700 border-l-2 border-l-cyan-500' : ''
+                  className={`w-full text-left p-6 border-b border-border/50 hover:bg-muted/50 transition-all ${
+                    selectedConversation === conv.id ? 'bg-muted/80 border-l-[6px] border-l-primary' : ''
                   }`}
                 >
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-start gap-4">
                     <div className="relative">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-white font-bold">
+                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-primary-foreground font-black text-lg shadow-lg">
                         {conv.name.charAt(0)}
                       </div>
-                      {conv.online && <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border border-slate-800" />}
+                      {conv.online && <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-background shadow-sm" />}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <h3 className="font-semibold text-white text-sm">{conv.name}</h3>
-                        <span className="text-xs text-slate-500 flex items-center gap-1">
+                      <div className="flex items-center justify-between mb-1">
+                        <h3 className="font-black text-foreground text-sm uppercase tracking-tight">{conv.name}</h3>
+                        <span className="text-[10px] text-muted-foreground/60 flex items-center gap-1 font-bold">
                           <Clock className="w-3 h-3" />
                           {conv.timestamp}
                         </span>
                       </div>
-                      <p className={`text-sm truncate ${conv.unread ? 'text-white font-medium' : 'text-slate-400'}`}>
+                      <p className={`text-xs truncate font-medium ${conv.unread ? 'text-primary font-black' : 'text-muted-foreground/60'}`}>
                         {conv.lastMessage}
                       </p>
                     </div>
@@ -175,45 +174,46 @@ export default function MessagesPage() {
           </div>
 
           {/* Chat Area */}
-          <div className="lg:col-span-2 bg-slate-800 border border-slate-700 rounded-lg flex flex-col">
+          <div className="lg:col-span-2 bg-card border border-border rounded-[2.5rem] flex flex-col overflow-hidden shadow-2xl shadow-black/5">
             {selectedConversation ? (
               <>
                 {/* Chat Header */}
-                <div className="p-4 border-b border-slate-700 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-white font-bold">
+                <div className="p-6 border-b border-border flex items-center justify-between bg-muted/30">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-primary-foreground font-black text-lg shadow-lg">
                       {conversations.find(c => c.id === selectedConversation)?.name.charAt(0)}
                     </div>
                     <div>
-                      <h3 className="font-semibold text-white">
+                      <h3 className="font-black text-foreground uppercase tracking-tight">
                         {conversations.find(c => c.id === selectedConversation)?.name}
                       </h3>
-                      <p className="text-xs text-slate-400">
-                        {conversations.find(c => c.id === selectedConversation)?.online ? 'Online' : 'Offline'}
+                      <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest flex items-center gap-1.5">
+                        <span className={`w-2 h-2 rounded-full ${conversations.find(c => c.id === selectedConversation)?.online ? 'bg-emerald-500 animate-pulse' : 'bg-muted-foreground/30'}`} />
+                        {conversations.find(c => c.id === selectedConversation)?.online ? 'Node Active' : 'Node Idle'}
                       </p>
                     </div>
                   </div>
-                  <Button variant="ghost" size="icon" className="text-slate-400 hover:text-white">
+                  <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground rounded-xl">
                     <MoreVertical className="w-5 h-5" />
                   </Button>
                 </div>
 
                 {/* Messages */}
-                <ScrollArea className="flex-1 p-4 space-y-4">
+                <ScrollArea className="flex-1 p-8 space-y-6">
                   {messages.map((msg) => (
                     <div
                       key={msg.id}
-                      className={`flex ${msg.sender === 'You' ? 'justify-end' : 'justify-start'} mb-4`}
+                      className={`flex ${msg.sender === 'You' ? 'justify-end' : 'justify-start'} mb-6`}
                     >
                       <div
-                        className={`max-w-xs px-4 py-2 rounded-lg ${
+                        className={`max-w-md px-6 py-4 rounded-[1.5rem] shadow-sm ${
                           msg.sender === 'You'
-                            ? 'bg-cyan-500 text-white'
-                            : 'bg-slate-700 text-slate-200'
+                            ? 'bg-primary text-primary-foreground rounded-tr-none'
+                            : 'bg-muted border border-border text-foreground rounded-tl-none'
                         }`}
                       >
-                        <p className="text-sm">{msg.text}</p>
-                        <p className={`text-xs mt-1 ${msg.sender === 'You' ? 'text-cyan-100' : 'text-slate-500'}`}>
+                        <p className="text-sm font-medium leading-relaxed">{msg.text}</p>
+                        <p className={`text-[10px] mt-2 font-black uppercase tracking-widest ${msg.sender === 'You' ? 'text-primary-foreground/60' : 'text-muted-foreground/40'}`}>
                           {msg.timestamp}
                         </p>
                       </div>
@@ -222,29 +222,33 @@ export default function MessagesPage() {
                 </ScrollArea>
 
                 {/* Input Area */}
-                <div className="p-4 border-t border-slate-700">
-                  <div className="flex gap-2">
+                <div className="p-6 border-t border-border bg-muted/10">
+                  <div className="flex gap-4">
                     <Input
                       type="text"
-                      placeholder="Type your message..."
+                      placeholder="Transmit data packet..."
                       value={messageInput}
                       onChange={(e) => setMessageInput(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                      className="bg-slate-700 border-slate-600 text-white placeholder-slate-500"
+                      className="bg-background border-border text-foreground rounded-2xl h-14 px-6 focus:ring-primary/20 font-medium"
                     />
                     <Button
                       onClick={handleSendMessage}
                       disabled={!messageInput.trim()}
-                      className="bg-cyan-500 hover:bg-cyan-600 text-white"
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground font-black rounded-2xl h-14 w-14 shadow-xl shadow-primary/20 transition-all active:scale-90"
                     >
-                      <Send className="w-4 h-4" />
+                      <Send className="w-5 h-5" />
                     </Button>
                   </div>
                 </div>
               </>
             ) : (
-              <div className="flex items-center justify-center h-full">
-                <p className="text-slate-400">Select a conversation to start messaging</p>
+              <div className="flex flex-col items-center justify-center h-full text-center p-12">
+                <div className="w-20 h-20 bg-muted rounded-3xl flex items-center justify-center mb-6 shadow-inner">
+                  <MessageCircle className="w-10 h-10 text-muted-foreground/30" />
+                </div>
+                <h3 className="text-xl font-black text-foreground uppercase tracking-tight">System Idle</h3>
+                <p className="text-muted-foreground font-medium mt-2 max-w-xs">Select a communication link from the roster to begin data synchronization.</p>
               </div>
             )}
           </div>

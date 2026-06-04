@@ -53,92 +53,94 @@ export default function FeedManagePage() {
 
   return (
     <DashboardLayout navItems={navItems} userType={(user?.user_type === "freelancer" ? "freelancer" : "client")}>
-      <div className="space-y-8">
+      <div className="space-y-8 text-foreground">
         <div className="flex items-center gap-4">
-          <Button onClick={() => router.push('/feed')} variant="ghost" className="text-slate-400 hover:text-white">
+          <Button onClick={() => router.push('/feed')} variant="ghost" className="text-muted-foreground hover:text-foreground rounded-full">
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <h1 className="text-3xl font-black text-white tracking-tight text-transparent bg-gradient-to-r from-white to-slate-500 bg-clip-text">Nexus Analytics</h1>
+          <h1 className="text-3xl font-black text-foreground tracking-tighter uppercase">Nexus <span className="text-primary">Analytics</span></h1>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-[2rem] overflow-hidden shadow-2xl">
-          <div className="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-900/50">
-            <div className="relative w-72">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+        <div className="bg-card border border-border rounded-[2.5rem] overflow-hidden shadow-2xl shadow-black/5">
+          <div className="p-8 border-b border-border flex justify-between items-center bg-muted/30">
+            <div className="relative w-80">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
-                placeholder="Search community intel..."
+                placeholder="Filter network intel..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 bg-slate-800 border-slate-700 text-white rounded-xl"
+                className="pl-12 bg-background border-border text-foreground rounded-2xl h-12 focus:ring-primary/20"
               />
             </div>
-            <div className="text-xs font-black text-slate-500 uppercase tracking-widest">
-              {filteredPosts.length} Entries Detected
+            <div className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">
+              {filteredPosts.length} Active Nodes Detected
             </div>
           </div>
 
-          <Table>
-            <TableHeader className="bg-slate-800/50">
-              <TableRow className="hover:bg-transparent border-slate-800">
-                <TableHead className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Author</TableHead>
-                <TableHead className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Content Insight</TableHead>
-                <TableHead className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Engagement</TableHead>
-                <TableHead className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Timestamp</TableHead>
-                <TableHead className="text-right text-slate-400 font-bold uppercase tracking-widest text-[10px]">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {loading ? (
-                <TableRow><TableCell colSpan={5} className="text-center py-20 text-slate-500 font-bold">Scanning Nexus Network...</TableCell></TableRow>
-              ) : filteredPosts.map((post) => (
-                <TableRow key={post.id} className="border-slate-800 hover:bg-slate-800/30 transition-colors group">
-                  <TableCell>
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-[10px] font-black text-cyan-400">
-                        {(post.user?.full_name || 'U').charAt(0)}
-                      </div>
-                      <div>
-                        <div className="text-white font-bold text-sm">{post.user?.full_name}</div>
-                        <div className="text-[10px] text-slate-500 font-mono">{post.user?.el_space_id}</div>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="max-w-xs">
-                    <p className="text-slate-300 text-sm truncate">{post.content}</p>
-                    {post.media_type !== 'none' && (
-                      <Badge className="mt-1 bg-cyan-500/10 text-cyan-400 border-none text-[8px] font-black uppercase">
-                        {post.media_type} Attached
-                      </Badge>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex gap-4">
-                      <div className="text-center">
-                        <div className="text-white font-black text-xs">{post.likes_count}</div>
-                        <div className="text-[8px] text-slate-500 font-black uppercase tracking-tighter">Likes</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-white font-black text-xs">{post.comments_count}</div>
-                        <div className="text-[8px] text-slate-500 font-black uppercase tracking-tighter">Msgs</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-white font-black text-xs">{post.reposts_count}</div>
-                        <div className="text-[8px] text-slate-500 font-black uppercase tracking-tighter">Syncs</div>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-slate-500 text-xs font-medium">
-                    {new Date(post.created_at).toLocaleString()}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button variant="ghost" size="icon" className="text-slate-500 hover:text-white rounded-lg">
-                      <ExternalLink className="w-4 h-4" />
-                    </Button>
-                  </TableCell>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader className="bg-muted/50">
+                <TableRow className="hover:bg-transparent border-border">
+                  <TableHead className="text-muted-foreground font-black uppercase tracking-widest text-[10px] h-14 px-8">Origin Author</TableHead>
+                  <TableHead className="text-muted-foreground font-black uppercase tracking-widest text-[10px] h-14">Data Payload</TableHead>
+                  <TableHead className="text-muted-foreground font-black uppercase tracking-widest text-[10px] h-14">Impact Factor</TableHead>
+                  <TableHead className="text-muted-foreground font-black uppercase tracking-widest text-[10px] h-14">Sync Time</TableHead>
+                  <TableHead className="text-right text-muted-foreground font-black uppercase tracking-widest text-[10px] h-14 px-8">Operations</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {loading ? (
+                  <TableRow><TableCell colSpan={5} className="text-center py-24 text-muted-foreground font-black uppercase tracking-widest text-[10px] animate-pulse">Scouting Nexus Grid...</TableCell></TableRow>
+                ) : filteredPosts.map((post) => (
+                  <TableRow key={post.id} className="border-border hover:bg-muted/30 transition-colors group">
+                    <TableCell className="px-8 py-6">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-xs font-black text-primary border border-primary/20 shadow-inner">
+                          {(post.user?.full_name || 'U').charAt(0)}
+                        </div>
+                        <div>
+                          <div className="text-foreground font-black text-sm uppercase tracking-tight">{post.user?.full_name}</div>
+                          <div className="text-[10px] text-muted-foreground font-bold tracking-widest">{post.user?.el_space_id}</div>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="max-w-xs py-6">
+                      <p className="text-muted-foreground text-sm font-medium line-clamp-1">{post.content}</p>
+                      {post.media_type !== 'none' && (
+                        <Badge className="mt-2 bg-primary/5 text-primary border border-primary/10 text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded">
+                          {post.media_type} Encoded
+                        </Badge>
+                      )}
+                    </TableCell>
+                    <TableCell py-6>
+                      <div className="flex gap-6">
+                        <div className="text-center">
+                          <div className="text-foreground font-black text-xs">{post.likes_count}</div>
+                          <div className="text-[8px] text-muted-foreground font-black uppercase tracking-tighter opacity-60">Likes</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-foreground font-black text-xs">{post.comments_count}</div>
+                          <div className="text-[8px] text-muted-foreground font-black uppercase tracking-tighter opacity-60">Msgs</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-foreground font-black text-xs">{post.reposts_count}</div>
+                          <div className="text-[8px] text-muted-foreground font-black uppercase tracking-tighter opacity-60">Syncs</div>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-[10px] font-bold uppercase py-6">
+                      {new Date(post.created_at).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell className="text-right px-8 py-6">
+                      <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-xl">
+                        <ExternalLink className="w-4 h-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>
       </div>
     </DashboardLayout>

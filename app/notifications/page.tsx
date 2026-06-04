@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/auth-provider";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 // Types
@@ -62,30 +63,30 @@ function formatRelativeTime(date: Date): string {
 const typeConfig: Record<NotificationType, { icon: typeof FolderKanban; bg: string; color: string; badgeColor: string; label: string }> = {
   project: {
     icon: FolderKanban,
-    bg: "bg-cyan-100 dark:bg-cyan-900/30",
-    color: "text-cyan-600 dark:text-cyan-400",
-    badgeColor: "bg-cyan-100 text-cyan-700 border-cyan-200",
+    bg: "bg-primary/10",
+    color: "text-primary",
+    badgeColor: "bg-primary/10 text-primary border-primary/20",
     label: "Project",
   },
   message: {
     icon: MessageSquare,
-    bg: "bg-amber-100 dark:bg-amber-900/30",
-    color: "text-amber-600 dark:text-amber-400",
-    badgeColor: "bg-amber-100 text-amber-700 border-amber-200",
+    bg: "bg-warning/10",
+    color: "text-warning",
+    badgeColor: "bg-warning/10 text-warning border-warning/20",
     label: "Message",
   },
   payment: {
     icon: CreditCard,
-    bg: "bg-emerald-100 dark:bg-emerald-900/30",
-    color: "text-emerald-600 dark:text-emerald-400",
-    badgeColor: "bg-emerald-100 text-emerald-700 border-emerald-200",
+    bg: "bg-success/10",
+    color: "text-success",
+    badgeColor: "bg-success/10 text-success border-success/20",
     label: "Payment",
   },
   system: {
     icon: Settings,
-    bg: "bg-slate-100 dark:bg-slate-800/50",
-    color: "text-slate-600 dark:text-slate-400",
-    badgeColor: "bg-slate-100 text-slate-700 border-slate-200",
+    bg: "bg-muted",
+    color: "text-muted-foreground",
+    badgeColor: "bg-muted text-muted-foreground border-border",
     label: "System",
   },
 };
@@ -97,7 +98,7 @@ function NotificationIcon({ type, size = "default" }: { type: NotificationType; 
   const sizeClasses = size === "sm" ? "size-4" : "size-5";
 
   return (
-    <div className={cn("flex items-center justify-center rounded-full", config.bg, size === "sm" ? "size-9" : "size-11")}>
+    <div className={cn("flex items-center justify-center rounded-full shadow-sm", config.bg, size === "sm" ? "size-9" : "size-11")}>
       <Icon className={cn(sizeClasses, config.color)} />
     </div>
   );
@@ -118,15 +119,15 @@ function NotificationItem({
   return (
     <div
       className={cn(
-        "group relative flex gap-4 rounded-xl border p-4 transition-all duration-200 hover:shadow-md",
+        "group relative flex gap-6 rounded-[2rem] border p-6 transition-all duration-300",
         notification.read
-          ? "bg-white border-slate-200 hover:border-slate-300"
-          : "bg-white border-cyan-200 shadow-sm hover:border-cyan-300"
+          ? "bg-card border-border hover:border-primary/20 opacity-80"
+          : "bg-card border-primary/30 shadow-xl shadow-primary/5 hover:border-primary"
       )}
     >
       {/* Unread indicator */}
       {!notification.read && (
-        <div className="absolute top-4 right-4 size-2.5 rounded-full bg-cyan-500 animate-pulse" />
+        <div className="absolute top-4 right-4 size-2.5 rounded-full bg-primary animate-pulse" />
       )}
 
       {/* Avatar / Icon */}
@@ -164,7 +165,7 @@ function NotificationItem({
             <Button
               variant="ghost"
               size="sm"
-              className="h-7 gap-1 px-2 text-xs text-cyan-600 hover:text-cyan-700 hover:bg-cyan-50"
+              className="h-7 gap-1 px-2 text-xs text-primary hover:bg-primary/10"
               onClick={() => {
                 // In a real app, use router.push(notification.relatedUrl)
                 console.log("Navigate to:", notification.relatedUrl);
@@ -209,13 +210,13 @@ function NotificationItem({
 // Stats Card Component
 function StatsCard({ icon: Icon, label, value, color }: { icon: typeof Bell; label: string; value: number | string; color: string }) {
   return (
-    <div className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      <div className={cn("flex items-center justify-center rounded-lg size-10", color)}>
-        <Icon className="size-5" />
+    <div className="flex items-center gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm">
+      <div className={cn("flex items-center justify-center rounded-xl size-12 shadow-inner", color)}>
+        <Icon className="size-6" />
       </div>
       <div>
-        <p className="text-2xl font-bold text-slate-900">{value}</p>
-        <p className="text-xs text-slate-500">{label}</p>
+        <p className="text-2xl font-black text-foreground tracking-tighter">{value}</p>
+        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{label}</p>
       </div>
     </div>
   );
@@ -344,74 +345,74 @@ export default function NotificationsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <div className="min-h-screen bg-background text-foreground pt-24 pb-12">
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-10 flex items-end justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Notifications</h1>
-            <p className="mt-1 text-slate-300">Stay updated with your latest activity</p>
+            <h1 className="text-5xl font-black text-foreground tracking-tighter uppercase">Nexus <span className="text-primary">Intelligence</span></h1>
+            <p className="mt-2 text-muted-foreground font-medium text-lg">Central synchronization of all node activity.</p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             {unreadCount > 0 && (
-              <Button variant="outline" size="sm" onClick={markAllRead} className="border-slate-600 text-white hover:bg-slate-800/50 transition-all">
+              <Button onClick={markAllRead} className="bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase tracking-widest text-[10px] h-12 px-6 rounded-xl shadow-xl shadow-primary/20">
                 <CheckCheck className="mr-2 h-4 w-4" />
-                Mark all read
+                Clear Backlog
               </Button>
             )}
           </div>
         </div>
 
         {/* Stats */}
-        <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-lg border border-cyan-500/30 bg-gradient-to-br from-cyan-500/10 to-blue-500/5 backdrop-blur-sm p-4 hover:border-cyan-500/50 transition-all">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center rounded-lg h-10 w-10 bg-cyan-500/20 text-cyan-400">
-                <Bell className="h-5 w-5" />
+        <div className="mb-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <Card className="bg-card border-border rounded-[1.5rem] p-6 shadow-xl shadow-black/5">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center rounded-xl h-12 w-12 bg-primary/10 text-primary border border-primary/20 shadow-inner">
+                <Bell className="h-6 w-6" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-white">{notifications.length}</p>
-                <p className="text-xs text-slate-400">Total Notifications</p>
+                <p className="text-3xl font-black text-foreground tracking-tighter">{notifications.length}</p>
+                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Global Syncs</p>
               </div>
             </div>
-          </div>
-          <div className="rounded-lg border border-cyan-500/30 bg-gradient-to-br from-cyan-500/10 to-blue-500/5 p-4 hover:border-cyan-500/50 transition-all">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center rounded-lg h-10 w-10 bg-cyan-500/20 text-cyan-400">
-                <AlertCircle className="h-5 w-5" />
+          </Card>
+          <Card className="bg-card border-border rounded-[1.5rem] p-6 shadow-xl shadow-black/5">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center rounded-xl h-12 w-12 bg-primary/10 text-primary border border-primary/20 shadow-inner">
+                <AlertCircle className="h-6 w-6" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-white">{unreadCount}</p>
-                <p className="text-xs text-slate-400">Unread</p>
+                <p className="text-3xl font-black text-foreground tracking-tighter">{unreadCount}</p>
+                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Priority Intel</p>
               </div>
             </div>
-          </div>
-          <div className="rounded-lg border border-purple-500/30 bg-gradient-to-br from-purple-500/10 to-pink-500/5 p-4 hover:border-purple-500/50 transition-all">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center rounded-lg h-10 w-10 bg-purple-500/20 text-purple-400">
-                <FolderKanban className="h-5 w-5" />
+          </Card>
+          <Card className="bg-card border-border rounded-[1.5rem] p-6 shadow-xl shadow-black/5">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center rounded-xl h-12 w-12 bg-accent/10 text-accent border border-accent/20 shadow-inner">
+                <FolderKanban className="h-6 w-6" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-white">{projectCount}</p>
-                <p className="text-xs text-slate-400">Projects</p>
+                <p className="text-3xl font-black text-foreground tracking-tighter">{projectCount}</p>
+                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Missions</p>
               </div>
             </div>
-          </div>
-          <div className="rounded-lg border border-yellow-500/30 bg-gradient-to-br from-yellow-500/10 to-yellow-600/5 p-4 hover:border-yellow-500/50 transition-all">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center rounded-lg h-10 w-10 bg-yellow-500/20 text-yellow-400">
-                <MessageSquare className="h-5 w-5" />
+          </Card>
+          <Card className="bg-card border-border rounded-[1.5rem] p-6 shadow-xl shadow-black/5">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center rounded-xl h-12 w-12 bg-warning/10 text-warning border border-warning/20 shadow-inner">
+                <MessageSquare className="h-6 w-6" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-white">{messageCount}</p>
-                <p className="text-xs text-slate-400">Messages</p>
+                <p className="text-3xl font-black text-foreground tracking-tighter">{messageCount}</p>
+                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Comms</p>
               </div>
             </div>
-          </div>
+          </Card>
         </div>
 
         {/* Filter Tabs */}
-        <div className="mb-6 flex flex-wrap items-center gap-2 rounded-lg border border-slate-700/50 bg-slate-900/40 backdrop-blur-sm p-2">
+        <div className="mb-8 flex flex-wrap items-center gap-3 bg-card border border-border rounded-[2rem] p-2.5 shadow-inner">
           {filters.map((filter) => {
             const count =
               filter.key === "all"
@@ -429,43 +430,43 @@ export default function NotificationsPage() {
                 key={filter.key}
                 onClick={() => setActiveFilter(filter.key)}
                 className={cn(
-                  "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                  "flex items-center gap-3 rounded-[1.25rem] px-5 py-2.5 text-xs font-black uppercase tracking-widest transition-all",
                   activeFilter === filter.key
-                    ? "bg-cyan-500/20 text-cyan-300"
-                    : "text-slate-400 hover:bg-slate-800/50 hover:text-slate-200"
+                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
               >
                 {filter.label}
                 <span className={cn(
-                  "px-2 py-0.5 rounded-full text-xs font-medium",
+                  "px-2.5 py-0.5 rounded-full text-[9px] font-black",
                   activeFilter === filter.key
-                    ? "bg-cyan-500/30 text-cyan-300"
-                    : "bg-slate-700/50 text-slate-400"
+                    ? "bg-primary-foreground/20 text-primary-foreground"
+                    : "bg-muted-foreground/10 text-muted-foreground"
                 )}>
                   {count}
                 </span>
               </button>
             );
           })}
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ml-auto flex items-center gap-2 pr-2">
             {unreadCount > 0 && (
-              <Button variant="ghost" size="sm" onClick={markFilterRead} className="text-slate-300 hover:bg-slate-800/50">
-                Mark filter read
+              <Button variant="ghost" size="sm" onClick={markFilterRead} className="text-muted-foreground hover:text-primary font-black uppercase tracking-widest text-[9px]">
+                Purge Filter Read
               </Button>
             )}
           </div>
         </div>
 
         {/* Notification List */}
-        <div className="space-y-4">
+        <div className="space-y-6">
           {filteredNotifications.length === 0 ? (
-            <div className="flex flex-col items-center justify-center rounded-lg border border-slate-700/50 bg-slate-900/40 backdrop-blur-sm py-16">
-              <Bell className="mb-4 h-12 w-12 text-slate-600" />
-              <h3 className="text-lg font-semibold text-white">No notifications</h3>
-              <p className="mt-1 text-slate-400">
+            <div className="flex flex-col items-center justify-center rounded-[3rem] border-2 border-dashed border-border bg-card/50 py-24 shadow-inner">
+              <Bell className="mb-6 h-16 w-16 text-muted-foreground/10" />
+              <h3 className="text-xl font-black text-foreground uppercase tracking-tight">Signal Neutral</h3>
+              <p className="mt-2 text-muted-foreground font-medium max-w-xs text-center">
                 {activeFilter === "unread"
-                  ? "All caught up! No unread notifications."
-                  : "No notifications in this category yet."}
+                  ? "All data synchronized. No priority alerts detected."
+                  : "No intel records found in this sector."}
               </p>
             </div>
           ) : (

@@ -5,132 +5,132 @@ import Link from 'next/link'
 
 export default function CookiePolicyPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       
       <main className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="prose prose-invert max-w-none">
-          <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">
-            Cookie Policy
+        <div className="max-w-none">
+          <h1 className="text-4xl font-black mb-8 bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent uppercase tracking-tight">
+            Cookie Protocol
           </h1>
           
-          <p className="text-slate-400 mb-8 text-sm">
-            Last updated: {new Date().toLocaleDateString()}
+          <p className="text-muted-foreground mb-12 text-xs font-black uppercase tracking-[0.2em]">
+            Sync Date: {new Date().toLocaleDateString()}
           </p>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold text-white mb-4">1. What Are Cookies?</h2>
-            <p className="text-slate-300 mb-4">
-              Cookies are small pieces of data stored on your browser or device. They help us remember information about you, such as your preferences, login information, and browsing habits. They&apos;re commonly used to enhance user experience on websites.
+          <section className="mb-12">
+            <h2 className="text-2xl font-black text-foreground mb-6 uppercase tracking-tight">1. Operational Overview</h2>
+            <p className="text-muted-foreground mb-4 leading-relaxed font-medium">
+              Cookies are granular data packets stored on your browser or hardware node. They facilitate the retention of identity parameters, operational preferences, and navigational patterns to optimize the system interface.
             </p>
           </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold text-white mb-4">2. Types of Cookies We Use</h2>
+          <section className="mb-12">
+            <h2 className="text-2xl font-black text-foreground mb-6 uppercase tracking-tight">2. Packet Classification</h2>
             
-            <h3 className="text-xl font-semibold text-white mb-3 mt-6">Essential Cookies:</h3>
-            <p className="text-slate-300 mb-4">
-              These cookies are necessary for the website to function properly. They enable core functionality such as security, network management, and accessibility. You may not be able to use certain parts of our Service if you disable these.
+            <h3 className="text-lg font-black text-foreground mb-3 mt-8 uppercase tracking-widest text-primary">Core Essential:</h3>
+            <p className="text-muted-foreground mb-4 leading-relaxed font-medium">
+              Mandatory for base system stability. These enable identity verification, secure socket management, and resource allocation. Disabling these packets will result in mission failure.
             </p>
             
-            <h3 className="text-xl font-semibold text-white mb-3 mt-6">Performance Cookies:</h3>
-            <p className="text-slate-300 mb-4">
-              These cookies help us understand how visitors use our website by collecting and reporting information anonymously. This helps us optimize our Service.
+            <h3 className="text-lg font-black text-foreground mb-3 mt-8 uppercase tracking-widest text-primary">Performance Intel:</h3>
+            <p className="text-muted-foreground mb-4 leading-relaxed font-medium">
+              These monitor node behavior to generate anonymous usage telemetry. This data is utilized for platform optimization and bandwidth management.
             </p>
             
-            <h3 className="text-xl font-semibold text-white mb-3 mt-6">Functional Cookies:</h3>
-            <p className="text-slate-300 mb-4">
-              These cookies enable the website to provide personalized features and remember your choices (e.g., username, language, region).
+            <h3 className="text-lg font-black text-foreground mb-3 mt-8 uppercase tracking-widest text-primary">Operational Choice:</h3>
+            <p className="text-muted-foreground mb-4 leading-relaxed font-medium">
+              Used to remember specialized configurations such as regional localization, language preference, and workspace personalization.
             </p>
             
-            <h3 className="text-xl font-semibold text-white mb-3 mt-6">Marketing Cookies:</h3>
-            <p className="text-slate-300 mb-4">
-              These cookies track online activity to help deliver targeted ads and marketing campaigns that are relevant to you.
+            <h3 className="text-lg font-black text-foreground mb-3 mt-8 uppercase tracking-widest text-primary">External Influence:</h3>
+            <p className="text-muted-foreground mb-4 leading-relaxed font-medium">
+              Used by synchronized partners to deliver targeted intelligence and strategic communication relevant to your operational history.
             </p>
           </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold text-white mb-4">3. Third-Party Cookies</h2>
-            <p className="text-slate-300 mb-4">
-              We may allow third-party service providers to place cookies on your device. These include:
+          <section className="mb-12">
+            <h2 className="text-2xl font-black text-foreground mb-6 uppercase tracking-tight">3. External Nodes</h2>
+            <p className="text-muted-foreground mb-6 leading-relaxed font-medium">
+              We may permit authorized third-party nodes to inject data packets:
             </p>
-            <ul className="list-disc list-inside text-slate-300 space-y-2">
-              <li><strong>Analytics Services:</strong> To track website usage and performance</li>
-              <li><strong>Payment Processors:</strong> To process payments securely</li>
-              <li><strong>Social Media:</strong> To enable social media integration</li>
-              <li><strong>Advertising Partners:</strong> To deliver targeted advertisements</li>
+            <ul className="list-none space-y-4">
+              <li className="flex items-start gap-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
+                <span className="text-muted-foreground font-medium"><strong className="text-foreground uppercase text-xs tracking-widest">Telemetry Services:</strong> Real-time platform performance monitoring.</span>
+              </li>
+              <li className="flex items-start gap-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
+                <span className="text-muted-foreground font-medium"><strong className="text-foreground uppercase text-xs tracking-widest">Fiscal Gateways:</strong> Secure transaction and escrow processing.</span>
+              </li>
+              <li className="flex items-start gap-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
+                <span className="text-muted-foreground font-medium"><strong className="text-foreground uppercase text-xs tracking-widest">Nexus Bridges:</strong> Cross-platform social integration.</span>
+              </li>
             </ul>
           </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold text-white mb-4">4. How We Use Cookies</h2>
-            <p className="text-slate-300 mb-4">
-              We use cookies to:
+          <section className="mb-12">
+            <h2 className="text-2xl font-black text-foreground mb-6 uppercase tracking-tight">4. System Utilization</h2>
+            <p className="text-muted-foreground mb-6 leading-relaxed font-medium">
+              Operational objectives for data retention:
             </p>
-            <ul className="list-disc list-inside text-slate-300 space-y-2">
-              <li>Maintain your session and keep you logged in</li>
-              <li>Remember your preferences and settings</li>
-              <li>Track your browsing patterns and improve user experience</li>
-              <li>Provide personalized content and recommendations</li>
-              <li>Measure the effectiveness of our marketing campaigns</li>
-              <li>Detect and prevent fraud</li>
-              <li>Analyze website traffic and performance</li>
+            <ul className="list-none space-y-4">
+              <li className="flex items-center gap-4">
+                <span className="text-emerald-500 font-black">✓</span>
+                <span className="text-muted-foreground font-medium">Identity persistence and secure session locking.</span>
+              </li>
+              <li className="flex items-center gap-4">
+                <span className="text-emerald-500 font-black">✓</span>
+                <span className="text-muted-foreground font-medium">Node preference synchronization.</span>
+              </li>
+              <li className="flex items-center gap-4">
+                <span className="text-emerald-500 font-black">✓</span>
+                <span className="text-muted-foreground font-medium">Behavioral pattern mapping for UX improvement.</span>
+              </li>
+              <li className="flex items-center gap-4">
+                <span className="text-emerald-500 font-black">✓</span>
+                <span className="text-muted-foreground font-medium">Anomaly detection and fraud prevention.</span>
+              </li>
             </ul>
           </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold text-white mb-4">5. Cookie Expiration</h2>
-            <p className="text-slate-300 mb-4">
-              Most cookies used on EL SPACE expire when you close your browser. However, some persistent cookies may remain for extended periods to remember your preferences across multiple visits.
+          <section className="mb-12">
+            <h2 className="text-2xl font-black text-foreground mb-6 uppercase tracking-tight">5. Temporal Status</h2>
+            <p className="text-muted-foreground leading-relaxed font-medium">
+              Session packets are purged upon browser termination. Persistent packets remain active on your node for extended cycles to maintain consistent workspace configuration across multiple sessions.
             </p>
           </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold text-white mb-4">6. Managing Your Cookies</h2>
-            <p className="text-slate-300 mb-4">
-              You have control over how cookies are used on your device:
+          <section className="mb-12">
+            <h2 className="text-2xl font-black text-foreground mb-6 uppercase tracking-tight">6. Control Protocols</h2>
+            <p className="text-muted-foreground mb-6 leading-relaxed font-medium">
+              You retain full command over node data:
             </p>
-            <ul className="list-disc list-inside text-slate-300 space-y-2">
-              <li><strong>Browser Settings:</strong> Most browsers allow you to manage cookie preferences</li>
-              <li><strong>Disable Cookies:</strong> You can decline cookies, but this may limit Service functionality</li>
-              <li><strong>Clear Cookies:</strong> You can delete existing cookies at any time</li>
-              <li><strong>Third-Party Tools:</strong> Use browser extensions to block certain cookies</li>
+            <ul className="list-none space-y-4">
+              <li className="flex items-start gap-4 text-muted-foreground font-medium">
+                 <span className="text-primary font-black">»</span>
+                 Node Interface: Configure packet acceptance via browser firmware.
+              </li>
+              <li className="flex items-start gap-4 text-muted-foreground font-medium">
+                 <span className="text-primary font-black">»</span>
+                 Manual Purge: Execute cache clearance to remove existing data.
+              </li>
             </ul>
           </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold text-white mb-4">7. Do Not Track</h2>
-            <p className="text-slate-300 mb-4">
-              Some browsers include a &quot;Do Not Track&quot; feature. EL SPACE currently does not respond to Do Not Track signals as there is no industry standard for interpretation. However, you can control cookie usage through your browser settings.
+          <section className="mb-12">
+            <h2 className="text-2xl font-black text-foreground mb-6 uppercase tracking-tight">7. External Communications</h2>
+            <p className="text-muted-foreground leading-relaxed font-medium">
+              If you have inquiries regarding the data matrix, contact the Command Center:
             </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold text-white mb-4">8. International Data Transfers</h2>
-            <p className="text-slate-300 mb-4">
-              Your data collected through cookies may be transferred to and processed in countries other than your country of residence. These countries may have different data protection laws. By using EL SPACE, you consent to such transfers.
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold text-white mb-4">9. Changes to This Cookie Policy</h2>
-            <p className="text-slate-300 mb-4">
-              We may update this Cookie Policy from time to time to reflect changes in technology or legal requirements. We will notify you of significant changes by posting the updated policy on this page.
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold text-white mb-4">10. Contact Us</h2>
-            <p className="text-slate-300 mb-4">
-              If you have questions about our use of cookies, please contact us at:
-            </p>
-            <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 text-slate-300">
-              <p><strong>Email:</strong> privacy@elspace.com</p>
-              <p><strong>Data Protection Officer:</strong> dpo@elspace.com</p>
+            <div className="bg-card border border-border rounded-2xl p-8 mt-6 shadow-inner">
+              <p className="text-sm font-medium text-muted-foreground mb-2"><strong className="text-foreground uppercase tracking-widest text-[10px]">Secure Link:</strong> privacy@elspace.com</p>
+              <p className="text-sm font-medium text-muted-foreground"><strong className="text-foreground uppercase tracking-widest text-[10px]">Data Node Officer:</strong> dpo@elspace.com</p>
             </div>
           </section>
 
-          <div className="mt-12 pt-8 border-t border-slate-700">
+          <div className="mt-12 pt-8 border-t border-border">
             <Link
               href="/"
               className="text-cyan-400 hover:text-cyan-300 transition-colors"

@@ -114,22 +114,22 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden text-foreground">
       {/* Premium Background Orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px] animate-pulse" />
       </div>
 
       <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <div className="text-center mb-10 space-y-4">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 shadow-xl shadow-cyan-500/20">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary via-blue-500 to-purple-600 shadow-xl shadow-primary/20">
             <span className="text-2xl font-black text-white">EL</span>
           </div>
           <div>
-            <h1 className="text-4xl font-black text-slate-900 mb-2 tracking-tight">Secure Sign In</h1>
-            <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">Premium Authentication</p>
+            <h1 className="text-4xl font-black text-foreground mb-2 tracking-tighter uppercase">Secure Sign In</h1>
+            <p className="text-muted-foreground font-black uppercase tracking-[0.3em] text-[10px]">Premium Authentication Node</p>
           </div>
         </div>
 
@@ -144,15 +144,15 @@ export default function LoginPage() {
                 return (
                   <React.Fragment key={s}>
                     <div className={`relative flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-500 ${
-                      isCompleted ? 'bg-cyan-500 border-cyan-500 text-white' :
-                      isActive ? 'border-cyan-500 text-cyan-600 bg-cyan-50' :
-                      'border-slate-100 text-slate-300'
+                      isCompleted ? 'bg-primary border-primary text-primary-foreground' :
+                      isActive ? 'border-primary text-primary bg-primary/10' :
+                      'border-border text-muted-foreground'
                     }`}>
                       {isCompleted ? <ShieldCheck className="w-5 h-5" /> : <span className="text-sm font-black">{i + 1}</span>}
                     </div>
                     {i < 1 && (
                       <div className={`flex-1 h-1 mx-2 rounded-full transition-all duration-500 ${
-                        i < currentIndex ? 'bg-cyan-500' : 'bg-slate-100'
+                        i < currentIndex ? 'bg-primary' : 'bg-muted'
                       }`} />
                     )}
                   </React.Fragment>
@@ -162,19 +162,19 @@ export default function LoginPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-white/80 backdrop-blur-xl border border-slate-200 rounded-[2.5rem] p-8 md:p-10 shadow-2xl shadow-slate-200/50 overflow-hidden">
+        <div className="bg-card/80 backdrop-blur-xl border border-border rounded-[2.5rem] p-8 md:p-10 shadow-2xl shadow-primary/5 overflow-hidden">
           {/* Status Messages */}
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
-              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
-              <p className="text-red-800 text-sm font-bold leading-tight">{error}</p>
+          <div className="mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
+            <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0" />
+            <p className="text-destructive text-sm font-bold leading-tight">{error}</p>
             </div>
           )}
 
           {success && (
-            <div className="mb-6 p-4 bg-emerald-50 border border-emerald-100 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
-              <CheckCircle className="w-5 h-5 text-emerald-500 flex-shrink-0" />
-              <p className="text-emerald-800 text-sm font-bold leading-tight">{success}</p>
+          <div className="mb-6 p-4 bg-success/10 border border-success/20 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
+            <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
+            <p className="text-success text-sm font-bold leading-tight">{success}</p>
             </div>
           )}
 
@@ -182,16 +182,16 @@ export default function LoginPage() {
           {step === "email" && (
             <form onSubmit={handleCheckEmail} className="space-y-6">
               <div className="space-y-2">
-                <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Email or EL Space ID</Label>
+                <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] ml-1">Email or EL Space ID</Label>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/30" />
                   <Input
                     type="text"
                     placeholder="you@example.com or ELS1234567"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="pl-12 h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 focus:border-cyan-500 focus:ring-cyan-500/10 transition-all rounded-2xl font-bold"
+                    className="pl-12 h-14 bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 focus:ring-primary/20 transition-all rounded-2xl font-bold"
                   />
                 </div>
               </div>
@@ -199,12 +199,12 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={loading || !email}
-                className="w-full h-14 bg-slate-900 hover:bg-cyan-600 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-cyan-500/20 group"
+                className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-black text-sm uppercase tracking-widest rounded-2xl transition-all duration-300 shadow-xl shadow-primary/20 group"
               >
                 {loading ? (
-                  <span className="flex items-center gap-2">
+                  <span className="flex items-center gap-3">
                     <Loader className="w-5 h-5 animate-spin" />
-                    Checking Identity...
+                    Verifying Identity...
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
@@ -215,16 +215,16 @@ export default function LoginPage() {
 
               <div className="relative py-2">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-slate-100"></div>
+                  <div className="w-full border-t border-border"></div>
                 </div>
                 <div className="relative flex justify-center text-[10px]">
-                  <span className="px-4 bg-white/80 text-slate-400 font-black uppercase tracking-[0.2em]">or social login</span>
+                  <span className="px-4 bg-card/80 text-muted-foreground font-black uppercase tracking-[0.2em]">or social login</span>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <GoogleSignInButton fullWidth variant="outline" className="h-14 rounded-2xl font-bold border-2 border-slate-100" />
-                <GitHubSignInButton fullWidth variant="outline" className="h-14 rounded-2xl font-bold border-2 border-slate-100" />
+                <GoogleSignInButton fullWidth variant="outline" className="h-14 rounded-2xl font-bold border-2 border-border" />
+                <GitHubSignInButton fullWidth variant="outline" className="h-14 rounded-2xl font-bold border-2 border-border" />
               </div>
             </form>
           )}
@@ -232,14 +232,14 @@ export default function LoginPage() {
           {/* Step 2: Password */}
           {step === "password" && (
             <form onSubmit={handleLogin} className="space-y-6">
-              <div className="bg-slate-50 p-4 rounded-2xl text-center mb-2">
-                <p className="text-sm font-bold text-slate-600">
-                  Signing in as <span className="text-cyan-600">{email}</span>
+              <div className="bg-muted p-4 rounded-2xl text-center mb-2">
+                <p className="text-sm font-bold text-muted-foreground">
+                  Signing in as <span className="text-primary">{email}</span>
                 </p>
               </div>
 
               <div className="space-y-2">
-                <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Password</Label>
+                <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Password</Label>
                 <div className="relative">
                   <Input
                     type={showPassword ? "text" : "password"}
@@ -247,12 +247,12 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="pl-4 pr-12 h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 focus:border-cyan-500 focus:ring-cyan-500/10 transition-all rounded-2xl font-bold"
+                    className="pl-4 pr-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary focus:ring-primary/10 transition-all rounded-2xl font-bold"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -262,7 +262,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={loading || !password}
-                className="w-full h-14 bg-slate-900 hover:bg-cyan-600 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-cyan-500/20 group"
+                className="w-full h-14 bg-primary hover:bg-primary/90 text-primary-foreground font-black text-lg rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 group"
               >
                 {loading ? (
                   <span className="flex items-center gap-2">
@@ -284,19 +284,19 @@ export default function LoginPage() {
                   setError("");
                   setSuccess("");
                 }}
-                className="w-full py-2 text-sm font-bold text-slate-400 hover:text-slate-600 flex items-center justify-center gap-2 transition-colors"
+                className="w-full py-2 text-sm font-bold text-muted-foreground hover:text-foreground flex items-center justify-center gap-2 transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" /> Change email address
               </button>
             </form>
           )}
 
-          <div className="mt-8 pt-8 border-t border-slate-100">
-            <p className="text-center text-slate-500 font-bold text-sm">
+          <div className="mt-8 pt-8 border-t border-border">
+            <p className="text-center text-muted-foreground font-bold text-sm">
               New to the platform?{" "}
               <Link
                 href="/auth/register"
-                className="text-cyan-600 hover:text-cyan-700 font-black transition-colors underline underline-offset-4 decoration-2 decoration-cyan-500/30"
+                className="text-primary hover:text-primary/80 font-black transition-colors underline underline-offset-4 decoration-2 decoration-primary/30"
               >
                 Register here
               </Link>
@@ -306,7 +306,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <div className="mt-10 text-center space-y-4">
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">© 2026 EL VERSE TECHNOLOGIES</p>
+          <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">© 2026 EL VERSE TECHNOLOGIES</p>
         </div>
       </div>
 
