@@ -160,18 +160,18 @@ export default function FeedPage() {
   ]
 
   const PostCard = ({ post, isRepost = false }: { post: SocialPost, isRepost?: boolean }) => (
-    <div className={`bg-slate-900 border border-slate-800 rounded-[2rem] p-6 ${!isRepost && 'hover:border-slate-700 transition-all shadow-xl'}`}>
+    <div className={`bg-card border border-border rounded-[2rem] p-6 ${!isRepost && 'hover:border-primary/20 transition-all shadow-lg shadow-black/5'}`}>
       <div className="flex justify-between items-start mb-6">
         <div className="flex gap-4">
-          <Avatar className="w-12 h-12 border-2 border-slate-800">
+          <Avatar className="w-12 h-12 border-2 border-border shadow-sm">
             <AvatarImage src={post.user?.avatar_url} />
-            <AvatarFallback className="bg-slate-800 text-cyan-400 font-black uppercase">
+            <AvatarFallback className="bg-muted text-primary font-black uppercase">
               {(post.user?.full_name || 'U').charAt(0)}
             </AvatarFallback>
           </Avatar>
           <div>
-            <h4 className="text-white font-black tracking-tight">{post.user?.full_name}</h4>
-            <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">{post.user?.el_space_id} • {new Date(post.created_at).toLocaleDateString()}</p>
+            <h4 className="text-foreground font-black tracking-tight">{post.user?.full_name}</h4>
+            <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">{post.user?.el_space_id} • {new Date(post.created_at).toLocaleDateString()}</p>
           </div>
         </div>
         {!isRepost && (
@@ -180,56 +180,56 @@ export default function FeedPage() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-slate-500 hover:text-red-400 rounded-full"
+                className="text-muted-foreground hover:text-red-500 hover:bg-red-500/10 rounded-full"
                 onClick={() => handleDeletePost(post.id)}
               >
                 <Trash2 className="w-5 h-5" />
               </Button>
             )}
-            <Button variant="ghost" size="icon" className="text-slate-500 hover:text-white rounded-full">
+            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground rounded-full">
               <MoreHorizontal className="w-5 h-5" />
             </Button>
           </div>
         )}
       </div>
 
-      <p className="text-slate-200 text-lg leading-relaxed mb-6 whitespace-pre-wrap">
+      <p className="text-foreground font-medium text-lg leading-relaxed mb-6 whitespace-pre-wrap">
         {post.content}
       </p>
 
       {post.media_type === 'image' && post.media_urls?.[0] && (
-        <div className="rounded-2xl overflow-hidden mb-6 border border-slate-800 relative h-[500px]">
+        <div className="rounded-2xl overflow-hidden mb-6 border border-border relative h-[500px] shadow-inner bg-muted">
           <Image src={post.media_urls[0]} alt="Post media" fill className="object-cover" />
         </div>
       )}
 
       {post.media_type === 'video' && post.media_urls?.[0] && (
-        <div className="rounded-2xl overflow-hidden mb-6 border border-slate-800 bg-black aspect-video flex items-center justify-center relative group cursor-pointer">
-           <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:scale-110 transition-all">
+        <div className="rounded-2xl overflow-hidden mb-6 border border-border bg-black aspect-video flex items-center justify-center relative group cursor-pointer shadow-2xl">
+           <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:scale-110 transition-all border border-white/20">
               <Play className="w-8 h-8 text-white fill-white" />
            </div>
-           <p className="absolute bottom-4 left-4 text-white font-bold text-xs uppercase tracking-widest bg-black/40 px-3 py-1 rounded-full">Video Attachment</p>
+           <p className="absolute bottom-4 left-4 text-white font-black text-[10px] uppercase tracking-widest bg-black/60 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/10 shadow-lg">Data Transmission Active</p>
         </div>
       )}
 
       {post.original_post && (
-        <div className="mt-4 mb-6 border-l-4 border-slate-800 pl-6 py-2">
+        <div className="mt-4 mb-6 border-l-4 border-primary/20 pl-6 py-2">
           <PostCard post={post.original_post} isRepost={true} />
         </div>
       )}
 
       {!isRepost && (
-        <div className="flex items-center gap-8 pt-4 border-t border-slate-800">
-          <button onClick={() => handleLikePost(post.id)} className="flex items-center gap-2 text-slate-400 hover:text-red-400 transition-colors font-bold text-sm">
+        <div className="flex items-center gap-8 pt-6 border-t border-border/50">
+          <button onClick={() => handleLikePost(post.id)} className="flex items-center gap-2 text-muted-foreground hover:text-red-500 transition-all font-black text-[10px] uppercase tracking-widest">
             <Heart className="w-5 h-5" /> {post.likes_count}
           </button>
-          <button className="flex items-center gap-2 text-slate-400 hover:text-cyan-400 transition-colors font-bold text-sm">
+          <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-all font-black text-[10px] uppercase tracking-widest">
             <MessageCircle className="w-5 h-5" /> {post.comments_count}
           </button>
-          <button onClick={() => handleCreatePost(post.id)} className="flex items-center gap-2 text-slate-400 hover:text-purple-400 transition-colors font-bold text-sm">
+          <button onClick={() => handleCreatePost(post.id)} className="flex items-center gap-2 text-muted-foreground hover:text-purple-500 transition-all font-black text-[10px] uppercase tracking-widest">
             <Repeat className="w-5 h-5" /> {post.reposts_count}
           </button>
-          <button onClick={() => handleShare(post.id)} className="flex items-center gap-2 text-slate-400 hover:text-emerald-400 transition-colors font-bold text-sm">
+          <button onClick={() => handleShare(post.id)} className="flex items-center gap-2 text-muted-foreground hover:text-emerald-500 transition-all font-black text-[10px] uppercase tracking-widest">
             <Share2 className="w-5 h-5" /> {post.shares_count}
           </button>
         </div>
@@ -239,55 +239,55 @@ export default function FeedPage() {
 
   return (
     <DashboardLayout navItems={navItems} userType={(user?.user_type === "freelancer" ? "freelancer" : "client")}>
-      <div className="space-y-8 max-w-4xl mx-auto">
+      <div className="space-y-10 max-w-4xl mx-auto">
         <div className="flex justify-between items-end">
           <div>
-            <h1 className="text-4xl font-black text-white tracking-tighter">
-              EL <span className="text-cyan-500">Nexus</span>
+            <h1 className="text-5xl font-black text-foreground tracking-tighter uppercase">
+              The <span className="text-primary">Nexus</span>
             </h1>
-            <p className="text-slate-400 font-medium mt-1">Connect, share, and discover the next big thing.</p>
+            <p className="text-muted-foreground font-medium mt-2 text-lg">Strategic network broadcast and industry intelligence.</p>
           </div>
-          <Button onClick={() => router.push('/feed/manage')} variant="outline" className="bg-slate-900 border-slate-700 text-slate-300 rounded-xl">
-            <FileText className="w-4 h-4 mr-2" /> Data Table
+          <Button onClick={() => router.push('/feed/manage')} variant="outline" className="bg-card border-border text-muted-foreground hover:text-primary rounded-xl font-black text-[10px] uppercase tracking-widest h-12 px-6 shadow-sm">
+            <FileText className="w-4 h-4 mr-2" /> Data Stream
           </Button>
         </div>
 
         {/* Create Post */}
-        <div className="bg-slate-900 border border-slate-800 rounded-[2rem] p-6 shadow-xl">
-           <div className="flex gap-4">
-              <Avatar className="w-12 h-12 border-2 border-slate-800">
+        <div className="bg-card border border-border rounded-[2.5rem] p-8 shadow-xl shadow-black/5">
+           <div className="flex gap-6">
+              <Avatar className="w-14 h-14 border-2 border-border shadow-md">
                  <AvatarImage src={user?.avatar_url} />
-                 <AvatarFallback className="bg-slate-800 text-cyan-400 font-black">
+                 <AvatarFallback className="bg-muted text-primary font-black">
                     {(user?.full_name || 'U').charAt(0)}
                  </AvatarFallback>
               </Avatar>
-              <div className="flex-1 space-y-4">
+              <div className="flex-1 space-y-6">
                  <textarea
                     value={postContent}
                     onChange={(e) => setPostContent(e.target.value)}
-                    placeholder="What's happening in your workspace?"
-                    className="w-full bg-transparent border-none text-white placeholder-slate-500 resize-none focus:ring-0 text-lg min-h-[100px]"
+                    placeholder="Broadcast your operational status..."
+                    className="w-full bg-transparent border-none text-foreground placeholder:text-muted-foreground/30 resize-none focus:ring-0 text-xl font-medium min-h-[120px]"
                  />
                  {mediaUrl && (
-                   <div className="p-3 bg-slate-800 rounded-xl text-xs text-cyan-400 font-mono truncate">
-                     {mediaType.toUpperCase()}: {mediaUrl}
+                   <div className="p-4 bg-muted/50 border border-border rounded-xl text-[10px] text-primary font-black uppercase tracking-widest truncate shadow-inner">
+                     {mediaType.toUpperCase()} Link: {mediaUrl}
                    </div>
                  )}
-                 <div className="flex items-center justify-between pt-4 border-t border-slate-800">
-                    <div className="flex gap-2">
-                       <Button onClick={() => {setMediaType('image'); setMediaUrl('https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800')}} variant="ghost" size="sm" className={`text-slate-400 hover:text-cyan-400 rounded-xl ${mediaType === 'image' && 'text-cyan-400 bg-cyan-400/10'}`}>
+                 <div className="flex items-center justify-between pt-6 border-t border-border/50">
+                    <div className="flex gap-4">
+                       <Button onClick={() => {setMediaType('image'); setMediaUrl('https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800')}} variant="ghost" size="sm" className={`text-muted-foreground hover:text-primary rounded-xl font-black text-[10px] uppercase tracking-widest ${mediaType === 'image' && 'text-primary bg-primary/10'}`}>
                           <ImageIcon className="w-5 h-5 mr-2" /> Image
                        </Button>
-                       <Button onClick={() => {setMediaType('video'); setMediaUrl('https://example.com/demo.mp4')}} variant="ghost" size="sm" className={`text-slate-400 hover:text-purple-400 rounded-xl ${mediaType === 'video' && 'text-purple-400 bg-purple-400/10'}`}>
+                       <Button onClick={() => {setMediaType('video'); setMediaUrl('https://example.com/demo.mp4')}} variant="ghost" size="sm" className={`text-muted-foreground hover:text-purple-500 rounded-xl font-black text-[10px] uppercase tracking-widest ${mediaType === 'video' && 'text-purple-500 bg-purple-500/10'}`}>
                           <Video className="w-5 h-5 mr-2" /> Video
                        </Button>
                     </div>
                     <Button
                        onClick={() => handleCreatePost()}
                        disabled={(!postContent.trim() && !mediaUrl) || isSubmittingPost}
-                       className="bg-cyan-500 hover:bg-cyan-600 text-white font-black px-8 rounded-xl"
+                       className="bg-primary hover:bg-primary/90 text-primary-foreground font-black px-10 h-14 rounded-2xl shadow-xl shadow-primary/20 uppercase tracking-widest text-xs transition-all active:scale-95"
                     >
-                       {isSubmittingPost ? 'Posting...' : 'Share'} <Send className="w-4 h-4 ml-2" />
+                       {isSubmittingPost ? 'Syncing...' : 'Initiate Broadcast'} <Send className="w-4 h-4 ml-2" />
                     </Button>
                  </div>
               </div>
@@ -295,15 +295,16 @@ export default function FeedPage() {
         </div>
 
         {/* Posts List */}
-        <div className="space-y-6">
+        <div className="space-y-8">
            {loading ? (
-             <div className="text-center py-20 text-slate-500 font-bold">Synchronizing Nexus...</div>
+             <div className="text-center py-20 text-muted-foreground font-black uppercase tracking-[0.3em] text-[10px] animate-pulse">Synchronizing Global Nexus...</div>
            ) : posts.length > 0 ? posts.map((post) => (
              <PostCard key={post.id} post={post} />
            )) : (
-             <div className="text-center py-20 bg-slate-900/50 border-2 border-dashed border-slate-800 rounded-[3rem]">
-                <Users className="w-12 h-12 text-slate-700 mx-auto mb-4" />
-                <p className="text-slate-500 font-bold">No community posts yet. Be the first to share!</p>
+             <div className="text-center py-32 bg-card/50 border-2 border-dashed border-border rounded-[3rem] shadow-inner">
+                <Users className="w-16 h-16 text-muted-foreground/10 mx-auto mb-6" />
+                <p className="text-foreground font-black text-xl uppercase tracking-tight">Signal Flat</p>
+                <p className="text-muted-foreground font-medium mt-2">No community transmissions detected. Be the first to initiate contact.</p>
              </div>
            )}
         </div>

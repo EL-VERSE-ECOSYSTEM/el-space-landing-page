@@ -75,34 +75,34 @@ export default function PostJobPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white pt-24 pb-24 relative overflow-hidden">
+    <div className="min-h-screen bg-background pt-24 pb-24 relative overflow-hidden text-foreground">
       {/* Background Orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] animate-pulse" />
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
          {/* Breadcrumb */}
          <button
           onClick={() => router.back()}
-          className="flex items-center gap-2 text-slate-400 hover:text-cyan-600 font-bold text-sm mb-8 transition-colors group"
+          className="flex items-center gap-2 text-muted-foreground hover:text-primary font-black text-[10px] uppercase tracking-widest mb-8 transition-colors group"
         >
           <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
         </button>
 
         <div className="mb-12">
-           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-50 text-cyan-600 font-black text-[10px] uppercase tracking-widest mb-4">
+           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-black text-[10px] uppercase tracking-widest mb-4">
               <Rocket className="w-3 h-3" /> Launch a Project
            </div>
-           <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-4">Hire Top Tech Talent</h1>
-           <p className="text-slate-500 font-medium text-lg">Describe your vision and get matched with the best in the industry.</p>
+           <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tighter uppercase mb-4">Hire Top Tech Talent</h1>
+           <p className="text-muted-foreground font-medium text-lg">Describe your vision and get matched with the best in the industry.</p>
         </div>
 
-        <Card className="bg-white/80 backdrop-blur-xl border border-slate-200 rounded-[3rem] shadow-2xl shadow-slate-200/50 overflow-hidden">
+        <Card className="bg-card/80 backdrop-blur-xl border border-border rounded-[3rem] shadow-2xl shadow-black/5 overflow-hidden">
           <CardHeader className="p-8 md:p-12 pb-4">
-            <CardTitle className="text-2xl font-black text-slate-900 flex items-center gap-3">
-               <Sparkles className="w-6 h-6 text-cyan-500" /> Project Definition
+            <CardTitle className="text-2xl font-black text-foreground flex items-center gap-3 uppercase tracking-tight">
+               <Sparkles className="w-6 h-6 text-primary" /> Project Definition
             </CardTitle>
           </CardHeader>
 
@@ -110,26 +110,26 @@ export default function PostJobPage() {
             <form onSubmit={handleSubmit} className="space-y-10">
               {/* Title */}
               <div className="space-y-3">
-                <Label htmlFor="title" className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Job Title *</Label>
+                <Label htmlFor="title" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] ml-1">Job Title *</Label>
                 <Input
                   id="title"
                   placeholder="e.g., Senior Next.js Developer for Fintech Dashboard"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 rounded-2xl font-bold focus:border-cyan-500"
+                  className="h-14 bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 rounded-2xl font-bold focus:ring-primary/20"
                   required
                 />
               </div>
 
               {/* Description */}
               <div className="space-y-3">
-                <Label htmlFor="description" className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Detailed Description *</Label>
+                <Label htmlFor="description" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] ml-1">Detailed Description *</Label>
                 <Textarea
                   id="description"
                   placeholder="Tell us about the project goals, requirements, and scope..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 rounded-3xl p-6 h-48 focus:border-cyan-500 font-medium leading-relaxed"
+                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 rounded-3xl p-6 h-48 focus:ring-primary/20 font-medium leading-relaxed resize-none"
                   required
                 />
               </div>
@@ -137,12 +137,12 @@ export default function PostJobPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Category */}
                 <div className="space-y-3">
-                  <Label htmlFor="category" className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Category *</Label>
+                  <Label htmlFor="category" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] ml-1">Category *</Label>
                   <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
-                    <SelectTrigger className="h-14 bg-slate-50 border-slate-100 text-slate-900 rounded-2xl font-bold">
+                    <SelectTrigger className="h-14 bg-muted/50 border-border text-foreground rounded-2xl font-bold">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-slate-200">
+                    <SelectContent className="bg-card border-border">
                       <SelectItem value="Development" className="font-bold">Development</SelectItem>
                       <SelectItem value="Design" className="font-bold">Design</SelectItem>
                       <SelectItem value="Marketing" className="font-bold">Marketing</SelectItem>
@@ -154,14 +154,14 @@ export default function PostJobPage() {
 
                 {/* Timeline */}
                 <div className="space-y-3">
-                  <Label htmlFor="timeline" className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Project Duration</Label>
+                  <Label htmlFor="timeline" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] ml-1">Project Duration</Label>
                   <div className="relative">
-                    <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                    <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/30 pointer-events-none" />
                     <Select value={formData.timeline} onValueChange={(value) => setFormData({ ...formData, timeline: value })}>
-                      <SelectTrigger className="h-14 bg-slate-50 border-slate-100 text-slate-900 pl-12 rounded-2xl font-bold">
+                      <SelectTrigger className="h-14 bg-muted/50 border-border text-foreground pl-12 rounded-2xl font-bold">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-white border-slate-200">
+                      <SelectContent className="bg-card border-border">
                         <SelectItem value="Less than 1 week" className="font-bold">Less than 1 week</SelectItem>
                         <SelectItem value="1-2 weeks" className="font-bold">1-2 weeks</SelectItem>
                         <SelectItem value="1 month" className="font-bold">1 month</SelectItem>
@@ -175,12 +175,12 @@ export default function PostJobPage() {
 
               {/* Budget */}
               <div className="space-y-4">
-                <Label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-2">
-                  <DollarSign className="w-3 h-3" /> Budget Range (USD) *
+                <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] ml-1 flex items-center gap-2">
+                  <DollarSign className="w-3 h-3 text-primary" /> Budget Range (USD) *
                 </Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/30 font-bold">$</span>
                     <Input
                       id="budgetMin"
                       type="number"
@@ -190,12 +190,12 @@ export default function PostJobPage() {
                         ...formData,
                         budget: { ...formData.budget, min: parseInt(e.target.value) || 0 }
                       })}
-                      className="h-14 bg-slate-50 border-slate-100 text-slate-900 pl-8 rounded-2xl font-black text-lg"
+                      className="h-14 bg-muted/50 border-border text-foreground pl-8 rounded-2xl font-black text-lg focus:ring-primary/20"
                       required
                     />
                   </div>
                   <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/30 font-bold">$</span>
                     <Input
                       id="budgetMax"
                       type="number"
@@ -205,7 +205,7 @@ export default function PostJobPage() {
                         ...formData,
                         budget: { ...formData.budget, max: parseInt(e.target.value) || 0 }
                       })}
-                      className="h-14 bg-slate-50 border-slate-100 text-slate-900 pl-8 rounded-2xl font-black text-lg"
+                      className="h-14 bg-muted/50 border-border text-foreground pl-8 rounded-2xl font-black text-lg focus:ring-primary/20"
                       required
                     />
                   </div>
@@ -214,8 +214,8 @@ export default function PostJobPage() {
 
               {/* Skills */}
               <div className="space-y-4">
-                <Label htmlFor="skills" className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-2">
-                   <Target className="w-3 h-3" /> Target Expertise
+                <Label htmlFor="skills" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] ml-1 flex items-center gap-2">
+                   <Target className="w-3 h-3 text-primary" /> Target Expertise
                 </Label>
                 <div className="flex gap-3">
                   <Input
@@ -229,12 +229,12 @@ export default function PostJobPage() {
                         handleAddSkill();
                       }
                     }}
-                    className="h-14 bg-slate-50 border-slate-100 text-slate-900 placeholder-slate-400 rounded-2xl font-bold"
+                    className="h-14 bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 rounded-2xl font-bold focus:ring-primary/20"
                   />
                   <Button
                     type="button"
                     onClick={handleAddSkill}
-                    className="h-14 px-8 bg-slate-900 text-white font-bold rounded-2xl hover:bg-cyan-600 transition-all"
+                    className="h-14 px-8 bg-primary text-primary-foreground font-black uppercase tracking-widest text-xs rounded-2xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
                   >
                     Add
                   </Button>
@@ -246,11 +246,11 @@ export default function PostJobPage() {
                     {selectedSkills.map((skill) => (
                       <Badge
                         key={skill}
-                        className="bg-white border-2 border-slate-100 text-slate-700 px-4 py-2 rounded-xl font-bold flex items-center gap-2 hover:border-red-200 transition-all group/badge"
+                        className="bg-secondary text-secondary-foreground border border-border px-4 py-2 rounded-xl font-black uppercase tracking-widest text-[9px] flex items-center gap-2 hover:border-red-500/50 hover:bg-red-500/10 transition-all group/badge"
                         onClick={() => handleRemoveSkill(skill)}
                       >
                         {skill}
-                        <X className="w-3 h-3 text-slate-400 group-hover/badge:text-red-500 cursor-pointer" />
+                        <X className="w-3 h-3 text-muted-foreground/40 group-hover/badge:text-red-500 cursor-pointer" />
                       </Badge>
                     ))}
                   </div>
@@ -262,11 +262,11 @@ export default function PostJobPage() {
                 <Button
                   type="submit"
                   disabled={loading || !formData.title || !formData.description}
-                  className="w-full h-16 bg-slate-900 hover:bg-cyan-600 text-white font-black text-xl rounded-[1.5rem] shadow-2xl shadow-slate-200 transition-all hover:scale-[1.02] active:scale-95 group"
+                  className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-black text-sm uppercase tracking-[0.2em] rounded-[1.5rem] shadow-2xl shadow-primary/20 transition-all hover:scale-[1.01] active:scale-98 group"
                 >
                   {loading ? (
                     <span className="flex items-center gap-2 justify-center">
-                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                       <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
                        Launching Project...
                     </span>
                   ) : (
@@ -275,7 +275,7 @@ export default function PostJobPage() {
                     </span>
                   )}
                 </Button>
-                <p className="text-center text-slate-400 font-bold text-xs mt-6 uppercase tracking-widest">
+                <p className="text-center text-muted-foreground/40 font-black text-[10px] mt-6 uppercase tracking-widest">
                   Secure Escrow protection active for all projects
                 </p>
               </div>
