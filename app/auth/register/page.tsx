@@ -34,11 +34,45 @@ export default function RegisterPage() {
 
   // Common fields
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [name, setName] = useState("");
   const [userType, setUserType] = useState<"" | "client" | "entrepreneur" | "business" | "enterprise" | "freelancer">("");
   const [password, setPassword] = useState("");
+  const [passwordStrength, setPasswordStrength] = useState(0);
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const validateEmail = (val: string) => {
+    setEmail(val);
+    if (!val) {
+      setEmailError("Email is required");
+    } else if (!/\S+@\S+\.\S+/.test(val)) {
+      setEmailError("Invalid email format");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const checkPasswordStrength = (pass: string) => {
+    setPassword(pass);
+    let strength = 0;
+    if (pass.length >= 8) strength++;
+    if (/[A-Z]/.test(pass)) strength++;
+    if (/[a-z]/.test(pass)) strength++;
+    if (/[0-9]/.test(pass)) strength++;
+    if (/[^A-Za-z0-9]/.test(pass)) strength++;
+    setPasswordStrength(strength);
+  };
+
+  const validateConfirmPassword = (val: string) => {
+    setConfirmPassword(val);
+    if (val !== password) {
+      setConfirmPasswordError("Passwords do not match");
+    } else {
+      setConfirmPasswordError("");
+    }
+  };
 
   // Client/Business/Entrepreneur/Enterprise fields
   const [businessName, setBusinessName] = useState("");
@@ -289,11 +323,15 @@ export default function RegisterPage() {
                       type="email"
                       placeholder="you@example.com"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => validateEmail(e.target.value)}
                       required
-                      className="pl-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary focus:ring-primary/10 transition-all rounded-2xl font-bold"
+                      className={cn(
+                        "pl-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary focus:ring-primary/10 transition-all rounded-2xl font-bold",
+                        emailError && "border-destructive focus:border-destructive focus:ring-destructive/10"
+                      )}
                     />
                   </div>
+                  {emailError && <p className="text-[10px] font-bold text-destructive ml-1">{emailError}</p>}
                 </div>
 
                 <div className="space-y-2">
@@ -304,7 +342,7 @@ export default function RegisterPage() {
                       type={showPassword ? "text" : "password"}
                       placeholder="Min. 8 chars"
                       value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      onChange={(e) => checkPasswordStrength(e.target.value)}
                       required
                       className="pl-12 pr-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary focus:ring-primary/10 transition-all rounded-2xl font-bold"
                     />
@@ -316,6 +354,33 @@ export default function RegisterPage() {
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
+                  {password && (
+                    <div className="space-y-1">
+                      <div className="flex gap-1 h-1 w-full rounded-full overflow-hidden bg-muted">
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <div
+                            key={s}
+                            className={cn(
+                              "flex-1 transition-all duration-500",
+                              s <= passwordStrength
+                                ? passwordStrength <= 2
+                                  ? "bg-destructive"
+                                  : passwordStrength <= 4
+                                  ? "bg-yellow-500"
+                                  : "bg-success"
+                                : "bg-transparent"
+                            )}
+                          />
+                        ))}
+                      </div>
+                      <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">
+                        Strength: {
+                          passwordStrength <= 2 ? "Weak" :
+                          passwordStrength <= 4 ? "Medium" : "Strong"
+                        }
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-2">
@@ -324,19 +389,27 @@ export default function RegisterPage() {
                     type={showPassword ? "text" : "password"}
                     placeholder="Re-enter password"
                     value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onChange={(e) => validateConfirmPassword(e.target.value)}
                     required
-                    className="h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary focus:ring-primary/10 transition-all rounded-2xl font-bold"
+                    className={cn(
+                      "h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary focus:ring-primary/10 transition-all rounded-2xl font-bold",
+                      confirmPasswordError && "border-destructive focus:border-destructive focus:ring-destructive/10"
+                    )}
                   />
+                  {confirmPasswordError && <p className="text-[10px] font-bold text-destructive ml-1">{confirmPasswordError}</p>}
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Choose Account Type *</Label>
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Choose Account Type *</Label>
+                  <p className="text-[11px] text-muted-foreground font-bold ml-1 mb-4">Select the account type that best fits your needs to personalize your experience.</p>
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                    <button
                     type="button"
                     onClick={() => setUserType('client')}
+                    aria-label="Client account for standard hiring"
                     className={`group flex items-center gap-4 p-5 rounded-[1.5rem] border-2 transition-all duration-300 text-left ${
                       userType === 'client'
                         ? 'border-primary bg-primary/10 shadow-lg shadow-primary/10'
@@ -350,12 +423,13 @@ export default function RegisterPage() {
                     </div>
                     <div>
                       <div className="font-black text-foreground uppercase text-xs">Client</div>
-                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Standard Hiring</div>
+                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Hire talent for projects</div>
                     </div>
                   </button>
                   <button
                     type="button"
                     onClick={() => setUserType('entrepreneur')}
+                    aria-label="Entrepreneur account for rapid growth"
                     className={`group flex items-center gap-4 p-5 rounded-[1.5rem] border-2 transition-all duration-300 text-left ${
                       userType === 'entrepreneur'
                         ? 'border-primary bg-primary/10 shadow-lg shadow-primary/10'
@@ -369,12 +443,13 @@ export default function RegisterPage() {
                     </div>
                     <div>
                       <div className="font-black text-foreground text-xs uppercase">Entrepreneur</div>
-                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Rapid Growth</div>
+                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Scale your startup</div>
                     </div>
                   </button>
                   <button
                     type="button"
                     onClick={() => setUserType('business')}
+                    aria-label="Business account for established organizations"
                     className={`group flex items-center gap-4 p-5 rounded-[1.5rem] border-2 transition-all duration-300 text-left ${
                       userType === 'business'
                         ? 'border-primary bg-primary/10 shadow-lg shadow-primary/10'
@@ -388,12 +463,13 @@ export default function RegisterPage() {
                     </div>
                     <div>
                       <div className="font-black text-foreground uppercase text-xs">Business</div>
-                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Established Org</div>
+                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Standard operations</div>
                     </div>
                   </button>
                   <button
                     type="button"
                     onClick={() => setUserType('enterprise')}
+                    aria-label="Enterprise account for global solutions"
                     className={`group flex items-center gap-4 p-5 rounded-[1.5rem] border-2 transition-all duration-300 text-left ${
                       userType === 'enterprise'
                         ? 'border-primary bg-primary/10 shadow-lg shadow-primary/10'
@@ -407,12 +483,13 @@ export default function RegisterPage() {
                     </div>
                     <div>
                       <div className="font-black text-foreground uppercase text-xs">Enterprise</div>
-                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Global Solutions</div>
+                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Corporate solutions</div>
                     </div>
                   </button>
                   <button
                     type="button"
                     onClick={() => setUserType('freelancer')}
+                    aria-label="Freelancer account for finding work"
                     className={`group flex items-center gap-4 p-5 rounded-[1.5rem] border-2 transition-all duration-300 text-left ${
                       userType === 'freelancer'
                         ? 'border-accent bg-accent/10 shadow-lg shadow-accent/10'
@@ -426,7 +503,7 @@ export default function RegisterPage() {
                     </div>
                     <div>
                       <div className="font-black text-foreground uppercase text-xs">Freelancer</div>
-                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Finding Work</div>
+                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Find projects & earn</div>
                     </div>
                   </button>
                 </div>
@@ -441,9 +518,14 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <GoogleSignInButton fullWidth variant="outline" className="h-14 rounded-2xl font-bold border-2 border-border" />
-                <GitHubSignInButton fullWidth variant="outline" className="h-14 rounded-2xl font-bold border-2 border-border" />
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <GoogleSignInButton fullWidth variant="outline" className="h-14 rounded-2xl font-bold border-2 border-border" />
+                  <GitHubSignInButton fullWidth variant="outline" className="h-14 rounded-2xl font-bold border-2 border-border" />
+                </div>
+                <p className="text-[9px] text-center text-muted-foreground font-black uppercase tracking-widest">
+                  We only access your public profile and email address
+                </p>
               </div>
 
               <Button
@@ -451,6 +533,10 @@ export default function RegisterPage() {
                 onClick={() => {
                   if (!name || !email || !userType || !password) {
                     setError("Please fill in all required fields");
+                    return;
+                  }
+                  if (emailError) {
+                    setError("Please enter a valid email address");
                     return;
                   }
                   if (password !== confirmPassword) {
@@ -466,7 +552,7 @@ export default function RegisterPage() {
                 }}
                 className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-black text-lg rounded-[1.5rem] transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20 group"
               >
-                Proceed to Details
+                Next: Verification Details
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
@@ -938,7 +1024,7 @@ export default function RegisterPage() {
 
         {/* Footer */}
         <div className="mt-12 text-center">
-          <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.4em]">© 2026 EL VERSE TECHNOLOGIES</p>
+          <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.4em]">© 2026 EL SPACE. A product of EL VERSE TECHNOLOGIES.</p>
         </div>
       </div>
 

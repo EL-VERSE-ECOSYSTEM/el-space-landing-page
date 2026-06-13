@@ -306,7 +306,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <div className="mt-10 text-center space-y-4">
-          <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">© 2026 EL VERSE TECHNOLOGIES</p>
+          <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">© 2026 EL SPACE. A product of EL VERSE TECHNOLOGIES.</p>
         </div>
       </div>
 
