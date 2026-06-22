@@ -34,13 +34,13 @@ export function MilestonePaymentTracker({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'released':
-        return 'bg-green-600/20 text-green-300 border-green-600/50';
+        return 'bg-slate600/20 text-slate300 border-slate600/50';
       case 'funded':
-        return 'bg-blue-600/20 text-blue-300 border-blue-600/50';
+        return 'bg-slate-600/20 text-slate-300 border-slate-600/50';
       case 'disputed':
         return 'bg-red-600/20 text-red-300 border-red-600/50';
       default:
-        return 'bg-yellow-600/20 text-yellow-300 border-yellow-600/50';
+        return 'bg-slate600/20 text-slate300 border-slate600/50';
     }
   };
 
@@ -59,7 +59,7 @@ export function MilestonePaymentTracker({
     <Card className="bg-slate-800 border-slate-700">
       <CardHeader>
         <div className="flex items-center gap-2 mb-4">
-          <DollarSign className="h-5 w-5 text-cyan-400" />
+          <DollarSign className="h-5 w-5 text-slate-400" />
           <CardTitle className="text-white">Payment Milestones</CardTitle>
         </div>
 
@@ -67,11 +67,11 @@ export function MilestonePaymentTracker({
         <div className="space-y-2">
           <div className="flex justify-between items-center text-sm">
             <span className="text-slate-400">Funds Released</span>
-            <span className="text-cyan-400 font-semibold">${totalReleased.toFixed(2)} / ${totalBudget.toFixed(2)}</span>
+            <span className="text-slate-400 font-semibold">${totalReleased.toFixed(2)} / ${totalBudget.toFixed(2)}</span>
           </div>
           <div className="w-full bg-slate-700 rounded-full h-2">
             <div 
-              className="bg-gradient-to-r from-cyan-500 to-blue-500 h-2 rounded-full transition-all"
+              className="bg-gradient-to-r from-slate-500 to-slate-500 h-2 rounded-full transition-all"
               style={{ width: `${percentageReleased}%` }}
             />
           </div>
@@ -111,7 +111,7 @@ export function MilestonePaymentTracker({
                     <ul className="space-y-1">
                       {milestone.deliverables.map((deliverable, idx) => (
                         <li key={idx} className="text-xs text-slate-300 flex items-center gap-2">
-                          <ArrowRight className="h-3 w-3 text-cyan-500" />
+                          <ArrowRight className="h-3 w-3 text-slate-500" />
                           {deliverable}
                         </li>
                       ))}
@@ -123,7 +123,7 @@ export function MilestonePaymentTracker({
                 <div className="grid grid-cols-3 gap-2 text-xs">
                   <div className="bg-slate-700/50 rounded p-2">
                     <p className="text-slate-400 mb-1">Amount</p>
-                    <p className="font-semibold text-cyan-400">${milestone.amount.toFixed(2)}</p>
+                    <p className="font-semibold text-slate-400">${milestone.amount.toFixed(2)}</p>
                   </div>
                   <div className="bg-slate-700/50 rounded p-2">
                     <p className="text-slate-400 mb-1">Due Date</p>
@@ -151,7 +151,7 @@ export function MilestonePaymentTracker({
                 {milestone.status === 'funded' && (
                   <Button 
                     size="sm"
-                    className="mt-4 bg-green-600 hover:bg-green-700 text-white text-xs w-full"
+                    className="mt-4 bg-slate600 hover:bg-slate700 text-white text-xs w-full"
                   >
                     Mark Deliverables as Received
                   </Button>
@@ -170,11 +170,11 @@ export function MilestonePaymentTracker({
             </div>
             <div>
               <p className="text-slate-400 text-xs mb-1">Released</p>
-              <p className="text-green-400 font-semibold">${totalReleased.toFixed(2)}</p>
+              <p className="text-slate400 font-semibold">${totalReleased.toFixed(2)}</p>
             </div>
             <div>
               <p className="text-slate-400 text-xs mb-1">Remaining</p>
-              <p className="text-yellow-400 font-semibold">${(totalBudget - totalReleased).toFixed(2)}</p>
+              <p className="text-slate400 font-semibold">${(totalBudget - totalReleased).toFixed(2)}</p>
             </div>
           </div>
         </div>

@@ -40,13 +40,13 @@ export function EarningsCalculator() {
               <TabsList className="grid w-full max-w-md grid-cols-2 p-1 bg-slate-100 rounded-2xl h-14">
                 <TabsTrigger
                   value="freelancer"
-                  className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-purple-600 data-[state=active]:shadow-sm"
+                  className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate600 data-[state=active]:shadow-sm"
                 >
                   Freelancer View
                 </TabsTrigger>
                 <TabsTrigger
                   value="client"
-                  className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-cyan-600 data-[state=active]:shadow-sm"
+                  className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate-600 data-[state=active]:shadow-sm"
                 >
                   Client View
                 </TabsTrigger>
@@ -90,7 +90,7 @@ export function EarningsCalculator() {
 
             <div className={`rounded-[2rem] p-8 transition-all shadow-xl shadow-${userType === 'freelancer' ? 'purple' : 'cyan'}-500/10 border border-${userType === 'freelancer' ? 'purple' : 'cyan'}-100 bg-${userType === 'freelancer' ? 'purple' : 'cyan'}-50`}>
               <p className="mb-2 text-xs font-black text-slate-400 uppercase tracking-widest">{userType === 'freelancer' ? 'You Take Home' : 'Total Client Cost'}</p>
-              <p className={`text-4xl font-black ${userType === 'freelancer' ? 'text-purple-600' : 'text-cyan-600'}`}>
+              <p className={`text-4xl font-black ${userType === 'freelancer' ? 'text-slate600' : 'text-slate-600'}`}>
                 ${earnings.toFixed(2)}
               </p>
               <p className="mt-4 text-sm font-bold text-slate-900">
@@ -108,7 +108,7 @@ export function EarningsCalculator() {
               {[
                 { name: 'Upwork', fee: '20%', color: 'text-slate-400' },
                 { name: 'Fiverr', fee: '20%', color: 'text-slate-400' },
-                { name: 'EL SPACE', fee: '3-5%', color: 'text-cyan-600 font-black' }
+                { name: 'EL SPACE', fee: '3-5%', color: 'text-slate-600 font-black' }
               ].map((plat, i) => (
                 <div key={i} className="flex items-center justify-between px-6 py-4 rounded-2xl bg-slate-50 border border-slate-100">
                   <span className="font-bold text-slate-900">{plat.name}</span>

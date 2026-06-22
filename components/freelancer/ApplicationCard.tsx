@@ -49,14 +49,14 @@ export function ApplicationCard({
   
   const freelancer = application.freelancer;
   const statusColor = {
-    pending: 'bg-amber-500/20 text-amber-300',
-    accepted: 'bg-green-500/20 text-green-300',
+    pending: 'bg-slate500/20 text-slate300',
+    accepted: 'bg-slate500/20 text-slate300',
     rejected: 'bg-red-500/20 text-red-300',
   }[application.status] || 'bg-slate-600 text-slate-200';
 
   return (
     <>
-      <Card className="bg-slate-800 border-slate-700 hover:border-cyan-500 transition-colors">
+      <Card className="bg-slate-800 border-slate-700 hover:border-slate-500 transition-colors">
         <CardHeader>
           <div className="flex justify-between items-start gap-4">
             <div className="flex-1">
@@ -68,7 +68,7 @@ export function ApplicationCard({
                     className="w-10 h-10 rounded-full"
                   />
                 ) : (
-                  <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center text-sm font-bold text-white">
+                  <div className="w-10 h-10 bg-gradient-to-br from-slate-500 to-slate-500 rounded-full flex items-center justify-center text-sm font-bold text-white">
                     {freelancer?.full_name?.charAt(0) || 'F'}
                   </div>
                 )}
@@ -83,7 +83,7 @@ export function ApplicationCard({
                           key={i}
                           className={`h-3 w-3 ${
                             i < Math.round(freelancer?.avg_rating || 0)
-                              ? 'fill-yellow-400 text-yellow-400'
+                              ? 'fill-slate400 text-slate400'
                               : 'text-slate-600'
                           }`}
                         />
@@ -106,15 +106,15 @@ export function ApplicationCard({
             <div className="grid grid-cols-3 gap-3 mb-4">
               <div className="bg-slate-700/50 rounded-lg p-3 text-center">
                 <p className="text-slate-400 text-xs mb-1">Rate</p>
-                <p className="text-cyan-400 font-semibold">${freelancer.hourly_rate || 0}/hr</p>
+                <p className="text-slate-400 font-semibold">${freelancer.hourly_rate || 0}/hr</p>
               </div>
               <div className="bg-slate-700/50 rounded-lg p-3 text-center">
                 <p className="text-slate-400 text-xs mb-1">Experience</p>
-                <p className="text-cyan-400 font-semibold">{freelancer.years_experience || 0} yrs</p>
+                <p className="text-slate-400 font-semibold">{freelancer.years_experience || 0} yrs</p>
               </div>
               <div className="bg-slate-700/50 rounded-lg p-3 text-center">
                 <p className="text-slate-400 text-xs mb-1">Proposal</p>
-                <p className="text-cyan-400 font-semibold">${application.proposed_rate}</p>
+                <p className="text-slate-400 font-semibold">${application.proposed_rate}</p>
               </div>
             </div>
           )}
@@ -147,7 +147,7 @@ export function ApplicationCard({
           {/* Timeline */}
           <div className="bg-slate-700/50 rounded-lg p-3">
             <div className="flex items-center gap-2 text-sm text-slate-300">
-              <TrendingUp className="h-4 w-4 text-cyan-400" />
+              <TrendingUp className="h-4 w-4 text-slate-400" />
               <span>Estimated: <strong>{application.estimated_days} days</strong></span>
             </div>
           </div>
@@ -169,7 +169,7 @@ export function ApplicationCard({
                 variant="outline"
                 size="sm"
                 onClick={() => setShowCVModal(true)}
-                className="flex-1 border-cyan-600 text-cyan-400 hover:bg-cyan-600/10"
+                className="flex-1 border-slate-600 text-slate-400 hover:bg-slate-600/10"
               >
                 <FileText className="h-4 w-4 mr-1" />
                 View CV
@@ -181,7 +181,7 @@ export function ApplicationCard({
                 <Button
                   size="sm"
                   onClick={() => onAccept?.(application.id)}
-                  className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                  className="flex-1 bg-slate600 hover:bg-slate700 text-white"
                 >
                   Accept
                 </Button>
@@ -217,7 +217,7 @@ export function ApplicationCard({
                     className="w-16 h-16 rounded-full"
                   />
                 ) : (
-                  <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center text-2xl font-bold text-white">
+                  <div className="w-16 h-16 bg-gradient-to-br from-slate-500 to-slate-500 rounded-full flex items-center justify-center text-2xl font-bold text-white">
                     {freelancer.full_name?.charAt(0) || 'F'}
                   </div>
                 )}
@@ -230,7 +230,7 @@ export function ApplicationCard({
                           key={i}
                           className={`h-4 w-4 ${
                             i < Math.round(freelancer.avg_rating || 0)
-                              ? 'fill-yellow-400 text-yellow-400'
+                              ? 'fill-slate400 text-slate400'
                               : 'text-slate-600'
                           }`}
                         />
@@ -247,19 +247,19 @@ export function ApplicationCard({
               <div className="grid grid-cols-4 gap-2">
                 <div className="bg-slate-700/50 rounded-lg p-3 text-center">
                   <p className="text-slate-400 text-xs mb-1">Hourly Rate</p>
-                  <p className="text-cyan-400 font-semibold">${freelancer.hourly_rate || 0}</p>
+                  <p className="text-slate-400 font-semibold">${freelancer.hourly_rate || 0}</p>
                 </div>
                 <div className="bg-slate-700/50 rounded-lg p-3 text-center">
                   <p className="text-slate-400 text-xs mb-1">Experience</p>
-                  <p className="text-cyan-400 font-semibold">{freelancer.years_experience || 0} yrs</p>
+                  <p className="text-slate-400 font-semibold">{freelancer.years_experience || 0} yrs</p>
                 </div>
                 <div className="bg-slate-700/50 rounded-lg p-3 text-center">
                   <p className="text-slate-400 text-xs mb-1">Projects</p>
-                  <p className="text-cyan-400 font-semibold">{freelancer.total_projects || 0}</p>
+                  <p className="text-slate-400 font-semibold">{freelancer.total_projects || 0}</p>
                 </div>
                 <div className="bg-slate-700/50 rounded-lg p-3 text-center">
                   <p className="text-slate-400 text-xs mb-1">Rating</p>
-                  <p className="text-cyan-400 font-semibold">{freelancer.avg_rating?.toFixed(1) || 'N/A'}</p>
+                  <p className="text-slate-400 font-semibold">{freelancer.avg_rating?.toFixed(1) || 'N/A'}</p>
                 </div>
               </div>
 
@@ -277,7 +277,7 @@ export function ApplicationCard({
                   <p className="text-slate-400 text-sm mb-2">Skills:</p>
                   <div className="flex flex-wrap gap-2">
                     {freelancer.skills.map((skill) => (
-                      <Badge key={skill} className="bg-cyan-600 text-white">
+                      <Badge key={skill} className="bg-slate-600 text-white">
                         {skill}
                       </Badge>
                     ))}
@@ -293,7 +293,7 @@ export function ApplicationCard({
                       setShowDetailsModal(false);
                       setShowCVModal(true);
                     }}
-                    className="w-full bg-cyan-600 hover:bg-cyan-700 text-white"
+                    className="w-full bg-slate-600 hover:bg-slate-700 text-white"
                   >
                     <FileText className="h-4 w-4 mr-2" />
                     Download/View CV
@@ -333,7 +333,7 @@ export function ApplicationCard({
                     <p className="text-slate-400 mb-4">Document Preview</p>
                     <Button
                       onClick={() => window.open(freelancer.cv_url, '_blank')}
-                      className="bg-cyan-600 hover:bg-cyan-700 text-white"
+                      className="bg-slate-600 hover:bg-slate-700 text-white"
                     >
                       Open Full Document
                     </Button>
@@ -351,7 +351,7 @@ export function ApplicationCard({
                 </Button>
                 <Button
                   onClick={() => window.open(freelancer.cv_url, '_blank')}
-                  className="bg-cyan-600 hover:bg-cyan-700 text-white"
+                  className="bg-slate-600 hover:bg-slate-700 text-white"
                 >
                   Download CV
                 </Button>

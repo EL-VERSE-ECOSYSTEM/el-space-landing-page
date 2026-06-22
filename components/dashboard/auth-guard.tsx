@@ -1,4 +1,5 @@
 "use client";
+import Image from 'next/image';
 import React from 'react';
 
 import { useEffect, useState } from "react";
@@ -125,10 +126,7 @@ export function DashboardLayout({
       <aside className={`fixed top-0 left-0 h-full w-64 ${sidebarBg} border-r ${borderClass} z-40 transform transition-transform duration-200 lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
         <div className="p-6">
           <Link href="/" className="flex items-center gap-2 mb-8">
-            <span className="text-2xl font-black tracking-tighter">
-              <span className={activeColorClass}>EL</span>
-              <span className="text-foreground"> SPACE</span>
-            </span>
+            <Image src="/logo.png" alt="EL SPACE" width={100} height={32} className="h-8 w-auto object-contain" />
           </Link>
           
           <div className="mb-6 p-4 bg-secondary rounded-2xl border border-border">

@@ -57,7 +57,7 @@ export default function FreelancersHub() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
             <div>
                <h1 className="text-6xl font-black text-foreground tracking-tighter">
-                  Elite <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Vanguard</span>
+                  Elite <span className="bg-gradient-to-r from-slate-400 to-slate-500 bg-clip-text text-transparent">Vanguard</span>
                </h1>
                <p className="text-muted-foreground mt-2 text-xl font-medium">Vetted technical specialists for critical deployments.</p>
             </div>
@@ -125,11 +125,11 @@ export default function FreelancersHub() {
                      <div className="flex items-center justify-between pt-8 border-t border-border">
                         <div className="flex items-center gap-4">
                            <div className="flex items-center gap-1.5">
-                              <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                              <Star className="w-4 h-4 text-slate500 fill-slate500" />
                               <span className="text-foreground font-black text-sm">{freelancer.avg_rating || '5.0'}</span>
                            </div>
                            <div className="flex items-center gap-1.5 text-muted-foreground">
-                              <DollarSign className="w-4 h-4 text-emerald-500" />
+                              <DollarSign className="w-4 h-4 text-slate500" />
                               <span className="text-foreground font-black text-sm">${freelancer.hourly_rate || '45'}/HR</span>
                            </div>
                         </div>

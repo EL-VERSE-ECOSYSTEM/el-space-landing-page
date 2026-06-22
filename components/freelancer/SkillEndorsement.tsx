@@ -52,7 +52,7 @@ export function SkillEndorsement({
     <Card className="bg-slate-800 border-slate-700">
       <CardHeader>
         <div className="flex items-center gap-2">
-          <Award className="h-5 w-5 text-cyan-400" />
+          <Award className="h-5 w-5 text-slate-400" />
           <CardTitle className="text-white">Skill Endorsements</CardTitle>
         </div>
       </CardHeader>
@@ -68,9 +68,9 @@ export function SkillEndorsement({
               className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg hover:bg-slate-700 transition-colors"
             >
               <div className="flex items-center gap-2 flex-1">
-                <Badge className="bg-cyan-600 text-white">{skill}</Badge>
+                <Badge className="bg-slate-600 text-white">{skill}</Badge>
                 <div className="flex items-center gap-1 text-sm">
-                  <ThumbsUp className="h-4 w-4 text-yellow-400" />
+                  <ThumbsUp className="h-4 w-4 text-slate400" />
                   <span className="text-slate-300 font-semibold">
                     {(endorsements[skill] || 0).toLocaleString()}
                   </span>
@@ -84,14 +84,14 @@ export function SkillEndorsement({
                   disabled={loading || hasEndorsed}
                   variant="outline"
                   size="sm"
-                  className="border-cyan-600 text-cyan-400 hover:bg-cyan-600/10"
+                  className="border-slate-600 text-slate-400 hover:bg-slate-600/10"
                 >
                   <ThumbsUp className="h-4 w-4" />
                 </Button>
               )}
               
               {endorsedSkills.has(skill) && (
-                <Badge className="bg-green-600 text-white">
+                <Badge className="bg-slate600 text-white">
                   ✓ Endorsed
                 </Badge>
               )}

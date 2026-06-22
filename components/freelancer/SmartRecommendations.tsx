@@ -35,19 +35,19 @@ export function SmartRecommendations({
     <div className="space-y-4">
       {/* Top Recommendation */}
       {topPick && (
-        <Card className="bg-gradient-to-r from-cyan-900/30 to-blue-900/30 border-cyan-600/50">
+        <Card className="bg-gradient-to-r from-slate-900/30 to-slate-900/30 border-slate-600/50">
           <CardHeader>
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-yellow-400" />
+                <Sparkles className="h-5 w-5 text-slate400" />
                 <CardTitle className="text-white">Top Recommended</CardTitle>
               </div>
-              <Badge className="bg-yellow-600 text-white">Best Match</Badge>
+              <Badge className="bg-slate600 text-white">Best Match</Badge>
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center text-lg font-bold text-white flex-shrink-0">
+              <div className="w-12 h-12 bg-gradient-to-br from-slate-500 to-slate-500 rounded-full flex items-center justify-center text-lg font-bold text-white flex-shrink-0">
                 {topPick.name.charAt(0)}
               </div>
               <div className="flex-1 min-w-0">
@@ -59,7 +59,7 @@ export function SmartRecommendations({
                         key={i}
                         className={`h-4 w-4 ${
                           i < Math.round(topPick.rating)
-                            ? 'fill-yellow-400 text-yellow-400'
+                            ? 'fill-slate400 text-slate400'
                             : 'text-slate-600'
                         }`}
                       />
@@ -73,21 +73,21 @@ export function SmartRecommendations({
             <div className="grid grid-cols-3 gap-2">
               <div className="bg-black/20 rounded p-2 text-center">
                 <p className="text-xs text-slate-400 mb-1">Rate</p>
-                <p className="text-cyan-400 font-semibold">${topPick.rate}/hr</p>
+                <p className="text-slate-400 font-semibold">${topPick.rate}/hr</p>
               </div>
               <div className="bg-black/20 rounded p-2 text-center">
                 <p className="text-xs text-slate-400 mb-1">Projects</p>
-                <p className="text-cyan-400 font-semibold">{topPick.completed_projects}</p>
+                <p className="text-slate-400 font-semibold">{topPick.completed_projects}</p>
               </div>
               <div className="bg-black/20 rounded p-2 text-center">
                 <p className="text-xs text-slate-400 mb-1">Match</p>
-                <p className="text-green-400 font-semibold">{topPick.match_score}%</p>
+                <p className="text-slate400 font-semibold">{topPick.match_score}%</p>
               </div>
             </div>
 
             <div className="bg-slate-700/50 rounded p-3">
               <p className="text-sm text-slate-300">
-                <span className="text-cyan-400 font-semibold">Why matched:</span> {topPick.match_reason}
+                <span className="text-slate-400 font-semibold">Why matched:</span> {topPick.match_reason}
               </p>
             </div>
 
@@ -97,7 +97,7 @@ export function SmartRecommendations({
                 {projectSkills.map(skill => (
                   <Badge
                     key={skill}
-                    className={topPick.skills.includes(skill) ? 'bg-green-600 text-white' : 'bg-slate-700 text-slate-300'}
+                    className={topPick.skills.includes(skill) ? 'bg-slate600 text-white' : 'bg-slate-700 text-slate-300'}
                   >
                     {topPick.skills.includes(skill) ? '✓ ' : '○ '}{skill}
                   </Badge>
@@ -108,7 +108,7 @@ export function SmartRecommendations({
             {onSelectFreelancer && (
               <Button
                 onClick={() => onSelectFreelancer(topPick.id)}
-                className="w-full bg-cyan-600 hover:bg-cyan-700 text-white"
+                className="w-full bg-slate-600 hover:bg-slate-700 text-white"
               >
                 View Profile
               </Button>
@@ -127,20 +127,20 @@ export function SmartRecommendations({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {recommendations.slice(1, 5).map(freelancer => (
-              <Card key={freelancer.id} className="bg-slate-800 border-slate-700 hover:border-cyan-500 transition-colors">
+              <Card key={freelancer.id} className="bg-slate-800 border-slate-700 hover:border-slate-500 transition-colors">
                 <CardContent className="pt-4">
                   <div className="flex items-start gap-3 mb-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
+                    <div className="w-10 h-10 bg-gradient-to-br from-slate-500 to-slate-500 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
                       {freelancer.name.charAt(0)}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-white font-semibold text-sm truncate">{freelancer.name}</p>
                       <div className="flex items-center gap-1 mt-0.5">
-                        <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                        <Star className="h-3 w-3 fill-slate400 text-slate400" />
                         <span className="text-xs text-slate-400">{freelancer.rating}/5</span>
                       </div>
                     </div>
-                    <Badge className="bg-green-600/20 text-green-300 text-xs">
+                    <Badge className="bg-slate600/20 text-slate300 text-xs">
                       {freelancer.match_score}%
                     </Badge>
                   </div>

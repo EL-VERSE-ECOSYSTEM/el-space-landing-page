@@ -119,7 +119,7 @@ export default function TodosPage() {
                 <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center shadow-2xl shadow-primary/20">
                   <ListTodo className="w-7 h-7 text-primary-foreground" />
                 </div>
-                Mission <span className="bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">Backlog</span>
+                Mission <span className="bg-gradient-to-r from-primary to-slate-500 bg-clip-text text-transparent">Backlog</span>
               </h1>
               <p className="text-muted-foreground mt-2 text-lg font-medium">Strategic objective tracking and management</p>
             </div>
@@ -153,7 +153,7 @@ export default function TodosPage() {
                         <button
                            onClick={() => toggleTodo(todo.id, todo.is_completed)}
                            className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
-                              todo.is_completed ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'bg-muted text-muted-foreground hover:text-primary border border-border'
+                              todo.is_completed ? 'bg-slate500 text-white shadow-lg shadow-slate500/20' : 'bg-muted text-muted-foreground hover:text-primary border border-border'
                            }`}
                         >
                            {todo.is_completed ? <CheckCircle2 className="w-6 h-6" /> : <Circle className="w-6 h-6" />}

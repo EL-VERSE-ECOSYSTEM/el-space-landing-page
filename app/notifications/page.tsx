@@ -178,7 +178,7 @@ function NotificationItem({
           <Button
             variant="ghost"
             size="sm"
-            className={cn("h-7 gap-1 px-2 text-xs", notification.read ? "text-slate-500 hover:text-slate-700" : "text-amber-600 hover:text-amber-700")}
+            className={cn("h-7 gap-1 px-2 text-xs", notification.read ? "text-slate-500 hover:text-slate-700" : "text-slate600 hover:text-slate700")}
             onClick={() => onToggleRead(notification.id)}
           >
             {notification.read ? (

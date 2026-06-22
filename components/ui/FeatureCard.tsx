@@ -8,21 +8,21 @@ interface FeatureCardProps {
 }
 
 const iconBackgrounds = {
-  cyan: 'bg-cyan-50 text-cyan-600',
-  purple: 'bg-purple-50 text-purple-600',
-  green: 'bg-emerald-50 text-emerald-600',
-  blue: 'bg-blue-50 text-blue-600',
-  yellow: 'bg-yellow-50 text-yellow-600',
-  pink: 'bg-pink-50 text-pink-600'
+  cyan: 'bg-slate-50 text-slate-600',
+  purple: 'bg-slate50 text-slate600',
+  green: 'bg-slate50 text-slate600',
+  blue: 'bg-slate-50 text-slate-600',
+  yellow: 'bg-slate50 text-slate600',
+  pink: 'bg-slate50 text-slate600'
 }
 
 const borderColors = {
-  cyan: 'hover:shadow-cyan-500/10',
-  purple: 'hover:shadow-purple-500/10',
-  green: 'hover:shadow-emerald-500/10',
-  blue: 'hover:shadow-blue-500/10',
-  yellow: 'hover:shadow-yellow-500/10',
-  pink: 'hover:shadow-pink-500/10'
+  cyan: 'hover:shadow-slate-500/10',
+  purple: 'hover:shadow-slate500/10',
+  green: 'hover:shadow-slate500/10',
+  blue: 'hover:shadow-slate-500/10',
+  yellow: 'hover:shadow-slate500/10',
+  pink: 'hover:shadow-slate500/10'
 }
 
 export function FeatureCard({ 

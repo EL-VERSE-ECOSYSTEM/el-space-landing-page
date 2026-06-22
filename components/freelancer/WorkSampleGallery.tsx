@@ -59,7 +59,7 @@ export function WorkSampleGallery({
       <Card className="bg-slate-800 border-slate-700">
         <CardHeader>
           <div className="flex items-center gap-2 mb-2">
-            <Award className="h-5 w-5 text-cyan-400" />
+            <Award className="h-5 w-5 text-slate-400" />
             <CardTitle className="text-white">Work Samples</CardTitle>
           </div>
           <p className="text-slate-400 text-sm">{samples.length} completed projects</p>
@@ -70,7 +70,7 @@ export function WorkSampleGallery({
               <div
                 key={sample.id}
                 onClick={() => handleSelectSample(sample)}
-                className="group cursor-pointer overflow-hidden rounded-lg border border-slate-700 hover:border-cyan-500 transition-all"
+                className="group cursor-pointer overflow-hidden rounded-lg border border-slate-700 hover:border-slate-500 transition-all"
               >
                 {/* Sample Image */}
                 <div className="relative aspect-video bg-slate-700 overflow-hidden">
@@ -84,7 +84,7 @@ export function WorkSampleGallery({
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                         <Button
                           size="sm"
-                          className="bg-cyan-600 hover:bg-cyan-700 text-white"
+                          className="bg-slate-600 hover:bg-slate-700 text-white"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleSelectSample(sample);
@@ -167,7 +167,7 @@ export function WorkSampleGallery({
                   <p className="text-slate-400 text-sm mb-2">Technologies Used</p>
                   <div className="flex flex-wrap gap-2">
                     {selectedSample.technologies.map(tech => (
-                      <Badge key={tech} className="bg-cyan-600 text-white">
+                      <Badge key={tech} className="bg-slate-600 text-white">
                         {tech}
                       </Badge>
                     ))}
@@ -200,7 +200,7 @@ export function WorkSampleGallery({
                       onClick={() => window.open(selectedSample.projectUrl, '_blank')}
                       variant="outline"
                       size="sm"
-                      className="border-cyan-600 text-cyan-400 hover:bg-cyan-600/10 gap-1"
+                      className="border-slate-600 text-slate-400 hover:bg-slate-600/10 gap-1"
                     >
                       <ExternalLink className="h-3 w-3" />
                       View Live

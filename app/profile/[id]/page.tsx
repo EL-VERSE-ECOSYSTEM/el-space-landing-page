@@ -106,7 +106,7 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-[#020617] text-slate-200">
       {/* Header Cover Area */}
-      <div className="h-64 bg-gradient-to-r from-cyan-600/20 via-blue-600/20 to-purple-600/20 relative">
+      <div className="h-64 bg-gradient-to-r from-slate-600/20 via-slate-600/20 to-slate600/20 relative">
          <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-3xl" />
       </div>
 
@@ -120,12 +120,12 @@ export default function ProfilePage() {
                         {profile.user?.avatar_url ? (
                           <Image src={profile.user.avatar_url} alt="" fill className="object-cover" />
                         ) : (
-                          <span className="text-4xl font-black text-cyan-400">{(profile.user?.full_name || 'U').charAt(0)}</span>
+                          <span className="text-4xl font-black text-slate-400">{(profile.user?.full_name || 'U').charAt(0)}</span>
                         )}
                      </div>
                      <h1 className="mt-6 text-2xl font-black text-white">{profile.user?.full_name}</h1>
                      <div className="flex flex-col items-center gap-1 mt-1">
-                        <p className="text-cyan-400 font-bold text-xs uppercase tracking-widest">{profile.user?.user_type} Profile</p>
+                        <p className="text-slate-400 font-bold text-xs uppercase tracking-widest">{profile.user?.user_type} Profile</p>
                         <p className="text-slate-500 font-mono text-[10px] font-bold">{profile.user?.el_space_id}</p>
                      </div>
 
@@ -146,13 +146,13 @@ export default function ProfilePage() {
                         </div>
                         <div className="flex items-center justify-between text-sm">
                            <span className="text-slate-500">Response Time</span>
-                           <span className="text-emerald-400 font-bold">~2 hours</span>
+                           <span className="text-slate400 font-bold">~2 hours</span>
                         </div>
                      </div>
                   </CardContent>
                </Card>
 
-               <Button className="w-full h-14 bg-white text-slate-950 hover:bg-cyan-400 hover:text-white font-black text-lg transition-all rounded-2xl shadow-xl shadow-cyan-500/20">
+               <Button className="w-full h-14 bg-white text-slate-950 hover:bg-slate-400 hover:text-white font-black text-lg transition-all rounded-2xl shadow-xl shadow-slate-500/20">
                   <MessageSquare className="w-5 h-5 mr-2" /> Message
                </Button>
             </div>
@@ -161,8 +161,8 @@ export default function ProfilePage() {
             <div className="lg:col-span-2 space-y-10">
                <div className="space-y-6">
                   <div className="flex flex-wrap items-center gap-3">
-                     <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 px-3 py-1 font-bold">VERIFIED IDENTITY</Badge>
-                     <Badge className="bg-purple-500/10 text-purple-400 border-purple-500/20 px-3 py-1 font-bold">TOP RATED</Badge>
+                     <Badge className="bg-slate500/10 text-slate400 border-slate500/20 px-3 py-1 font-bold">VERIFIED IDENTITY</Badge>
+                     <Badge className="bg-slate500/10 text-slate400 border-slate500/20 px-3 py-1 font-bold">TOP RATED</Badge>
                   </div>
                   <h2 className="text-4xl font-black text-white">Full Stack Software Architect & Product Designer</h2>
                   <p className="text-slate-400 text-lg leading-relaxed">
@@ -189,7 +189,7 @@ export default function ProfilePage() {
                <div className="space-y-8">
                   <div>
                      <h3 className="text-xl font-black text-white mb-6 flex items-center gap-2">
-                        <Zap className="w-5 h-5 text-cyan-400" />
+                        <Zap className="w-5 h-5 text-slate-400" />
                         Core Expertise
                      </h3>
                      <div className="flex flex-wrap gap-2">
@@ -203,14 +203,14 @@ export default function ProfilePage() {
 
                   <div>
                      <h3 className="text-xl font-black text-white mb-6 flex items-center gap-2">
-                        <Briefcase className="w-5 h-5 text-blue-400" />
+                        <Briefcase className="w-5 h-5 text-slate-400" />
                         Verification History
                      </h3>
                      <div className="space-y-4">
                         <div className="bg-white/5 border border-white/5 p-6 rounded-2xl flex items-center justify-between group cursor-pointer hover:bg-white/[0.08] transition-all">
                            <div className="flex items-center gap-4">
-                              <div className="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center">
-                                 <Shield className="w-6 h-6 text-cyan-400" />
+                              <div className="w-12 h-12 bg-slate-500/10 rounded-xl flex items-center justify-center">
+                                 <Shield className="w-6 h-6 text-slate-400" />
                               </div>
                               <div>
                                  <p className="text-white font-bold">Premium EL ACCESS Holder</p>
@@ -225,13 +225,13 @@ export default function ProfilePage() {
                   {/* User Posts Section */}
                   <div className="pt-10 border-t border-white/5">
                      <h3 className="text-xl font-black text-white mb-6 flex items-center gap-2">
-                        <MessageSquare className="w-5 h-5 text-purple-400" />
+                        <MessageSquare className="w-5 h-5 text-slate400" />
                         Feed Activity
                      </h3>
 
                      {postsLoading ? (
                        <div className="flex justify-center py-10">
-                          <div className="animate-spin h-8 w-8 border-2 border-cyan-500 border-t-transparent rounded-full"></div>
+                          <div className="animate-spin h-8 w-8 border-2 border-slate-500 border-t-transparent rounded-full"></div>
                        </div>
                      ) : posts.length > 0 ? (
                        <div className="space-y-6">
@@ -242,7 +242,7 @@ export default function ProfilePage() {
                                      <div className="flex gap-3">
                                         <Avatar className="w-10 h-10 border border-white/10">
                                            <AvatarImage src={post.user?.avatar_url} />
-                                           <AvatarFallback className="bg-slate-800 text-cyan-400 text-xs font-black uppercase">
+                                           <AvatarFallback className="bg-slate-800 text-slate-400 text-xs font-black uppercase">
                                               {(post.user?.full_name || 'U').charAt(0)}
                                            </AvatarFallback>
                                         </Avatar>

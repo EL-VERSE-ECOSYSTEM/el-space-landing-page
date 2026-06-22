@@ -68,7 +68,7 @@ export function QuickHire({
           setStep(1);
           setShowDialog(true);
         }}
-        className="bg-green-600 hover:bg-green-700 text-white gap-2"
+        className="bg-slate600 hover:bg-slate700 text-white gap-2"
       >
         <Zap className="h-4 w-4" />
         Quick Hire
@@ -78,7 +78,7 @@ export function QuickHire({
         <DialogContent className="bg-slate-800 border-slate-700 max-w-md">
           <DialogHeader>
             <DialogTitle className="text-white flex items-center gap-2">
-              <Zap className="h-5 w-5 text-yellow-400" />
+              <Zap className="h-5 w-5 text-slate400" />
               Quick Hire {freelancerName}
             </DialogTitle>
             <DialogDescription className="text-slate-400">
@@ -98,7 +98,7 @@ export function QuickHire({
                     </div>
                     <div className="flex justify-between items-center pb-3 border-b border-slate-600">
                       <span className="text-slate-400">Proposed Rate</span>
-                      <span className="text-cyan-400 font-semibold">${proposedRate}/hr</span>
+                      <span className="text-slate-400 font-semibold">${proposedRate}/hr</span>
                     </div>
                     <div className="flex justify-between items-center pb-3 border-b border-slate-600">
                       <span className="text-slate-400">Est. Duration</span>
@@ -112,7 +112,7 @@ export function QuickHire({
                 </Card>
 
                 {/* Fee Breakdown */}
-                <Card className="bg-blue-600/10 border-blue-600/50">
+                <Card className="bg-slate-600/10 border-slate-600/50">
                   <CardContent className="pt-6 space-y-2 text-sm">
                     <div className="flex justify-between text-slate-300">
                       <span>Subtotal</span>
@@ -122,9 +122,9 @@ export function QuickHire({
                       <span>Platform Fee (8%)</span>
                       <span>${(projectBudget * 0.08).toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between text-white font-semibold pt-2 border-t border-blue-600/50">
+                    <div className="flex justify-between text-white font-semibold pt-2 border-t border-slate-600/50">
                       <span>Total to Charge</span>
-                      <span className="text-cyan-400">${totalWithFees.toFixed(2)}</span>
+                      <span className="text-slate-400">${totalWithFees.toFixed(2)}</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -132,24 +132,24 @@ export function QuickHire({
                 {/* What Happens Next */}
                 <div className="bg-slate-700/50 rounded-lg p-4 space-y-2">
                   <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
-                    <AlertCircle className="h-4 w-4 text-yellow-400" />
+                    <AlertCircle className="h-4 w-4 text-slate400" />
                     What happens next:
                   </h4>
                   <ol className="space-y-2 text-sm text-slate-300">
                     <li className="flex gap-2">
-                      <span className="text-cyan-400 font-bold">1.</span>
+                      <span className="text-slate-400 font-bold">1.</span>
                       <span>Charge your payment method</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="text-cyan-400 font-bold">2.</span>
+                      <span className="text-slate-400 font-bold">2.</span>
                       <span>Create initial milestone</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="text-cyan-400 font-bold">3.</span>
+                      <span className="text-slate-400 font-bold">3.</span>
                       <span>Join Slack channel</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="text-cyan-400 font-bold">4.</span>
+                      <span className="text-slate-400 font-bold">4.</span>
                       <span>Project starts immediately</span>
                     </li>
                   </ol>
@@ -166,7 +166,7 @@ export function QuickHire({
                 </Button>
                 <Button
                   onClick={() => setStep(2)}
-                  className="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white"
+                  className="flex-1 bg-slate-600 hover:bg-slate-700 text-white"
                 >
                   Continue
                 </Button>
@@ -187,12 +187,12 @@ export function QuickHire({
                 </div>
               </div>
 
-              <div className="bg-green-600/20 border border-green-600/50 rounded-lg p-3">
+              <div className="bg-slate600/20 border border-slate600/50 rounded-lg p-3">
                 <div className="flex gap-2 text-sm">
-                  <CheckCircle2 className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="h-5 w-5 text-slate400 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-green-300 font-semibold">You&apos;re protected</p>
-                    <p className="text-green-200/80 text-xs">Money held in escrow until milestone completion</p>
+                    <p className="text-slate300 font-semibold">You&apos;re protected</p>
+                    <p className="text-slate200/80 text-xs">Money held in escrow until milestone completion</p>
                   </div>
                 </div>
               </div>
@@ -209,7 +209,7 @@ export function QuickHire({
                 <Button
                   onClick={handleConfirmHire}
                   disabled={loading}
-                  className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                  className="flex-1 bg-slate600 hover:bg-slate700 text-white"
                 >
                   {loading ? 'Processing...' : 'Confirm & Hire'}
                 </Button>

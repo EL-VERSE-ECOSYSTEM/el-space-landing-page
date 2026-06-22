@@ -57,7 +57,7 @@ export function FreelancerComparison({
           <h3 className="text-lg font-bold text-white">Compare Freelancers</h3>
           <Button
             onClick={() => setShowComparison(true)}
-            className="bg-cyan-600 hover:bg-cyan-700 text-white"
+            className="bg-slate-600 hover:bg-slate-700 text-white"
             disabled={selectedFreelancers.length < 2}
           >
             Compare ({selectedFreelancers.length})
@@ -70,14 +70,14 @@ export function FreelancerComparison({
               key={freelancer.id} 
               className={`cursor-pointer transition-all ${
                 selectedFreelancers.includes(freelancer.id)
-                  ? 'bg-cyan-900/30 border-cyan-500'
-                  : 'bg-slate-800 border-slate-700 hover:border-cyan-500'
+                  ? 'bg-slate-900/30 border-slate-500'
+                  : 'bg-slate-800 border-slate-700 hover:border-slate-500'
               }`}
               onClick={() => handleSelectFreelancer(freelancer.id)}
             >
               <CardHeader>
                 <div className="flex items-start gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center text-lg font-bold text-white flex-shrink-0">
+                  <div className="w-12 h-12 bg-gradient-to-br from-slate-500 to-slate-500 rounded-full flex items-center justify-center text-lg font-bold text-white flex-shrink-0">
                     {freelancer.full_name?.charAt(0) || 'F'}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -91,7 +91,7 @@ export function FreelancerComparison({
                             key={i}
                             className={`h-3 w-3 ${
                               i < Math.round(freelancer.avg_rating || 0)
-                                ? 'fill-yellow-400 text-yellow-400'
+                                ? 'fill-slate400 text-slate400'
                                 : 'text-slate-600'
                             }`}
                           />
@@ -103,7 +103,7 @@ export function FreelancerComparison({
                     </div>
                   </div>
                   {selectedFreelancers.includes(freelancer.id) && (
-                    <CheckCircle className="h-5 w-5 text-cyan-400 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-slate-400 flex-shrink-0" />
                   )}
                 </div>
               </CardHeader>
@@ -111,20 +111,20 @@ export function FreelancerComparison({
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   <div className="bg-slate-700/50 rounded p-2">
                     <p className="text-slate-400">Rate</p>
-                    <p className="font-semibold text-cyan-400">${freelancer.hourly_rate}/hr</p>
+                    <p className="font-semibold text-slate-400">${freelancer.hourly_rate}/hr</p>
                   </div>
                   <div className="bg-slate-700/50 rounded p-2">
                     <p className="text-slate-400">Exp.</p>
-                    <p className="font-semibold text-cyan-400">{freelancer.years_experience}y</p>
+                    <p className="font-semibold text-slate-400">{freelancer.years_experience}y</p>
                   </div>
                 </div>
                 
                 {freelancer.completion_rate !== undefined && (
-                  <div className="bg-green-600/20 border border-green-600/50 rounded p-2">
+                  <div className="bg-slate600/20 border border-slate600/50 rounded p-2">
                     <p className="text-xs text-slate-400 mb-1">Completion Rate</p>
                     <div className="w-full bg-slate-700 rounded h-2">
                       <div 
-                        className="bg-green-500 h-2 rounded"
+                        className="bg-slate500 h-2 rounded"
                         style={{ width: `${freelancer.completion_rate}%` }}
                       />
                     </div>
@@ -161,7 +161,7 @@ export function FreelancerComparison({
                       {displayFreelancers.map(f => (
                         <th key={f.id} className="text-center py-3 px-4 text-white font-semibold">
                           <div className="flex items-center justify-center gap-2">
-                            <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center text-xs font-bold text-white">
+                            <div className="w-8 h-8 bg-gradient-to-br from-slate-500 to-slate-500 rounded-full flex items-center justify-center text-xs font-bold text-white">
                               {f.full_name?.charAt(0)}
                             </div>
                             <div className="text-sm truncate max-w-[120px]">{f.full_name}</div>
@@ -192,7 +192,7 @@ export function FreelancerComparison({
                       {displayFreelancers.map(f => (
                         <td key={f.id} className="text-center py-3 px-4">
                           <div className="flex items-center justify-center gap-1">
-                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                            <Star className="h-4 w-4 fill-slate400 text-slate400" />
                             <span className="text-white font-semibold">{f.avg_rating?.toFixed(1)}</span>
                           </div>
                         </td>
@@ -213,9 +213,9 @@ export function FreelancerComparison({
                           <td key={f.id} className="text-center py-3 px-4">
                             <Badge className={
                               f.availability === 'available' 
-                                ? 'bg-green-600 text-white'
+                                ? 'bg-slate600 text-white'
                                 : f.availability === 'busy'
-                                ? 'bg-yellow-600 text-white'
+                                ? 'bg-slate600 text-white'
                                 : 'bg-red-600 text-white'
                             }>
                               {f.availability || 'N/A'}
@@ -248,7 +248,7 @@ export function FreelancerComparison({
                       {displayFreelancers.map(f => (
                         <div key={f.id} className="flex-1">
                           {f.skills.includes(skill) ? (
-                            <Badge className="bg-green-600 text-white w-full justify-center">
+                            <Badge className="bg-slate600 text-white w-full justify-center">
                               ✓ Has
                             </Badge>
                           ) : (
@@ -279,7 +279,7 @@ export function FreelancerComparison({
                       <Button 
                         onClick={() => window.open(f.cv_url, '_blank')}
                         variant="outline"
-                        className="w-full border-cyan-600 text-cyan-400 hover:bg-cyan-600/10"
+                        className="w-full border-slate-600 text-slate-400 hover:bg-slate-600/10"
                       >
                         <Download className="h-4 w-4 mr-2" />
                         Download CV
@@ -291,7 +291,7 @@ export function FreelancerComparison({
                           onSelectFreelancer(f.id);
                           setShowComparison(false);
                         }}
-                        className="w-full bg-green-600 hover:bg-green-700 text-white"
+                        className="w-full bg-slate600 hover:bg-slate700 text-white"
                       >
                         Select This Freelancer
                       </Button>

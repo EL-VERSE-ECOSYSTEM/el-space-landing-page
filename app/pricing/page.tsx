@@ -13,13 +13,13 @@ export default function PricingPage() {
         {/* Background Decorative Elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
           <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-slate500/5 rounded-full blur-3xl" />
         </div>
 
         {/* Header */}
         <div className="text-center mb-24 relative z-10">
           <h1 className="text-6xl font-black mb-6 tracking-tight text-foreground uppercase">
-            Predictable <span className="bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">Economics</span>
+            Predictable <span className="bg-gradient-to-r from-slate-600 via-slate-600 to-slate600 bg-clip-text text-transparent">Economics</span>
           </h1>
           <p className="text-muted-foreground text-xl max-w-2xl mx-auto font-medium leading-relaxed">
             Eliminating the complexity of global hiring with zero hidden costs and total transparency.
@@ -115,7 +115,7 @@ export default function PricingPage() {
 
               <div>
                 <h4 className="font-bold text-foreground mb-3 flex items-center gap-2 uppercase text-sm tracking-widest">
-                  <span className="text-emerald-500 font-black">★</span> Premium Features
+                  <span className="text-slate500 font-black">★</span> Premium Features
                 </h4>
                 <ul className="space-y-2 text-muted-foreground text-sm font-medium">
                   <li>• Portfolio showcase</li>
@@ -134,19 +134,19 @@ export default function PricingPage() {
             <h3 className="text-2xl font-black text-foreground mb-6 uppercase tracking-tight">No Hidden Fees</h3>
             <ul className="space-y-4">
               <li className="flex items-center gap-4 text-muted-foreground font-medium">
-                <span className="text-emerald-500 font-black">✓</span>
+                <span className="text-slate500 font-black">✓</span>
                 <span>Our commissions are the ONLY fee - no platform fees, no subscription costs</span>
               </li>
               <li className="flex items-center gap-4 text-muted-foreground font-medium">
-                <span className="text-emerald-500 font-black">✓</span>
+                <span className="text-slate500 font-black">✓</span>
                 <span>Payment processing is included in our service fee</span>
               </li>
               <li className="flex items-center gap-4 text-muted-foreground font-medium">
-                <span className="text-emerald-500 font-black">✓</span>
+                <span className="text-slate500 font-black">✓</span>
                 <span>Milestone-based payments means you control when funds are released</span>
               </li>
               <li className="flex items-center gap-4 text-muted-foreground font-medium">
-                <span className="text-emerald-500 font-black">✓</span>
+                <span className="text-slate500 font-black">✓</span>
                 <span>All fees are clearly displayed before you commit to a project</span>
               </li>
             </ul>
@@ -190,7 +190,7 @@ export default function PricingPage() {
 
         {/* CTA */}
         <section className="bg-primary rounded-[2.5rem] p-16 text-center shadow-2xl shadow-primary/20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary via-blue-600 to-purple-600 opacity-50" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary via-slate-600 to-slate600 opacity-50" />
           <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20 pointer-events-none" />
           <h2 className="text-5xl font-black text-primary-foreground mb-6 relative z-10 tracking-tight uppercase">Global. Digital. Absolute.</h2>
           <p className="text-primary-foreground/80 mb-10 text-xl font-medium relative z-10 max-w-xl mx-auto">
@@ -208,7 +208,7 @@ export default function PricingPage() {
         <div className="mt-12 pt-8 border-t border-border">
           <Link
             href="/"
-            className="text-cyan-400 hover:text-cyan-300 transition-colors"
+            className="text-slate-400 hover:text-slate-300 transition-colors"
           >
             ← Back to Home
           </Link>

@@ -24,13 +24,13 @@ export function Pricing() {
             <TabsList className="grid w-full max-w-md grid-cols-2 p-1 bg-slate-200 rounded-2xl h-14">
               <TabsTrigger
                 value="clients"
-                className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-cyan-600 data-[state=active]:shadow-sm"
+                className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate-600 data-[state=active]:shadow-sm"
               >
                 For Clients
               </TabsTrigger>
               <TabsTrigger
                 value="freelancers"
-                className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-purple-600 data-[state=active]:shadow-sm"
+                className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate600 data-[state=active]:shadow-sm"
               >
                 For Freelancers
               </TabsTrigger>
@@ -56,13 +56,13 @@ export function Pricing() {
                   </thead>
                   <tbody>
                     {PRICING_CLIENT_TABLE.map((row, idx) => (
-                      <tr key={idx} className="group hover:bg-cyan-50/30 transition-colors border-b border-slate-50 last:border-none">
+                      <tr key={idx} className="group hover:bg-slate-50/30 transition-colors border-b border-slate-50 last:border-none">
                         <td className="px-8 py-8">
                           <p className="text-xl font-bold text-slate-900 mb-1">{row.size}</p>
                           <p className="text-sm font-bold text-slate-400">{row.range}</p>
                         </td>
                         <td className="px-8 py-8">
-                          <p className="text-2xl font-black text-cyan-600">{row.fee}</p>
+                          <p className="text-2xl font-black text-slate-600">{row.fee}</p>
                         </td>
                         <td className="px-8 py-8">
                           <p className="text-slate-600 font-medium">{row.example}</p>
@@ -76,7 +76,7 @@ export function Pricing() {
 
             {/* Comparison Callout */}
             <div className="rounded-[2.5rem] bg-slate-900 p-8 md:p-12 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-[80px] -mr-32 -mt-32 transition-all group-hover:bg-cyan-500/20" />
+              <div className="absolute top-0 right-0 w-64 h-64 bg-slate-500/10 rounded-full blur-[80px] -mr-32 -mt-32 transition-all group-hover:bg-slate-500/20" />
               <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
                 <div className="space-y-4">
                   <h3 className="text-2xl md:text-3xl font-black text-white">Why pay more elsewhere?</h3>
@@ -86,7 +86,7 @@ export function Pricing() {
                   </p>
                 </div>
                 <div className="flex flex-col items-center gap-2">
-                  <div className="text-4xl md:text-5xl font-black text-transparent bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text">
+                  <div className="text-4xl md:text-5xl font-black text-transparent bg-gradient-to-r from-slate-400 to-slate-400 bg-clip-text">
                     Keep 95%+
                   </div>
                   <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">of project value</p>
@@ -114,13 +114,13 @@ export function Pricing() {
                   </thead>
                   <tbody>
                     {PRICING_FREELANCER_TABLE.map((row, idx) => (
-                      <tr key={idx} className="group hover:bg-purple-50/30 transition-colors border-b border-slate-50 last:border-none">
+                      <tr key={idx} className="group hover:bg-slate50/30 transition-colors border-b border-slate-50 last:border-none">
                         <td className="px-8 py-8">
                           <p className="text-xl font-bold text-slate-900 mb-1">{row.size}</p>
                           <p className="text-sm font-bold text-slate-400">{row.range}</p>
                         </td>
                         <td className="px-8 py-8">
-                          <p className="text-2xl font-black text-purple-600">{row.fee}</p>
+                          <p className="text-2xl font-black text-slate600">{row.fee}</p>
                         </td>
                         <td className="px-8 py-8">
                           <p className="text-slate-600 font-medium">{row.example}</p>
@@ -134,7 +134,7 @@ export function Pricing() {
 
             {/* Comparison Callout */}
             <div className="rounded-[2.5rem] bg-slate-900 p-8 md:p-12 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-[80px] -mr-32 -mt-32 transition-all group-hover:bg-purple-500/20" />
+              <div className="absolute top-0 right-0 w-64 h-64 bg-slate500/10 rounded-full blur-[80px] -mr-32 -mt-32 transition-all group-hover:bg-slate500/20" />
               <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
                 <div className="space-y-4">
                   <h3 className="text-2xl md:text-3xl font-black text-white">Your hard work, your money.</h3>
@@ -144,7 +144,7 @@ export function Pricing() {
                   </p>
                 </div>
                 <div className="flex flex-col items-center gap-2">
-                  <div className="text-4xl md:text-5xl font-black text-transparent bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text">
+                  <div className="text-4xl md:text-5xl font-black text-transparent bg-gradient-to-r from-slate400 to-slate400 bg-clip-text">
                     Up to 95%
                   </div>
                   <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">of your earnings</p>
@@ -162,7 +162,7 @@ export function Pricing() {
             { title: 'No Subscription', text: 'Free to join and apply. No monthly membership fees.' }
           ].map((item, i) => (
             <div key={i} className="flex gap-4">
-              <CheckCircle2 className="w-6 h-6 text-cyan-500 flex-shrink-0" />
+              <CheckCircle2 className="w-6 h-6 text-slate-500 flex-shrink-0" />
               <div>
                 <p className="font-bold text-slate-900 mb-1">{item.title}</p>
                 <p className="text-sm text-slate-500 leading-relaxed">{item.text}</p>

@@ -30,8 +30,8 @@
 
 **Fixes:**
 - Changed opacity from `opacity-50 hover:opacity-100` → `opacity-100`
-- Changed text color from `text-muted-foreground` → `text-cyan-400`
-- Changed hover color from `hover:text-accent` → `hover:text-cyan-300`
+- Changed text color from `text-muted-foreground` → `text-slate400`
+- Changed hover color from `hover:text-accent` → `hover:text-slate300`
 - Added `font-semibold` for better visibility
 
 **Result:** Admin button now clearly visible and accessible ✅
@@ -85,9 +85,9 @@ opacity-50        → Very faint button
 ### After (Clearly Visible):
 ```
 text-slate-100    → Light gray (easy to read)
-text-cyan-400     → Bright cyan (clearly visible)
+text-slate400     → Bright cyan (clearly visible)
 opacity-100       → Fully visible button
-text-cyan-300     → Bright cyan hover state
+text-slate300     → Bright cyan hover state
 ```
 
 ---

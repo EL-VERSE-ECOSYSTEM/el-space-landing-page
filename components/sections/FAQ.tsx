@@ -29,13 +29,13 @@ export function FAQ() {
             <TabsList className="grid w-full max-w-md grid-cols-2 p-1 bg-slate-100 rounded-2xl h-14">
               <TabsTrigger
                 value="clients"
-                className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-cyan-600 data-[state=active]:shadow-sm"
+                className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate-600 data-[state=active]:shadow-sm"
               >
                 For Clients
               </TabsTrigger>
               <TabsTrigger
                 value="freelancers"
-                className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-purple-600 data-[state=active]:shadow-sm"
+                className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate600 data-[state=active]:shadow-sm"
               >
                 For Freelancers
               </TabsTrigger>

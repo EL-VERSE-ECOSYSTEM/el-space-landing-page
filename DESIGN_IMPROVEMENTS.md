@@ -8,7 +8,7 @@ This document outlines all the frontend design, color, and UI/UX improvements ma
 - **Primary Accent**: Electric Cyan (#06B6D4) - Used for CTAs and highlights
 - **Secondary Accent**: Warm Amber (#F59E0B) - Used for complementary elements
 - **Purple Gradient**: Purple-500 to Pink-500 - Used for secondary CTAs
-- **Background**: Dark theme with gradient from slate-950 via purple-900/20 to slate-950
+- **Background**: Dark theme with gradient from slate-950 via slate900/20 to slate-950
 - **All colors follow EL VERSE TECHNOLOGIES brand guidelines**
 
 ## Key Improvements

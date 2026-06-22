@@ -58,7 +58,7 @@ export function FeaturedTalent() {
                 className="group relative flex flex-col h-full rounded-[2.5rem] border border-slate-200 bg-white p-8 transition-all duration-500 hover:border-transparent hover:shadow-2xl hover:shadow-slate-200/50"
               >
                 {/* Avatar Placeholder */}
-                <div className="mb-6 h-20 w-20 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-2xl font-black text-white shadow-lg shadow-cyan-500/20 group-hover:scale-110 transition-transform duration-500">
+                <div className="mb-6 h-20 w-20 rounded-2xl bg-gradient-to-br from-slate-500 to-slate-600 flex items-center justify-center text-2xl font-black text-white shadow-lg shadow-slate-500/20 group-hover:scale-110 transition-transform duration-500">
                   {freelancer.name.charAt(0)}
                 </div>
 
@@ -70,7 +70,7 @@ export function FeaturedTalent() {
 
                 {/* Rating */}
                 <div className="flex items-center gap-1 mb-6">
-                   <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                   <Star className="w-4 h-4 fill-slate400 text-slate400" />
                    <span className="text-sm font-bold text-slate-900">{freelancer.rating || '4.9'}</span>
                    <span className="text-sm text-slate-400">({freelancer.reviews || '20'}+ reviews)</span>
                 </div>
@@ -80,7 +80,7 @@ export function FeaturedTalent() {
                   {freelancer.skills.slice(0, 3).map((skill: string, idx: number) => (
                     <span
                       key={`${freelancer.id}-${skill}-${idx}`}
-                      className="rounded-xl bg-slate-100 px-4 py-1.5 text-xs font-bold text-slate-600 border border-slate-200 transition-colors group-hover:bg-cyan-50 group-hover:text-cyan-700 group-hover:border-cyan-100"
+                      className="rounded-xl bg-slate-100 px-4 py-1.5 text-xs font-bold text-slate-600 border border-slate-200 transition-colors group-hover:bg-slate-50 group-hover:text-slate-700 group-hover:border-slate-100"
                     >
                       {skill}
                     </span>
@@ -96,7 +96,7 @@ export function FeaturedTalent() {
                     </p>
                   </div>
                   <div className="text-right">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 uppercase tracking-tighter">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate100 text-slate700 uppercase tracking-tighter">
                       Online
                     </span>
                   </div>

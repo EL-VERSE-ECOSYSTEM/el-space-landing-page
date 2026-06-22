@@ -150,10 +150,10 @@ export default function MessagesPage() {
                 >
                   <div className="flex items-start gap-4">
                     <div className="relative">
-                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-primary-foreground font-black text-lg shadow-lg">
+                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-slate-600 flex items-center justify-center text-primary-foreground font-black text-lg shadow-lg">
                         {conv.name.charAt(0)}
                       </div>
-                      {conv.online && <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-background shadow-sm" />}
+                      {conv.online && <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-slate500 rounded-full border-2 border-background shadow-sm" />}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-1">
@@ -180,7 +180,7 @@ export default function MessagesPage() {
                 {/* Chat Header */}
                 <div className="p-6 border-b border-border flex items-center justify-between bg-muted/30">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-primary-foreground font-black text-lg shadow-lg">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-slate-600 flex items-center justify-center text-primary-foreground font-black text-lg shadow-lg">
                       {conversations.find(c => c.id === selectedConversation)?.name.charAt(0)}
                     </div>
                     <div>
@@ -188,7 +188,7 @@ export default function MessagesPage() {
                         {conversations.find(c => c.id === selectedConversation)?.name}
                       </h3>
                       <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest flex items-center gap-1.5">
-                        <span className={`w-2 h-2 rounded-full ${conversations.find(c => c.id === selectedConversation)?.online ? 'bg-emerald-500 animate-pulse' : 'bg-muted-foreground/30'}`} />
+                        <span className={`w-2 h-2 rounded-full ${conversations.find(c => c.id === selectedConversation)?.online ? 'bg-slate500 animate-pulse' : 'bg-muted-foreground/30'}`} />
                         {conversations.find(c => c.id === selectedConversation)?.online ? 'Node Active' : 'Node Idle'}
                       </p>
                     </div>

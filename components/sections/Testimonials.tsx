@@ -21,12 +21,12 @@ export function Testimonials() {
                 className="group relative flex flex-col h-full rounded-[2.5rem] border border-slate-200 bg-white p-10 transition-all duration-500 hover:border-transparent hover:shadow-2xl hover:shadow-slate-200/50"
               >
                 <div className="mb-8">
-                  <div className="inline-flex items-center justify-center h-12 w-12 rounded-2xl bg-cyan-50 text-cyan-500 mb-6 group-hover:scale-110 transition-transform duration-500">
-                    <Quote className="w-6 h-6 fill-cyan-500" />
+                  <div className="inline-flex items-center justify-center h-12 w-12 rounded-2xl bg-slate-50 text-slate-500 mb-6 group-hover:scale-110 transition-transform duration-500">
+                    <Quote className="w-6 h-6 fill-slate-500" />
                   </div>
                   <div className="flex gap-1 mb-6">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                      <Star key={i} className="w-4 h-4 fill-slate400 text-slate400" />
                     ))}
                   </div>
                   <p className="text-xl font-bold text-slate-900 leading-relaxed tracking-tight mb-8">

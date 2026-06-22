@@ -96,7 +96,7 @@ export default function MilestonesHub() {
           <div className="flex justify-between items-end">
             <div>
               <h1 className="text-5xl font-black text-foreground tracking-tighter">
-                Mission <span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">Milestones</span>
+                Mission <span className="bg-gradient-to-r from-primary to-slate500 bg-clip-text text-transparent">Milestones</span>
               </h1>
               <p className="text-muted-foreground mt-2 text-lg font-medium">Precision tracking for active deployments</p>
             </div>

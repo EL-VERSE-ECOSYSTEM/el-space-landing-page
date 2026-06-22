@@ -1,10 +1,10 @@
 'use client'
+import Image from 'next/image';
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Menu, X, LogOut, Settings, User, Wallet, MessageSquare, Bell, MoreVertical } from 'lucide-react'
-import Image from 'next/image'
 import { useAuth } from '@/components/auth-provider'
 import {
   DropdownMenu,
@@ -51,7 +51,7 @@ export function AuthenticatedNavbar() {
   }
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-blue-500/20 bg-gradient-to-r from-slate-900 to-slate-800 backdrop-blur supports-[backdrop-filter]:bg-slate-900/60">
+    <nav className="sticky top-0 z-50 border-b border-slate-500/20 bg-gradient-to-r from-slate-900 to-slate-800 backdrop-blur supports-[backdrop-filter]:bg-slate-900/60">
       <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -65,7 +65,7 @@ export function AuthenticatedNavbar() {
                 priority
               />
             </div>
-            <span className="hidden text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent sm:inline-block">
+            <span className="hidden text-lg sm:text-xl font-bold bg-gradient-to-r from-slate-400 to-slate-400 bg-clip-text text-transparent sm:inline-block">
               EL SPACE
             </span>
           </Link>
@@ -77,7 +77,7 @@ export function AuthenticatedNavbar() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-slate-300 hover:text-blue-400 hover:bg-blue-500/10"
+                  className="text-slate-300 hover:text-slate-400 hover:bg-slate-500/10"
                 >
                   <span className="mr-2">{link.icon}</span>
                   {link.label}
@@ -93,7 +93,7 @@ export function AuthenticatedNavbar() {
               <Button
                 size="sm"
                 variant="ghost"
-                className="text-slate-300 hover:text-emerald-400 hover:bg-emerald-500/10 gap-2"
+                className="text-slate-300 hover:text-slate400 hover:bg-slate500/10 gap-2"
               >
                 <Wallet className="w-4 h-4" />
                 <span className="hidden xl:inline">Wallet</span>
@@ -108,9 +108,9 @@ export function AuthenticatedNavbar() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-slate-300 hover:text-blue-400 hover:bg-blue-500/10 gap-2"
+                  className="text-slate-300 hover:text-slate-400 hover:bg-slate-500/10 gap-2"
                 >
-                  <div className="w-6 h-6 rounded-full bg-blue-600/50 flex items-center justify-center">
+                  <div className="w-6 h-6 rounded-full bg-slate-600/50 flex items-center justify-center">
                     <span className="text-xs font-bold">
                       {user?.name.charAt(0).toUpperCase()}
                     </span>
@@ -125,7 +125,7 @@ export function AuthenticatedNavbar() {
                 <div className="px-2 py-1.5">
                   <p className="text-sm font-semibold text-white">{user?.name}</p>
                   <p className="text-xs text-slate-400">{user?.email}</p>
-                  <p className="text-xs text-blue-400 mt-1">
+                  <p className="text-xs text-slate-400 mt-1">
                     {user?.role === 'client' ? 'Client' : 'Freelancer'}
                   </p>
                 </div>
@@ -213,7 +213,7 @@ export function AuthenticatedNavbar() {
           <div className="flex lg:hidden items-center gap-2">
             <Link href="/wallet">
               <Button size="sm" variant="ghost" className="p-2">
-                <Wallet className="w-5 h-5 text-emerald-400" />
+                <Wallet className="w-5 h-5 text-slate400" />
               </Button>
             </Link>
 
@@ -285,7 +285,7 @@ export function AuthenticatedNavbar() {
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <Button variant="ghost" className="w-full justify-start text-slate-300 hover:bg-blue-500/10">
+                <Button variant="ghost" className="w-full justify-start text-slate-300 hover:bg-slate-500/10">
                   <span className="mr-2">{link.icon}</span>
                   {link.label}
                 </Button>

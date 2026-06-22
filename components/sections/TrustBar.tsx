@@ -14,7 +14,7 @@ export function TrustBar() {
               key={brand}
               className="group flex items-center transition-all duration-300 grayscale opacity-40 hover:grayscale-0 hover:opacity-100"
             >
-              <span className="text-xl md:text-2xl font-black tracking-tighter text-slate-900 group-hover:bg-gradient-to-r group-hover:from-cyan-500 group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent">
+              <span className="text-xl md:text-2xl font-black tracking-tighter text-slate-900 group-hover:bg-gradient-to-r group-hover:from-slate-500 group-hover:to-slate600 group-hover:bg-clip-text group-hover:text-transparent">
                 {brand}
               </span>
             </div>

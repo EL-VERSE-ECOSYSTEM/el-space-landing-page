@@ -8,12 +8,12 @@ interface BenefitCardProps {
 }
 
 const iconBackgrounds = {
-  cyan: 'bg-cyan-50 text-cyan-600 border-cyan-100',
-  purple: 'bg-purple-50 text-purple-600 border-purple-100',
-  green: 'bg-emerald-50 text-emerald-600 border-emerald-100',
-  blue: 'bg-blue-50 text-blue-600 border-blue-100',
-  yellow: 'bg-yellow-50 text-yellow-600 border-yellow-100',
-  pink: 'bg-pink-50 text-pink-600 border-pink-100'
+  cyan: 'bg-slate-50 text-slate-600 border-slate-100',
+  purple: 'bg-slate50 text-slate600 border-slate100',
+  green: 'bg-slate50 text-slate600 border-slate100',
+  blue: 'bg-slate-50 text-slate-600 border-slate-100',
+  yellow: 'bg-slate50 text-slate600 border-slate100',
+  pink: 'bg-slate50 text-slate600 border-slate100'
 }
 
 export function BenefitCard({ 

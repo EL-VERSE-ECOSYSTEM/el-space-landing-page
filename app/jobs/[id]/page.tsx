@@ -168,7 +168,7 @@ export default function ProjectDetailPage() {
        {/* Orbs */}
        <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-slate-500/5 rounded-full blur-[120px]" />
       </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -188,7 +188,7 @@ export default function ProjectDetailPage() {
                  <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-none px-4 py-1.5 rounded-xl font-black uppercase tracking-widest text-[10px]">
                    {project.category}
                  </Badge>
-                 <Badge className="bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 border-none px-4 py-1.5 rounded-xl font-black uppercase tracking-widest text-[10px]">
+                 <Badge className="bg-slate500/10 text-slate500 hover:bg-slate500/20 border-none px-4 py-1.5 rounded-xl font-black uppercase tracking-widest text-[10px]">
                    Open
                  </Badge>
               </div>
@@ -321,7 +321,7 @@ export default function ProjectDetailPage() {
                       </div>
                    </div>
                    <div className="flex items-center gap-5">
-                      <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 shadow-inner">
+                      <div className="w-12 h-12 rounded-2xl bg-slate-500/10 flex items-center justify-center text-slate-500 shadow-inner">
                         <Briefcase className="w-6 h-6" />
                       </div>
                       <div>

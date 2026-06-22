@@ -55,11 +55,11 @@ function GitHubSuccessContent() {
        {/* Background Orbs */}
        <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-slate-500/10 rounded-full blur-[120px] animate-pulse" />
       </div>
 
       <div className="text-center relative z-10 space-y-6">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary via-blue-500 to-purple-600 shadow-xl shadow-primary/20 mb-4">
+        <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary via-slate-500 to-slate600 shadow-xl shadow-primary/20 mb-4">
           <span className="text-2xl font-black text-white">EL</span>
         </div>
 

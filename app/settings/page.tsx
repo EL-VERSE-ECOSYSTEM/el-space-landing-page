@@ -97,7 +97,7 @@ export default function SettingsPage() {
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-900">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-500"></div>
       </div>
     )
   }
@@ -106,7 +106,7 @@ export default function SettingsPage() {
     <DashboardLayout navItems={navItems} userType={(user?.user_type === "freelancer" ? "freelancer" : "client")}>
       <div className="max-w-4xl mx-auto space-y-8">
         <div>
-          <h1 className="text-4xl font-black text-white tracking-tighter">Command <span className="text-cyan-500">Center</span></h1>
+          <h1 className="text-4xl font-black text-white tracking-tighter">Command <span className="text-slate-500">Center</span></h1>
           <p className="text-slate-400 font-medium">Manage your identity and interface preferences.</p>
         </div>
 
@@ -122,7 +122,7 @@ export default function SettingsPage() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all ${
                   activeTab === tab.id
-                  ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/20'
+                  ? 'bg-slate-500 text-white shadow-lg shadow-slate-500/20'
                   : 'text-slate-400 hover:bg-slate-800'
                 }`}
               >
@@ -173,7 +173,7 @@ export default function SettingsPage() {
                   <Button
                     onClick={handleSaveProfile}
                     disabled={loading}
-                    className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-black h-14 rounded-2xl shadow-xl shadow-cyan-500/20"
+                    className="w-full bg-slate-500 hover:bg-slate-600 text-white font-black h-14 rounded-2xl shadow-xl shadow-slate-500/20"
                   >
                     {loading ? 'Synchronizing...' : 'Update Records'} <Save className="w-5 h-5 ml-2" />
                   </Button>
@@ -194,11 +194,11 @@ export default function SettingsPage() {
                         onClick={() => setTheme(t.id)}
                         className={`flex flex-col items-center gap-4 p-6 rounded-2xl border-2 transition-all ${
                           theme === t.id
-                          ? 'border-cyan-500 bg-cyan-500/10'
+                          ? 'border-slate-500 bg-slate-500/10'
                           : 'border-slate-800 hover:border-slate-700'
                         }`}
                       >
-                        <t.icon className={`w-8 h-8 ${theme === t.id ? 'text-cyan-400' : 'text-slate-500'}`} />
+                        <t.icon className={`w-8 h-8 ${theme === t.id ? 'text-slate-400' : 'text-slate-500'}`} />
                         <span className={`font-bold ${theme === t.id ? 'text-white' : 'text-slate-400'}`}>{t.label}</span>
                       </button>
                     ))}

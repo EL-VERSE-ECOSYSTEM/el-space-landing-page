@@ -104,7 +104,7 @@ export default function FreelancerHub() {
                  </Badge>
               </div>
               <div className="text-muted-foreground mt-4 text-base md:text-lg font-medium flex flex-col md:flex-row items-center justify-center md:justify-start gap-3 md:gap-6">
-                 <span className="flex items-center gap-2"><Star className="w-5 h-5 text-amber-400 fill-amber-400" /> <span className="text-foreground font-black">4.98</span> (124 reviews)</span>
+                 <span className="flex items-center gap-2"><Star className="w-5 h-5 text-slate400 fill-slate400" /> <span className="text-foreground font-black">4.98</span> (124 reviews)</span>
                  <div className="hidden md:block w-1.5 h-1.5 bg-border rounded-full" />
                  <span className="flex items-center gap-2 text-accent font-black tracking-tight"><Zap className="w-5 h-5" /> Elite Vanguard Status</span>
               </div>

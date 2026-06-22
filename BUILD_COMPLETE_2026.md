@@ -227,7 +227,7 @@ GitHub OAuth users automatically created with:
 ### Tailwind Integration
 All colors integrated with Tailwind's color system:
 - `bg-red-600`, `bg-red-500`, `bg-red-50`
-- `bg-gold`, `bg-amber-600`
+- `bg-gold`, `bg-slate600`
 - `text-red-600`, `text-gold`
 - Full opacity support with `/alpha-value`
 

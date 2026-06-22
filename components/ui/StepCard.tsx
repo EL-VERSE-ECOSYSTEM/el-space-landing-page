@@ -8,10 +8,10 @@ interface StepCardProps {
 }
 
 const stepColors = [
-  'bg-cyan-50 text-cyan-600 border-cyan-100',
-  'bg-blue-50 text-blue-600 border-blue-100',
-  'bg-indigo-50 text-indigo-600 border-indigo-100',
-  'bg-purple-50 text-purple-600 border-purple-100'
+  'bg-slate-50 text-slate-600 border-slate-100',
+  'bg-slate-50 text-slate-600 border-slate-100',
+  'bg-slate50 text-slate600 border-slate100',
+  'bg-slate50 text-slate600 border-slate100'
 ]
 
 export function StepCard({ icon, title, description, step }: StepCardProps) {

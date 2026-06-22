@@ -10,7 +10,7 @@ export default function CookiePolicyPage() {
       
       <main className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="max-w-none">
-          <h1 className="text-4xl font-black mb-8 bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent uppercase tracking-tight">
+          <h1 className="text-4xl font-black mb-8 bg-gradient-to-r from-primary to-slate-500 bg-clip-text text-transparent uppercase tracking-tight">
             Cookie Protocol
           </h1>
           
@@ -77,19 +77,19 @@ export default function CookiePolicyPage() {
             </p>
             <ul className="list-none space-y-4">
               <li className="flex items-center gap-4">
-                <span className="text-emerald-500 font-black">✓</span>
+                <span className="text-slate500 font-black">✓</span>
                 <span className="text-muted-foreground font-medium">Identity persistence and secure session locking.</span>
               </li>
               <li className="flex items-center gap-4">
-                <span className="text-emerald-500 font-black">✓</span>
+                <span className="text-slate500 font-black">✓</span>
                 <span className="text-muted-foreground font-medium">Node preference synchronization.</span>
               </li>
               <li className="flex items-center gap-4">
-                <span className="text-emerald-500 font-black">✓</span>
+                <span className="text-slate500 font-black">✓</span>
                 <span className="text-muted-foreground font-medium">Behavioral pattern mapping for UX improvement.</span>
               </li>
               <li className="flex items-center gap-4">
-                <span className="text-emerald-500 font-black">✓</span>
+                <span className="text-slate500 font-black">✓</span>
                 <span className="text-muted-foreground font-medium">Anomaly detection and fraud prevention.</span>
               </li>
             </ul>
@@ -133,7 +133,7 @@ export default function CookiePolicyPage() {
           <div className="mt-12 pt-8 border-t border-border">
             <Link
               href="/"
-              className="text-cyan-400 hover:text-cyan-300 transition-colors"
+              className="text-slate-400 hover:text-slate-300 transition-colors"
             >
               ← Back to Home
             </Link>
