@@ -49,7 +49,7 @@ export function JobPostingForm() {
           <div
             key={s}
             className={`h-2 flex-1 rounded-full transition-colors ${
-              s <= step ? 'bg-gradient-to-r from-cyan-500 to-blue-600' : 'bg-slate-700/50'
+              s <= step ? 'bg-gradient-to-r from-slate-500 to-slate-600' : 'bg-slate-700/50'
             }`}
           ></div>
         ))}
@@ -188,12 +188,12 @@ export function JobPostingForm() {
           </Button>
         )}
         {step < 4 && (
-          <Button onClick={handleNext} className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:from-cyan-600 hover:to-blue-700">
+          <Button onClick={handleNext} className="flex-1 bg-gradient-to-r from-slate-500 to-slate-600 text-white hover:from-slate-600 hover:to-slate-700">
             Continue
           </Button>
         )}
         {step === 4 && (
-          <Button onClick={handleSubmit} className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700">
+          <Button onClick={handleSubmit} className="flex-1 bg-gradient-to-r from-slate500 to-teal-600 text-white hover:from-slate600 hover:to-teal-700">
             Post Job (Free)
           </Button>
         )}

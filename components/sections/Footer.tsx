@@ -14,11 +14,11 @@ export function Footer() {
           <div className="md:col-span-1">
             <div className="mb-6 flex items-center gap-2">
               <div className="relative h-10 w-10 flex-shrink-0">
-                <div className="h-full w-full bg-gradient-to-br from-primary via-blue-500 to-accent rounded-xl flex items-center justify-center font-bold text-white text-xs shadow-lg shadow-primary/20">
+                <div className="h-full w-full bg-gradient-to-br from-primary via-slate-500 to-accent rounded-xl flex items-center justify-center font-bold text-white text-xs shadow-lg shadow-primary/20">
                   EL
                 </div>
               </div>
-              <span className="text-2xl font-black bg-gradient-to-r from-primary via-blue-600 to-accent bg-clip-text text-transparent">
+              <span className="text-2xl font-black bg-gradient-to-r from-primary via-slate-600 to-accent bg-clip-text text-transparent">
                 EL SPACE
               </span>
             </div>
@@ -80,7 +80,7 @@ export function Footer() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-muted-foreground hover:text-blue-500 transition-colors duration-200"
+                    className="text-sm text-muted-foreground hover:text-slate-500 transition-colors duration-200"
                   >
                     {link.label}
                   </a>

@@ -10,7 +10,7 @@ export default function TermsOfServicePage() {
       
       <main className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="prose prose-invert max-w-none">
-          <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-slate-500 to-slate-500 bg-clip-text text-transparent">
             Terms of Service
           </h1>
           
@@ -122,7 +122,7 @@ export default function TermsOfServicePage() {
           <div className="mt-12 pt-8 border-t border-border">
             <Link
               href="/"
-              className="text-cyan-400 hover:text-cyan-300 transition-colors"
+              className="text-slate-400 hover:text-slate-300 transition-colors"
             >
               ← Back to Home
             </Link>

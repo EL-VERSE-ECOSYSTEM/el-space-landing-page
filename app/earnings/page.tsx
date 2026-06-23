@@ -110,7 +110,7 @@ export default function EarningsPage() {
             </div>
           </Card>
 
-          <Card className="bg-card border-border border-l-4 border-l-emerald-500 rounded-2xl p-6 shadow-xl shadow-black/5">
+          <Card className="bg-card border-border border-l-4 border-l-slate500 rounded-2xl p-6 shadow-xl shadow-black/5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1 opacity-60">Executed Contracts</p>
@@ -118,13 +118,13 @@ export default function EarningsPage() {
                   {stats?.completedProjects || 0}
                 </p>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-                <CheckCircle className="h-6 w-6 text-emerald-500" />
+              <div className="w-12 h-12 rounded-xl bg-slate500/10 flex items-center justify-center">
+                <CheckCircle className="h-6 w-6 text-slate500" />
               </div>
             </div>
           </Card>
 
-          <Card className="bg-card border-border border-l-4 border-l-amber-500 rounded-2xl p-6 shadow-xl shadow-black/5">
+          <Card className="bg-card border-border border-l-4 border-l-slate500 rounded-2xl p-6 shadow-xl shadow-black/5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1 opacity-60">Escrow In-Transit</p>
@@ -132,13 +132,13 @@ export default function EarningsPage() {
                   ${stats?.pendingEarnings || 0}
                 </p>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center">
-                <Clock className="h-6 w-6 text-amber-500" />
+              <div className="w-12 h-12 rounded-xl bg-slate500/10 flex items-center justify-center">
+                <Clock className="h-6 w-6 text-slate500" />
               </div>
             </div>
           </Card>
 
-          <Card className="bg-card border-border border-l-4 border-l-blue-500 rounded-2xl p-6 shadow-xl shadow-black/5">
+          <Card className="bg-card border-border border-l-4 border-l-slate-500 rounded-2xl p-6 shadow-xl shadow-black/5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1 opacity-60">Avg Node Value</p>
@@ -146,8 +146,8 @@ export default function EarningsPage() {
                   ${stats?.averageProjectValue || 0}
                 </p>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                <TrendingUp className="h-6 w-6 text-blue-500" />
+              <div className="w-12 h-12 rounded-xl bg-slate-500/10 flex items-center justify-center">
+                <TrendingUp className="h-6 w-6 text-slate-500" />
               </div>
             </div>
           </Card>
@@ -254,7 +254,7 @@ export default function EarningsPage() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-black text-emerald-500 text-2xl tracking-tighter">+${earning.total_amount}</p>
+                    <p className="font-black text-slate500 text-2xl tracking-tighter">+${earning.total_amount}</p>
                     <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1">
                       {new Date(earning.completed_at).toLocaleDateString()}
                     </p>

@@ -211,7 +211,7 @@ export default function WalletHub() {
                 <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center shadow-2xl shadow-primary/20">
                   <WalletIcon className="w-7 h-7 text-primary-foreground" />
                 </div>
-                The <span className="bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent uppercase">Vault</span>
+                The <span className="bg-gradient-to-r from-primary to-slate-500 bg-clip-text text-transparent uppercase">Vault</span>
               </h1>
               <p className="text-muted-foreground mt-2 text-lg font-medium">Secured liquidity & asset management</p>
             </div>
@@ -360,7 +360,7 @@ export default function WalletHub() {
                  </div>
               </Card>
 
-              <Card className="bg-gradient-to-br from-primary to-blue-600 border-none p-8 rounded-[2.5rem] text-primary-foreground shadow-2xl shadow-primary/20">
+              <Card className="bg-gradient-to-br from-primary to-slate-600 border-none p-8 rounded-[2.5rem] text-primary-foreground shadow-2xl shadow-primary/20">
                  <h3 className="font-black text-xl mb-4 uppercase">Elite Benefits</h3>
                  <p className="text-primary-foreground/80 font-medium mb-6">You're currently in the <span className="text-primary-foreground font-black">Platinum Tier</span> with 0.5% reduced fees.</p>
                  <Button className="w-full bg-background text-foreground hover:bg-background/90 font-black rounded-xl h-12 border-none">Upgrade Pipeline</Button>
@@ -373,7 +373,7 @@ export default function WalletHub() {
         {showTransfer && (
           <div className="fixed inset-0 bg-background/80 backdrop-blur-xl z-[100] flex items-center justify-center p-4">
              <Card className="w-full max-w-xl bg-card border border-border shadow-2xl rounded-[3rem] relative overflow-hidden animate-in fade-in zoom-in-95 duration-300">
-                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-blue-500" />
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-slate-500" />
                 <CardHeader className="p-10 pb-4">
                    <CardTitle className="text-3xl font-black text-foreground tracking-tight uppercase">Internal Transfer</CardTitle>
                    <p className="text-muted-foreground font-medium mt-1">Send funds instantly via EL SPACE ID.</p>
@@ -440,7 +440,7 @@ export default function WalletHub() {
         {showWithdraw && (
           <div className="fixed inset-0 bg-background/80 backdrop-blur-xl z-[100] flex items-center justify-center p-4">
              <Card className="w-full max-w-2xl bg-card border border-border shadow-2xl rounded-[3rem] relative overflow-hidden animate-in fade-in zoom-in-95 duration-300">
-                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-blue-500" />
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-slate-500" />
                 <CardHeader className="p-10 pb-4">
                    <CardTitle className="text-3xl font-black text-foreground tracking-tight uppercase">Capital Withdrawal</CardTitle>
                    <p className="text-muted-foreground font-medium mt-1">Select your preferred liquidity destination.</p>
@@ -618,7 +618,7 @@ export default function WalletHub() {
         {showFund && (
           <div className="fixed inset-0 bg-background/80 backdrop-blur-xl z-[100] flex items-center justify-center p-4">
              <Card className="w-full max-w-xl bg-card border border-border shadow-2xl rounded-[3rem] relative overflow-hidden animate-in fade-in zoom-in-95 duration-300">
-                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-400 to-indigo-500" />
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-slate-400 to-slate500" />
                 <CardHeader className="p-10 pb-4">
                    <CardTitle className="text-3xl font-black text-foreground tracking-tight uppercase">Capital Injection</CardTitle>
                    <p className="text-muted-foreground font-medium mt-1">Upload transfer proof to fund your wallet.</p>

@@ -32,15 +32,8 @@ export function Navbar() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo with text */}
-          <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity group">
-            <div className="relative h-10 w-10 flex-shrink-0">
-              <div className="h-full w-full bg-gradient-to-br from-primary via-blue-500 to-accent rounded-xl flex items-center justify-center font-black text-white text-xs shadow-lg shadow-primary/20 group-hover:shadow-primary/40 transition-all">
-                EL
-              </div>
-            </div>
-            <span className="hidden text-2xl font-black bg-gradient-to-r from-primary via-blue-500 to-accent bg-clip-text text-transparent sm:inline-block tracking-tight">
-              EL SPACE
-            </span>
+          <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity group">
+            <Image src="/logo.png" alt="EL SPACE" width={120} height={40} className="h-8 w-auto object-contain" />
           </Link>
 
           {/* Nav Links - Hidden on mobile */}
@@ -52,7 +45,7 @@ export function Navbar() {
                 className="text-sm font-bold text-muted-foreground hover:text-foreground transition-all duration-200 relative group"
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent group-hover:w-full transition-all duration-300" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-slate-400 to-slate-600 group-hover:w-full transition-all duration-300" />
               </Link>
             ))}
           </div>

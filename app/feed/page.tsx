@@ -226,10 +226,10 @@ export default function FeedPage() {
           <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-all font-black text-[10px] uppercase tracking-widest">
             <MessageCircle className="w-5 h-5" /> {post.comments_count}
           </button>
-          <button onClick={() => handleCreatePost(post.id)} className="flex items-center gap-2 text-muted-foreground hover:text-purple-500 transition-all font-black text-[10px] uppercase tracking-widest">
+          <button onClick={() => handleCreatePost(post.id)} className="flex items-center gap-2 text-muted-foreground hover:text-slate500 transition-all font-black text-[10px] uppercase tracking-widest">
             <Repeat className="w-5 h-5" /> {post.reposts_count}
           </button>
-          <button onClick={() => handleShare(post.id)} className="flex items-center gap-2 text-muted-foreground hover:text-emerald-500 transition-all font-black text-[10px] uppercase tracking-widest">
+          <button onClick={() => handleShare(post.id)} className="flex items-center gap-2 text-muted-foreground hover:text-slate500 transition-all font-black text-[10px] uppercase tracking-widest">
             <Share2 className="w-5 h-5" /> {post.shares_count}
           </button>
         </div>
@@ -278,7 +278,7 @@ export default function FeedPage() {
                        <Button onClick={() => {setMediaType('image'); setMediaUrl('https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800')}} variant="ghost" size="sm" className={`text-muted-foreground hover:text-primary rounded-xl font-black text-[10px] uppercase tracking-widest ${mediaType === 'image' && 'text-primary bg-primary/10'}`}>
                           <ImageIcon className="w-5 h-5 mr-2" /> Image
                        </Button>
-                       <Button onClick={() => {setMediaType('video'); setMediaUrl('https://example.com/demo.mp4')}} variant="ghost" size="sm" className={`text-muted-foreground hover:text-purple-500 rounded-xl font-black text-[10px] uppercase tracking-widest ${mediaType === 'video' && 'text-purple-500 bg-purple-500/10'}`}>
+                       <Button onClick={() => {setMediaType('video'); setMediaUrl('https://example.com/demo.mp4')}} variant="ghost" size="sm" className={`text-muted-foreground hover:text-slate500 rounded-xl font-black text-[10px] uppercase tracking-widest ${mediaType === 'video' && 'text-slate500 bg-slate500/10'}`}>
                           <Video className="w-5 h-5 mr-2" /> Video
                        </Button>
                     </div>

@@ -100,7 +100,7 @@ export function FreelancerPortfolio({ freelancerId, isOwnProfile = false, items 
           <Button
             size="sm"
             onClick={() => setShowAddModal(true)}
-            className="bg-cyan-600 hover:bg-cyan-700 text-white"
+            className="bg-slate-600 hover:bg-slate-700 text-white"
           >
             <Plus className="h-4 w-4 mr-2" />
             Add Project
@@ -122,7 +122,7 @@ export function FreelancerPortfolio({ freelancerId, isOwnProfile = false, items 
           {portfolioItems.map((item) => (
             <Card
               key={item.id}
-              className="bg-slate-800 border-slate-700 hover:border-cyan-500 transition-colors cursor-pointer overflow-hidden group"
+              className="bg-slate-800 border-slate-700 hover:border-slate-500 transition-colors cursor-pointer overflow-hidden group"
               onClick={() => setSelectedItem(item)}
             >
               {item.image_url && (
@@ -140,7 +140,7 @@ export function FreelancerPortfolio({ freelancerId, isOwnProfile = false, items 
 
                 <div className="flex flex-wrap gap-1 mb-3">
                   {item.technologies.slice(0, 3).map((tech) => (
-                    <Badge key={tech} className="bg-cyan-600/30 text-cyan-300 text-xs">
+                    <Badge key={tech} className="bg-slate-600/30 text-slate-300 text-xs">
                       {tech}
                     </Badge>
                   ))}
@@ -160,7 +160,7 @@ export function FreelancerPortfolio({ freelancerId, isOwnProfile = false, items 
                         e.stopPropagation();
                         window.open(item.project_url, '_blank');
                       }}
-                      className="text-cyan-400 hover:text-cyan-300 hover:bg-cyan-600/10"
+                      className="text-slate-400 hover:text-slate-300 hover:bg-slate-600/10"
                     >
                       <ExternalLink className="h-4 w-4 mr-1" />
                       View
@@ -201,7 +201,7 @@ export function FreelancerPortfolio({ freelancerId, isOwnProfile = false, items 
                 placeholder="e.g., E-commerce Platform Redesign"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-500"
+                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:border-slate-500"
               />
             </div>
 
@@ -211,7 +211,7 @@ export function FreelancerPortfolio({ freelancerId, isOwnProfile = false, items 
                 placeholder="Describe your project work and achievements..."
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-500"
+                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:border-slate-500"
                 rows={4}
               />
             </div>
@@ -223,7 +223,7 @@ export function FreelancerPortfolio({ freelancerId, isOwnProfile = false, items 
                 placeholder="https://example.com"
                 value={formData.projectUrl}
                 onChange={(e) => setFormData({ ...formData, projectUrl: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-500"
+                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:border-slate-500"
               />
             </div>
 
@@ -234,7 +234,7 @@ export function FreelancerPortfolio({ freelancerId, isOwnProfile = false, items 
                 placeholder="React, TypeScript, Tailwind CSS"
                 value={formData.technologies}
                 onChange={(e) => setFormData({ ...formData, technologies: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-500"
+                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:border-slate-500"
               />
             </div>
 
@@ -248,7 +248,7 @@ export function FreelancerPortfolio({ freelancerId, isOwnProfile = false, items 
               </Button>
               <Button
                 onClick={handleAddPortfolioItem}
-                className="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white"
+                className="flex-1 bg-slate-600 hover:bg-slate-700 text-white"
               >
                 Add Item
               </Button>
@@ -283,7 +283,7 @@ export function FreelancerPortfolio({ freelancerId, isOwnProfile = false, items 
                 <p className="text-slate-400 text-sm mb-2">Technologies</p>
                 <div className="flex flex-wrap gap-2">
                   {selectedItem.technologies.map((tech) => (
-                    <Badge key={tech} className="bg-cyan-600 text-white">
+                    <Badge key={tech} className="bg-slate-600 text-white">
                       {tech}
                     </Badge>
                   ))}
@@ -293,7 +293,7 @@ export function FreelancerPortfolio({ freelancerId, isOwnProfile = false, items 
               {selectedItem.project_url && (
                 <Button
                   onClick={() => window.open(selectedItem.project_url, '_blank')}
-                  className="w-full bg-cyan-600 hover:bg-cyan-700 text-white"
+                  className="w-full bg-slate-600 hover:bg-slate-700 text-white"
                 >
                   <ExternalLink className="h-4 w-4 mr-2" />
                   Visit Project

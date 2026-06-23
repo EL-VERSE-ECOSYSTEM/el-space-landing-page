@@ -54,9 +54,9 @@ export default function JobsPage() {
 
   const getTierConfig = (type: string) => {
     switch (type) {
-      case 'enterprise': return { icon: Globe, label: 'ENTERPRISE', color: 'text-purple-500', bg: 'bg-purple-500/10' };
-      case 'business': return { icon: Building, label: 'BUSINESS', color: 'text-blue-500', bg: 'bg-blue-500/10' };
-      case 'entrepreneur': return { icon: Zap, label: 'ENTREPRENEUR', color: 'text-amber-500', bg: 'bg-amber-500/10' };
+      case 'enterprise': return { icon: Globe, label: 'ENTERPRISE', color: 'text-slate500', bg: 'bg-slate500/10' };
+      case 'business': return { icon: Building, label: 'BUSINESS', color: 'text-slate-500', bg: 'bg-slate-500/10' };
+      case 'entrepreneur': return { icon: Zap, label: 'ENTREPRENEUR', color: 'text-slate500', bg: 'bg-slate500/10' };
       default: return { icon: Shield, label: 'CLIENT', color: 'text-primary', bg: 'bg-primary/10' };
     }
   };
@@ -69,7 +69,7 @@ export default function JobsPage() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
             <div>
                <h1 className="text-6xl font-black text-foreground tracking-tighter uppercase">
-                  Mission <span className="bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">Control</span>
+                  Mission <span className="bg-gradient-to-r from-primary to-slate-500 bg-clip-text text-transparent">Control</span>
                </h1>
                <p className="text-muted-foreground mt-2 text-xl font-medium">Analyze and deploy to high-priority opportunities.</p>
             </div>
@@ -153,7 +153,7 @@ export default function JobsPage() {
                           <div className="flex flex-col justify-between items-end gap-10 min-w-[280px]">
                             <div className="text-right">
                                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1 opacity-60">Asset Allocation</p>
-                               <p className="text-5xl font-black text-emerald-500 tracking-tighter">${job.budget_min.toLocaleString()} - ${job.budget_max.toLocaleString()}</p>
+                               <p className="text-5xl font-black text-slate500 tracking-tighter">${job.budget_min.toLocaleString()} - ${job.budget_max.toLocaleString()}</p>
                             </div>
 
                             <div className="flex flex-wrap justify-end gap-8 text-muted-foreground/60 font-black text-[10px] uppercase tracking-[0.2em]">

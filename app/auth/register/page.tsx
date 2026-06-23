@@ -242,7 +242,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-3xl relative z-10 py-12">
         {/* Logo */}
         <div className="text-center mb-10 space-y-4">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary via-blue-500 to-purple-600 shadow-xl shadow-primary/20">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary via-slate-500 to-slate600 shadow-xl shadow-primary/20">
             <span className="text-2xl font-black text-white">EL</span>
           </div>
           <div>
@@ -366,7 +366,7 @@ export default function RegisterPage() {
                                 ? passwordStrength <= 2
                                   ? "bg-destructive"
                                   : passwordStrength <= 4
-                                  ? "bg-yellow-500"
+                                  ? "bg-slate500"
                                   : "bg-success"
                                 : "bg-transparent"
                             )}
@@ -423,7 +423,7 @@ export default function RegisterPage() {
                     </div>
                     <div>
                       <div className="font-black text-foreground uppercase text-xs">Client</div>
-                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Hire talent for projects</div>
+                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Standard Hiring Account</div>
                     </div>
                   </button>
                   <button
@@ -443,7 +443,7 @@ export default function RegisterPage() {
                     </div>
                     <div>
                       <div className="font-black text-foreground text-xs uppercase">Entrepreneur</div>
-                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Scale your startup</div>
+                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">High-Growth Ventures</div>
                     </div>
                   </button>
                   <button
@@ -463,7 +463,7 @@ export default function RegisterPage() {
                     </div>
                     <div>
                       <div className="font-black text-foreground uppercase text-xs">Business</div>
-                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Standard operations</div>
+                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Professional Organizations</div>
                     </div>
                   </button>
                   <button
@@ -483,7 +483,7 @@ export default function RegisterPage() {
                     </div>
                     <div>
                       <div className="font-black text-foreground uppercase text-xs">Enterprise</div>
-                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Corporate solutions</div>
+                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Enterprise Grade Scale</div>
                     </div>
                   </button>
                   <button
@@ -503,7 +503,7 @@ export default function RegisterPage() {
                     </div>
                     <div>
                       <div className="font-black text-foreground uppercase text-xs">Freelancer</div>
-                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Find projects & earn</div>
+                      <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider text-nowrap">Professional Freelance Profile</div>
                     </div>
                   </button>
                 </div>
@@ -552,7 +552,7 @@ export default function RegisterPage() {
                 }}
                 className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-black text-lg rounded-[1.5rem] transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20 group"
               >
-                Next: Verification Details
+                Verify Identity
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
@@ -560,10 +560,14 @@ export default function RegisterPage() {
 
           {/* Step 2: Details */}
           {step === "details" && (
-            <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
+            <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
+               <div className="text-center space-y-2 mb-4">
+                  <h3 className="text-2xl font-black text-foreground uppercase tracking-tight">Identity & Professional Setup</h3>
+                  <p className="text-muted-foreground font-bold text-xs uppercase tracking-widest">Complete your profile to unlock full platform capabilities</p>
+               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
-                  <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">Phone Number *</Label>
+                  <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">Phone Number * (Include country code)</Label>
                   <PhoneInput
                     value={phoneNumber}
                     countryCode={countryCode}
@@ -574,7 +578,7 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Identification Type *</Label>
+                  <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Official Government ID *</Label>
                   <Select value={idType} onValueChange={setIdType}>
                     <SelectTrigger className="h-14 bg-muted border-border text-foreground rounded-2xl font-bold">
                       <SelectValue placeholder="Select ID type" />
@@ -600,7 +604,7 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="md:col-span-2 space-y-2">
-                  <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Upload ID Document (Front) *</Label>
+                  <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Upload ID Document (Valid Passport or Driver License) *</Label>
                   <div className="flex items-center gap-6">
                     {idFilePreview ? (
                       <div className="relative w-24 h-24 rounded-3xl overflow-hidden border-2 border-primary/20 shadow-lg">
@@ -751,7 +755,7 @@ export default function RegisterPage() {
               {userType === "freelancer" && (
                 <div className="space-y-6 pt-4 border-t border-border">
                   <div className="space-y-2">
-                    <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Tech Stack * (Select up to 15)</Label>
+                    <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Key Expertise & Tech Stack *</Label>
                     <Input
                       type="text"
                       placeholder="Search technologies..."
@@ -793,7 +797,7 @@ export default function RegisterPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Professional Bio *</Label>
+                    <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Professional Summary / Bio *</Label>
                     <Textarea
                       placeholder="Share your expertise, achievements, and unique value proposition..."
                       value={aboutYou}
@@ -935,11 +939,11 @@ export default function RegisterPage() {
           {step === "security" && (
             <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
                <div className="text-center space-y-2 mb-8">
-                  <div className="w-20 h-20 bg-emerald-500/10 rounded-[1.5rem] flex items-center justify-center mx-auto mb-4 border border-emerald-500/20">
-                    <ShieldCheck className="w-10 h-10 text-emerald-500" />
+                  <div className="w-20 h-20 bg-slate-500/10 rounded-[1.5rem] flex items-center justify-center mx-auto mb-4 border border-slate-500/20">
+                    <ShieldCheck className="w-10 h-10 text-slate500" />
                   </div>
                   <h3 className="text-2xl font-black text-foreground uppercase tracking-tight">Transaction Security</h3>
-                  <p className="text-muted-foreground font-bold text-xs uppercase tracking-widest">Create a 4-digit PIN for withdrawals and transfers</p>
+                  <p className="text-muted-foreground font-bold text-xs uppercase tracking-widest">Secure your account with a 4-digit Transaction PIN</p>
                </div>
 
                <div className="max-w-xs mx-auto space-y-6">

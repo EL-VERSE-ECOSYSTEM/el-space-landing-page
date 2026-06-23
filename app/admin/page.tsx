@@ -160,12 +160,12 @@ export default function AdminDashboard() {
         {/* Cinematic Background */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-500/10 rounded-full blur-[120px] animate-pulse delay-700" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-slate500/10 rounded-full blur-[120px] animate-pulse delay-700" />
         </div>
 
         <div className="w-full max-w-lg relative z-10">
           <div className="text-center mb-12 animate-in fade-in slide-in-from-top-8 duration-700">
-            <div className="inline-flex items-center justify-center w-24 h-24 rounded-[2.5rem] bg-gradient-to-br from-primary via-blue-600 to-purple-700 shadow-2xl shadow-primary/20 mb-6 group transition-transform hover:scale-110">
+            <div className="inline-flex items-center justify-center w-24 h-24 rounded-[2.5rem] bg-gradient-to-br from-primary via-slate-600 to-slate700 shadow-2xl shadow-primary/20 mb-6 group transition-transform hover:scale-110">
               <Shield className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-5xl font-black text-foreground tracking-tighter mb-2 uppercase">Core Access</h1>
@@ -186,7 +186,7 @@ export default function AdminDashboard() {
                       onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
                       className="bg-background/5 border-border text-foreground h-20 text-center text-3xl tracking-[0.5em] focus:ring-primary/20 focus:border-primary/50 transition-all rounded-[2rem] placeholder:text-muted-foreground/30"
                     />
-                    <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-r from-primary/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                    <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-r from-primary/10 to-slate500/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                   </div>
                 </div>
               </div>
@@ -199,11 +199,11 @@ export default function AdminDashboard() {
                 <span className="relative z-10 flex items-center justify-center gap-3">
                   {loading ? <Loader className="w-6 h-6 animate-spin" /> : "AUTHENTICATE"}
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-400 to-slate-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
               </Button>
 
               <div className="flex items-center justify-center gap-2 pt-4">
-                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <div className="w-2 h-2 rounded-full bg-slate500 animate-pulse" />
                 <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">System Online · Encrypted Session</span>
               </div>
             </CardContent>
@@ -224,7 +224,7 @@ export default function AdminDashboard() {
         <div className="p-8 border-b border-border relative group">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <div className="relative flex items-center gap-4">
-             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shadow-lg shadow-primary/20">
+             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-slate-600 flex items-center justify-center shadow-lg shadow-primary/20">
                 <Shield className="w-6 h-6 text-white" />
              </div>
              <div>
@@ -283,7 +283,7 @@ export default function AdminDashboard() {
                 : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
               }`}
             >
-               <item.icon className={`w-5 h-5 ${activeTab === item.id ? 'text-purple-500' : 'group-hover:text-purple-500'}`} />
+               <item.icon className={`w-5 h-5 ${activeTab === item.id ? 'text-slate500' : 'group-hover:text-slate500'}`} />
                {item.label}
             </button>
           ))}
@@ -326,7 +326,7 @@ export default function AdminDashboard() {
                <div className="w-px h-8 bg-border" />
                <div className="text-right">
                   <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest leading-none">Status</p>
-                  <p className="text-xs font-bold text-emerald-500 leading-none mt-1 uppercase">Operational</p>
+                  <p className="text-xs font-bold text-slate500 leading-none mt-1 uppercase">Operational</p>
                </div>
             </div>
 
@@ -340,7 +340,7 @@ export default function AdminDashboard() {
                   <p className="text-xs font-black text-foreground leading-none">System Admin</p>
                   <p className="text-[10px] font-bold text-muted-foreground leading-none mt-1 uppercase">Superuser</p>
                </div>
-               <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-primary via-blue-600 to-purple-700 p-[2px] shadow-lg shadow-primary/10">
+               <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-primary via-slate-600 to-slate700 p-[2px] shadow-lg shadow-primary/10">
                  <div className="h-full w-full rounded-[14px] bg-background flex items-center justify-center font-black text-sm text-foreground">
                    AD
                  </div>
@@ -376,10 +376,10 @@ export default function AdminDashboard() {
                 {/* Enhanced Stats Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                   {[
-                    { label: 'Network Entities', value: stats.totalUsers, icon: Users, color: 'from-blue-500 to-cyan-500', change: '+12.5%', detail: 'Total registered accounts' },
-                    { label: 'Ecosystem Flow', value: `$${stats.totalPayments}`, icon: TrendingUp, color: 'from-emerald-500 to-teal-500', change: '+8.2%', detail: 'Gross volume processed' },
-                    { label: 'Active Deployments', value: stats.totalJobListings, icon: Briefcase, color: 'from-purple-500 to-indigo-500', change: '+3 new', detail: 'Marketplace listings' },
-                    { label: 'Capital Reserve', value: stats.pendingWithdrawals, icon: Wallet, color: 'from-orange-500 to-red-500', change: 'Critical', detail: 'Pending verification' },
+                    { label: 'Network Entities', value: stats.totalUsers, icon: Users, color: 'from-slate-500 to-slate-500', change: '+12.5%', detail: 'Total registered accounts' },
+                    { label: 'Ecosystem Flow', value: `$${stats.totalPayments}`, icon: TrendingUp, color: 'from-slate500 to-teal-500', change: '+8.2%', detail: 'Gross volume processed' },
+                    { label: 'Active Deployments', value: stats.totalJobListings, icon: Briefcase, color: 'from-slate500 to-slate500', change: '+3 new', detail: 'Marketplace listings' },
+                    { label: 'Capital Reserve', value: stats.pendingWithdrawals, icon: Wallet, color: 'from-slate500 to-red-500', change: 'Critical', detail: 'Pending verification' },
                   ].map((stat, i) => (
                     <Card key={i} className="bg-card border-border hover:border-primary/20 transition-all group relative overflow-hidden rounded-[2.5rem] shadow-xl">
                       <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-10 blur-[60px] transition-opacity`} />
@@ -389,7 +389,7 @@ export default function AdminDashboard() {
                             <stat.icon className="w-6 h-6" />
                           </div>
                           <Badge className={`border-none font-black text-[10px] py-1 px-3 rounded-full ${
-                             stat.change === 'Critical' ? 'bg-red-500/10 text-red-500' : 'bg-emerald-500/10 text-emerald-500'
+                             stat.change === 'Critical' ? 'bg-red-500/10 text-red-500' : 'bg-slate500/10 text-slate500'
                           }`}>
                             {stat.change}
                           </Badge>
@@ -426,7 +426,7 @@ export default function AdminDashboard() {
                                   {[40, 70, 45, 90, 65, 80, 50, 95, 75, 60].map((h, i) => (
                                     <div
                                       key={i}
-                                      className="w-3 bg-gradient-to-t from-primary to-blue-500 rounded-full animate-bounce"
+                                      className="w-3 bg-gradient-to-t from-primary to-slate-500 rounded-full animate-bounce"
                                       style={{ height: `${h}px`, animationDelay: `${i * 0.1}s`, animationDuration: '2s' }}
                                     />
                                   ))}
@@ -445,8 +445,8 @@ export default function AdminDashboard() {
                       <CardContent className="p-8 space-y-4">
                          {[
                            { label: 'Audit Access', icon: Shield, color: 'text-primary', bg: 'bg-primary/10' },
-                           { label: 'Broadcast', icon: Bell, color: 'text-purple-500', bg: 'bg-purple-500/10' },
-                           { label: 'Maintenance', icon: Settings, color: 'text-blue-500', bg: 'bg-blue-500/10' },
+                           { label: 'Broadcast', icon: Bell, color: 'text-slate500', bg: 'bg-slate500/10' },
+                           { label: 'Maintenance', icon: Settings, color: 'text-slate-500', bg: 'bg-slate-500/10' },
                            { label: 'System Reboot', icon: Activity, color: 'text-red-500', bg: 'bg-red-500/10' },
                          ].map((action, i) => (
                            <button
@@ -461,10 +461,10 @@ export default function AdminDashboard() {
                            </button>
                          ))}
 
-                         <div className="mt-8 p-6 bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl relative overflow-hidden shadow-xl">
+                         <div className="mt-8 p-6 bg-gradient-to-br from-slate600 to-slate700 rounded-3xl relative overflow-hidden shadow-xl">
                             <div className="relative z-10">
                                <p className="text-white font-black text-lg leading-tight uppercase">Upgrade<br/>Nodes</p>
-                               <p className="text-indigo-200 text-[10px] font-bold mt-2 uppercase tracking-widest">Version 4.2.0 Stable</p>
+                               <p className="text-slate200 text-[10px] font-bold mt-2 uppercase tracking-widest">Version 4.2.0 Stable</p>
                             </div>
                             <Rocket className="absolute -bottom-2 -right-2 w-20 h-20 text-white/10 -rotate-12" />
                          </div>
@@ -508,14 +508,14 @@ export default function AdminDashboard() {
                                   )}
                                 </div>
                                 <div className={`absolute -bottom-1 -right-1 w-6 h-6 rounded-full border-4 border-card ${
-                                   user.status === 'active' ? 'bg-emerald-500' : 'bg-red-500'
+                                   user.status === 'active' ? 'bg-slate500' : 'bg-red-500'
                                 }`} />
                               </div>
                               <div>
                                 <div className="flex items-center gap-3 mb-1">
                                   <h4 className="text-xl font-black text-foreground">{user.full_name || 'Anonymous User'}</h4>
                                   <Badge className={`px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest border-none ${
-                                     user.role === 'client' ? 'bg-blue-500/10 text-blue-500' : 'bg-purple-500/10 text-purple-500'
+                                     user.role === 'client' ? 'bg-slate-500/10 text-slate-500' : 'bg-slate500/10 text-slate500'
                                   }`}>
                                     {user.role}
                                   </Badge>
@@ -532,13 +532,13 @@ export default function AdminDashboard() {
                               </div>
                               <div className="space-y-1">
                                 <p className="text-[10px] uppercase font-black tracking-[0.2em] text-muted-foreground">Available Capital</p>
-                                <p className="text-2xl font-black text-emerald-500">${user.balance || '0.00'}</p>
+                                <p className="text-2xl font-black text-slate500">${user.balance || '0.00'}</p>
                               </div>
                               <div className="space-y-1">
                                 <p className="text-[10px] uppercase font-black tracking-[0.2em] text-muted-foreground">Security Status</p>
                                 <div className="flex items-center gap-2">
-                                   <div className={`w-2 h-2 rounded-full ${user.status === 'active' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]'}`} />
-                                   <span className={`text-xs font-black uppercase ${user.status === 'active' ? 'text-emerald-500' : 'text-red-500'}`}>{user.status}</span>
+                                   <div className={`w-2 h-2 rounded-full ${user.status === 'active' ? 'bg-slate500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]'}`} />
+                                   <span className={`text-xs font-black uppercase ${user.status === 'active' ? 'text-slate500' : 'text-red-500'}`}>{user.status}</span>
                                 </div>
                               </div>
                            </div>
@@ -552,7 +552,7 @@ export default function AdminDashboard() {
                                 className={`h-12 px-6 rounded-2xl font-black text-[10px] tracking-widest transition-all uppercase ${
                                   user.status === 'active'
                                   ? 'border-red-500/20 text-red-500 hover:bg-red-500/10'
-                                  : 'border-emerald-500/20 text-emerald-500 hover:bg-emerald-500/10'
+                                  : 'border-slate500/20 text-slate500 hover:bg-slate500/10'
                                 }`}
                                 onClick={() => handleAction(`/api/admin/users/${user.id}`, 'PATCH', { status: user.status === 'active' ? 'suspended' : 'active' }, 'Security policy updated')}
                               >
@@ -617,7 +617,7 @@ export default function AdminDashboard() {
                               {dep.status === 'pending' ? (
                                 <>
                                   <Button
-                                    className="h-14 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-2xl uppercase text-[10px] tracking-widest shadow-lg shadow-emerald-500/20"
+                                    className="h-14 bg-slate600 hover:bg-slate500 text-white font-black rounded-2xl uppercase text-[10px] tracking-widest shadow-lg shadow-slate500/20"
                                     onClick={() => handleAction('/api/admin/deposits', 'PATCH', { depositId: dep.id, status: 'approved' }, 'Funding approved and credited')}
                                   >
                                     Confirm Deposit
@@ -632,7 +632,7 @@ export default function AdminDashboard() {
                                 </>
                               ) : (
                                 <Badge className={`h-12 flex items-center justify-center rounded-xl font-black border-none uppercase text-[10px] tracking-widest ${
-                                  dep.status === 'approved' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-red-500/10 text-red-500'
+                                  dep.status === 'approved' ? 'bg-slate500/10 text-slate500' : 'bg-red-500/10 text-red-500'
                                 }`}>
                                   {dep.status}
                                 </Badge>
@@ -678,7 +678,7 @@ export default function AdminDashboard() {
                                 </div>
                                 <ArrowUpRight className="w-6 h-6 text-muted-foreground/30" />
                                 <div className="flex items-center gap-4">
-                                   <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center font-black text-purple-500">
+                                   <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center font-black text-slate500">
                                       {tx.recipient?.full_name?.charAt(0)}
                                    </div>
                                    <div>
@@ -692,8 +692,8 @@ export default function AdminDashboard() {
                              <div className="flex items-center gap-4">
                                 <p className="text-4xl font-black text-foreground tracking-tighter">${tx.amount.toLocaleString()}</p>
                                 <Badge className={`px-4 py-1 rounded-full font-black text-xs border-none ${
-                                  tx.status === 'pending' ? 'bg-orange-500/10 text-orange-500' :
-                                  tx.status === 'approved' ? 'bg-emerald-500/10 text-emerald-500' :
+                                  tx.status === 'pending' ? 'bg-slate500/10 text-slate500' :
+                                  tx.status === 'approved' ? 'bg-slate500/10 text-slate500' :
                                   'bg-red-500/10 text-red-500'
                                 }`}>
                                   {tx.status.toUpperCase()}
@@ -749,15 +749,15 @@ export default function AdminDashboard() {
                   {withdrawals.length > 0 ? withdrawals.map((req) => (
                     <Card key={req.id} className="bg-card border-border overflow-hidden rounded-[2.5rem] group hover:border-primary/30 transition-all duration-500 shadow-lg">
                       <div className={`h-1.5 w-full ${
-                        req.status === 'pending' ? 'bg-gradient-to-r from-orange-500 to-amber-500' :
-                        req.status === 'approved' ? 'bg-gradient-to-r from-emerald-500 to-teal-500' : 'bg-gradient-to-r from-red-500 to-rose-500'
+                        req.status === 'pending' ? 'bg-gradient-to-r from-slate500 to-slate500' :
+                        req.status === 'approved' ? 'bg-gradient-to-r from-slate500 to-teal-500' : 'bg-gradient-to-r from-red-500 to-slate500'
                       }`} />
                       <CardContent className="p-10">
                         <div className="flex flex-col xl:flex-row justify-between gap-10">
                           <div className="flex-1 space-y-8">
                              <div className="flex items-center gap-6">
                                 <div className="p-5 bg-muted rounded-[2rem] shadow-xl group-hover:scale-110 transition-transform duration-500">
-                                   <ArrowUpRight className={`w-8 h-8 ${req.status === 'pending' ? 'text-orange-500' : 'text-muted-foreground/30'}`} />
+                                   <ArrowUpRight className={`w-8 h-8 ${req.status === 'pending' ? 'text-slate500' : 'text-muted-foreground/30'}`} />
                                 </div>
                                 <div>
                                    <div className="flex items-center gap-3">
@@ -795,8 +795,8 @@ export default function AdminDashboard() {
                              <div className="text-right">
                                 <p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest mb-1">Verification Status</p>
                                 <Badge className={`px-4 py-1 rounded-full font-black text-xs border-none ${
-                                  req.status === 'pending' ? 'bg-orange-500/10 text-orange-500' :
-                                  req.status === 'approved' ? 'bg-emerald-500/10 text-emerald-500' :
+                                  req.status === 'pending' ? 'bg-slate500/10 text-slate500' :
+                                  req.status === 'approved' ? 'bg-slate500/10 text-slate500' :
                                   'bg-red-500/10 text-red-500'
                                 }`}>
                                   {req.status.toUpperCase()}
@@ -806,7 +806,7 @@ export default function AdminDashboard() {
                              {req.status === 'pending' && (
                                <div className="flex flex-col gap-3 w-full">
                                   <Button
-                                    className="h-14 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-2xl shadow-lg shadow-emerald-500/20 transition-all hover:scale-105 uppercase text-[10px] tracking-widest"
+                                    className="h-14 bg-slate600 hover:bg-slate500 text-white font-black rounded-2xl shadow-lg shadow-slate500/20 transition-all hover:scale-105 uppercase text-[10px] tracking-widest"
                                     onClick={() => handleAction('/api/admin/withdrawals', 'PATCH', { withdrawalId: req.id, status: 'approved' }, 'Withdrawal authorized successfully')}
                                   >
                                     <CheckCircle className="w-5 h-5 mr-3" />
@@ -886,7 +886,7 @@ export default function AdminDashboard() {
                                        <p className="text-foreground font-black truncate uppercase">{v.business_name || 'N/A'}</p>
                                        <p className="text-muted-foreground font-bold text-xs mt-1 uppercase tracking-widest">{v.business_type || 'N/A'}</p>
                                        {v.business_reg_url && (
-                                         <a href={v.business_reg_url} target="_blank" className="inline-flex items-center gap-2 mt-4 text-purple-500 hover:text-purple-600 font-black text-[10px] uppercase tracking-widest">
+                                         <a href={v.business_reg_url} target="_blank" className="inline-flex items-center gap-2 mt-4 text-slate500 hover:text-slate600 font-black text-[10px] uppercase tracking-widest">
                                            <Building className="w-4 h-4" /> View Registration
                                          </a>
                                        )}
@@ -897,7 +897,7 @@ export default function AdminDashboard() {
 
                             <div className="w-full lg:w-72 flex flex-col gap-3 justify-center p-8 bg-muted/10 rounded-[2rem] border border-border">
                                <Button
-                                 className="h-14 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-2xl shadow-lg shadow-emerald-500/20 uppercase text-[10px] tracking-widest"
+                                 className="h-14 bg-slate600 hover:bg-slate500 text-white font-black rounded-2xl shadow-lg shadow-slate500/20 uppercase text-[10px] tracking-widest"
                                  onClick={() => handleAction('/api/admin/verifications', 'POST', { userId: v.id, status: 'verified' }, 'User verified successfully')}
                                >
                                  <CheckCircle className="w-5 h-5 mr-3" />

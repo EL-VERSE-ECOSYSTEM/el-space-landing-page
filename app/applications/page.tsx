@@ -62,8 +62,8 @@ export default function ApplicationsPage() {
                 </div>
                 <div className="flex items-center gap-8">
                   <Badge className={`px-4 py-1 rounded-full font-black text-[10px] uppercase tracking-widest border-none ${
-                    app.status === 'pending' ? 'bg-amber-500/10 text-amber-500' :
-                    app.status === 'accepted' ? 'bg-emerald-500/10 text-emerald-500' :
+                    app.status === 'pending' ? 'bg-slate500/10 text-slate500' :
+                    app.status === 'accepted' ? 'bg-slate500/10 text-slate500' :
                     'bg-red-500/10 text-red-500'
                   }`}>
                     {app.status}

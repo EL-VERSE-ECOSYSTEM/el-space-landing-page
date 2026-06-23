@@ -46,7 +46,7 @@ export default function ReviewsPage() {
     <DashboardLayout navItems={navItems} userType={(user?.user_type === "freelancer" ? "freelancer" : "client")}>
       <div className="max-w-5xl mx-auto space-y-8">
         <div>
-          <h1 className="text-4xl font-black text-white tracking-tighter">Reputation <span className="text-cyan-500">Index</span></h1>
+          <h1 className="text-4xl font-black text-white tracking-tighter">Reputation <span className="text-slate-500">Index</span></h1>
           <p className="text-slate-400 font-medium">Historical audit of your deployment excellence.</p>
         </div>
 
@@ -59,7 +59,7 @@ export default function ReviewsPage() {
             </div>
             <div className="flex gap-1">
               {[1, 2, 3, 4, 5].map(i => (
-                <Star key={i} className={`w-6 h-6 ${i <= Math.round(stats.averageRating) ? 'text-cyan-400 fill-cyan-400' : 'text-slate-800'}`} />
+                <Star key={i} className={`w-6 h-6 ${i <= Math.round(stats.averageRating) ? 'text-slate-400 fill-slate-400' : 'text-slate-800'}`} />
               ))}
             </div>
           </Card>
@@ -82,7 +82,7 @@ export default function ReviewsPage() {
               <div className="flex justify-between items-start mb-4">
                 <div className="flex gap-1">
                   {[1, 2, 3, 4, 5].map(i => (
-                    <Star key={i} className={`w-4 h-4 ${i <= review.rating ? 'text-cyan-400 fill-cyan-400' : 'text-slate-800'}`} />
+                    <Star key={i} className={`w-4 h-4 ${i <= review.rating ? 'text-slate-400 fill-slate-400' : 'text-slate-800'}`} />
                   ))}
                 </div>
                 <span className="text-slate-500 text-xs font-bold uppercase tracking-widest">

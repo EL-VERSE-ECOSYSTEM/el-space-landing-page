@@ -59,7 +59,7 @@ export default function ProjectsPage() {
                         <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-none font-black text-[10px] uppercase tracking-widest px-3 py-1">
                           {project.category}
                         </Badge>
-                        <Badge className="bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 border-none font-black text-[10px] uppercase tracking-widest px-3 py-1">
+                        <Badge className="bg-slate500/10 text-slate500 hover:bg-slate500/20 border-none font-black text-[10px] uppercase tracking-widest px-3 py-1">
                           Open
                         </Badge>
                       </div>

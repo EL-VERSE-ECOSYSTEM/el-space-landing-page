@@ -90,7 +90,7 @@ export default function ClientHub() {
         {/* Welcome Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
           <div>
-            <h1 className="text-6xl font-black text-foreground tracking-tighter uppercase">Client <span className="bg-gradient-to-r from-success to-emerald-500 bg-clip-text text-transparent">Cockpit</span></h1>
+            <h1 className="text-6xl font-black text-foreground tracking-tighter uppercase">Client <span className="bg-gradient-to-r from-success to-slate500 bg-clip-text text-transparent">Cockpit</span></h1>
             <p className="text-muted-foreground mt-4 text-xl font-medium">Strategic oversight for <span className="text-foreground font-black">{user?.full_name}</span></p>
           </div>
           <div className="flex gap-3">

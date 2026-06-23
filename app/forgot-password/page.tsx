@@ -51,7 +51,7 @@ export default function ForgotPasswordPage() {
         {/* Animated background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-slate500/10 rounded-full blur-3xl animate-pulse" />
         </div>
 
         <div className="w-full max-w-md relative z-10">
@@ -59,8 +59,8 @@ export default function ForgotPasswordPage() {
             <CardContent className="py-12 text-center space-y-6">
               <div className="flex justify-center">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary to-blue-600 rounded-full blur-xl opacity-50 animate-pulse"></div>
-                  <div className="relative bg-gradient-to-br from-primary to-blue-600 rounded-full p-4">
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary to-slate-600 rounded-full blur-xl opacity-50 animate-pulse"></div>
+                  <div className="relative bg-gradient-to-br from-primary to-slate-600 rounded-full p-4">
                     <CheckCircle className="w-12 h-12 text-white" />
                   </div>
                 </div>
@@ -115,14 +115,14 @@ export default function ForgotPasswordPage() {
       {/* Animated background gradient orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-slate500/10 rounded-full blur-3xl animate-pulse" />
       </div>
 
       {/* Main card */}
       <div className="w-full max-w-md relative z-10">
         {/* Logo area */}
         <div className="text-center mb-10 space-y-4">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary via-blue-600 to-purple-700 shadow-xl shadow-primary/20 transition-transform hover:scale-110">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary via-slate-600 to-slate700 shadow-xl shadow-primary/20 transition-transform hover:scale-110">
             <span className="text-2xl font-black text-white">EL</span>
           </div>
           <div>

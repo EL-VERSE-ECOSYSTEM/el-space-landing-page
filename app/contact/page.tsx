@@ -57,7 +57,7 @@ export default function ContactPage() {
       <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-black mb-4 bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent uppercase tracking-tight">
+          <h1 className="text-4xl font-black mb-4 bg-gradient-to-r from-primary to-slate-500 bg-clip-text text-transparent uppercase tracking-tight">
             Initiate Contact
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto font-medium">
@@ -87,8 +87,8 @@ export default function ContactPage() {
             {/* Phone */}
             <div className="flex gap-4">
               <div className="flex-shrink-0">
-                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-blue-500/10 border border-blue-500/20 shadow-sm">
-                  <Phone className="h-6 w-6 text-blue-500" />
+                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-slate-500/10 border border-slate-500/20 shadow-sm">
+                  <Phone className="h-6 w-6 text-slate-500" />
                 </div>
               </div>
               <div>
@@ -101,8 +101,8 @@ export default function ContactPage() {
             {/* Address */}
             <div className="flex gap-4">
               <div className="flex-shrink-0">
-                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-amber-500/10 border border-amber-500/20 shadow-sm">
-                  <MapPin className="h-6 w-6 text-amber-500" />
+                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-slate500/10 border border-slate500/20 shadow-sm">
+                  <MapPin className="h-6 w-6 text-slate500" />
                 </div>
               </div>
               <div>
@@ -115,8 +115,8 @@ export default function ContactPage() {
             {/* Social Media */}
             <div className="flex gap-4 pt-4">
               <div className="flex-shrink-0">
-                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 shadow-sm">
-                  <MessageSquare className="h-6 w-6 text-emerald-500" />
+                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-slate500/10 border border-slate500/20 shadow-sm">
+                  <MessageSquare className="h-6 w-6 text-slate500" />
                 </div>
               </div>
               <div>
@@ -282,7 +282,7 @@ export default function ContactPage() {
         <div className="mt-12 pt-8 border-t border-border">
           <Link
             href="/"
-            className="text-cyan-400 hover:text-cyan-300 transition-colors"
+            className="text-slate-400 hover:text-slate-300 transition-colors"
           >
             ← Back to Home
           </Link>

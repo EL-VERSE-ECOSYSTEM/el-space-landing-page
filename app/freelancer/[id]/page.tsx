@@ -91,7 +91,7 @@ export default function FreelancerProfilePage() {
           <Card className="md:col-span-2 bg-card border-border shadow-xl">
             <CardContent className="pt-6">
               <div className="flex gap-6">
-                <div className="w-20 h-20 bg-gradient-to-br from-primary to-blue-500 rounded-[1.5rem] flex items-center justify-center text-2xl font-black text-primary-foreground shadow-lg shadow-primary/20">
+                <div className="w-20 h-20 bg-gradient-to-br from-primary to-slate-500 rounded-[1.5rem] flex items-center justify-center text-2xl font-black text-primary-foreground shadow-lg shadow-primary/20">
                   {profile.full_name?.charAt(0) || 'F'}
                 </div>
                 <div className="flex-1">
@@ -101,11 +101,11 @@ export default function FreelancerProfilePage() {
                   {/* Stats */}
                   <div className="flex gap-4 mt-4 text-sm">
                     <div>
-                      <div className="text-amber-500 flex items-center gap-1">
+                      <div className="text-slate500 flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
-                            className={`h-4 w-4 ${i < Math.round(4.5) ? 'fill-amber-500' : 'text-muted'}`}
+                            className={`h-4 w-4 ${i < Math.round(4.5) ? 'fill-slate500' : 'text-muted'}`}
                           />
                         ))}
                       </div>
@@ -224,7 +224,7 @@ export default function FreelancerProfilePage() {
                             {[...Array(5)].map((_, i) => (
                               <Star
                                 key={i}
-                                className={`h-4 w-4 ${i < review.rating ? 'fill-amber-500 text-amber-500' : 'text-muted'}`}
+                                className={`h-4 w-4 ${i < review.rating ? 'fill-slate500 text-slate500' : 'text-muted'}`}
                               />
                             ))}
                           </div>

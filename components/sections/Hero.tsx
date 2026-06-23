@@ -15,7 +15,7 @@ export function Hero() {
         {/* Purple glow bottom-left */}
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px] animate-pulse" />
         {/* Blue accent */}
-        <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-[100px] animate-pulse animation-delay-1000" />
+        <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-slate-500/5 rounded-full blur-[100px] animate-pulse animation-delay-1000" />
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] dark:opacity-20" />
       </div>
@@ -30,7 +30,7 @@ export function Hero() {
             </span>
           </div>
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 tracking-tight">
-            <span className="bg-gradient-to-r from-primary via-blue-500 to-accent bg-clip-text text-transparent inline-block">EL</span>
+            <span className="bg-gradient-to-r from-primary via-slate-500 to-accent bg-clip-text text-transparent inline-block">EL</span>
             <span className="text-foreground ml-3">SPACE</span>
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4 font-bold">
@@ -69,7 +69,7 @@ export function Hero() {
                 </div>
               </div>
               <div className="flex items-start gap-4 p-4 rounded-2xl bg-muted/30 border border-border group-hover:border-primary/20 transition-all">
-                <div className="p-2.5 bg-blue-500/10 rounded-xl mt-0.5 text-blue-500">
+                <div className="p-2.5 bg-slate-500/10 rounded-xl mt-0.5 text-slate-500">
                   <Zap className="w-5 h-5" />
                 </div>
                 <div>
@@ -121,7 +121,7 @@ export function Hero() {
                 </div>
               </div>
               <div className="flex items-start gap-4 p-4 rounded-2xl bg-muted/30 border border-border group-hover:border-accent/20 transition-all">
-                <div className="p-2.5 bg-blue-500/10 rounded-xl mt-0.5 text-blue-500">
+                <div className="p-2.5 bg-slate-500/10 rounded-xl mt-0.5 text-slate-500">
                   <Shield className="w-5 h-5" />
                 </div>
                 <div>
@@ -139,7 +139,7 @@ export function Hero() {
             <Link href="/auth/register" className="w-full pt-2">
               <Button
                 size="lg"
-                className="w-full bg-gradient-to-r from-primary via-blue-500 to-accent hover:opacity-90 text-background font-bold text-lg py-7 rounded-2xl transition-all hover:shadow-xl hover:shadow-blue-500/30 active:scale-95 group/btn"
+                className="w-full bg-gradient-to-r from-primary via-slate-500 to-accent hover:opacity-90 text-background font-bold text-lg py-7 rounded-2xl transition-all hover:shadow-xl hover:shadow-slate-500/30 active:scale-95 group/btn"
               >
                 {HERO_FREELANCER.cta} <ArrowRight className="ml-2 w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
               </Button>
@@ -151,9 +151,9 @@ export function Hero() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 pt-12 border-t border-border">
           {[
             { label: 'Active Users', value: '10K+', color: 'text-primary', bg: 'bg-primary/10' },
-            { label: 'Projects Done', value: '500+', color: 'text-blue-500', bg: 'bg-blue-500/10' },
+            { label: 'Projects Done', value: '500+', color: 'text-slate-500', bg: 'bg-slate-500/10' },
             { label: 'Paid Out', value: '$2M+', color: 'text-accent', bg: 'bg-accent/10' },
-            { label: 'Satisfaction', value: '98%', color: 'text-indigo-500', bg: 'bg-indigo-500/10' },
+            { label: 'Satisfaction', value: '98%', color: 'text-slate500', bg: 'bg-slate500/10' },
           ].map((stat, i) => (
             <div key={i} className="text-center p-6 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all shadow-sm">
               <div className={`text-3xl font-bold ${stat.color} mb-1`}>{stat.value}</div>

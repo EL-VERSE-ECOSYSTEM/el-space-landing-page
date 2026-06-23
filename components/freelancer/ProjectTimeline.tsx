@@ -30,13 +30,13 @@ export function ProjectTimeline({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-600/20 text-green-300 border-green-600/50';
+        return 'bg-slate600/20 text-slate300 border-slate600/50';
       case 'in_progress':
-        return 'bg-blue-600/20 text-blue-300 border-blue-600/50';
+        return 'bg-slate-600/20 text-slate-300 border-slate-600/50';
       case 'delayed':
         return 'bg-red-600/20 text-red-300 border-red-600/50';
       default:
-        return 'bg-yellow-600/20 text-yellow-300 border-yellow-600/50';
+        return 'bg-slate600/20 text-slate300 border-slate600/50';
     }
   };
 
@@ -63,11 +63,11 @@ export function ProjectTimeline({
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-2">
-            <Flag className="h-5 w-5 text-cyan-400" />
+            <Flag className="h-5 w-5 text-slate-400" />
             <CardTitle className="text-white">Project Timeline</CardTitle>
           </div>
           {projectDeadline && (
-            <Badge className={isOverdue ? 'bg-red-600 text-white' : 'bg-green-600 text-white'}>
+            <Badge className={isOverdue ? 'bg-red-600 text-white' : 'bg-slate600 text-white'}>
               {isOverdue ? 'Overdue' : 'On Track'}
             </Badge>
           )}
@@ -79,11 +79,11 @@ export function ProjectTimeline({
           <div className="space-y-2">
             <div className="flex justify-between items-center text-sm">
               <span className="text-slate-400">Overall Progress</span>
-              <span className="text-cyan-400 font-semibold">{calculateProgress()}%</span>
+              <span className="text-slate-400 font-semibold">{calculateProgress()}%</span>
             </div>
             <div className="w-full bg-slate-700 rounded-full h-2">
               <div 
-                className="bg-gradient-to-r from-cyan-500 to-blue-500 h-2 rounded-full transition-all"
+                className="bg-gradient-to-r from-slate-500 to-slate-500 h-2 rounded-full transition-all"
                 style={{ width: `${calculateProgress()}%` }}
               />
             </div>
@@ -109,10 +109,10 @@ export function ProjectTimeline({
                   <div className="flex flex-col items-center">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                       isCompleted 
-                        ? 'bg-green-600 text-white' 
+                        ? 'bg-slate600 text-white'
                         : isLate
                         ? 'bg-red-600 text-white'
-                        : 'bg-slate-700 text-cyan-400'
+                        : 'bg-slate-700 text-slate-400'
                     }`}>
                       {getStatusIcon(milestone.status)}
                     </div>
@@ -140,7 +140,7 @@ export function ProjectTimeline({
                       </div>
                       <div className="bg-black/20 rounded p-2">
                         <p className="text-slate-400">Amount</p>
-                        <p className="font-semibold text-cyan-400">${milestone.amount}</p>
+                        <p className="font-semibold text-slate-400">${milestone.amount}</p>
                       </div>
                       {!isCompleted && (
                         <div className="bg-black/20 rounded p-2">
@@ -168,7 +168,7 @@ export function ProjectTimeline({
                 <span className={`text-xs font-semibold px-3 py-1 rounded-full ${
                   isOverdue 
                     ? 'bg-red-600/20 text-red-300'
-                    : 'bg-green-600/20 text-green-300'
+                    : 'bg-slate600/20 text-slate300'
                 }`}>
                   {isOverdue 
                     ? `${Math.abs(Math.ceil((projectDeadline.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)))} days overdue`

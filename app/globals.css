@@ -36,55 +36,55 @@
 
 :root {
   --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
+  --foreground: 215 25% 10%;
   --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
+  --card-foreground: 215 25% 10%;
   --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
-  --primary: 189 94% 43%; /* Electric Cyan */
+  --popover-foreground: 215 25% 10%;
+  --primary: 215 25% 27%; /* Charcoal Grey */
   --primary-foreground: 0 0% 100%;
-  --secondary: 222.2 47.4% 11.2%;
-  --secondary-foreground: 210 40% 98%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 262 83% 58%; /* Premium Purple */
+  --secondary: 215 15% 90%;
+  --secondary-foreground: 215 25% 27%;
+  --muted: 215 15% 96%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 215 16% 47%; /* Metallic Grey */
   --accent-foreground: 210 40% 98%;
-  --success: 142.1 70.6% 45.3%; /* Emerald Green */
+  --success: 142.1 70.6% 45.3%;
   --success-foreground: 144.1 61.4% 9.1%;
-  --warning: 38 92% 50%; /* Amber */
+  --warning: 38 92% 50%;
   --warning-foreground: 48 96% 8.9%;
-  --destructive: 0 84.2% 60.2%; /* Red */
+  --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 210 40% 98%;
   --border: 214.3 31.8% 91.4%;
   --input: 214.3 31.8% 91.4%;
-  --ring: 189 94% 43%;
+  --ring: 215 25% 27%;
   --radius: 0.75rem;
 }
 
 .dark {
-  --background: 222.2 84% 4.9%; /* Slate 950 */
+  --background: 215 25% 10%; /* Deep Charcoal Background */
   --foreground: 210 40% 98%;
-  --card: 222.2 84% 6.9%;
+  --card: 215 25% 12%;
   --card-foreground: 210 40% 98%;
-  --popover: 222.2 84% 4.9%;
+  --popover: 215 25% 10%;
   --popover-foreground: 210 40% 98%;
-  --primary: 189 94% 43%; /* Electric Cyan */
-  --primary-foreground: 222.2 47.4% 11.2%;
-  --secondary: 217.2 32.6% 17.5%;
+  --primary: 215 20% 65%; /* Silver Metallic Primary */
+  --primary-foreground: 215 25% 10%;
+  --secondary: 215 20% 20%;
   --secondary-foreground: 210 40% 98%;
-  --muted: 217.2 32.6% 17.5%;
-  --muted-foreground: 215 20.2% 65.1%;
-  --accent: 262 83% 58%; /* Premium Purple */
+  --muted: 215 20% 20%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 215 16% 47%; /* Brushed Grey Accent */
   --accent-foreground: 210 40% 98%;
-  --success: 142.1 70.6% 45.3%; /* Emerald Green */
+  --success: 142.1 70.6% 45.3%;
   --success-foreground: 144.1 61.4% 9.1%;
-  --warning: 38 92% 50%; /* Amber */
+  --warning: 38 92% 50%;
   --warning-foreground: 48 96% 8.9%;
-  --destructive: 0 62.8% 30.6%; /* Red */
+  --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 210 40% 98%;
-  --border: 217.2 32.6% 17.5%;
-  --input: 217.2 32.6% 17.5%;
-  --ring: 189 94% 43%;
+  --border: 215 20% 20%;
+  --input: 215 20% 20%;
+  --ring: 215 20% 65%;
 }
 
 @layer base {
@@ -110,7 +110,7 @@
 
 @layer utilities {
   .gradient-premium {
-    background: linear-gradient(135deg, hsl(var(--primary)), #3b82f6, hsl(var(--accent)));
+    background: linear-gradient(135deg, hsl(var(--primary)), #4b5563, hsl(var(--accent)));
   }
 
   .glass {
@@ -118,7 +118,7 @@
   }
 
   .text-gradient {
-    @apply bg-gradient-to-r from-primary via-blue-500 to-accent bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-slate-300 via-slate-500 to-slate-700 bg-clip-text text-transparent;
   }
 
   .animate-float {

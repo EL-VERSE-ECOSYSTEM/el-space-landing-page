@@ -19,7 +19,7 @@ export default function HowItWorksPage() {
         {/* Header */}
         <div className="text-center mb-20 relative z-10">
           <h1 className="text-6xl font-black mb-6 tracking-tight text-foreground uppercase">
-            How <span className="bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">EL SPACE</span> Works
+            How <span className="bg-gradient-to-r from-slate-600 via-slate-600 to-slate600 bg-clip-text text-transparent">EL SPACE</span> Works
           </h1>
           <p className="text-muted-foreground text-xl max-w-2xl mx-auto font-medium leading-relaxed">
             The friction-less ecosystem for the world&apos;s top tech talent and most ambitious companies.
@@ -76,7 +76,7 @@ export default function HowItWorksPage() {
 
         {/* CTA Section */}
         <section className="bg-card border border-border rounded-[3rem] p-16 text-center mb-24 relative overflow-hidden shadow-2xl">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/10 via-transparent to-purple-500/10 pointer-events-none" />
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/10 via-transparent to-slate500/10 pointer-events-none" />
           <h2 className="text-5xl font-black text-foreground mb-6 relative z-10 tracking-tight uppercase">Ready to transcend?</h2>
           <p className="text-muted-foreground mb-12 max-w-2xl mx-auto text-xl font-medium relative z-10">
             Join the decentralized workforce where quality is the only currency that matters.
