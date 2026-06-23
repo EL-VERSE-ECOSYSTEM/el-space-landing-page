@@ -73,8 +73,8 @@ export default function ContactPage() {
             {/* Email */}
             <div className="flex gap-4">
               <div className="flex-shrink-0">
-                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-primary/10 border border-primary/20 shadow-sm">
-                  <Mail className="h-6 w-6 text-primary" />
+                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-slate-700/10 border border-slate-700/20 shadow-sm">
+                  <Mail className="h-6 w-6 text-slate-700" />
                 </div>
               </div>
               <div>
@@ -101,8 +101,8 @@ export default function ContactPage() {
             {/* Address */}
             <div className="flex gap-4">
               <div className="flex-shrink-0">
-                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-slate500/10 border border-slate500/20 shadow-sm">
-                  <MapPin className="h-6 w-6 text-slate500" />
+                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-slate-500/10 border border-slate-500/20 shadow-sm">
+                  <MapPin className="h-6 w-6 text-slate-500" />
                 </div>
               </div>
               <div>
@@ -115,16 +115,16 @@ export default function ContactPage() {
             {/* Social Media */}
             <div className="flex gap-4 pt-4">
               <div className="flex-shrink-0">
-                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-slate500/10 border border-slate500/20 shadow-sm">
-                  <MessageSquare className="h-6 w-6 text-slate500" />
+                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-slate-500/10 border border-slate-500/20 shadow-sm">
+                  <MessageSquare className="h-6 w-6 text-slate-500" />
                 </div>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-foreground mb-1 uppercase tracking-tighter">Social Nexus</h3>
                 <div className="flex gap-6 mt-2">
-                  <a href="https://twitter.com/elspace" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors font-black uppercase text-xs tracking-widest">Twitter</a>
-                  <a href="https://linkedin.com/company/elspace" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors font-black uppercase text-xs tracking-widest">LinkedIn</a>
-                  <a href="https://discord.gg/elspace" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors font-black uppercase text-xs tracking-widest">Discord</a>
+                  <a href="https://twitter.com/elspace" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-slate-700 transition-colors font-black uppercase text-xs tracking-widest">Twitter</a>
+                  <a href="https://linkedin.com/company/elspace" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-slate-700 transition-colors font-black uppercase text-xs tracking-widest">LinkedIn</a>
+                  <a href="https://discord.gg/elspace" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-slate-700 transition-colors font-black uppercase text-xs tracking-widest">Discord</a>
                 </div>
               </div>
             </div>
@@ -139,7 +139,7 @@ export default function ContactPage() {
 
           {/* Contact Form */}
           <div className="bg-card border border-border rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-slate-700/5 rounded-full blur-3xl -mr-16 -mt-16" />
             <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
               {/* Name */}
               <div className="space-y-2">
@@ -182,7 +182,7 @@ export default function ContactPage() {
                   name="type"
                   value={formData.type}
                   onChange={handleChange}
-                  className="w-full px-4 h-12 bg-muted/50 border border-border text-foreground rounded-xl hover:border-primary/50 transition-colors outline-none font-bold text-sm"
+                  className="w-full px-4 h-12 bg-muted/50 border border-border text-foreground rounded-xl hover:border-slate-700/50 transition-colors outline-none font-bold text-sm"
                 >
                   <option value="general">General Inquiry</option>
                   <option value="support">Support Request</option>
@@ -228,7 +228,7 @@ export default function ContactPage() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-black py-4 h-14 rounded-2xl shadow-xl shadow-primary/20 transition-all uppercase text-sm tracking-widest"
+                className="w-full bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black py-4 h-14 rounded-2xl shadow-xl shadow-primary/20 transition-all uppercase text-sm tracking-widest"
               >
                 {loading ? (
                   <>

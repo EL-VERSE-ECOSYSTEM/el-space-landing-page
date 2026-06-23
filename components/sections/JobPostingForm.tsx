@@ -193,7 +193,7 @@ export function JobPostingForm() {
           </Button>
         )}
         {step === 4 && (
-          <Button onClick={handleSubmit} className="flex-1 bg-gradient-to-r from-slate500 to-teal-600 text-white hover:from-slate600 hover:to-teal-700">
+          <Button onClick={handleSubmit} className="flex-1 bg-gradient-to-r from-slate-500 to-slate-500 text-white hover:from-slate-600 hover:to-slate-500">
             Post Job (Free)
           </Button>
         )}

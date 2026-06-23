@@ -8,12 +8,12 @@ interface BenefitCardProps {
 }
 
 const iconBackgrounds = {
-  cyan: 'bg-slate-50 text-slate-600 border-slate-100',
-  purple: 'bg-slate50 text-slate600 border-slate100',
-  green: 'bg-slate50 text-slate600 border-slate100',
-  blue: 'bg-slate-50 text-slate-600 border-slate-100',
-  yellow: 'bg-slate50 text-slate600 border-slate100',
-  pink: 'bg-slate50 text-slate600 border-slate100'
+  cyan: 'bg-slate-50 text-slate-700 border-slate-200',
+  purple: 'bg-slate-50 text-slate-700 border-slate-200',
+  green: 'bg-slate-50 text-slate-700 border-slate-200',
+  blue: 'bg-slate-50 text-slate-700 border-slate-200',
+  yellow: 'bg-slate-50 text-slate-700 border-slate-200',
+  pink: 'bg-slate-50 text-slate-700 border-slate-200'
 }
 
 export function BenefitCard({ 
@@ -23,9 +23,9 @@ export function BenefitCard({
   colorScheme = 'cyan'
 }: BenefitCardProps) {
   return (
-    <div className="group flex flex-col gap-4 p-6 rounded-3xl border border-slate-200 bg-white hover:border-slate-300 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300">
+    <div className="group flex flex-col gap-4 p-6 rounded-[2.5rem] border border-slate-200 bg-white hover:border-slate-300 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300">
       <div className="flex items-start gap-5">
-        <span className={`mt-1 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl text-xl font-bold ${iconBackgrounds[colorScheme]} border transition-transform duration-300 group-hover:scale-110`}>
+        <span className={`mt-1 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-[2rem] text-xl font-bold ${iconBackgrounds[colorScheme]} border transition-transform duration-300 group-hover:scale-110`}>
           {icon}
         </span>
         <div className="flex-1">

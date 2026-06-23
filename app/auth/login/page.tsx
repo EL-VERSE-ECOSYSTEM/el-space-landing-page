@@ -117,14 +117,14 @@ export default function LoginPage() {
     <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden text-foreground">
       {/* Premium Background Orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-slate-500/20 rounded-full blur-[160px] animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-slate-400/10 rounded-full blur-[140px] animate-pulse" />
       </div>
 
       <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <div className="text-center mb-10 space-y-4">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary via-slate-500 to-slate600 shadow-xl shadow-primary/20">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-slate-800 via-slate-500 to-slate-400 shadow-xl shadow-primary/20">
             <span className="text-2xl font-black text-white">EL</span>
           </div>
           <div>
@@ -144,15 +144,15 @@ export default function LoginPage() {
                 return (
                   <React.Fragment key={s}>
                     <div className={`relative flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-500 ${
-                      isCompleted ? 'bg-primary border-primary text-primary-foreground' :
-                      isActive ? 'border-primary text-primary bg-primary/10' :
+                      isCompleted ? 'bg-slate-700 border-slate-700 text-slate-700-foreground' :
+                      isActive ? 'border-slate-700 text-slate-700 bg-slate-700/10' :
                       'border-border text-muted-foreground'
                     }`}>
                       {isCompleted ? <ShieldCheck className="w-5 h-5" /> : <span className="text-sm font-black">{i + 1}</span>}
                     </div>
                     {i < 1 && (
                       <div className={`flex-1 h-1 mx-2 rounded-full transition-all duration-500 ${
-                        i < currentIndex ? 'bg-primary' : 'bg-muted'
+                        i < currentIndex ? 'bg-slate-700' : 'bg-muted'
                       }`} />
                     )}
                   </React.Fragment>
@@ -162,7 +162,7 @@ export default function LoginPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-card/80 backdrop-blur-xl border border-border rounded-[2.5rem] p-8 md:p-10 shadow-2xl shadow-primary/5 overflow-hidden">
+        <div className="bg-card/40 backdrop-blur-3xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] rounded-[2.5rem] p-8 md:p-10 shadow-2xl shadow-primary/5 overflow-hidden">
           {/* Status Messages */}
           {error && (
           <div className="mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
@@ -172,9 +172,9 @@ export default function LoginPage() {
           )}
 
           {success && (
-          <div className="mb-6 p-4 bg-success/10 border border-success/20 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
-            <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
-            <p className="text-success text-sm font-bold leading-tight">{success}</p>
+          <div className="mb-6 p-4 bg-slate-500/10 border border-slate-500/20 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
+            <CheckCircle className="w-5 h-5 text-slate-500 flex-shrink-0" />
+            <p className="text-slate-500 text-sm font-bold leading-tight">{success}</p>
             </div>
           )}
 
@@ -199,7 +199,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={loading || !email}
-                className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-black text-sm uppercase tracking-widest rounded-2xl transition-all duration-300 shadow-xl shadow-primary/20 group"
+                className="w-full h-16 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black text-sm uppercase tracking-widest rounded-2xl transition-all duration-300 shadow-xl shadow-primary/20 group"
               >
                 {loading ? (
                   <span className="flex items-center gap-3">
@@ -234,7 +234,7 @@ export default function LoginPage() {
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="bg-muted p-4 rounded-2xl text-center mb-2">
                 <p className="text-sm font-bold text-muted-foreground">
-                  Signing in as <span className="text-primary">{email}</span>
+                  Signing in as <span className="text-slate-700">{email}</span>
                 </p>
               </div>
 
@@ -247,7 +247,7 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="pl-4 pr-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary focus:ring-primary/10 transition-all rounded-2xl font-bold"
+                    className="pl-4 pr-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-slate-700 focus:ring-primary/10 transition-all rounded-2xl font-bold"
                   />
                   <button
                     type="button"
@@ -262,7 +262,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={loading || !password}
-                className="w-full h-14 bg-primary hover:bg-primary/90 text-primary-foreground font-black text-lg rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 group"
+                className="w-full h-14 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black text-lg rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 group"
               >
                 {loading ? (
                   <span className="flex items-center gap-2">
@@ -296,7 +296,7 @@ export default function LoginPage() {
               New to the platform?{" "}
               <Link
                 href="/auth/register"
-                className="text-primary hover:text-primary/80 font-black transition-colors underline underline-offset-4 decoration-2 decoration-primary/30"
+                className="text-slate-700 hover:text-slate-700/80 font-black transition-colors underline underline-offset-4 decoration-2 decoration-primary/30"
               >
                 Register here
               </Link>

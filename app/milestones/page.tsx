@@ -82,7 +82,7 @@ export default function MilestonesHub() {
     const days = Math.floor(diff / (1000 * 60 * 60 * 24))
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
 
-    if (days > 0) return { text: `${days}d ${hours}h remaining`, color: 'text-primary', isOverdue: false }
+    if (days > 0) return { text: `${days}d ${hours}h remaining`, color: 'text-slate-700', isOverdue: false }
     return { text: `${hours}h remaining`, color: 'text-warning', isOverdue: false }
   }
 
@@ -96,7 +96,7 @@ export default function MilestonesHub() {
           <div className="flex justify-between items-end">
             <div>
               <h1 className="text-5xl font-black text-foreground tracking-tighter">
-                Mission <span className="bg-gradient-to-r from-primary to-slate500 bg-clip-text text-transparent">Milestones</span>
+                Mission <span className="bg-gradient-to-r from-primary to-slate-500 bg-clip-text text-transparent">Milestones</span>
               </h1>
               <p className="text-muted-foreground mt-2 text-lg font-medium">Precision tracking for active deployments</p>
             </div>
@@ -123,14 +123,14 @@ export default function MilestonesHub() {
              {milestones.length > 0 ? milestones.map((milestone) => {
                const time = getTimeRemaining(milestone.due_date)
                return (
-                 <Card key={milestone.id} className="bg-card border border-border rounded-[2.5rem] overflow-hidden hover:border-primary/20 transition-all group shadow-lg">
+                 <Card key={milestone.id} className="bg-card border border-border rounded-[2.5rem] overflow-hidden hover:border-slate-700/20 transition-all group shadow-lg">
                     <CardContent className="p-8">
                        <div className="flex flex-col md:flex-row justify-between gap-8">
                           <div className="flex-1 space-y-4">
                              <div className="flex items-center gap-3">
                                 <Badge className={`border-none font-black text-[10px] uppercase tracking-widest px-3 py-1 rounded-lg ${
-                                  milestone.status === 'completed' ? 'bg-success/10 text-success' :
-                                  milestone.status === 'in_progress' ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'
+                                  milestone.status === 'completed' ? 'bg-slate-500/10 text-slate-500' :
+                                  milestone.status === 'in_progress' ? 'bg-slate-700/10 text-slate-700' : 'bg-muted text-muted-foreground'
                                 }`}>
                                    {milestone.status.replace('_', ' ')}
                                 </Badge>
@@ -139,7 +139,7 @@ export default function MilestonesHub() {
                                 </div>
                              </div>
 
-                             <h3 className="text-2xl font-black text-foreground tracking-tight group-hover:text-primary transition-colors">
+                             <h3 className="text-2xl font-black text-foreground tracking-tight group-hover:text-slate-700 transition-colors">
                                 {milestone.title}
                              </h3>
                              <p className="text-muted-foreground font-medium line-clamp-2">
@@ -152,7 +152,7 @@ export default function MilestonesHub() {
                                    <span className={`text-xs font-black uppercase tracking-widest ${time.color}`}>{time.text}</span>
                                 </div>
                                 <div className="flex items-center gap-2 text-muted-foreground">
-                                   <DollarSign className="w-4 h-4 text-success" />
+                                   <DollarSign className="w-4 h-4 text-slate-500" />
                                    <span className="text-xs font-black uppercase tracking-widest text-foreground">${milestone.amount}</span>
                                 </div>
                              </div>
@@ -172,7 +172,7 @@ export default function MilestonesHub() {
                                   <Button
                                     disabled={!!processing}
                                     onClick={() => handleUpdateStatus(milestone.id, 'submitted')}
-                                    className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-black rounded-xl px-8 h-12 shadow-lg shadow-primary/20"
+                                    className="flex-1 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black rounded-xl px-8 h-12 shadow-lg shadow-primary/20"
                                   >
                                      {processing === milestone.id ? '...' : 'Submit'} <Send className="w-4 h-4 ml-2" />
                                   </Button>
@@ -181,7 +181,7 @@ export default function MilestonesHub() {
                                   <Button
                                     disabled={!!processing}
                                     onClick={() => handleUpdateStatus(milestone.id, 'approved')}
-                                    className="flex-1 bg-success hover:bg-success/90 text-success-foreground font-black rounded-xl px-8 h-12 shadow-lg shadow-success/20"
+                                    className="flex-1 bg-slate-500 hover:bg-slate-500/90 text-slate-500-foreground font-black rounded-xl px-8 h-12 shadow-lg shadow-success/20"
                                   >
                                      {processing === milestone.id ? '...' : 'Approve'} <CheckCircle className="w-4 h-4 ml-2" />
                                   </Button>
@@ -197,7 +197,7 @@ export default function MilestonesHub() {
                   <CheckCircle className="w-12 h-12 text-muted-foreground/30 mx-auto mb-4" />
                   <h3 className="text-xl font-black text-foreground uppercase tracking-tight">Signal Neutral</h3>
                   <p className="text-muted-foreground mt-2 font-medium">All mission objectives are currently synchronized.</p>
-                  <Button onClick={() => router.push('/jobs')} className="mt-10 bg-primary hover:bg-primary/90 text-primary-foreground font-black rounded-xl h-14 px-10 shadow-xl shadow-primary/20">Hunt New Missions</Button>
+                  <Button onClick={() => router.push('/jobs')} className="mt-10 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black rounded-xl h-14 px-10 shadow-xl shadow-primary/20">Hunt New Missions</Button>
                </div>
              )}
           </div>

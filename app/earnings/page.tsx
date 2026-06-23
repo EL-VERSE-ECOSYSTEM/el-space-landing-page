@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { DollarSign, TrendingUp, Clock, CheckCircle } from 'lucide-react';
+import { DollarSign, TrendingUp, Clock, CheckCircle, FileText } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function EarningsPage() {
@@ -90,7 +90,7 @@ export default function EarningsPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-10">
-          <h1 className="text-5xl font-black text-foreground tracking-tighter uppercase">Earnings <span className="text-primary">Command</span></h1>
+          <h1 className="text-5xl font-black text-foreground tracking-tighter uppercase">Earnings <span className="text-slate-700">Command</span></h1>
           <p className="text-muted-foreground font-medium mt-2">Strategic fiscal oversight and liquidity management.</p>
         </div>
 
@@ -104,13 +104,13 @@ export default function EarningsPage() {
                   ${stats?.totalEarnings || 0}
                 </p>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                <DollarSign className="h-6 w-6 text-primary" />
+              <div className="w-12 h-12 rounded-xl bg-slate-700/10 flex items-center justify-center">
+                <DollarSign className="h-6 w-6 text-slate-700" />
               </div>
             </div>
           </Card>
 
-          <Card className="bg-card border-border border-l-4 border-l-slate500 rounded-2xl p-6 shadow-xl shadow-black/5">
+          <Card className="bg-card border-border border-l-4 border-l-slate-500 rounded-2xl p-6 shadow-xl shadow-black/5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1 opacity-60">Executed Contracts</p>
@@ -118,13 +118,13 @@ export default function EarningsPage() {
                   {stats?.completedProjects || 0}
                 </p>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-slate500/10 flex items-center justify-center">
-                <CheckCircle className="h-6 w-6 text-slate500" />
+              <div className="w-12 h-12 rounded-xl bg-slate-500/10 flex items-center justify-center">
+                <CheckCircle className="h-6 w-6 text-slate-500" />
               </div>
             </div>
           </Card>
 
-          <Card className="bg-card border-border border-l-4 border-l-slate500 rounded-2xl p-6 shadow-xl shadow-black/5">
+          <Card className="bg-card border-border border-l-4 border-l-slate-500 rounded-2xl p-6 shadow-xl shadow-black/5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1 opacity-60">Escrow In-Transit</p>
@@ -132,8 +132,8 @@ export default function EarningsPage() {
                   ${stats?.pendingEarnings || 0}
                 </p>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-slate500/10 flex items-center justify-center">
-                <Clock className="h-6 w-6 text-slate500" />
+              <div className="w-12 h-12 rounded-xl bg-slate-500/10 flex items-center justify-center">
+                <Clock className="h-6 w-6 text-slate-500" />
               </div>
             </div>
           </Card>
@@ -196,12 +196,12 @@ export default function EarningsPage() {
 
           {/* Withdrawal */}
           <Card className="bg-card border border-border rounded-[2.5rem] p-10 shadow-2xl shadow-black/5 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-slate-700/5 rounded-full blur-3xl -mr-16 -mt-16" />
             <h3 className="text-xl font-black text-foreground mb-8 uppercase tracking-tight relative z-10">Liquidate Assets</h3>
             <div className="space-y-8 relative z-10">
               <div>
                 <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-2 opacity-60">Liquid Balance</p>
-                <p className="text-5xl font-black text-primary tracking-tighter">${stats?.totalEarnings || 0}</p>
+                <p className="text-5xl font-black text-slate-700 tracking-tighter">${stats?.totalEarnings || 0}</p>
               </div>
 
               <div className="space-y-3">
@@ -221,7 +221,7 @@ export default function EarningsPage() {
 
               <Button
                 onClick={handleWithdrawal}
-                className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase tracking-widest text-xs rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-95"
+                className="w-full h-16 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black uppercase tracking-widest text-xs rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-95"
               >
                 Authorize Withdrawal
               </Button>
@@ -239,22 +239,22 @@ export default function EarningsPage() {
           <div className="space-y-4">
             {loading ? (
               <div className="flex justify-center py-12">
-                <div className="animate-spin h-10 w-10 border-4 border-primary border-t-transparent rounded-full"></div>
+                <div className="animate-spin h-10 w-10 border-4 border-slate-700 border-t-transparent rounded-full"></div>
               </div>
             ) : earnings.length > 0 ? (
               earnings.map((earning) => (
-                <div key={earning.id} className="flex items-center justify-between p-6 rounded-2xl bg-muted/30 border border-border hover:border-primary/20 hover:bg-muted/50 transition-all group">
+                <div key={earning.id} className="flex items-center justify-between p-6 rounded-2xl bg-muted/30 border border-border hover:border-slate-700/20 hover:bg-muted/50 transition-all group">
                   <div className="flex items-center gap-6">
-                    <div className="w-12 h-12 rounded-xl bg-background border border-border flex items-center justify-center group-hover:border-primary/30 transition-colors">
-                      <FileText className="w-5 h-5 text-muted-foreground group-hover:text-primary" />
+                    <div className="w-12 h-12 rounded-xl bg-background border border-border flex items-center justify-center group-hover:border-slate-700/30 transition-colors">
+                      <FileText className="w-5 h-5 text-muted-foreground group-hover:text-slate-700" />
                     </div>
                     <div>
                       <p className="font-black text-foreground uppercase tracking-tight">{earning.project_title}</p>
-                      <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest mt-1">Status: <span className="text-primary">{earning.status}</span></p>
+                      <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest mt-1">Status: <span className="text-slate-700">{earning.status}</span></p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-black text-slate500 text-2xl tracking-tighter">+${earning.total_amount}</p>
+                    <p className="font-black text-slate-500 text-2xl tracking-tighter">+${earning.total_amount}</p>
                     <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1">
                       {new Date(earning.completed_at).toLocaleDateString()}
                     </p>

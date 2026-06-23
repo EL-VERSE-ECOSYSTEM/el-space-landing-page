@@ -91,7 +91,7 @@ export function FreelancerComparison({
                             key={i}
                             className={`h-3 w-3 ${
                               i < Math.round(freelancer.avg_rating || 0)
-                                ? 'fill-slate400 text-slate400'
+                                ? 'fill-slate-400 text-slate-400'
                                 : 'text-slate-600'
                             }`}
                           />
@@ -120,11 +120,11 @@ export function FreelancerComparison({
                 </div>
                 
                 {freelancer.completion_rate !== undefined && (
-                  <div className="bg-slate600/20 border border-slate600/50 rounded p-2">
+                  <div className="bg-slate-600/20 border border-slate-600/50 rounded p-2">
                     <p className="text-xs text-slate-400 mb-1">Completion Rate</p>
                     <div className="w-full bg-slate-700 rounded h-2">
                       <div 
-                        className="bg-slate500 h-2 rounded"
+                        className="bg-slate-500 h-2 rounded"
                         style={{ width: `${freelancer.completion_rate}%` }}
                       />
                     </div>
@@ -192,7 +192,7 @@ export function FreelancerComparison({
                       {displayFreelancers.map(f => (
                         <td key={f.id} className="text-center py-3 px-4">
                           <div className="flex items-center justify-center gap-1">
-                            <Star className="h-4 w-4 fill-slate400 text-slate400" />
+                            <Star className="h-4 w-4 fill-slate-400 text-slate-400" />
                             <span className="text-white font-semibold">{f.avg_rating?.toFixed(1)}</span>
                           </div>
                         </td>
@@ -213,9 +213,9 @@ export function FreelancerComparison({
                           <td key={f.id} className="text-center py-3 px-4">
                             <Badge className={
                               f.availability === 'available' 
-                                ? 'bg-slate600 text-white'
+                                ? 'bg-slate-600 text-white'
                                 : f.availability === 'busy'
-                                ? 'bg-slate600 text-white'
+                                ? 'bg-slate-600 text-white'
                                 : 'bg-red-600 text-white'
                             }>
                               {f.availability || 'N/A'}
@@ -248,7 +248,7 @@ export function FreelancerComparison({
                       {displayFreelancers.map(f => (
                         <div key={f.id} className="flex-1">
                           {f.skills.includes(skill) ? (
-                            <Badge className="bg-slate600 text-white w-full justify-center">
+                            <Badge className="bg-slate-600 text-white w-full justify-center">
                               ✓ Has
                             </Badge>
                           ) : (
@@ -291,7 +291,7 @@ export function FreelancerComparison({
                           onSelectFreelancer(f.id);
                           setShowComparison(false);
                         }}
-                        className="w-full bg-slate600 hover:bg-slate700 text-white"
+                        className="w-full bg-slate-600 hover:bg-slate-700 text-white"
                       >
                         Select This Freelancer
                       </Button>

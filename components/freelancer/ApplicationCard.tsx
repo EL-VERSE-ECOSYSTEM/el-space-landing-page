@@ -49,8 +49,8 @@ export function ApplicationCard({
   
   const freelancer = application.freelancer;
   const statusColor = {
-    pending: 'bg-slate500/20 text-slate300',
-    accepted: 'bg-slate500/20 text-slate300',
+    pending: 'bg-slate-500/20 text-slate-300',
+    accepted: 'bg-slate-500/20 text-slate-300',
     rejected: 'bg-red-500/20 text-red-300',
   }[application.status] || 'bg-slate-600 text-slate-200';
 
@@ -83,7 +83,7 @@ export function ApplicationCard({
                           key={i}
                           className={`h-3 w-3 ${
                             i < Math.round(freelancer?.avg_rating || 0)
-                              ? 'fill-slate400 text-slate400'
+                              ? 'fill-slate-400 text-slate-400'
                               : 'text-slate-600'
                           }`}
                         />
@@ -181,7 +181,7 @@ export function ApplicationCard({
                 <Button
                   size="sm"
                   onClick={() => onAccept?.(application.id)}
-                  className="flex-1 bg-slate600 hover:bg-slate700 text-white"
+                  className="flex-1 bg-slate-600 hover:bg-slate-700 text-white"
                 >
                   Accept
                 </Button>
@@ -230,7 +230,7 @@ export function ApplicationCard({
                           key={i}
                           className={`h-4 w-4 ${
                             i < Math.round(freelancer.avg_rating || 0)
-                              ? 'fill-slate400 text-slate400'
+                              ? 'fill-slate-400 text-slate-400'
                               : 'text-slate-600'
                           }`}
                         />

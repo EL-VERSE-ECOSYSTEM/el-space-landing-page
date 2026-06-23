@@ -54,10 +54,10 @@ export default function JobsPage() {
 
   const getTierConfig = (type: string) => {
     switch (type) {
-      case 'enterprise': return { icon: Globe, label: 'ENTERPRISE', color: 'text-slate500', bg: 'bg-slate500/10' };
+      case 'enterprise': return { icon: Globe, label: 'ENTERPRISE', color: 'text-slate-500', bg: 'bg-slate-500/10' };
       case 'business': return { icon: Building, label: 'BUSINESS', color: 'text-slate-500', bg: 'bg-slate-500/10' };
-      case 'entrepreneur': return { icon: Zap, label: 'ENTREPRENEUR', color: 'text-slate500', bg: 'bg-slate500/10' };
-      default: return { icon: Shield, label: 'CLIENT', color: 'text-primary', bg: 'bg-primary/10' };
+      case 'entrepreneur': return { icon: Zap, label: 'ENTREPRENEUR', color: 'text-slate-500', bg: 'bg-slate-500/10' };
+      default: return { icon: Shield, label: 'CLIENT', color: 'text-slate-700', bg: 'bg-slate-700/10' };
     }
   };
 
@@ -74,7 +74,7 @@ export default function JobsPage() {
                <p className="text-muted-foreground mt-2 text-xl font-medium">Analyze and deploy to high-priority opportunities.</p>
             </div>
             {user?.user_type !== 'freelancer' && (
-              <Button onClick={() => router.push('/jobs/post')} className="h-14 bg-primary text-primary-foreground hover:bg-primary/90 font-black px-10 rounded-2xl transition-all shadow-xl shadow-primary/20 uppercase tracking-widest text-xs">
+              <Button onClick={() => router.push('/jobs/post')} className="h-14 bg-slate-700 text-slate-700-foreground hover:bg-slate-700/90 font-black px-10 rounded-2xl transition-all shadow-xl shadow-primary/20 uppercase tracking-widest text-xs">
                  <Rocket className="w-5 h-5 mr-2" /> Launch Mission
               </Button>
             )}
@@ -92,7 +92,7 @@ export default function JobsPage() {
                    className="pl-16 h-20 bg-card border-border text-foreground placeholder:text-muted-foreground/30 rounded-[2rem] focus:ring-primary text-lg shadow-2xl"
                 />
              </div>
-             <Button className="h-20 bg-card border border-border hover:border-primary/50 text-muted-foreground rounded-[2rem] px-10 font-black uppercase tracking-widest text-xs transition-all">
+             <Button className="h-20 bg-card border border-border hover:border-slate-700/50 text-muted-foreground rounded-[2rem] px-10 font-black uppercase tracking-widest text-xs transition-all">
                 <Filter className="w-6 h-6 mr-2" /> Parameters
              </Button>
           </div>
@@ -100,16 +100,16 @@ export default function JobsPage() {
           {/* Category Tabs */}
           <Tabs value={filter} onValueChange={setFilter} className="w-full">
             <TabsList className="bg-card border border-border p-1.5 rounded-2xl mb-12 shadow-inner">
-               <TabsTrigger value="all" className="rounded-xl px-10 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-black text-[10px] uppercase tracking-[0.2em] transition-all">ALL SECTORS</TabsTrigger>
-               <TabsTrigger value="Development" className="rounded-xl px-10 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-black text-[10px] uppercase tracking-[0.2em] transition-all">DEVELOPMENT</TabsTrigger>
-               <TabsTrigger value="Design" className="rounded-xl px-10 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-black text-[10px] uppercase tracking-[0.2em] transition-all">DESIGN</TabsTrigger>
-               <TabsTrigger value="Marketing" className="rounded-xl px-10 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-black text-[10px] uppercase tracking-[0.2em] transition-all">MARKETING</TabsTrigger>
+               <TabsTrigger value="all" className="rounded-xl px-10 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black text-[10px] uppercase tracking-[0.2em] transition-all">ALL SECTORS</TabsTrigger>
+               <TabsTrigger value="Development" className="rounded-xl px-10 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black text-[10px] uppercase tracking-[0.2em] transition-all">DEVELOPMENT</TabsTrigger>
+               <TabsTrigger value="Design" className="rounded-xl px-10 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black text-[10px] uppercase tracking-[0.2em] transition-all">DESIGN</TabsTrigger>
+               <TabsTrigger value="Marketing" className="rounded-xl px-10 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black text-[10px] uppercase tracking-[0.2em] transition-all">MARKETING</TabsTrigger>
             </TabsList>
 
             {/* Jobs List */}
             {loading ? (
               <div className="flex justify-center py-20">
-                <div className="animate-spin h-10 w-10 border-4 border-primary border-t-transparent rounded-full"></div>
+                <div className="animate-spin h-10 w-10 border-4 border-slate-700 border-t-transparent rounded-full"></div>
               </div>
             ) : filteredJobs.length === 0 ? (
               <div className="text-center py-32 bg-card/50 border-2 border-dashed border-border rounded-[4rem] shadow-inner">
@@ -122,7 +122,7 @@ export default function JobsPage() {
                 {filteredJobs.map((job) => {
                   const tier = getTierConfig(job.client_type || 'client');
                   return (
-                    <Card key={job.id} className="bg-card border-border rounded-[3rem] overflow-hidden hover:border-primary/50 transition-all group cursor-pointer shadow-xl shadow-black/5" onClick={() => router.push(`/jobs/${job.id}`)}>
+                    <Card key={job.id} className="bg-card border-border rounded-[3rem] overflow-hidden hover:border-slate-700/50 transition-all group cursor-pointer shadow-xl shadow-black/5" onClick={() => router.push(`/jobs/${job.id}`)}>
                       <CardContent className="p-10">
                         <div className="flex flex-col lg:flex-row justify-between gap-10">
                           <div className="flex-1 space-y-6">
@@ -133,7 +133,7 @@ export default function JobsPage() {
                                <span className="text-muted-foreground/40 text-[10px] font-black tracking-widest uppercase">CAT: {job.category}</span>
                             </div>
 
-                            <h3 className="text-3xl font-black text-foreground tracking-tighter uppercase group-hover:text-primary transition-colors">
+                            <h3 className="text-3xl font-black text-foreground tracking-tighter uppercase group-hover:text-slate-700 transition-colors">
                                {job.title}
                             </h3>
 
@@ -153,15 +153,15 @@ export default function JobsPage() {
                           <div className="flex flex-col justify-between items-end gap-10 min-w-[280px]">
                             <div className="text-right">
                                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1 opacity-60">Asset Allocation</p>
-                               <p className="text-5xl font-black text-slate500 tracking-tighter">${job.budget_min.toLocaleString()} - ${job.budget_max.toLocaleString()}</p>
+                               <p className="text-5xl font-black text-slate-500 tracking-tighter">${job.budget_min.toLocaleString()} - ${job.budget_max.toLocaleString()}</p>
                             </div>
 
                             <div className="flex flex-wrap justify-end gap-8 text-muted-foreground/60 font-black text-[10px] uppercase tracking-[0.2em]">
-                               <span className="flex items-center gap-2"><Calendar className="w-4 h-4 text-primary" /> {job.timeline}</span>
-                               <span className="flex items-center gap-2"><Users className="w-4 h-4 text-primary" /> 0 Intel Packs</span>
+                               <span className="flex items-center gap-2"><Calendar className="w-4 h-4 text-slate-700" /> {job.timeline}</span>
+                               <span className="flex items-center gap-2"><Users className="w-4 h-4 text-slate-700" /> 0 Intel Packs</span>
                             </div>
 
-                            <Button className="w-full bg-secondary hover:bg-primary hover:text-primary-foreground text-foreground font-black rounded-2xl h-16 transition-all uppercase text-xs tracking-widest shadow-sm">
+                            <Button className="w-full bg-secondary hover:bg-slate-700 hover:text-slate-700-foreground text-foreground font-black rounded-2xl h-16 transition-all uppercase text-xs tracking-widest shadow-sm">
                                Analyze Dossier <ChevronRight className="w-4 h-4 ml-2" />
                             </Button>
                           </div>

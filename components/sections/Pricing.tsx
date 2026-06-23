@@ -30,7 +30,7 @@ export function Pricing() {
               </TabsTrigger>
               <TabsTrigger
                 value="freelancers"
-                className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate600 data-[state=active]:shadow-sm"
+                className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate-600 data-[state=active]:shadow-sm"
               >
                 For Freelancers
               </TabsTrigger>
@@ -114,13 +114,13 @@ export function Pricing() {
                   </thead>
                   <tbody>
                     {PRICING_FREELANCER_TABLE.map((row, idx) => (
-                      <tr key={idx} className="group hover:bg-slate50/30 transition-colors border-b border-slate-50 last:border-none">
+                      <tr key={idx} className="group hover:bg-slate-50/30 transition-colors border-b border-slate-50 last:border-none">
                         <td className="px-8 py-8">
                           <p className="text-xl font-bold text-slate-900 mb-1">{row.size}</p>
                           <p className="text-sm font-bold text-slate-400">{row.range}</p>
                         </td>
                         <td className="px-8 py-8">
-                          <p className="text-2xl font-black text-slate600">{row.fee}</p>
+                          <p className="text-2xl font-black text-slate-600">{row.fee}</p>
                         </td>
                         <td className="px-8 py-8">
                           <p className="text-slate-600 font-medium">{row.example}</p>
@@ -134,7 +134,7 @@ export function Pricing() {
 
             {/* Comparison Callout */}
             <div className="rounded-[2.5rem] bg-slate-900 p-8 md:p-12 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-slate500/10 rounded-full blur-[80px] -mr-32 -mt-32 transition-all group-hover:bg-slate500/20" />
+              <div className="absolute top-0 right-0 w-64 h-64 bg-slate-500/10 rounded-full blur-[80px] -mr-32 -mt-32 transition-all group-hover:bg-slate-500/20" />
               <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
                 <div className="space-y-4">
                   <h3 className="text-2xl md:text-3xl font-black text-white">Your hard work, your money.</h3>
@@ -144,7 +144,7 @@ export function Pricing() {
                   </p>
                 </div>
                 <div className="flex flex-col items-center gap-2">
-                  <div className="text-4xl md:text-5xl font-black text-transparent bg-gradient-to-r from-slate400 to-slate400 bg-clip-text">
+                  <div className="text-4xl md:text-5xl font-black text-transparent bg-gradient-to-r from-slate-400 to-slate-400 bg-clip-text">
                     Up to 95%
                   </div>
                   <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">of your earnings</p>

@@ -62,7 +62,7 @@ export default function FreelancersHub() {
                <p className="text-muted-foreground mt-2 text-xl font-medium">Vetted technical specialists for critical deployments.</p>
             </div>
             <div className="flex gap-3">
-               <Badge className="bg-primary/10 text-primary border border-primary/20 px-6 py-2.5 rounded-2xl text-[10px] font-black tracking-widest uppercase">
+               <Badge className="bg-slate-700/10 text-slate-700 border border-slate-700/20 px-6 py-2.5 rounded-2xl text-[10px] font-black tracking-widest uppercase">
                   {freelancers.length} SPECIALISTS ONLINE
                </Badge>
             </div>
@@ -80,7 +80,7 @@ export default function FreelancersHub() {
                    className="pl-16 h-20 bg-card border-border text-foreground placeholder:text-muted-foreground/50 rounded-[2rem] focus:ring-primary text-lg shadow-2xl"
                 />
              </div>
-             <Button className="h-20 bg-card border border-border hover:border-primary text-muted-foreground rounded-[2rem] px-10">
+             <Button className="h-20 bg-card border border-border hover:border-slate-700 text-muted-foreground rounded-[2rem] px-10">
                 <Filter className="w-6 h-6 mr-2" /> Parameters
              </Button>
           </div>
@@ -90,13 +90,13 @@ export default function FreelancersHub() {
              {freelancers.length > 0 ? freelancers.map((freelancer) => (
                <Card
                   key={freelancer.id}
-                  className="bg-card border border-border rounded-[3rem] overflow-hidden hover:border-primary/50 transition-all group relative cursor-pointer shadow-lg"
+                  className="bg-card border border-border rounded-[3rem] overflow-hidden hover:border-slate-700/50 transition-all group relative cursor-pointer shadow-lg"
                   onClick={() => router.push(`/freelancer/${freelancer.user_id}`)}
                >
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-primary/10 transition-all" />
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-slate-700/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-slate-700/10 transition-all" />
                   <CardContent className="p-10">
                      <div className="flex justify-between items-start mb-8">
-                        <div className="w-20 h-20 rounded-[2rem] bg-muted border border-border flex items-center justify-center font-black text-3xl text-primary shadow-2xl">
+                        <div className="w-20 h-20 rounded-[2rem] bg-muted border border-border flex items-center justify-center font-black text-3xl text-slate-700 shadow-2xl">
                            {(freelancer.user?.full_name || 'U').charAt(0)}
                         </div>
                         <div className="text-right">
@@ -106,8 +106,8 @@ export default function FreelancersHub() {
                      </div>
 
                      <div className="space-y-2 mb-8">
-                        <h3 className="text-2xl font-black text-foreground tracking-tight group-hover:text-primary transition-colors">{freelancer.user?.full_name}</h3>
-                        <p className="text-primary/80 font-black text-[10px] uppercase tracking-widest">{freelancer.title || 'Technical Specialist'}</p>
+                        <h3 className="text-2xl font-black text-foreground tracking-tight group-hover:text-slate-700 transition-colors">{freelancer.user?.full_name}</h3>
+                        <p className="text-slate-700/80 font-black text-[10px] uppercase tracking-widest">{freelancer.title || 'Technical Specialist'}</p>
                      </div>
 
                      <p className="text-muted-foreground font-medium text-sm line-clamp-2 mb-8 leading-relaxed">
@@ -125,15 +125,15 @@ export default function FreelancersHub() {
                      <div className="flex items-center justify-between pt-8 border-t border-border">
                         <div className="flex items-center gap-4">
                            <div className="flex items-center gap-1.5">
-                              <Star className="w-4 h-4 text-slate500 fill-slate500" />
+                              <Star className="w-4 h-4 text-slate-500 fill-slate-500" />
                               <span className="text-foreground font-black text-sm">{freelancer.avg_rating || '5.0'}</span>
                            </div>
                            <div className="flex items-center gap-1.5 text-muted-foreground">
-                              <DollarSign className="w-4 h-4 text-slate500" />
+                              <DollarSign className="w-4 h-4 text-slate-500" />
                               <span className="text-foreground font-black text-sm">${freelancer.hourly_rate || '45'}/HR</span>
                            </div>
                         </div>
-                        <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+                        <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center group-hover:bg-slate-700 group-hover:text-slate-700-foreground transition-all">
                            <ChevronRight className="w-6 h-6" />
                         </div>
                      </div>

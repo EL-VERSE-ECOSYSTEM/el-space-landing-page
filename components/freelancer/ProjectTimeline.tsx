@@ -30,13 +30,13 @@ export function ProjectTimeline({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'bg-slate600/20 text-slate300 border-slate600/50';
+        return 'bg-slate-600/20 text-slate-300 border-slate-600/50';
       case 'in_progress':
         return 'bg-slate-600/20 text-slate-300 border-slate-600/50';
       case 'delayed':
         return 'bg-red-600/20 text-red-300 border-red-600/50';
       default:
-        return 'bg-slate600/20 text-slate300 border-slate600/50';
+        return 'bg-slate-600/20 text-slate-300 border-slate-600/50';
     }
   };
 
@@ -67,7 +67,7 @@ export function ProjectTimeline({
             <CardTitle className="text-white">Project Timeline</CardTitle>
           </div>
           {projectDeadline && (
-            <Badge className={isOverdue ? 'bg-red-600 text-white' : 'bg-slate600 text-white'}>
+            <Badge className={isOverdue ? 'bg-red-600 text-white' : 'bg-slate-600 text-white'}>
               {isOverdue ? 'Overdue' : 'On Track'}
             </Badge>
           )}
@@ -109,7 +109,7 @@ export function ProjectTimeline({
                   <div className="flex flex-col items-center">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                       isCompleted 
-                        ? 'bg-slate600 text-white'
+                        ? 'bg-slate-600 text-white'
                         : isLate
                         ? 'bg-red-600 text-white'
                         : 'bg-slate-700 text-slate-400'
@@ -168,7 +168,7 @@ export function ProjectTimeline({
                 <span className={`text-xs font-semibold px-3 py-1 rounded-full ${
                   isOverdue 
                     ? 'bg-red-600/20 text-red-300'
-                    : 'bg-slate600/20 text-slate300'
+                    : 'bg-slate-600/20 text-slate-300'
                 }`}>
                   {isOverdue 
                     ? `${Math.abs(Math.ceil((projectDeadline.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)))} days overdue`

@@ -36,16 +36,16 @@ export default function PaymentsPage() {
     <DashboardLayout navItems={navItems} userType={(user?.user_type === "freelancer" ? "freelancer" : "client")}>
       <div className="max-w-5xl mx-auto space-y-8 text-foreground">
         <div>
-          <h1 className="text-4xl font-black text-foreground tracking-tighter">Global <span className="text-slate500">Ledger</span></h1>
+          <h1 className="text-4xl font-black text-foreground tracking-tighter">Global <span className="text-slate-500">Ledger</span></h1>
           <p className="text-muted-foreground font-medium">Historical audit of all network financial activity.</p>
         </div>
 
         <div className="space-y-4">
           {payments.length > 0 ? payments.map((p) => (
-            <Card key={p.id} className="bg-card border border-border rounded-[2rem] overflow-hidden hover:border-primary/20 transition-all group shadow-sm">
+            <Card key={p.id} className="bg-card border border-border rounded-[2rem] overflow-hidden hover:border-slate-700/20 transition-all group shadow-sm">
               <CardContent className="p-8 flex items-center justify-between">
                 <div className="flex items-center gap-6">
-                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${p.amount > 0 ? 'bg-slate500/10 text-slate500' : 'bg-muted text-muted-foreground'}`}>
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${p.amount > 0 ? 'bg-slate-500/10 text-slate-500' : 'bg-muted text-muted-foreground'}`}>
                     {p.amount > 0 ? <ArrowDownLeft className="w-6 h-6" /> : <ArrowUpRight className="w-6 h-6" />}
                   </div>
                   <div>
@@ -54,11 +54,11 @@ export default function PaymentsPage() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className={`text-2xl font-black tracking-tighter ${p.amount > 0 ? 'text-slate500' : 'text-foreground'}`}>
+                  <p className={`text-2xl font-black tracking-tighter ${p.amount > 0 ? 'text-slate-500' : 'text-foreground'}`}>
                     {p.amount > 0 ? '+' : ''}${Math.abs(p.amount).toLocaleString()}
                   </p>
                   <Badge className={`mt-1 px-3 py-0.5 rounded-lg font-black text-[9px] uppercase tracking-widest ${
-                    p.status === 'completed' ? 'bg-slate500/10 text-slate500' : 'bg-slate500/10 text-slate500'
+                    p.status === 'completed' ? 'bg-slate-500/10 text-slate-500' : 'bg-slate-500/10 text-slate-500'
                   }`}>{p.status}</Badge>
                 </div>
               </CardContent>

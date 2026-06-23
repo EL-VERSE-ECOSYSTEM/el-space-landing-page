@@ -62,7 +62,7 @@ export function Navbar() {
                 <Link href="/auth/register?role=client">
                   <Button
                     size="sm"
-                    className="bg-background border-2 border-border text-foreground hover:border-primary hover:text-primary font-bold px-6 rounded-xl transition-all"
+                    className="bg-background border-2 border-border text-foreground hover:border-slate-700 hover:text-slate-700 font-bold px-6 rounded-xl transition-all"
                   >
                     Post a Job
                   </Button>
@@ -70,7 +70,7 @@ export function Navbar() {
                 <Link href="/auth/register?role=freelancer">
                   <Button
                     size="sm"
-                    className="bg-foreground hover:bg-primary text-background font-bold px-6 rounded-xl shadow-lg shadow-foreground/10 hover:shadow-primary/20 transition-all active:scale-95"
+                    className="bg-foreground hover:bg-slate-700 text-background font-bold px-6 rounded-xl shadow-lg shadow-foreground/10 hover:shadow-primary/20 transition-all active:scale-95"
                   >
                     Apply Now
                   </Button>
@@ -126,7 +126,7 @@ export function Navbar() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="block px-4 py-3 text-lg font-bold text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-2xl transition-all"
+                  className="block px-4 py-3 text-lg font-bold text-muted-foreground hover:text-slate-700 hover:bg-slate-700/10 rounded-2xl transition-all"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}

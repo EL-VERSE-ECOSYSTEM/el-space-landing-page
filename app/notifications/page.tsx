@@ -63,9 +63,9 @@ function formatRelativeTime(date: Date): string {
 const typeConfig: Record<NotificationType, { icon: typeof FolderKanban; bg: string; color: string; badgeColor: string; label: string }> = {
   project: {
     icon: FolderKanban,
-    bg: "bg-primary/10",
-    color: "text-primary",
-    badgeColor: "bg-primary/10 text-primary border-primary/20",
+    bg: "bg-slate-700/10",
+    color: "text-slate-700",
+    badgeColor: "bg-slate-700/10 text-slate-700 border-slate-700/20",
     label: "Project",
   },
   message: {
@@ -77,9 +77,9 @@ const typeConfig: Record<NotificationType, { icon: typeof FolderKanban; bg: stri
   },
   payment: {
     icon: CreditCard,
-    bg: "bg-success/10",
-    color: "text-success",
-    badgeColor: "bg-success/10 text-success border-success/20",
+    bg: "bg-slate-500/10",
+    color: "text-slate-500",
+    badgeColor: "bg-slate-500/10 text-slate-500 border-slate-500/20",
     label: "Payment",
   },
   system: {
@@ -121,13 +121,13 @@ function NotificationItem({
       className={cn(
         "group relative flex gap-6 rounded-[2rem] border p-6 transition-all duration-300",
         notification.read
-          ? "bg-card border-border hover:border-primary/20 opacity-80"
-          : "bg-card border-primary/30 shadow-xl shadow-primary/5 hover:border-primary"
+          ? "bg-card border-border hover:border-slate-700/20 opacity-80"
+          : "bg-card border-slate-700/30 shadow-xl shadow-primary/5 hover:border-slate-700"
       )}
     >
       {/* Unread indicator */}
       {!notification.read && (
-        <div className="absolute top-4 right-4 size-2.5 rounded-full bg-primary animate-pulse" />
+        <div className="absolute top-4 right-4 size-2.5 rounded-full bg-slate-700 animate-pulse" />
       )}
 
       {/* Avatar / Icon */}
@@ -165,7 +165,7 @@ function NotificationItem({
             <Button
               variant="ghost"
               size="sm"
-              className="h-7 gap-1 px-2 text-xs text-primary hover:bg-primary/10"
+              className="h-7 gap-1 px-2 text-xs text-slate-700 hover:bg-slate-700/10"
               onClick={() => {
                 // In a real app, use router.push(notification.relatedUrl)
                 console.log("Navigate to:", notification.relatedUrl);
@@ -178,7 +178,7 @@ function NotificationItem({
           <Button
             variant="ghost"
             size="sm"
-            className={cn("h-7 gap-1 px-2 text-xs", notification.read ? "text-slate-500 hover:text-slate-700" : "text-slate600 hover:text-slate700")}
+            className={cn("h-7 gap-1 px-2 text-xs", notification.read ? "text-slate-500 hover:text-slate-700" : "text-slate-600 hover:text-slate-700")}
             onClick={() => onToggleRead(notification.id)}
           >
             {notification.read ? (
@@ -350,12 +350,12 @@ export default function NotificationsPage() {
         {/* Header */}
         <div className="mb-10 flex items-end justify-between gap-6">
           <div>
-            <h1 className="text-5xl font-black text-foreground tracking-tighter uppercase">Nexus <span className="text-primary">Intelligence</span></h1>
+            <h1 className="text-5xl font-black text-foreground tracking-tighter uppercase">Nexus <span className="text-slate-700">Intelligence</span></h1>
             <p className="mt-2 text-muted-foreground font-medium text-lg">Central synchronization of all node activity.</p>
           </div>
           <div className="flex items-center gap-3">
             {unreadCount > 0 && (
-              <Button onClick={markAllRead} className="bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase tracking-widest text-[10px] h-12 px-6 rounded-xl shadow-xl shadow-primary/20">
+              <Button onClick={markAllRead} className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black uppercase tracking-widest text-[10px] h-12 px-6 rounded-xl shadow-xl shadow-primary/20">
                 <CheckCheck className="mr-2 h-4 w-4" />
                 Clear Backlog
               </Button>
@@ -367,7 +367,7 @@ export default function NotificationsPage() {
         <div className="mb-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <Card className="bg-card border-border rounded-[1.5rem] p-6 shadow-xl shadow-black/5">
             <div className="flex items-center gap-4">
-              <div className="flex items-center justify-center rounded-xl h-12 w-12 bg-primary/10 text-primary border border-primary/20 shadow-inner">
+              <div className="flex items-center justify-center rounded-xl h-12 w-12 bg-slate-700/10 text-slate-700 border border-slate-700/20 shadow-inner">
                 <Bell className="h-6 w-6" />
               </div>
               <div>
@@ -378,7 +378,7 @@ export default function NotificationsPage() {
           </Card>
           <Card className="bg-card border-border rounded-[1.5rem] p-6 shadow-xl shadow-black/5">
             <div className="flex items-center gap-4">
-              <div className="flex items-center justify-center rounded-xl h-12 w-12 bg-primary/10 text-primary border border-primary/20 shadow-inner">
+              <div className="flex items-center justify-center rounded-xl h-12 w-12 bg-slate-700/10 text-slate-700 border border-slate-700/20 shadow-inner">
                 <AlertCircle className="h-6 w-6" />
               </div>
               <div>
@@ -432,7 +432,7 @@ export default function NotificationsPage() {
                 className={cn(
                   "flex items-center gap-3 rounded-[1.25rem] px-5 py-2.5 text-xs font-black uppercase tracking-widest transition-all",
                   activeFilter === filter.key
-                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+                    ? "bg-slate-700 text-slate-700-foreground shadow-lg shadow-primary/20"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
               >
@@ -440,7 +440,7 @@ export default function NotificationsPage() {
                 <span className={cn(
                   "px-2.5 py-0.5 rounded-full text-[9px] font-black",
                   activeFilter === filter.key
-                    ? "bg-primary-foreground/20 text-primary-foreground"
+                    ? "bg-slate-700-foreground/20 text-slate-700-foreground"
                     : "bg-muted-foreground/10 text-muted-foreground"
                 )}>
                   {count}
@@ -450,7 +450,7 @@ export default function NotificationsPage() {
           })}
           <div className="ml-auto flex items-center gap-2 pr-2">
             {unreadCount > 0 && (
-              <Button variant="ghost" size="sm" onClick={markFilterRead} className="text-muted-foreground hover:text-primary font-black uppercase tracking-widest text-[9px]">
+              <Button variant="ghost" size="sm" onClick={markFilterRead} className="text-muted-foreground hover:text-slate-700 font-black uppercase tracking-widest text-[9px]">
                 Purge Filter Read
               </Button>
             )}

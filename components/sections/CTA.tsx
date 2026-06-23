@@ -9,7 +9,7 @@ export function CTA() {
       {/* Decorative gradient backgrounds */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-slate-500/20 rounded-full blur-[100px]"></div>
-        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-slate500/20 rounded-full blur-[100px]"></div>
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-slate-500/20 rounded-full blur-[100px]"></div>
       </div>
 
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 relative z-10">
@@ -17,7 +17,7 @@ export function CTA() {
           <div className="space-y-4">
             <h2 className="text-4xl md:text-6xl font-black text-white text-balance tracking-tight">
               Ready to Transform Your<br />
-              <span className="bg-gradient-to-r from-slate-400 via-slate-400 to-slate400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-slate-400 via-slate-400 to-slate-400 bg-clip-text text-transparent">
                 Freelance Journey?
               </span>
             </h2>

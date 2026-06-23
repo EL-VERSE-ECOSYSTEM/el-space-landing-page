@@ -18,7 +18,7 @@ export function Footer() {
                   EL
                 </div>
               </div>
-              <span className="text-2xl font-black bg-gradient-to-r from-primary via-slate-600 to-accent bg-clip-text text-transparent">
+              <span className="text-2xl font-black bg-gradient-to-r from-slate-800 via-slate-500 to-slate-300 bg-clip-text text-transparent">
                 EL SPACE
               </span>
             </div>
@@ -40,7 +40,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
+                    className="text-sm text-muted-foreground hover:text-slate-700 transition-colors duration-200"
                   >
                     {link.label}
                   </Link>

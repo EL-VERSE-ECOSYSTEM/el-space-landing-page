@@ -40,17 +40,17 @@ export default function PortfolioPage() {
       <div className="max-w-6xl mx-auto space-y-8 text-foreground">
         <div className="flex justify-between items-end">
           <div>
-            <h1 className="text-4xl font-black text-foreground tracking-tighter uppercase">Professional <span className="text-primary">Dossier</span></h1>
+            <h1 className="text-4xl font-black text-foreground tracking-tighter uppercase">Professional <span className="text-slate-700">Dossier</span></h1>
             <p className="text-muted-foreground font-medium">Showcase your elite technical deployments.</p>
           </div>
-          <Button className="bg-primary hover:opacity-90 text-primary-foreground font-black h-12 rounded-xl border-none">
+          <Button className="bg-slate-700 hover:opacity-90 text-slate-700-foreground font-black h-12 rounded-xl border-none">
             <Plus className="w-4 h-4 mr-2" /> New Project
           </Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {items.length > 0 ? items.map((item) => (
-            <Card key={item.id} className="bg-card border-border rounded-[2rem] overflow-hidden group hover:border-primary/30 transition-all shadow-lg">
+            <Card key={item.id} className="bg-card border-border rounded-[2rem] overflow-hidden group hover:border-slate-700/30 transition-all shadow-lg">
               <div className="aspect-video relative bg-muted flex items-center justify-center">
                 {item.image_url ? (
                   <Image src={item.image_url} alt={item.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />

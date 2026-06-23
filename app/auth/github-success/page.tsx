@@ -54,18 +54,18 @@ function GitHubSuccessContent() {
     <div className="min-h-screen bg-background text-foreground flex items-center justify-center p-4">
        {/* Background Orbs */}
        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-slate-700/10 rounded-full blur-[120px] animate-pulse" />
         <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-slate-500/10 rounded-full blur-[120px] animate-pulse" />
       </div>
 
       <div className="text-center relative z-10 space-y-6">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary via-slate-500 to-slate600 shadow-xl shadow-primary/20 mb-4">
+        <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary via-slate-500 to-slate-600 shadow-xl shadow-primary/20 mb-4">
           <span className="text-2xl font-black text-white">EL</span>
         </div>
 
         <div className="space-y-2">
           <div className="flex items-center justify-center gap-4">
-             <Loader className="w-8 h-8 animate-spin text-primary" />
+             <Loader className="w-8 h-8 animate-spin text-slate-700" />
              <h1 className="text-4xl font-black text-foreground tracking-tighter uppercase">Authenticating</h1>
           </div>
           <p className="text-muted-foreground font-black uppercase tracking-[0.3em] text-[10px]">Syncing with GitHub Global Node</p>
@@ -85,7 +85,7 @@ export default function GitHubSuccessPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader className="w-12 h-12 animate-spin text-primary opacity-20" />
+        <Loader className="w-12 h-12 animate-spin text-slate-700 opacity-20" />
       </div>
     }>
       <GitHubSuccessContent />

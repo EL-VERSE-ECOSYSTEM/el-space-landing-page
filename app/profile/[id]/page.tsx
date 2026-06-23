@@ -106,7 +106,7 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-[#020617] text-slate-200">
       {/* Header Cover Area */}
-      <div className="h-64 bg-gradient-to-r from-slate-600/20 via-slate-600/20 to-slate600/20 relative">
+      <div className="h-64 bg-gradient-to-r from-slate-600/20 via-slate-600/20 to-slate-600/20 relative">
          <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-3xl" />
       </div>
 
@@ -146,7 +146,7 @@ export default function ProfilePage() {
                         </div>
                         <div className="flex items-center justify-between text-sm">
                            <span className="text-slate-500">Response Time</span>
-                           <span className="text-slate400 font-bold">~2 hours</span>
+                           <span className="text-slate-400 font-bold">~2 hours</span>
                         </div>
                      </div>
                   </CardContent>
@@ -161,8 +161,8 @@ export default function ProfilePage() {
             <div className="lg:col-span-2 space-y-10">
                <div className="space-y-6">
                   <div className="flex flex-wrap items-center gap-3">
-                     <Badge className="bg-slate500/10 text-slate400 border-slate500/20 px-3 py-1 font-bold">VERIFIED IDENTITY</Badge>
-                     <Badge className="bg-slate500/10 text-slate400 border-slate500/20 px-3 py-1 font-bold">TOP RATED</Badge>
+                     <Badge className="bg-slate-500/10 text-slate-400 border-slate-500/20 px-3 py-1 font-bold">VERIFIED IDENTITY</Badge>
+                     <Badge className="bg-slate-500/10 text-slate-400 border-slate-500/20 px-3 py-1 font-bold">TOP RATED</Badge>
                   </div>
                   <h2 className="text-4xl font-black text-white">Full Stack Software Architect & Product Designer</h2>
                   <p className="text-slate-400 text-lg leading-relaxed">
@@ -225,7 +225,7 @@ export default function ProfilePage() {
                   {/* User Posts Section */}
                   <div className="pt-10 border-t border-white/5">
                      <h3 className="text-xl font-black text-white mb-6 flex items-center gap-2">
-                        <MessageSquare className="w-5 h-5 text-slate400" />
+                        <MessageSquare className="w-5 h-5 text-slate-400" />
                         Feed Activity
                      </h3>
 

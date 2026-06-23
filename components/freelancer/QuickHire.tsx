@@ -68,7 +68,7 @@ export function QuickHire({
           setStep(1);
           setShowDialog(true);
         }}
-        className="bg-slate600 hover:bg-slate700 text-white gap-2"
+        className="bg-slate-600 hover:bg-slate-700 text-white gap-2"
       >
         <Zap className="h-4 w-4" />
         Quick Hire
@@ -78,7 +78,7 @@ export function QuickHire({
         <DialogContent className="bg-slate-800 border-slate-700 max-w-md">
           <DialogHeader>
             <DialogTitle className="text-white flex items-center gap-2">
-              <Zap className="h-5 w-5 text-slate400" />
+              <Zap className="h-5 w-5 text-slate-400" />
               Quick Hire {freelancerName}
             </DialogTitle>
             <DialogDescription className="text-slate-400">
@@ -132,7 +132,7 @@ export function QuickHire({
                 {/* What Happens Next */}
                 <div className="bg-slate-700/50 rounded-lg p-4 space-y-2">
                   <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
-                    <AlertCircle className="h-4 w-4 text-slate400" />
+                    <AlertCircle className="h-4 w-4 text-slate-400" />
                     What happens next:
                   </h4>
                   <ol className="space-y-2 text-sm text-slate-300">
@@ -187,12 +187,12 @@ export function QuickHire({
                 </div>
               </div>
 
-              <div className="bg-slate600/20 border border-slate600/50 rounded-lg p-3">
+              <div className="bg-slate-600/20 border border-slate-600/50 rounded-lg p-3">
                 <div className="flex gap-2 text-sm">
-                  <CheckCircle2 className="h-5 w-5 text-slate400 flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="h-5 w-5 text-slate-400 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-slate300 font-semibold">You&apos;re protected</p>
-                    <p className="text-slate200/80 text-xs">Money held in escrow until milestone completion</p>
+                    <p className="text-slate-300 font-semibold">You&apos;re protected</p>
+                    <p className="text-slate-200/80 text-xs">Money held in escrow until milestone completion</p>
                   </div>
                 </div>
               </div>
@@ -209,7 +209,7 @@ export function QuickHire({
                 <Button
                   onClick={handleConfirmHire}
                   disabled={loading}
-                  className="flex-1 bg-slate600 hover:bg-slate700 text-white"
+                  className="flex-1 bg-slate-600 hover:bg-slate-700 text-white"
                 >
                   {loading ? 'Processing...' : 'Confirm & Hire'}
                 </Button>

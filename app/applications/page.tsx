@@ -39,31 +39,31 @@ export default function ApplicationsPage() {
     <DashboardLayout navItems={navItems} userType={(user?.user_type === "freelancer" ? "freelancer" : "client")}>
       <div className="max-w-5xl mx-auto space-y-8 text-foreground">
         <div>
-          <h1 className="text-4xl font-black text-foreground tracking-tighter">Mission <span className="text-primary">Proposals</span></h1>
+          <h1 className="text-4xl font-black text-foreground tracking-tighter">Mission <span className="text-slate-700">Proposals</span></h1>
           <p className="text-muted-foreground font-medium">Track your technical deployment requests.</p>
         </div>
 
         <div className="space-y-4">
           {apps.length > 0 ? apps.map((app) => (
-            <Card key={app.id} className="bg-card border border-border rounded-[2rem] overflow-hidden hover:border-primary/20 transition-all group shadow-lg">
+            <Card key={app.id} className="bg-card border border-border rounded-[2rem] overflow-hidden hover:border-slate-700/20 transition-all group shadow-lg">
               <CardContent className="p-8 flex items-center justify-between">
                 <div className="flex items-center gap-6">
-                  <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center border border-border group-hover:bg-primary transition-colors">
-                    <Rocket className="w-6 h-6 text-primary group-hover:text-primary-foreground" />
+                  <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center border border-border group-hover:bg-slate-700 transition-colors">
+                    <Rocket className="w-6 h-6 text-slate-700 group-hover:text-slate-700-foreground" />
                   </div>
                   <div>
                     <h3 className="text-xl font-black text-foreground">{app.project?.title || 'Nexus Operation'}</h3>
                     <div className="flex items-center gap-4 mt-1">
                       <p className="text-muted-foreground font-bold text-[10px] uppercase tracking-widest">Submitted {new Date(app.created_at).toLocaleDateString()}</p>
                       <div className="w-1 h-1 bg-border rounded-full" />
-                      <p className="text-primary font-black text-[10px] uppercase tracking-widest">${app.proposed_rate}</p>
+                      <p className="text-slate-700 font-black text-[10px] uppercase tracking-widest">${app.proposed_rate}</p>
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-8">
                   <Badge className={`px-4 py-1 rounded-full font-black text-[10px] uppercase tracking-widest border-none ${
-                    app.status === 'pending' ? 'bg-slate500/10 text-slate500' :
-                    app.status === 'accepted' ? 'bg-slate500/10 text-slate500' :
+                    app.status === 'pending' ? 'bg-slate-500/10 text-slate-500' :
+                    app.status === 'accepted' ? 'bg-slate-500/10 text-slate-500' :
                     'bg-red-500/10 text-red-500'
                   }`}>
                     {app.status}
@@ -81,7 +81,7 @@ export default function ApplicationsPage() {
               </div>
               <p className="text-foreground font-black text-xl uppercase">Nexus List Clear</p>
               <p className="text-muted-foreground font-medium mt-2">No active proposals detected. Start scouting the board.</p>
-              <Button onClick={() => router.push('/jobs')} className="mt-10 bg-primary hover:bg-primary/90 text-primary-foreground font-black rounded-xl h-14 px-10 shadow-xl shadow-primary/20">Browse Missions</Button>
+              <Button onClick={() => router.push('/jobs')} className="mt-10 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black rounded-xl h-14 px-10 shadow-xl shadow-primary/20">Browse Missions</Button>
             </div>
           )}
         </div>

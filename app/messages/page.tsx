@@ -114,10 +114,10 @@ export default function MessagesPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-black text-foreground tracking-tighter uppercase">Comms <span className="text-primary">Nexus</span></h1>
+            <h1 className="text-4xl font-black text-foreground tracking-tighter uppercase">Comms <span className="text-slate-700">Nexus</span></h1>
             <p className="text-muted-foreground font-medium">Real-time strategic synchronization</p>
           </div>
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-black rounded-2xl h-12 px-6 shadow-xl shadow-primary/20 uppercase tracking-widest text-xs transition-all">
+          <Button className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black rounded-2xl h-12 px-6 shadow-xl shadow-primary/20 uppercase tracking-widest text-xs transition-all">
             <Plus className="w-4 h-4 mr-2" />
             New Link
           </Button>
@@ -150,10 +150,10 @@ export default function MessagesPage() {
                 >
                   <div className="flex items-start gap-4">
                     <div className="relative">
-                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-slate-600 flex items-center justify-center text-primary-foreground font-black text-lg shadow-lg">
+                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-slate-600 flex items-center justify-center text-slate-700-foreground font-black text-lg shadow-lg">
                         {conv.name.charAt(0)}
                       </div>
-                      {conv.online && <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-slate500 rounded-full border-2 border-background shadow-sm" />}
+                      {conv.online && <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-slate-500 rounded-full border-2 border-background shadow-sm" />}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-1">
@@ -163,7 +163,7 @@ export default function MessagesPage() {
                           {conv.timestamp}
                         </span>
                       </div>
-                      <p className={`text-xs truncate font-medium ${conv.unread ? 'text-primary font-black' : 'text-muted-foreground/60'}`}>
+                      <p className={`text-xs truncate font-medium ${conv.unread ? 'text-slate-700 font-black' : 'text-muted-foreground/60'}`}>
                         {conv.lastMessage}
                       </p>
                     </div>
@@ -180,7 +180,7 @@ export default function MessagesPage() {
                 {/* Chat Header */}
                 <div className="p-6 border-b border-border flex items-center justify-between bg-muted/30">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-slate-600 flex items-center justify-center text-primary-foreground font-black text-lg shadow-lg">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-slate-600 flex items-center justify-center text-slate-700-foreground font-black text-lg shadow-lg">
                       {conversations.find(c => c.id === selectedConversation)?.name.charAt(0)}
                     </div>
                     <div>
@@ -188,7 +188,7 @@ export default function MessagesPage() {
                         {conversations.find(c => c.id === selectedConversation)?.name}
                       </h3>
                       <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest flex items-center gap-1.5">
-                        <span className={`w-2 h-2 rounded-full ${conversations.find(c => c.id === selectedConversation)?.online ? 'bg-slate500 animate-pulse' : 'bg-muted-foreground/30'}`} />
+                        <span className={`w-2 h-2 rounded-full ${conversations.find(c => c.id === selectedConversation)?.online ? 'bg-slate-500 animate-pulse' : 'bg-muted-foreground/30'}`} />
                         {conversations.find(c => c.id === selectedConversation)?.online ? 'Node Active' : 'Node Idle'}
                       </p>
                     </div>
@@ -208,12 +208,12 @@ export default function MessagesPage() {
                       <div
                         className={`max-w-md px-6 py-4 rounded-[1.5rem] shadow-sm ${
                           msg.sender === 'You'
-                            ? 'bg-primary text-primary-foreground rounded-tr-none'
+                            ? 'bg-slate-700 text-slate-700-foreground rounded-tr-none'
                             : 'bg-muted border border-border text-foreground rounded-tl-none'
                         }`}
                       >
                         <p className="text-sm font-medium leading-relaxed">{msg.text}</p>
-                        <p className={`text-[10px] mt-2 font-black uppercase tracking-widest ${msg.sender === 'You' ? 'text-primary-foreground/60' : 'text-muted-foreground/40'}`}>
+                        <p className={`text-[10px] mt-2 font-black uppercase tracking-widest ${msg.sender === 'You' ? 'text-slate-700-foreground/60' : 'text-muted-foreground/40'}`}>
                           {msg.timestamp}
                         </p>
                       </div>
@@ -235,7 +235,7 @@ export default function MessagesPage() {
                     <Button
                       onClick={handleSendMessage}
                       disabled={!messageInput.trim()}
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground font-black rounded-2xl h-14 w-14 shadow-xl shadow-primary/20 transition-all active:scale-90"
+                      className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black rounded-2xl h-14 w-14 shadow-xl shadow-primary/20 transition-all active:scale-90"
                     >
                       <Send className="w-5 h-5" />
                     </Button>

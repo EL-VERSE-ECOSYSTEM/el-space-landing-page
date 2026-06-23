@@ -138,7 +138,7 @@ export default function ProjectDetailPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background pt-32 flex flex-col items-center justify-center text-foreground">
-        <div className="animate-spin h-10 w-10 border-4 border-primary border-t-transparent rounded-full mb-4"></div>
+        <div className="animate-spin h-10 w-10 border-4 border-slate-700 border-t-transparent rounded-full mb-4"></div>
         <p className="text-muted-foreground font-black uppercase tracking-[0.2em] text-[10px]">Synchronizing Project Data</p>
       </div>
     );
@@ -153,7 +153,7 @@ export default function ProjectDetailPage() {
               <Briefcase className="w-20 h-20 text-muted-foreground/10 mx-auto mb-6" />
               <h2 className="text-3xl font-black text-foreground uppercase tracking-tight">Project Node Offline</h2>
               <p className="text-muted-foreground font-medium mb-8 max-w-xs mx-auto">The deployment you are seeking is no longer active in the Nexus.</p>
-              <Button onClick={() => router.push('/jobs')} className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl px-10 h-14 font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/20">
+              <Button onClick={() => router.push('/jobs')} className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground rounded-2xl px-10 h-14 font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/20">
                  Browse Active Sectors
               </Button>
             </CardContent>
@@ -167,7 +167,7 @@ export default function ProjectDetailPage() {
     <div className="min-h-screen bg-background pt-24 pb-24 text-foreground">
        {/* Orbs */}
        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px]" />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-slate-700/5 rounded-full blur-[120px]" />
         <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-slate-500/5 rounded-full blur-[120px]" />
       </div>
 
@@ -175,7 +175,7 @@ export default function ProjectDetailPage() {
         {/* Breadcrumb */}
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-2 text-muted-foreground hover:text-primary font-black text-[10px] uppercase tracking-widest mb-8 transition-colors group"
+          className="flex items-center gap-2 text-muted-foreground hover:text-slate-700 font-black text-[10px] uppercase tracking-widest mb-8 transition-colors group"
         >
           <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Nexus
         </button>
@@ -185,20 +185,20 @@ export default function ProjectDetailPage() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="flex-1 space-y-4">
               <div className="flex flex-wrap gap-2">
-                 <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-none px-4 py-1.5 rounded-xl font-black uppercase tracking-widest text-[10px]">
+                 <Badge className="bg-slate-700/10 text-slate-700 hover:bg-slate-700/20 border-none px-4 py-1.5 rounded-xl font-black uppercase tracking-widest text-[10px]">
                    {project.category}
                  </Badge>
-                 <Badge className="bg-slate500/10 text-slate500 hover:bg-slate500/20 border-none px-4 py-1.5 rounded-xl font-black uppercase tracking-widest text-[10px]">
+                 <Badge className="bg-slate-500/10 text-slate-500 hover:bg-slate-500/20 border-none px-4 py-1.5 rounded-xl font-black uppercase tracking-widest text-[10px]">
                    Open
                  </Badge>
               </div>
               <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tighter uppercase">{project.title}</h1>
               <div className="flex items-center gap-4 text-muted-foreground font-medium">
                  <span className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest">
-                   <Calendar className="w-3.5 h-3.5 text-primary" /> Posted 2 days ago
+                   <Calendar className="w-3.5 h-3.5 text-slate-700" /> Posted 2 days ago
                  </span>
                  <span className="w-1 h-1 rounded-full bg-border" />
-                 <span className="flex items-center gap-2 text-primary font-black text-[10px] uppercase tracking-widest">
+                 <span className="flex items-center gap-2 text-slate-700 font-black text-[10px] uppercase tracking-widest">
                    <ShieldCheck className="w-3.5 h-3.5" /> Verified Escrow
                  </span>
               </div>
@@ -207,7 +207,7 @@ export default function ProjectDetailPage() {
             {user?.role === 'freelancer' && (
               <Button
                 onClick={() => setShowApplyModal(true)}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground font-black text-sm uppercase tracking-widest px-12 h-20 rounded-[1.5rem] shadow-2xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-98 group"
+                className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black text-sm uppercase tracking-widest px-12 h-20 rounded-[1.5rem] shadow-2xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-98 group"
               >
                 Initiate Deployment <Send className="ml-3 w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </Button>
@@ -246,9 +246,9 @@ export default function ProjectDetailPage() {
                 <h3 className="text-2xl font-black text-foreground tracking-tight uppercase">Strategic Milestones</h3>
                 <div className="space-y-4">
                   {milestones.map((milestone, idx) => (
-                    <div key={milestone.id} className="group flex flex-col md:flex-row md:items-center justify-between gap-4 p-8 rounded-[2rem] bg-card border border-border hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500">
+                    <div key={milestone.id} className="group flex flex-col md:flex-row md:items-center justify-between gap-4 p-8 rounded-[2rem] bg-card border border-border hover:border-slate-700/30 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500">
                       <div className="flex items-center gap-6">
-                        <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center font-black text-muted-foreground text-sm border border-border group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all">
+                        <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center font-black text-muted-foreground text-sm border border-border group-hover:bg-slate-700 group-hover:text-slate-700-foreground group-hover:border-slate-700 transition-all">
                           {idx + 1}
                         </div>
                         <div>
@@ -271,7 +271,7 @@ export default function ProjectDetailPage() {
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                    <h3 className="text-2xl font-black text-foreground tracking-tight uppercase">Received Dossiers</h3>
-                   <Badge className="bg-primary/10 text-primary font-black px-4 py-1.5 rounded-full text-xs">{applications.length}</Badge>
+                   <Badge className="bg-slate-700/10 text-slate-700 font-black px-4 py-1.5 rounded-full text-xs">{applications.length}</Badge>
                 </div>
                 {applications.length > 0 ? (
                   <div className="grid gap-6">
@@ -298,7 +298,7 @@ export default function ProjectDetailPage() {
           <div className="space-y-8">
             {/* Project Summary Card */}
             <Card className="bg-card border border-border rounded-[2.5rem] p-10 shadow-2xl shadow-black/5 overflow-hidden relative">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-slate-700/5 rounded-full -mr-16 -mt-16" />
               <div className="relative z-10 space-y-10">
                 <div>
                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-4 opacity-60">Mission Allocation</p>
@@ -307,12 +307,12 @@ export default function ProjectDetailPage() {
                      <span className="text-muted-foreground/30 font-black">-</span>
                      <span className="text-5xl font-black text-foreground tracking-tighter">${project.budget_max}</span>
                    </div>
-                   <p className="text-xs font-black text-primary uppercase tracking-widest mt-3">Fixed-Node Contract</p>
+                   <p className="text-xs font-black text-slate-700 uppercase tracking-widest mt-3">Fixed-Node Contract</p>
                 </div>
 
                 <div className="space-y-8 pt-8 border-t border-border">
                    <div className="flex items-center gap-5">
-                      <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shadow-inner">
+                      <div className="w-12 h-12 rounded-2xl bg-slate-700/10 flex items-center justify-center text-slate-700 shadow-inner">
                         <Clock className="w-6 h-6" />
                       </div>
                       <div>
@@ -345,7 +345,7 @@ export default function ProjectDetailPage() {
                     <div>
                       <p className="font-black text-xl leading-tight uppercase tracking-tight">{project.client_id || 'Premium Node'}</p>
                       <p className="text-background/60 font-black text-[10px] mt-1.5 uppercase tracking-widest flex items-center gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-primary" /> Verified Entity
+                        <CheckCircle2 className="w-3.5 h-3.5 text-slate-700" /> Verified Entity
                       </p>
                     </div>
                  </div>
@@ -359,7 +359,7 @@ export default function ProjectDetailPage() {
                        <p className="font-black text-lg tracking-tight">$24.5k+</p>
                     </div>
                  </div>
-                 <Button variant="link" className="w-full text-primary hover:text-primary/80 font-black text-[10px] uppercase tracking-widest mt-6 h-auto p-0">
+                 <Button variant="link" className="w-full text-slate-700 hover:text-slate-700/80 font-black text-[10px] uppercase tracking-widest mt-6 h-auto p-0">
                     View Entity Dossier
                  </Button>
                </div>
@@ -391,7 +391,7 @@ export default function ProjectDetailPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">Asset Rate (USD) *</label>
+                    <label className="text-[10px] font-black text-slate-700 uppercase tracking-[0.2em] ml-1">Asset Rate (USD) *</label>
                     <div className="relative">
                        <DollarSign className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/30" />
                        <Input
@@ -418,8 +418,8 @@ export default function ProjectDetailPage() {
                   </div>
                 </div>
 
-                <div className="p-5 bg-primary/5 border border-primary/10 rounded-2xl shadow-inner">
-                   <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em] text-center">System Fee: 5% ({applyFormData.proposedRate ? (parseFloat(applyFormData.proposedRate) * 0.05).toFixed(2) : '0.00'}) will be allocated to platform maintenance.</p>
+                <div className="p-5 bg-slate-700/5 border border-slate-700/10 rounded-2xl shadow-inner">
+                   <p className="text-[10px] font-black text-slate-700 uppercase tracking-[0.2em] text-center">System Fee: 5% ({applyFormData.proposedRate ? (parseFloat(applyFormData.proposedRate) * 0.05).toFixed(2) : '0.00'}) will be allocated to platform maintenance.</p>
                 </div>
               </div>
 
@@ -429,7 +429,7 @@ export default function ProjectDetailPage() {
                 </AlertDialogCancel>
                 <AlertDialogAction
                   onClick={handleSubmitApplication}
-                  className="h-16 flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-black text-sm uppercase tracking-widest rounded-2xl shadow-xl shadow-primary/20 transition-all"
+                  className="h-16 flex-1 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black text-sm uppercase tracking-widest rounded-2xl shadow-xl shadow-primary/20 transition-all"
                 >
                   Confirm Transmission
                 </AlertDialogAction>

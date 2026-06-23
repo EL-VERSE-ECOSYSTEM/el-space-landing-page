@@ -40,7 +40,7 @@ export function EarningsCalculator() {
               <TabsList className="grid w-full max-w-md grid-cols-2 p-1 bg-slate-100 rounded-2xl h-14">
                 <TabsTrigger
                   value="freelancer"
-                  className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate600 data-[state=active]:shadow-sm"
+                  className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate-600 data-[state=active]:shadow-sm"
                 >
                   Freelancer View
                 </TabsTrigger>
@@ -88,9 +88,9 @@ export function EarningsCalculator() {
               </p>
             </div>
 
-            <div className={`rounded-[2rem] p-8 transition-all shadow-xl shadow-${userType === 'freelancer' ? 'purple' : 'cyan'}-500/10 border border-${userType === 'freelancer' ? 'purple' : 'cyan'}-100 bg-${userType === 'freelancer' ? 'purple' : 'cyan'}-50`}>
+            <div className={`rounded-[2rem] p-8 transition-all shadow-xl shadow-slate-500/10 border border-slate-200 bg-slate-50`}>
               <p className="mb-2 text-xs font-black text-slate-400 uppercase tracking-widest">{userType === 'freelancer' ? 'You Take Home' : 'Total Client Cost'}</p>
-              <p className={`text-4xl font-black ${userType === 'freelancer' ? 'text-slate600' : 'text-slate-600'}`}>
+              <p className={`text-4xl font-black ${userType === 'freelancer' ? 'text-slate-600' : 'text-slate-600'}`}>
                 ${earnings.toFixed(2)}
               </p>
               <p className="mt-4 text-sm font-bold text-slate-900">
