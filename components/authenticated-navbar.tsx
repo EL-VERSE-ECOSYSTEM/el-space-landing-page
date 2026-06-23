@@ -93,7 +93,7 @@ export function AuthenticatedNavbar() {
               <Button
                 size="sm"
                 variant="ghost"
-                className="text-slate-300 hover:text-slate400 hover:bg-slate500/10 gap-2"
+                className="text-slate-300 hover:text-slate-400 hover:bg-slate-500/10 gap-2"
               >
                 <Wallet className="w-4 h-4" />
                 <span className="hidden xl:inline">Wallet</span>
@@ -213,7 +213,7 @@ export function AuthenticatedNavbar() {
           <div className="flex lg:hidden items-center gap-2">
             <Link href="/wallet">
               <Button size="sm" variant="ghost" className="p-2">
-                <Wallet className="w-5 h-5 text-slate400" />
+                <Wallet className="w-5 h-5 text-slate-400" />
               </Button>
             </Link>
 

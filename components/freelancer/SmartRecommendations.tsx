@@ -39,10 +39,10 @@ export function SmartRecommendations({
           <CardHeader>
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-slate400" />
+                <Sparkles className="h-5 w-5 text-slate-400" />
                 <CardTitle className="text-white">Top Recommended</CardTitle>
               </div>
-              <Badge className="bg-slate600 text-white">Best Match</Badge>
+              <Badge className="bg-slate-600 text-white">Best Match</Badge>
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -59,7 +59,7 @@ export function SmartRecommendations({
                         key={i}
                         className={`h-4 w-4 ${
                           i < Math.round(topPick.rating)
-                            ? 'fill-slate400 text-slate400'
+                            ? 'fill-slate-400 text-slate-400'
                             : 'text-slate-600'
                         }`}
                       />
@@ -81,7 +81,7 @@ export function SmartRecommendations({
               </div>
               <div className="bg-black/20 rounded p-2 text-center">
                 <p className="text-xs text-slate-400 mb-1">Match</p>
-                <p className="text-slate400 font-semibold">{topPick.match_score}%</p>
+                <p className="text-slate-400 font-semibold">{topPick.match_score}%</p>
               </div>
             </div>
 
@@ -97,7 +97,7 @@ export function SmartRecommendations({
                 {projectSkills.map(skill => (
                   <Badge
                     key={skill}
-                    className={topPick.skills.includes(skill) ? 'bg-slate600 text-white' : 'bg-slate-700 text-slate-300'}
+                    className={topPick.skills.includes(skill) ? 'bg-slate-600 text-white' : 'bg-slate-700 text-slate-300'}
                   >
                     {topPick.skills.includes(skill) ? '✓ ' : '○ '}{skill}
                   </Badge>
@@ -136,11 +136,11 @@ export function SmartRecommendations({
                     <div className="flex-1 min-w-0">
                       <p className="text-white font-semibold text-sm truncate">{freelancer.name}</p>
                       <div className="flex items-center gap-1 mt-0.5">
-                        <Star className="h-3 w-3 fill-slate400 text-slate400" />
+                        <Star className="h-3 w-3 fill-slate-400 text-slate-400" />
                         <span className="text-xs text-slate-400">{freelancer.rating}/5</span>
                       </div>
                     </div>
-                    <Badge className="bg-slate600/20 text-slate300 text-xs">
+                    <Badge className="bg-slate-600/20 text-slate-300 text-xs">
                       {freelancer.match_score}%
                     </Badge>
                   </div>

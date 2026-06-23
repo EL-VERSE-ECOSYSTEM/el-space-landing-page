@@ -34,7 +34,7 @@ export default function SupportPage() {
         </div>
 
         <div className="bg-slate-900 rounded-[3rem] p-16 text-center relative overflow-hidden shadow-2xl">
-           <div className="absolute inset-0 bg-gradient-to-br from-slate-500/10 to-slate500/10" />
+           <div className="absolute inset-0 bg-gradient-to-br from-slate-500/10 to-slate-500/10" />
            <div className="relative z-10">
               <h2 className="text-4xl font-black text-white mb-6">Need immediate intervention?</h2>
               <p className="text-slate-400 text-lg mb-10 max-w-xl mx-auto font-medium">Our global operations team is online 24/7 to maintain ecosystem integrity.</p>

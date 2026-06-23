@@ -50,8 +50,8 @@ export default function ForgotPasswordPage() {
       <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden text-foreground">
         {/* Animated background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-slate500/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-slate-700/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-slate-500/10 rounded-full blur-3xl animate-pulse" />
         </div>
 
         <div className="w-full max-w-md relative z-10">
@@ -69,21 +69,21 @@ export default function ForgotPasswordPage() {
               <div className="space-y-2">
                 <h2 className="text-2xl font-black text-foreground">Check Your Email</h2>
                 <p className="text-muted-foreground">
-                  We&apos;ve sent a password reset link to <span className="text-primary font-black">{email}</span>
+                  We&apos;ve sent a password reset link to <span className="text-slate-700 font-black">{email}</span>
                 </p>
               </div>
 
-              <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6 space-y-3 text-left">
+              <div className="bg-slate-700/5 border border-slate-700/20 rounded-2xl p-6 space-y-3 text-left">
                 <p className="text-sm text-foreground font-black uppercase tracking-widest">Next steps:</p>
                 <ol className="text-sm text-muted-foreground space-y-2 font-medium">
                   <li className="flex gap-3">
-                    <span className="text-primary font-black">01</span> Check your email inbox
+                    <span className="text-slate-700 font-black">01</span> Check your email inbox
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-primary font-black">02</span> Click the reset link
+                    <span className="text-slate-700 font-black">02</span> Click the reset link
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-primary font-black">03</span> Create a new password
+                    <span className="text-slate-700 font-black">03</span> Create a new password
                   </li>
                 </ol>
               </div>
@@ -92,14 +92,14 @@ export default function ForgotPasswordPage() {
                 Didn&apos;t receive the email?{' '}
                 <button
                   onClick={() => setIsSubmitted(false)}
-                  className="text-primary hover:text-primary/80 font-black transition-colors"
+                  className="text-slate-700 hover:text-slate-700/80 font-black transition-colors"
                 >
                   Try Again
                 </button>
               </p>
 
               <Link href="/auth/login">
-                <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-black h-12 rounded-xl">
+                <Button className="w-full bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black h-12 rounded-xl">
                   Back to Login
                 </Button>
               </Link>
@@ -114,15 +114,15 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden text-foreground">
       {/* Animated background gradient orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-slate500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-slate-700/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-slate-500/10 rounded-full blur-3xl animate-pulse" />
       </div>
 
       {/* Main card */}
       <div className="w-full max-w-md relative z-10">
         {/* Logo area */}
         <div className="text-center mb-10 space-y-4">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary via-slate-600 to-slate700 shadow-xl shadow-primary/20 transition-transform hover:scale-110">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-slate-800 via-slate-500 to-slate-300 shadow-xl shadow-primary/20 transition-transform hover:scale-110">
             <span className="text-2xl font-black text-white">EL</span>
           </div>
           <div>
@@ -151,7 +151,7 @@ export default function ForgotPasswordPage() {
                     placeholder="your@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/30 focus:border-primary focus:ring-primary/10 transition-all rounded-2xl font-bold"
+                    className="pl-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/30 focus:border-slate-700 focus:ring-primary/10 transition-all rounded-2xl font-bold"
                   />
                 </div>
               </div>
@@ -160,7 +160,7 @@ export default function ForgotPasswordPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full h-14 bg-primary hover:bg-primary/90 text-primary-foreground font-black text-lg rounded-2xl shadow-xl shadow-primary/20 transition-all duration-300 active:scale-95 disabled:opacity-50"
+                className="w-full h-14 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black text-lg rounded-2xl shadow-xl shadow-primary/20 transition-all duration-300 active:scale-95 disabled:opacity-50"
               >
                 {isLoading ? (
                   <span className="flex items-center gap-2">
@@ -177,7 +177,7 @@ export default function ForgotPasswordPage() {
                 <Button
                   type="button"
                   variant="ghost"
-                  className="w-full text-primary hover:text-primary/80 hover:bg-primary/5 font-black text-xs uppercase tracking-widest h-12"
+                  className="w-full text-slate-700 hover:text-slate-700/80 hover:bg-slate-700/5 font-black text-xs uppercase tracking-widest h-12"
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Return to Matrix

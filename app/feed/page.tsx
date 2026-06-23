@@ -160,12 +160,12 @@ export default function FeedPage() {
   ]
 
   const PostCard = ({ post, isRepost = false }: { post: SocialPost, isRepost?: boolean }) => (
-    <div className={`bg-card border border-border rounded-[2rem] p-6 ${!isRepost && 'hover:border-primary/20 transition-all shadow-lg shadow-black/5'}`}>
+    <div className={`bg-card border border-border rounded-[2rem] p-6 ${!isRepost && 'hover:border-slate-700/20 transition-all shadow-lg shadow-black/5'}`}>
       <div className="flex justify-between items-start mb-6">
         <div className="flex gap-4">
           <Avatar className="w-12 h-12 border-2 border-border shadow-sm">
             <AvatarImage src={post.user?.avatar_url} />
-            <AvatarFallback className="bg-muted text-primary font-black uppercase">
+            <AvatarFallback className="bg-muted text-slate-700 font-black uppercase">
               {(post.user?.full_name || 'U').charAt(0)}
             </AvatarFallback>
           </Avatar>
@@ -213,7 +213,7 @@ export default function FeedPage() {
       )}
 
       {post.original_post && (
-        <div className="mt-4 mb-6 border-l-4 border-primary/20 pl-6 py-2">
+        <div className="mt-4 mb-6 border-l-4 border-slate-700/20 pl-6 py-2">
           <PostCard post={post.original_post} isRepost={true} />
         </div>
       )}
@@ -223,13 +223,13 @@ export default function FeedPage() {
           <button onClick={() => handleLikePost(post.id)} className="flex items-center gap-2 text-muted-foreground hover:text-red-500 transition-all font-black text-[10px] uppercase tracking-widest">
             <Heart className="w-5 h-5" /> {post.likes_count}
           </button>
-          <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-all font-black text-[10px] uppercase tracking-widest">
+          <button className="flex items-center gap-2 text-muted-foreground hover:text-slate-700 transition-all font-black text-[10px] uppercase tracking-widest">
             <MessageCircle className="w-5 h-5" /> {post.comments_count}
           </button>
-          <button onClick={() => handleCreatePost(post.id)} className="flex items-center gap-2 text-muted-foreground hover:text-slate500 transition-all font-black text-[10px] uppercase tracking-widest">
+          <button onClick={() => handleCreatePost(post.id)} className="flex items-center gap-2 text-muted-foreground hover:text-slate-500 transition-all font-black text-[10px] uppercase tracking-widest">
             <Repeat className="w-5 h-5" /> {post.reposts_count}
           </button>
-          <button onClick={() => handleShare(post.id)} className="flex items-center gap-2 text-muted-foreground hover:text-slate500 transition-all font-black text-[10px] uppercase tracking-widest">
+          <button onClick={() => handleShare(post.id)} className="flex items-center gap-2 text-muted-foreground hover:text-slate-500 transition-all font-black text-[10px] uppercase tracking-widest">
             <Share2 className="w-5 h-5" /> {post.shares_count}
           </button>
         </div>
@@ -243,11 +243,11 @@ export default function FeedPage() {
         <div className="flex justify-between items-end">
           <div>
             <h1 className="text-5xl font-black text-foreground tracking-tighter uppercase">
-              The <span className="text-primary">Nexus</span>
+              The <span className="text-slate-700">Nexus</span>
             </h1>
             <p className="text-muted-foreground font-medium mt-2 text-lg">Strategic network broadcast and industry intelligence.</p>
           </div>
-          <Button onClick={() => router.push('/feed/manage')} variant="outline" className="bg-card border-border text-muted-foreground hover:text-primary rounded-xl font-black text-[10px] uppercase tracking-widest h-12 px-6 shadow-sm">
+          <Button onClick={() => router.push('/feed/manage')} variant="outline" className="bg-card border-border text-muted-foreground hover:text-slate-700 rounded-xl font-black text-[10px] uppercase tracking-widest h-12 px-6 shadow-sm">
             <FileText className="w-4 h-4 mr-2" /> Data Stream
           </Button>
         </div>
@@ -257,7 +257,7 @@ export default function FeedPage() {
            <div className="flex gap-6">
               <Avatar className="w-14 h-14 border-2 border-border shadow-md">
                  <AvatarImage src={user?.avatar_url} />
-                 <AvatarFallback className="bg-muted text-primary font-black">
+                 <AvatarFallback className="bg-muted text-slate-700 font-black">
                     {(user?.full_name || 'U').charAt(0)}
                  </AvatarFallback>
               </Avatar>
@@ -269,23 +269,23 @@ export default function FeedPage() {
                     className="w-full bg-transparent border-none text-foreground placeholder:text-muted-foreground/30 resize-none focus:ring-0 text-xl font-medium min-h-[120px]"
                  />
                  {mediaUrl && (
-                   <div className="p-4 bg-muted/50 border border-border rounded-xl text-[10px] text-primary font-black uppercase tracking-widest truncate shadow-inner">
+                   <div className="p-4 bg-muted/50 border border-border rounded-xl text-[10px] text-slate-700 font-black uppercase tracking-widest truncate shadow-inner">
                      {mediaType.toUpperCase()} Link: {mediaUrl}
                    </div>
                  )}
                  <div className="flex items-center justify-between pt-6 border-t border-border/50">
                     <div className="flex gap-4">
-                       <Button onClick={() => {setMediaType('image'); setMediaUrl('https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800')}} variant="ghost" size="sm" className={`text-muted-foreground hover:text-primary rounded-xl font-black text-[10px] uppercase tracking-widest ${mediaType === 'image' && 'text-primary bg-primary/10'}`}>
+                       <Button onClick={() => {setMediaType('image'); setMediaUrl('https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800')}} variant="ghost" size="sm" className={`text-muted-foreground hover:text-slate-700 rounded-xl font-black text-[10px] uppercase tracking-widest ${mediaType === 'image' && 'text-slate-700 bg-slate-700/10'}`}>
                           <ImageIcon className="w-5 h-5 mr-2" /> Image
                        </Button>
-                       <Button onClick={() => {setMediaType('video'); setMediaUrl('https://example.com/demo.mp4')}} variant="ghost" size="sm" className={`text-muted-foreground hover:text-slate500 rounded-xl font-black text-[10px] uppercase tracking-widest ${mediaType === 'video' && 'text-slate500 bg-slate500/10'}`}>
+                       <Button onClick={() => {setMediaType('video'); setMediaUrl('https://example.com/demo.mp4')}} variant="ghost" size="sm" className={`text-muted-foreground hover:text-slate-500 rounded-xl font-black text-[10px] uppercase tracking-widest ${mediaType === 'video' && 'text-slate-500 bg-slate-500/10'}`}>
                           <Video className="w-5 h-5 mr-2" /> Video
                        </Button>
                     </div>
                     <Button
                        onClick={() => handleCreatePost()}
                        disabled={(!postContent.trim() && !mediaUrl) || isSubmittingPost}
-                       className="bg-primary hover:bg-primary/90 text-primary-foreground font-black px-10 h-14 rounded-2xl shadow-xl shadow-primary/20 uppercase tracking-widest text-xs transition-all active:scale-95"
+                       className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black px-10 h-14 rounded-2xl shadow-xl shadow-primary/20 uppercase tracking-widest text-xs transition-all active:scale-95"
                     >
                        {isSubmittingPost ? 'Syncing...' : 'Initiate Broadcast'} <Send className="w-4 h-4 ml-2" />
                     </Button>

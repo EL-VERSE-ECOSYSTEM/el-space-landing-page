@@ -50,7 +50,7 @@ export default function DisputesPage() {
 
         <div className="space-y-4">
           {disputes.length > 0 ? disputes.map((dispute) => (
-            <Card key={dispute.id} className="bg-card border border-border rounded-[2rem] overflow-hidden hover:border-primary/20 transition-all group shadow-lg">
+            <Card key={dispute.id} className="bg-card border border-border rounded-[2rem] overflow-hidden hover:border-slate-700/20 transition-all group shadow-lg">
               <CardContent className="p-8 flex items-center justify-between">
                 <div className="flex items-center gap-6">
                   <div className="w-14 h-14 rounded-2xl bg-destructive/10 text-destructive flex items-center justify-center">
@@ -67,7 +67,7 @@ export default function DisputesPage() {
                   <p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest">
                     Opened: {new Date(dispute.created_at).toLocaleDateString()}
                   </p>
-                  <Button variant="link" className="text-primary p-0 h-auto mt-1 font-black text-xs uppercase tracking-widest">
+                  <Button variant="link" className="text-slate-700 p-0 h-auto mt-1 font-black text-xs uppercase tracking-widest">
                     View Details
                   </Button>
                 </div>

@@ -70,7 +70,7 @@ export function SkillEndorsement({
               <div className="flex items-center gap-2 flex-1">
                 <Badge className="bg-slate-600 text-white">{skill}</Badge>
                 <div className="flex items-center gap-1 text-sm">
-                  <ThumbsUp className="h-4 w-4 text-slate400" />
+                  <ThumbsUp className="h-4 w-4 text-slate-400" />
                   <span className="text-slate-300 font-semibold">
                     {(endorsements[skill] || 0).toLocaleString()}
                   </span>
@@ -91,7 +91,7 @@ export function SkillEndorsement({
               )}
               
               {endorsedSkills.has(skill) && (
-                <Badge className="bg-slate600 text-white">
+                <Badge className="bg-slate-600 text-white">
                   ✓ Endorsed
                 </Badge>
               )}

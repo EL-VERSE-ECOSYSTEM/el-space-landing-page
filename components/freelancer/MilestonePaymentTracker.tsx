@@ -34,13 +34,13 @@ export function MilestonePaymentTracker({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'released':
-        return 'bg-slate600/20 text-slate300 border-slate600/50';
+        return 'bg-slate-600/20 text-slate-300 border-slate-600/50';
       case 'funded':
         return 'bg-slate-600/20 text-slate-300 border-slate-600/50';
       case 'disputed':
         return 'bg-red-600/20 text-red-300 border-red-600/50';
       default:
-        return 'bg-slate600/20 text-slate300 border-slate600/50';
+        return 'bg-slate-600/20 text-slate-300 border-slate-600/50';
     }
   };
 
@@ -151,7 +151,7 @@ export function MilestonePaymentTracker({
                 {milestone.status === 'funded' && (
                   <Button 
                     size="sm"
-                    className="mt-4 bg-slate600 hover:bg-slate700 text-white text-xs w-full"
+                    className="mt-4 bg-slate-600 hover:bg-slate-700 text-white text-xs w-full"
                   >
                     Mark Deliverables as Received
                   </Button>
@@ -170,11 +170,11 @@ export function MilestonePaymentTracker({
             </div>
             <div>
               <p className="text-slate-400 text-xs mb-1">Released</p>
-              <p className="text-slate400 font-semibold">${totalReleased.toFixed(2)}</p>
+              <p className="text-slate-400 font-semibold">${totalReleased.toFixed(2)}</p>
             </div>
             <div>
               <p className="text-slate-400 text-xs mb-1">Remaining</p>
-              <p className="text-slate400 font-semibold">${(totalBudget - totalReleased).toFixed(2)}</p>
+              <p className="text-slate-400 font-semibold">${(totalBudget - totalReleased).toFixed(2)}</p>
             </div>
           </div>
         </div>

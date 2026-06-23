@@ -28,7 +28,7 @@ export const GlobalLoader: React.FC<GlobalLoaderProps> = ({
 
   return (
     <div
-      className="fixed inset-0 bg-gradient-to-br from-slate-950 via-slate900/30 to-slate-950 backdrop-blur-md z-[9999] flex items-center justify-center animate-in fade-in duration-300"
+      className="fixed inset-0 bg-gradient-to-br from-slate-950 via-slate-900/30 to-slate-950 backdrop-blur-md z-[9999] flex items-center justify-center animate-in fade-in duration-300"
     >
       <div className="flex flex-col items-center justify-center w-full h-full animate-in zoom-in-50 duration-300">
         {/* New EL Animated Loader */}
@@ -37,7 +37,7 @@ export const GlobalLoader: React.FC<GlobalLoaderProps> = ({
         {/* Progress bar */}
         <div className="mt-8 w-48 h-1 bg-gradient-to-r from-slate-800 to-slate-700 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-slate-500 via-slate500 to-slate500 rounded-full"
+            className="h-full bg-gradient-to-r from-slate-500 via-slate-500 to-slate-500 rounded-full"
             style={{
               animation: `progress ${duration}s ease-in-out forwards`,
             }}

@@ -262,7 +262,7 @@ export const FREELANCER_WELCOME_HTML = `
     .header-tagline { color: #A5B4FC; font-size: 16px; margin-top: 8px; }
     .content { padding: 40px 32px; }
     .greeting { font-size: 24px; font-weight: 700; margin-bottom: 16px; color: #1E1B4B; }
-    .verified-badge { background: linear-gradient(120deg, #06B6D4 0%, #3B82F6 100%); color: #FFFFFF; padding: 6px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; display: inline-block; margin-bottom: 20px; }
+    .verified-badge { background: linear-gradient(120deg, #06B6D4 0%, #475569 100%); color: #FFFFFF; padding: 6px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; display: inline-block; margin-bottom: 20px; }
     .skills-container { margin: 20px 0; }
     .skill-tag { display: inline-block; background-color: #EFF6FF; color: #1E1B4B; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; margin: 0 6px 8px 0; }
     .steps { margin: 32px 0; }

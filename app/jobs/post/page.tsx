@@ -78,7 +78,7 @@ export default function PostJobPage() {
     <div className="min-h-screen bg-background pt-24 pb-24 relative overflow-hidden text-foreground">
       {/* Background Orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-slate-700/5 rounded-full blur-[120px] animate-pulse" />
         <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-slate-500/5 rounded-full blur-[120px] animate-pulse" />
       </div>
 
@@ -86,13 +86,13 @@ export default function PostJobPage() {
          {/* Breadcrumb */}
          <button
           onClick={() => router.back()}
-          className="flex items-center gap-2 text-muted-foreground hover:text-primary font-black text-[10px] uppercase tracking-widest mb-8 transition-colors group"
+          className="flex items-center gap-2 text-muted-foreground hover:text-slate-700 font-black text-[10px] uppercase tracking-widest mb-8 transition-colors group"
         >
           <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
         </button>
 
         <div className="mb-12">
-           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-black text-[10px] uppercase tracking-widest mb-4">
+           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-700/10 text-slate-700 font-black text-[10px] uppercase tracking-widest mb-4">
               <Rocket className="w-3 h-3" /> Launch a Project
            </div>
            <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tighter uppercase mb-4">Hire Top Tech Talent</h1>
@@ -102,7 +102,7 @@ export default function PostJobPage() {
         <Card className="bg-card/80 backdrop-blur-xl border border-border rounded-[3rem] shadow-2xl shadow-black/5 overflow-hidden">
           <CardHeader className="p-8 md:p-12 pb-4">
             <CardTitle className="text-2xl font-black text-foreground flex items-center gap-3 uppercase tracking-tight">
-               <Sparkles className="w-6 h-6 text-primary" /> Project Definition
+               <Sparkles className="w-6 h-6 text-slate-700" /> Project Definition
             </CardTitle>
           </CardHeader>
 
@@ -176,7 +176,7 @@ export default function PostJobPage() {
               {/* Budget */}
               <div className="space-y-4">
                 <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] ml-1 flex items-center gap-2">
-                  <DollarSign className="w-3 h-3 text-primary" /> Budget Range (USD) *
+                  <DollarSign className="w-3 h-3 text-slate-700" /> Budget Range (USD) *
                 </Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="relative">
@@ -215,7 +215,7 @@ export default function PostJobPage() {
               {/* Skills */}
               <div className="space-y-4">
                 <Label htmlFor="skills" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] ml-1 flex items-center gap-2">
-                   <Target className="w-3 h-3 text-primary" /> Target Expertise
+                   <Target className="w-3 h-3 text-slate-700" /> Target Expertise
                 </Label>
                 <div className="flex gap-3">
                   <Input
@@ -234,7 +234,7 @@ export default function PostJobPage() {
                   <Button
                     type="button"
                     onClick={handleAddSkill}
-                    className="h-14 px-8 bg-primary text-primary-foreground font-black uppercase tracking-widest text-xs rounded-2xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+                    className="h-14 px-8 bg-slate-700 text-slate-700-foreground font-black uppercase tracking-widest text-xs rounded-2xl hover:bg-slate-700/90 transition-all shadow-lg shadow-primary/20"
                   >
                     Add
                   </Button>
@@ -262,11 +262,11 @@ export default function PostJobPage() {
                 <Button
                   type="submit"
                   disabled={loading || !formData.title || !formData.description}
-                  className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-black text-sm uppercase tracking-[0.2em] rounded-[1.5rem] shadow-2xl shadow-primary/20 transition-all hover:scale-[1.01] active:scale-98 group"
+                  className="w-full h-16 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black text-sm uppercase tracking-[0.2em] rounded-[1.5rem] shadow-2xl shadow-primary/20 transition-all hover:scale-[1.01] active:scale-98 group"
                 >
                   {loading ? (
                     <span className="flex items-center gap-2 justify-center">
-                       <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                       <div className="w-5 h-5 border-2 border-slate-700-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
                        Launching Project...
                     </span>
                   ) : (

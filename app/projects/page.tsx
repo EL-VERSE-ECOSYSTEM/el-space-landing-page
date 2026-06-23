@@ -37,7 +37,7 @@ export default function ProjectsPage() {
           </div>
           {user?.role === 'client' && (
             <Link href="/jobs/post">
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-black uppercase tracking-widest text-xs h-12 px-6 shadow-lg shadow-primary/20 transition-all">
+              <Button className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground rounded-xl font-black uppercase tracking-widest text-xs h-12 px-6 shadow-lg shadow-primary/20 transition-all">
                 Post New Project
               </Button>
             </Link>
@@ -46,32 +46,32 @@ export default function ProjectsPage() {
 
         {loading ? (
           <div className="flex justify-center py-20">
-            <div className="animate-spin h-10 w-10 border-4 border-primary border-t-transparent rounded-full"></div>
+            <div className="animate-spin h-10 w-10 border-4 border-slate-700 border-t-transparent rounded-full"></div>
           </div>
         ) : (
           <div className="grid gap-6">
             {projects.length > 0 ? projects.map((project) => (
-              <Card key={project.id} className="bg-card border-border hover:border-primary/50 transition-all group rounded-[2rem] overflow-hidden shadow-xl shadow-black/5">
+              <Card key={project.id} className="bg-card border-border hover:border-slate-700/50 transition-all group rounded-[2rem] overflow-hidden shadow-xl shadow-black/5">
                 <CardContent className="p-8">
                   <div className="flex flex-col lg:flex-row justify-between gap-6">
                     <div className="flex-1 space-y-4">
                       <div className="flex items-center gap-3">
-                        <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-none font-black text-[10px] uppercase tracking-widest px-3 py-1">
+                        <Badge className="bg-slate-700/10 text-slate-700 hover:bg-slate-700/20 border-none font-black text-[10px] uppercase tracking-widest px-3 py-1">
                           {project.category}
                         </Badge>
-                        <Badge className="bg-slate500/10 text-slate500 hover:bg-slate500/20 border-none font-black text-[10px] uppercase tracking-widest px-3 py-1">
+                        <Badge className="bg-slate-500/10 text-slate-500 hover:bg-slate-500/20 border-none font-black text-[10px] uppercase tracking-widest px-3 py-1">
                           Open
                         </Badge>
                       </div>
-                      <h2 className="text-2xl font-black text-foreground group-hover:text-primary transition-colors uppercase tracking-tight">
+                      <h2 className="text-2xl font-black text-foreground group-hover:text-slate-700 transition-colors uppercase tracking-tight">
                         {project.title}
                       </h2>
                       <p className="text-muted-foreground line-clamp-2 font-medium leading-relaxed">
                         {project.description}
                       </p>
                       <div className="flex flex-wrap gap-6 text-muted-foreground/60 font-black text-[10px] uppercase tracking-[0.2em]">
-                        <span className="flex items-center gap-2"><Clock className="w-3.5 h-3.5 text-primary" /> {project.timeline}</span>
-                        <span className="flex items-center gap-2"><Briefcase className="w-3.5 h-3.5 text-primary" /> Intermediate+</span>
+                        <span className="flex items-center gap-2"><Clock className="w-3.5 h-3.5 text-slate-700" /> {project.timeline}</span>
+                        <span className="flex items-center gap-2"><Briefcase className="w-3.5 h-3.5 text-slate-700" /> Intermediate+</span>
                       </div>
                     </div>
 
@@ -81,7 +81,7 @@ export default function ProjectsPage() {
                         <p className="text-3xl font-black text-foreground tracking-tighter">${project.budget_min} - ${project.budget_max}</p>
                       </div>
                       <Link href={`/jobs/${project.id}`} className="w-full sm:w-auto">
-                        <Button className="w-full bg-secondary hover:bg-secondary/80 text-secondary-foreground font-black rounded-xl px-8 h-12 uppercase text-xs tracking-widest group-hover:bg-primary group-hover:text-primary-foreground transition-all shadow-sm">
+                        <Button className="w-full bg-secondary hover:bg-secondary/80 text-secondary-foreground font-black rounded-xl px-8 h-12 uppercase text-xs tracking-widest group-hover:bg-slate-700 group-hover:text-slate-700-foreground transition-all shadow-sm">
                           View Details <ChevronRight className="ml-2 w-4 h-4" />
                         </Button>
                       </Link>

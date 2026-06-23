@@ -50,7 +50,7 @@ export function ELLoader() {
         .progress-bar-fill {
           position: absolute;
           height: 100%;
-          background: linear-gradient(90deg, #06b6d4, #3b82f6, #a855f7);
+          background: linear-gradient(90deg, #06b6d4, #475569, #a855f7);
           animation: progressLine 2s ease-in-out infinite;
         }
 
@@ -80,7 +80,7 @@ export function ELLoader() {
         <div className="relative">
           {/* Decorative rings */}
           <div className="absolute -inset-8 border border-slate-500/10 rounded-full animate-[spin_10s_linear_infinite]" />
-          <div className="absolute -inset-16 border border-slate500/5 rounded-full animate-[spin_15s_linear_infinite_reverse]" />
+          <div className="absolute -inset-16 border border-slate-500/5 rounded-full animate-[spin_15s_linear_infinite_reverse]" />
 
           <div className="loader-logo relative w-48 h-24 sm:w-64 sm:h-32">
             <Image

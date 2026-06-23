@@ -235,14 +235,14 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden text-foreground">
       {/* Premium Background Orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-accent/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-slate-500/20 rounded-full blur-[160px] animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-slate-400/10 rounded-full blur-[140px] animate-pulse" />
       </div>
 
       <div className="w-full max-w-3xl relative z-10 py-12">
         {/* Logo */}
         <div className="text-center mb-10 space-y-4">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary via-slate-500 to-slate600 shadow-xl shadow-primary/20">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary via-slate-500 to-slate-600 shadow-xl shadow-primary/20">
             <span className="text-2xl font-black text-white">EL</span>
           </div>
           <div>
@@ -262,15 +262,15 @@ export default function RegisterPage() {
                 return (
                   <React.Fragment key={s}>
                     <div className={`relative flex items-center justify-center w-12 h-12 rounded-2xl border-2 transition-all duration-500 ${
-                      isCompleted ? 'bg-primary border-primary text-primary-foreground shadow-lg shadow-primary/20' :
-                      isActive ? 'bg-primary/10 border-primary text-primary shadow-md shadow-primary/10' :
+                      isCompleted ? 'bg-slate-700 border-slate-700 text-slate-700-foreground shadow-lg shadow-primary/20' :
+                      isActive ? 'bg-slate-700/10 border-slate-700 text-slate-700 shadow-md shadow-primary/10' :
                       'border-border text-muted-foreground'
                     }`}>
                       {isCompleted ? <ShieldCheck className="w-6 h-6" /> : <span className="text-lg font-black">{i + 1}</span>}
                     </div>
                     {i < 2 && (
                       <div className={`flex-1 h-1.5 mx-2 rounded-full transition-all duration-500 ${
-                        i < currentIndex ? 'bg-primary' : 'bg-muted'
+                        i < currentIndex ? 'bg-slate-700' : 'bg-muted'
                       }`} />
                     )}
                   </React.Fragment>
@@ -280,7 +280,7 @@ export default function RegisterPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-card/80 backdrop-blur-xl border border-border rounded-[3rem] p-8 md:p-12 shadow-2xl shadow-primary/5 overflow-hidden">
+        <div className="bg-card/40 backdrop-blur-3xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] rounded-[3rem] p-8 md:p-12 shadow-2xl shadow-primary/5 overflow-hidden">
           {/* Status Messages */}
           {error && (
             <div className="mb-8 p-4 bg-destructive/10 border border-destructive/20 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
@@ -290,9 +290,9 @@ export default function RegisterPage() {
           )}
 
           {success && (
-            <div className="mb-8 p-4 bg-success/10 border border-success/20 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
-              <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
-              <p className="text-success text-sm font-bold leading-tight">{success}</p>
+            <div className="mb-8 p-4 bg-slate-500/10 border border-slate-500/20 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
+              <CheckCircle className="w-5 h-5 text-slate-500 flex-shrink-0" />
+              <p className="text-slate-500 text-sm font-bold leading-tight">{success}</p>
             </div>
           )}
 
@@ -310,7 +310,7 @@ export default function RegisterPage() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
-                      className="pl-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary focus:ring-primary/10 transition-all rounded-2xl font-bold"
+                      className="pl-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-slate-700 focus:ring-primary/10 transition-all rounded-2xl font-bold"
                     />
                   </div>
                 </div>
@@ -326,7 +326,7 @@ export default function RegisterPage() {
                       onChange={(e) => validateEmail(e.target.value)}
                       required
                       className={cn(
-                        "pl-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary focus:ring-primary/10 transition-all rounded-2xl font-bold",
+                        "pl-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-slate-700 focus:ring-primary/10 transition-all rounded-2xl font-bold",
                         emailError && "border-destructive focus:border-destructive focus:ring-destructive/10"
                       )}
                     />
@@ -344,7 +344,7 @@ export default function RegisterPage() {
                       value={password}
                       onChange={(e) => checkPasswordStrength(e.target.value)}
                       required
-                      className="pl-12 pr-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary focus:ring-primary/10 transition-all rounded-2xl font-bold"
+                      className="pl-12 pr-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-slate-700 focus:ring-primary/10 transition-all rounded-2xl font-bold"
                     />
                     <button
                       type="button"
@@ -366,8 +366,8 @@ export default function RegisterPage() {
                                 ? passwordStrength <= 2
                                   ? "bg-destructive"
                                   : passwordStrength <= 4
-                                  ? "bg-slate500"
-                                  : "bg-success"
+                                  ? "bg-slate-500"
+                                  : "bg-slate-500"
                                 : "bg-transparent"
                             )}
                           />
@@ -392,7 +392,7 @@ export default function RegisterPage() {
                     onChange={(e) => validateConfirmPassword(e.target.value)}
                     required
                     className={cn(
-                      "h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary focus:ring-primary/10 transition-all rounded-2xl font-bold",
+                      "h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-slate-700 focus:ring-primary/10 transition-all rounded-2xl font-bold",
                       confirmPasswordError && "border-destructive focus:border-destructive focus:ring-destructive/10"
                     )}
                   />
@@ -412,12 +412,12 @@ export default function RegisterPage() {
                     aria-label="Client account for standard hiring"
                     className={`group flex items-center gap-4 p-5 rounded-[1.5rem] border-2 transition-all duration-300 text-left ${
                       userType === 'client'
-                        ? 'border-primary bg-primary/10 shadow-lg shadow-primary/10'
-                        : 'border-border bg-muted/50 hover:border-primary/50'
+                        ? 'border-slate-700 bg-slate-700/10 shadow-lg shadow-primary/10'
+                        : 'border-border bg-muted/50 hover:border-slate-700/50'
                     }`}
                   >
                     <div className={`flex h-12 w-12 items-center justify-center rounded-xl transition-all ${
-                      userType === 'client' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                      userType === 'client' ? 'bg-slate-700 text-slate-700-foreground' : 'bg-muted text-muted-foreground'
                     }`}>
                       <Briefcase className="w-6 h-6" />
                     </div>
@@ -432,12 +432,12 @@ export default function RegisterPage() {
                     aria-label="Entrepreneur account for rapid growth"
                     className={`group flex items-center gap-4 p-5 rounded-[1.5rem] border-2 transition-all duration-300 text-left ${
                       userType === 'entrepreneur'
-                        ? 'border-primary bg-primary/10 shadow-lg shadow-primary/10'
-                        : 'border-border bg-muted/50 hover:border-primary/50'
+                        ? 'border-slate-700 bg-slate-700/10 shadow-lg shadow-primary/10'
+                        : 'border-border bg-muted/50 hover:border-slate-700/50'
                     }`}
                   >
                     <div className={`flex h-12 w-12 items-center justify-center rounded-xl transition-all ${
-                      userType === 'entrepreneur' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                      userType === 'entrepreneur' ? 'bg-slate-700 text-slate-700-foreground' : 'bg-muted text-muted-foreground'
                     }`}>
                       <Zap className="w-6 h-6" />
                     </div>
@@ -452,12 +452,12 @@ export default function RegisterPage() {
                     aria-label="Business account for established organizations"
                     className={`group flex items-center gap-4 p-5 rounded-[1.5rem] border-2 transition-all duration-300 text-left ${
                       userType === 'business'
-                        ? 'border-primary bg-primary/10 shadow-lg shadow-primary/10'
-                        : 'border-border bg-muted/50 hover:border-primary/50'
+                        ? 'border-slate-700 bg-slate-700/10 shadow-lg shadow-primary/10'
+                        : 'border-border bg-muted/50 hover:border-slate-700/50'
                     }`}
                   >
                     <div className={`flex h-12 w-12 items-center justify-center rounded-xl transition-all ${
-                      userType === 'business' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                      userType === 'business' ? 'bg-slate-700 text-slate-700-foreground' : 'bg-muted text-muted-foreground'
                     }`}>
                       <Building2 className="w-6 h-6" />
                     </div>
@@ -472,12 +472,12 @@ export default function RegisterPage() {
                     aria-label="Enterprise account for global solutions"
                     className={`group flex items-center gap-4 p-5 rounded-[1.5rem] border-2 transition-all duration-300 text-left ${
                       userType === 'enterprise'
-                        ? 'border-primary bg-primary/10 shadow-lg shadow-primary/10'
-                        : 'border-border bg-muted/50 hover:border-primary/50'
+                        ? 'border-slate-700 bg-slate-700/10 shadow-lg shadow-primary/10'
+                        : 'border-border bg-muted/50 hover:border-slate-700/50'
                     }`}
                   >
                     <div className={`flex h-12 w-12 items-center justify-center rounded-xl transition-all ${
-                      userType === 'enterprise' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                      userType === 'enterprise' ? 'bg-slate-700 text-slate-700-foreground' : 'bg-muted text-muted-foreground'
                     }`}>
                       <Globe className="w-6 h-6" />
                     </div>
@@ -550,7 +550,7 @@ export default function RegisterPage() {
                   setError("");
                   setStep("details");
                 }}
-                className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-black text-lg rounded-[1.5rem] transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20 group"
+                className="w-full h-16 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black text-lg rounded-[1.5rem] transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20 group"
               >
                 Verify Identity
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -607,7 +607,7 @@ export default function RegisterPage() {
                   <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Upload ID Document (Valid Passport or Driver License) *</Label>
                   <div className="flex items-center gap-6">
                     {idFilePreview ? (
-                      <div className="relative w-24 h-24 rounded-3xl overflow-hidden border-2 border-primary/20 shadow-lg">
+                      <div className="relative w-24 h-24 rounded-3xl overflow-hidden border-2 border-slate-700/20 shadow-lg">
                         <Image src={idFilePreview} alt="ID preview" fill className="object-cover" />
                       </div>
                     ) : (
@@ -616,7 +616,7 @@ export default function RegisterPage() {
                       </div>
                     )}
                     <label className="flex-1 cursor-pointer">
-                      <div className="border-2 border-dashed border-border rounded-[1.5rem] p-6 text-center hover:border-primary hover:bg-primary/5 transition-all">
+                      <div className="border-2 border-dashed border-border rounded-[1.5rem] p-6 text-center hover:border-slate-700 hover:bg-slate-700/5 transition-all">
                         <Upload className="w-6 h-6 mx-auto mb-2 text-muted-foreground" />
                         <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Select ID Image</p>
                         <input
@@ -722,9 +722,9 @@ export default function RegisterPage() {
                     <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Proof of Business Registration (Optional)</Label>
                     <div className="flex items-center gap-6">
                       {businessRegFilePreview ? (
-                        <div className="relative w-24 h-24 rounded-3xl overflow-hidden border-2 border-primary/20 shadow-lg flex items-center justify-center bg-muted">
+                        <div className="relative w-24 h-24 rounded-3xl overflow-hidden border-2 border-slate-700/20 shadow-lg flex items-center justify-center bg-muted">
                           {businessRegFile?.type === "application/pdf" ? (
-                             <FileText className="w-10 h-10 text-primary" />
+                             <FileText className="w-10 h-10 text-slate-700" />
                           ) : (
                              <Image src={businessRegFilePreview} alt="Reg preview" fill className="object-cover" />
                           )}
@@ -735,7 +735,7 @@ export default function RegisterPage() {
                         </div>
                       )}
                       <label className="flex-1 cursor-pointer">
-                        <div className="border-2 border-dashed border-border rounded-[1.5rem] p-6 text-center hover:border-primary hover:bg-primary/5 transition-all">
+                        <div className="border-2 border-dashed border-border rounded-[1.5rem] p-6 text-center hover:border-slate-700 hover:bg-slate-700/5 transition-all">
                           <Upload className="w-6 h-6 mx-auto mb-2 text-muted-foreground" />
                           <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Upload (Image, PDF, DOC)</p>
                           <input
@@ -926,7 +926,7 @@ export default function RegisterPage() {
                     setError("");
                     setStep("security");
                   }}
-                  className="flex-2 sm:flex-[2] h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-black text-lg rounded-[1.5rem] transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20 group"
+                  className="flex-2 sm:flex-[2] h-16 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black text-lg rounded-[1.5rem] transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20 group"
                 >
                   Security Setup
                   <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -940,7 +940,7 @@ export default function RegisterPage() {
             <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
                <div className="text-center space-y-2 mb-8">
                   <div className="w-20 h-20 bg-slate-500/10 rounded-[1.5rem] flex items-center justify-center mx-auto mb-4 border border-slate-500/20">
-                    <ShieldCheck className="w-10 h-10 text-slate500" />
+                    <ShieldCheck className="w-10 h-10 text-slate-500" />
                   </div>
                   <h3 className="text-2xl font-black text-foreground uppercase tracking-tight">Transaction Security</h3>
                   <p className="text-muted-foreground font-bold text-xs uppercase tracking-widest">Secure your account with a 4-digit Transaction PIN</p>
@@ -955,7 +955,7 @@ export default function RegisterPage() {
                       placeholder="••••"
                       value={transactionPin}
                       onChange={(e) => setTransactionPin(e.target.value.replace(/[^0-9]/g, ''))}
-                      className="h-20 text-center text-4xl tracking-[1em] bg-muted border-border text-foreground rounded-3xl font-black focus:border-success"
+                      className="h-20 text-center text-4xl tracking-[1em] bg-muted border-border text-foreground rounded-3xl font-black focus:border-slate-500"
                     />
                   </div>
 
@@ -967,7 +967,7 @@ export default function RegisterPage() {
                       placeholder="••••"
                       value={confirmPin}
                       onChange={(e) => setConfirmPin(e.target.value.replace(/[^0-9]/g, ''))}
-                      className="h-20 text-center text-4xl tracking-[1em] bg-muted border-border text-foreground rounded-3xl font-black focus:border-success"
+                      className="h-20 text-center text-4xl tracking-[1em] bg-muted border-border text-foreground rounded-3xl font-black focus:border-slate-500"
                     />
                   </div>
                </div>
@@ -997,7 +997,7 @@ export default function RegisterPage() {
                     setError("");
                     handleRegister();
                   }}
-                  className="flex-2 sm:flex-[2] h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-black text-lg rounded-[1.5rem] transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20"
+                  className="flex-2 sm:flex-[2] h-16 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black text-lg rounded-[1.5rem] transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20"
                 >
                   {loading ? (
                     <span className="flex items-center gap-3 justify-center">
@@ -1018,7 +1018,7 @@ export default function RegisterPage() {
               Already have an account?{" "}
               <Link
                 href="/auth/login"
-                className="text-primary hover:text-primary/80 font-black transition-colors underline underline-offset-4 decoration-2 decoration-primary/30"
+                className="text-slate-700 hover:text-slate-700/80 font-black transition-colors underline underline-offset-4 decoration-2 decoration-primary/30"
               >
                 Sign in here
               </Link>

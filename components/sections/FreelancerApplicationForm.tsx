@@ -185,7 +185,7 @@ export function FreelancerApplicationForm() {
         <div className="border-t border-slate-700/50 pt-6">
           <Button
             type="submit"
-            className="w-full bg-gradient-to-r from-slate500 to-slate600 text-white hover:from-slate600 hover:to-slate700"
+            className="w-full bg-gradient-to-r from-slate-500 to-slate-600 text-white hover:from-slate-600 hover:to-slate-700"
           >
             Apply to Join EL SPACE
           </Button>

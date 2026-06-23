@@ -159,13 +159,13 @@ export default function AdminDashboard() {
       <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden text-foreground">
         {/* Cinematic Background */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-slate500/10 rounded-full blur-[120px] animate-pulse delay-700" />
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-slate-700/10 rounded-full blur-[120px] animate-pulse" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-slate-500/10 rounded-full blur-[120px] animate-pulse delay-700" />
         </div>
 
         <div className="w-full max-w-lg relative z-10">
           <div className="text-center mb-12 animate-in fade-in slide-in-from-top-8 duration-700">
-            <div className="inline-flex items-center justify-center w-24 h-24 rounded-[2.5rem] bg-gradient-to-br from-primary via-slate-600 to-slate700 shadow-2xl shadow-primary/20 mb-6 group transition-transform hover:scale-110">
+            <div className="inline-flex items-center justify-center w-24 h-24 rounded-[2.5rem] bg-gradient-to-br from-slate-800 via-slate-500 to-slate-300 shadow-2xl shadow-primary/20 mb-6 group transition-transform hover:scale-110">
               <Shield className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-5xl font-black text-foreground tracking-tighter mb-2 uppercase">Core Access</h1>
@@ -184,9 +184,9 @@ export default function AdminDashboard() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-                      className="bg-background/5 border-border text-foreground h-20 text-center text-3xl tracking-[0.5em] focus:ring-primary/20 focus:border-primary/50 transition-all rounded-[2rem] placeholder:text-muted-foreground/30"
+                      className="bg-background/5 border-border text-foreground h-20 text-center text-3xl tracking-[0.5em] focus:ring-primary/20 focus:border-slate-700/50 transition-all rounded-[2rem] placeholder:text-muted-foreground/30"
                     />
-                    <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-r from-primary/10 to-slate500/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                    <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-r from-primary/10 to-slate-500/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                   </div>
                 </div>
               </div>
@@ -194,7 +194,7 @@ export default function AdminDashboard() {
               <Button
                 onClick={handleLogin}
                 disabled={loading}
-                className="w-full h-20 bg-primary text-primary-foreground hover:bg-primary/90 font-black text-xl rounded-[2rem] transition-all duration-500 shadow-xl shadow-primary/20 active:scale-95 group overflow-hidden relative"
+                className="w-full h-20 bg-slate-700 text-slate-700-foreground hover:bg-slate-700/90 font-black text-xl rounded-[2rem] transition-all duration-500 shadow-xl shadow-primary/20 active:scale-95 group overflow-hidden relative"
               >
                 <span className="relative z-10 flex items-center justify-center gap-3">
                   {loading ? <Loader className="w-6 h-6 animate-spin" /> : "AUTHENTICATE"}
@@ -203,7 +203,7 @@ export default function AdminDashboard() {
               </Button>
 
               <div className="flex items-center justify-center gap-2 pt-4">
-                <div className="w-2 h-2 rounded-full bg-slate500 animate-pulse" />
+                <div className="w-2 h-2 rounded-full bg-slate-500 animate-pulse" />
                 <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">System Online · Encrypted Session</span>
               </div>
             </CardContent>
@@ -229,7 +229,7 @@ export default function AdminDashboard() {
              </div>
              <div>
                 <h2 className="text-xl font-black text-foreground tracking-tighter">EL SPACE</h2>
-                <p className="text-[10px] font-black text-primary tracking-[0.2em] uppercase">Control Matrix</p>
+                <p className="text-[10px] font-black text-slate-700 tracking-[0.2em] uppercase">Control Matrix</p>
              </div>
           </div>
         </div>
@@ -256,15 +256,15 @@ export default function AdminDashboard() {
               }`}
             >
               {activeTab === item.id && (
-                <div className="absolute inset-0 bg-primary/10 backdrop-blur-md animate-in fade-in zoom-in-95" />
+                <div className="absolute inset-0 bg-slate-700/10 backdrop-blur-md animate-in fade-in zoom-in-95" />
               )}
               {activeTab === item.id && (
-                <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary shadow-[0_0_15px_rgba(var(--primary),0.5)]" />
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-slate-700 shadow-[0_0_15px_rgba(var(--primary),0.5)]" />
               )}
-              <item.icon className={`w-5 h-5 relative z-10 transition-colors ${activeTab === item.id ? 'text-primary' : 'group-hover:text-primary'}`} />
+              <item.icon className={`w-5 h-5 relative z-10 transition-colors ${activeTab === item.id ? 'text-slate-700' : 'group-hover:text-slate-700'}`} />
               <span className="relative z-10">{item.label}</span>
               {activeTab === item.id && (
-                <ChevronRight className="w-4 h-4 ml-auto relative z-10 text-primary animate-pulse" />
+                <ChevronRight className="w-4 h-4 ml-auto relative z-10 text-slate-700 animate-pulse" />
               )}
             </button>
           ))}
@@ -279,11 +279,11 @@ export default function AdminDashboard() {
               onClick={() => setActiveTab(item.id)}
               className={`w-full group flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold transition-all duration-300 relative ${
                 activeTab === item.id
-                ? 'text-foreground bg-primary/10'
+                ? 'text-foreground bg-slate-700/10'
                 : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
               }`}
             >
-               <item.icon className={`w-5 h-5 ${activeTab === item.id ? 'text-slate500' : 'group-hover:text-slate500'}`} />
+               <item.icon className={`w-5 h-5 ${activeTab === item.id ? 'text-slate-500' : 'group-hover:text-slate-500'}`} />
                {item.label}
             </button>
           ))}
@@ -307,10 +307,10 @@ export default function AdminDashboard() {
           <div className="flex items-center gap-8 flex-1 max-w-2xl">
             <h1 className="text-2xl font-black text-foreground tracking-tighter hidden lg:block">DASHBOARD</h1>
             <div className="relative flex-1 group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-slate-700 transition-colors" />
               <Input
                 placeholder="Query system intelligence..."
-                className="bg-background border-border pl-12 h-12 focus:ring-primary/10 focus:border-primary/30 rounded-2xl transition-all"
+                className="bg-background border-border pl-12 h-12 focus:ring-primary/10 focus:border-slate-700/30 rounded-2xl transition-all"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -321,12 +321,12 @@ export default function AdminDashboard() {
             <div className="hidden xl:flex items-center gap-6 px-6 py-2 bg-muted/50 rounded-2xl border border-border">
                <div className="text-right">
                   <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest leading-none">Security Clearance</p>
-                  <p className="text-xs font-bold text-primary leading-none mt-1 uppercase">LVL 4 ADMINISTRATOR</p>
+                  <p className="text-xs font-bold text-slate-700 leading-none mt-1 uppercase">LVL 4 ADMINISTRATOR</p>
                </div>
                <div className="w-px h-8 bg-border" />
                <div className="text-right">
                   <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest leading-none">Status</p>
-                  <p className="text-xs font-bold text-slate500 leading-none mt-1 uppercase">Operational</p>
+                  <p className="text-xs font-bold text-slate-500 leading-none mt-1 uppercase">Operational</p>
                </div>
             </div>
 
@@ -340,7 +340,7 @@ export default function AdminDashboard() {
                   <p className="text-xs font-black text-foreground leading-none">System Admin</p>
                   <p className="text-[10px] font-bold text-muted-foreground leading-none mt-1 uppercase">Superuser</p>
                </div>
-               <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-primary via-slate-600 to-slate700 p-[2px] shadow-lg shadow-primary/10">
+               <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-slate-800 via-slate-500 to-slate-300 p-[2px] shadow-lg shadow-primary/10">
                  <div className="h-full w-full rounded-[14px] bg-background flex items-center justify-center font-black text-sm text-foreground">
                    AD
                  </div>
@@ -367,7 +367,7 @@ export default function AdminDashboard() {
                        <Clock className="w-4 h-4 mr-2" />
                        Last 24 Hours
                     </Button>
-                    <Button className="h-12 px-8 bg-primary hover:bg-primary/90 text-primary-foreground font-black rounded-2xl shadow-lg shadow-primary/20 transition-all hover:scale-105 uppercase text-xs tracking-widest">
+                    <Button className="h-12 px-8 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black rounded-2xl shadow-lg shadow-primary/20 transition-all hover:scale-105 uppercase text-xs tracking-widest">
                       Generate Audit
                     </Button>
                   </div>
@@ -377,11 +377,11 @@ export default function AdminDashboard() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                   {[
                     { label: 'Network Entities', value: stats.totalUsers, icon: Users, color: 'from-slate-500 to-slate-500', change: '+12.5%', detail: 'Total registered accounts' },
-                    { label: 'Ecosystem Flow', value: `$${stats.totalPayments}`, icon: TrendingUp, color: 'from-slate500 to-teal-500', change: '+8.2%', detail: 'Gross volume processed' },
-                    { label: 'Active Deployments', value: stats.totalJobListings, icon: Briefcase, color: 'from-slate500 to-slate500', change: '+3 new', detail: 'Marketplace listings' },
-                    { label: 'Capital Reserve', value: stats.pendingWithdrawals, icon: Wallet, color: 'from-slate500 to-red-500', change: 'Critical', detail: 'Pending verification' },
+                    { label: 'Ecosystem Flow', value: `$${stats.totalPayments}`, icon: TrendingUp, color: 'from-slate-500 to-slate-500', change: '+8.2%', detail: 'Gross volume processed' },
+                    { label: 'Active Deployments', value: stats.totalJobListings, icon: Briefcase, color: 'from-slate-500 to-slate-500', change: '+3 new', detail: 'Marketplace listings' },
+                    { label: 'Capital Reserve', value: stats.pendingWithdrawals, icon: Wallet, color: 'from-slate-500 to-red-500', change: 'Critical', detail: 'Pending verification' },
                   ].map((stat, i) => (
-                    <Card key={i} className="bg-card border-border hover:border-primary/20 transition-all group relative overflow-hidden rounded-[2.5rem] shadow-xl">
+                    <Card key={i} className="bg-card border-border hover:border-slate-700/20 transition-all group relative overflow-hidden rounded-[2.5rem] shadow-xl">
                       <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-10 blur-[60px] transition-opacity`} />
                       <CardContent className="p-8 relative z-10">
                         <div className="flex items-center justify-between mb-8">
@@ -389,7 +389,7 @@ export default function AdminDashboard() {
                             <stat.icon className="w-6 h-6" />
                           </div>
                           <Badge className={`border-none font-black text-[10px] py-1 px-3 rounded-full ${
-                             stat.change === 'Critical' ? 'bg-red-500/10 text-red-500' : 'bg-slate500/10 text-slate500'
+                             stat.change === 'Critical' ? 'bg-red-500/10 text-red-500' : 'bg-slate-500/10 text-slate-500'
                           }`}>
                             {stat.change}
                           </Badge>
@@ -408,8 +408,8 @@ export default function AdminDashboard() {
                    <Card className="lg:col-span-2 bg-card border-border rounded-[2.5rem] overflow-hidden group shadow-2xl">
                       <CardHeader className="p-8 border-b border-border">
                         <CardTitle className="text-foreground flex items-center gap-4 text-xl font-black uppercase tracking-tight">
-                          <div className="p-2 bg-primary/10 rounded-lg">
-                            <Activity className="w-6 h-6 text-primary" />
+                          <div className="p-2 bg-slate-700/10 rounded-lg">
+                            <Activity className="w-6 h-6 text-slate-700" />
                           </div>
                           Core Vitality Matrix
                         </CardTitle>
@@ -431,7 +431,7 @@ export default function AdminDashboard() {
                                     />
                                   ))}
                                </div>
-                               <p className="text-primary font-black text-xs uppercase tracking-[0.5em] animate-pulse">Synchronizing Neural Link</p>
+                               <p className="text-slate-700 font-black text-xs uppercase tracking-[0.5em] animate-pulse">Synchronizing Neural Link</p>
                                <p className="text-muted-foreground text-[10px] font-bold max-w-[200px] mx-auto uppercase tracking-widest leading-relaxed">Global transaction monitoring system is active and secure</p>
                             </div>
                          </div>
@@ -444,8 +444,8 @@ export default function AdminDashboard() {
                       </CardHeader>
                       <CardContent className="p-8 space-y-4">
                          {[
-                           { label: 'Audit Access', icon: Shield, color: 'text-primary', bg: 'bg-primary/10' },
-                           { label: 'Broadcast', icon: Bell, color: 'text-slate500', bg: 'bg-slate500/10' },
+                           { label: 'Audit Access', icon: Shield, color: 'text-slate-700', bg: 'bg-slate-700/10' },
+                           { label: 'Broadcast', icon: Bell, color: 'text-slate-500', bg: 'bg-slate-500/10' },
                            { label: 'Maintenance', icon: Settings, color: 'text-slate-500', bg: 'bg-slate-500/10' },
                            { label: 'System Reboot', icon: Activity, color: 'text-red-500', bg: 'bg-red-500/10' },
                          ].map((action, i) => (
@@ -461,10 +461,10 @@ export default function AdminDashboard() {
                            </button>
                          ))}
 
-                         <div className="mt-8 p-6 bg-gradient-to-br from-slate600 to-slate700 rounded-3xl relative overflow-hidden shadow-xl">
+                         <div className="mt-8 p-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-3xl relative overflow-hidden shadow-xl">
                             <div className="relative z-10">
                                <p className="text-white font-black text-lg leading-tight uppercase">Upgrade<br/>Nodes</p>
-                               <p className="text-slate200 text-[10px] font-bold mt-2 uppercase tracking-widest">Version 4.2.0 Stable</p>
+                               <p className="text-slate-200 text-[10px] font-bold mt-2 uppercase tracking-widest">Version 4.2.0 Stable</p>
                             </div>
                             <Rocket className="absolute -bottom-2 -right-2 w-20 h-20 text-white/10 -rotate-12" />
                          </div>
@@ -483,7 +483,7 @@ export default function AdminDashboard() {
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="relative group">
-                       <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                       <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-slate-700 transition-colors" />
                        <Input placeholder="Filter by ID, Email, or Name..." className="bg-background border-border pl-12 h-12 w-80 rounded-2xl shadow-sm" />
                     </div>
                     <Button variant="outline" className="h-12 px-6 rounded-2xl border-border bg-card hover:bg-muted font-bold text-xs uppercase tracking-widest">
@@ -495,12 +495,12 @@ export default function AdminDashboard() {
 
                 <div className="grid gap-6">
                   {users.map((user) => (
-                    <Card key={user.id} className="bg-card border-border hover:border-primary/20 transition-all duration-500 group rounded-[2rem] overflow-hidden shadow-lg">
+                    <Card key={user.id} className="bg-card border-border hover:border-slate-700/20 transition-all duration-500 group rounded-[2rem] overflow-hidden shadow-lg">
                       <CardContent className="p-0">
                         <div className="flex flex-col lg:flex-row items-stretch">
                            <div className="p-8 flex items-center gap-6 flex-1 bg-gradient-to-r from-transparent to-muted/20">
                               <div className="relative">
-                                <div className="w-20 h-20 rounded-3xl bg-muted flex items-center justify-center font-black text-2xl border-2 border-border group-hover:border-primary/50 transition-colors overflow-hidden">
+                                <div className="w-20 h-20 rounded-3xl bg-muted flex items-center justify-center font-black text-2xl border-2 border-border group-hover:border-slate-700/50 transition-colors overflow-hidden">
                                   {user.avatar_url ? (
                                     <Image src={user.avatar_url} alt="" width={80} height={80} className="object-cover" />
                                   ) : (
@@ -508,20 +508,20 @@ export default function AdminDashboard() {
                                   )}
                                 </div>
                                 <div className={`absolute -bottom-1 -right-1 w-6 h-6 rounded-full border-4 border-card ${
-                                   user.status === 'active' ? 'bg-slate500' : 'bg-red-500'
+                                   user.status === 'active' ? 'bg-slate-500' : 'bg-red-500'
                                 }`} />
                               </div>
                               <div>
                                 <div className="flex items-center gap-3 mb-1">
                                   <h4 className="text-xl font-black text-foreground">{user.full_name || 'Anonymous User'}</h4>
                                   <Badge className={`px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest border-none ${
-                                     user.role === 'client' ? 'bg-slate-500/10 text-slate-500' : 'bg-slate500/10 text-slate500'
+                                     user.role === 'client' ? 'bg-slate-500/10 text-slate-500' : 'bg-slate-500/10 text-slate-500'
                                   }`}>
                                     {user.role}
                                   </Badge>
                                 </div>
                                 <p className="text-muted-foreground font-bold text-sm">{user.email}</p>
-                                <p className="text-[10px] font-black text-primary/60 mt-2 uppercase tracking-tighter">Registered: {new Date(user.created_at).toLocaleDateString()}</p>
+                                <p className="text-[10px] font-black text-slate-700/60 mt-2 uppercase tracking-tighter">Registered: {new Date(user.created_at).toLocaleDateString()}</p>
                               </div>
                            </div>
 
@@ -532,13 +532,13 @@ export default function AdminDashboard() {
                               </div>
                               <div className="space-y-1">
                                 <p className="text-[10px] uppercase font-black tracking-[0.2em] text-muted-foreground">Available Capital</p>
-                                <p className="text-2xl font-black text-slate500">${user.balance || '0.00'}</p>
+                                <p className="text-2xl font-black text-slate-500">${user.balance || '0.00'}</p>
                               </div>
                               <div className="space-y-1">
                                 <p className="text-[10px] uppercase font-black tracking-[0.2em] text-muted-foreground">Security Status</p>
                                 <div className="flex items-center gap-2">
-                                   <div className={`w-2 h-2 rounded-full ${user.status === 'active' ? 'bg-slate500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]'}`} />
-                                   <span className={`text-xs font-black uppercase ${user.status === 'active' ? 'text-slate500' : 'text-red-500'}`}>{user.status}</span>
+                                   <div className={`w-2 h-2 rounded-full ${user.status === 'active' ? 'bg-slate-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]'}`} />
+                                   <span className={`text-xs font-black uppercase ${user.status === 'active' ? 'text-slate-500' : 'text-red-500'}`}>{user.status}</span>
                                 </div>
                               </div>
                            </div>
@@ -552,7 +552,7 @@ export default function AdminDashboard() {
                                 className={`h-12 px-6 rounded-2xl font-black text-[10px] tracking-widest transition-all uppercase ${
                                   user.status === 'active'
                                   ? 'border-red-500/20 text-red-500 hover:bg-red-500/10'
-                                  : 'border-slate500/20 text-slate500 hover:bg-slate500/10'
+                                  : 'border-slate-500/20 text-slate-500 hover:bg-slate-500/10'
                                 }`}
                                 onClick={() => handleAction(`/api/admin/users/${user.id}`, 'PATCH', { status: user.status === 'active' ? 'suspended' : 'active' }, 'Security policy updated')}
                               >
@@ -581,7 +581,7 @@ export default function AdminDashboard() {
 
                 <div className="grid gap-6">
                   {deposits.length > 0 ? deposits.map((dep) => (
-                    <Card key={dep.id} className="bg-card border-border overflow-hidden rounded-[2.5rem] group hover:border-primary/30 transition-all duration-500 shadow-lg">
+                    <Card key={dep.id} className="bg-card border-border overflow-hidden rounded-[2.5rem] group hover:border-slate-700/30 transition-all duration-500 shadow-lg">
                       <CardContent className="p-10">
                         <div className="flex flex-col lg:flex-row gap-10">
                            <div className="flex-1 space-y-6">
@@ -607,7 +607,7 @@ export default function AdminDashboard() {
                               </div>
 
                               <div className="p-4 bg-muted rounded-2xl border border-border">
-                                 <a href={dep.receipt_url} target="_blank" className="flex items-center gap-3 text-primary hover:text-primary/80 font-black text-[10px] uppercase tracking-widest">
+                                 <a href={dep.receipt_url} target="_blank" className="flex items-center gap-3 text-slate-700 hover:text-slate-700/80 font-black text-[10px] uppercase tracking-widest">
                                     <FileText className="w-5 h-5" /> View Payment Receipt
                                  </a>
                               </div>
@@ -617,7 +617,7 @@ export default function AdminDashboard() {
                               {dep.status === 'pending' ? (
                                 <>
                                   <Button
-                                    className="h-14 bg-slate600 hover:bg-slate500 text-white font-black rounded-2xl uppercase text-[10px] tracking-widest shadow-lg shadow-slate500/20"
+                                    className="h-14 bg-slate-600 hover:bg-slate-500 text-white font-black rounded-2xl uppercase text-[10px] tracking-widest shadow-lg shadow-slate-500/20"
                                     onClick={() => handleAction('/api/admin/deposits', 'PATCH', { depositId: dep.id, status: 'approved' }, 'Funding approved and credited')}
                                   >
                                     Confirm Deposit
@@ -632,7 +632,7 @@ export default function AdminDashboard() {
                                 </>
                               ) : (
                                 <Badge className={`h-12 flex items-center justify-center rounded-xl font-black border-none uppercase text-[10px] tracking-widest ${
-                                  dep.status === 'approved' ? 'bg-slate500/10 text-slate500' : 'bg-red-500/10 text-red-500'
+                                  dep.status === 'approved' ? 'bg-slate-500/10 text-slate-500' : 'bg-red-500/10 text-red-500'
                                 }`}>
                                   {dep.status}
                                 </Badge>
@@ -661,13 +661,13 @@ export default function AdminDashboard() {
 
                 <div className="grid gap-6">
                   {transfers.length > 0 ? transfers.map((tx) => (
-                    <Card key={tx.id} className="bg-card border-border overflow-hidden rounded-[2.5rem] group hover:border-primary/30 transition-all duration-500 shadow-lg">
+                    <Card key={tx.id} className="bg-card border-border overflow-hidden rounded-[2.5rem] group hover:border-slate-700/30 transition-all duration-500 shadow-lg">
                       <CardContent className="p-10">
                         <div className="flex flex-col xl:flex-row justify-between gap-10">
                           <div className="flex-1 space-y-8">
                              <div className="flex items-center gap-12">
                                 <div className="flex items-center gap-4">
-                                   <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center font-black text-primary">
+                                   <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center font-black text-slate-700">
                                       {tx.sender?.full_name?.charAt(0)}
                                    </div>
                                    <div>
@@ -678,7 +678,7 @@ export default function AdminDashboard() {
                                 </div>
                                 <ArrowUpRight className="w-6 h-6 text-muted-foreground/30" />
                                 <div className="flex items-center gap-4">
-                                   <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center font-black text-slate500">
+                                   <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center font-black text-slate-500">
                                       {tx.recipient?.full_name?.charAt(0)}
                                    </div>
                                    <div>
@@ -692,8 +692,8 @@ export default function AdminDashboard() {
                              <div className="flex items-center gap-4">
                                 <p className="text-4xl font-black text-foreground tracking-tighter">${tx.amount.toLocaleString()}</p>
                                 <Badge className={`px-4 py-1 rounded-full font-black text-xs border-none ${
-                                  tx.status === 'pending' ? 'bg-slate500/10 text-slate500' :
-                                  tx.status === 'approved' ? 'bg-slate500/10 text-slate500' :
+                                  tx.status === 'pending' ? 'bg-slate-500/10 text-slate-500' :
+                                  tx.status === 'approved' ? 'bg-slate-500/10 text-slate-500' :
                                   'bg-red-500/10 text-red-500'
                                 }`}>
                                   {tx.status.toUpperCase()}
@@ -704,7 +704,7 @@ export default function AdminDashboard() {
                           {tx.status === 'pending' && (
                              <div className="flex flex-col gap-3 justify-center">
                                 <Button
-                                  className="h-14 bg-primary hover:bg-primary/90 text-white font-black rounded-2xl px-8 uppercase text-[10px] tracking-widest shadow-lg shadow-primary/20"
+                                  className="h-14 bg-slate-700 hover:bg-slate-700/90 text-white font-black rounded-2xl px-8 uppercase text-[10px] tracking-widest shadow-lg shadow-primary/20"
                                   onClick={() => handleAction('/api/admin/transfers', 'PATCH', { transferId: tx.id, status: 'approved' }, 'Transfer approved')}
                                 >
                                   Approve Transfer
@@ -747,17 +747,17 @@ export default function AdminDashboard() {
 
                 <div className="grid gap-6">
                   {withdrawals.length > 0 ? withdrawals.map((req) => (
-                    <Card key={req.id} className="bg-card border-border overflow-hidden rounded-[2.5rem] group hover:border-primary/30 transition-all duration-500 shadow-lg">
+                    <Card key={req.id} className="bg-card border-border overflow-hidden rounded-[2.5rem] group hover:border-slate-700/30 transition-all duration-500 shadow-lg">
                       <div className={`h-1.5 w-full ${
-                        req.status === 'pending' ? 'bg-gradient-to-r from-slate500 to-slate500' :
-                        req.status === 'approved' ? 'bg-gradient-to-r from-slate500 to-teal-500' : 'bg-gradient-to-r from-red-500 to-slate500'
+                        req.status === 'pending' ? 'bg-gradient-to-r from-slate-500 to-slate-500' :
+                        req.status === 'approved' ? 'bg-gradient-to-r from-slate-500 to-slate-500' : 'bg-gradient-to-r from-red-500 to-slate-500'
                       }`} />
                       <CardContent className="p-10">
                         <div className="flex flex-col xl:flex-row justify-between gap-10">
                           <div className="flex-1 space-y-8">
                              <div className="flex items-center gap-6">
                                 <div className="p-5 bg-muted rounded-[2rem] shadow-xl group-hover:scale-110 transition-transform duration-500">
-                                   <ArrowUpRight className={`w-8 h-8 ${req.status === 'pending' ? 'text-slate500' : 'text-muted-foreground/30'}`} />
+                                   <ArrowUpRight className={`w-8 h-8 ${req.status === 'pending' ? 'text-slate-500' : 'text-muted-foreground/30'}`} />
                                 </div>
                                 <div>
                                    <div className="flex items-center gap-3">
@@ -795,8 +795,8 @@ export default function AdminDashboard() {
                              <div className="text-right">
                                 <p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest mb-1">Verification Status</p>
                                 <Badge className={`px-4 py-1 rounded-full font-black text-xs border-none ${
-                                  req.status === 'pending' ? 'bg-slate500/10 text-slate500' :
-                                  req.status === 'approved' ? 'bg-slate500/10 text-slate500' :
+                                  req.status === 'pending' ? 'bg-slate-500/10 text-slate-500' :
+                                  req.status === 'approved' ? 'bg-slate-500/10 text-slate-500' :
                                   'bg-red-500/10 text-red-500'
                                 }`}>
                                   {req.status.toUpperCase()}
@@ -806,7 +806,7 @@ export default function AdminDashboard() {
                              {req.status === 'pending' && (
                                <div className="flex flex-col gap-3 w-full">
                                   <Button
-                                    className="h-14 bg-slate600 hover:bg-slate500 text-white font-black rounded-2xl shadow-lg shadow-slate500/20 transition-all hover:scale-105 uppercase text-[10px] tracking-widest"
+                                    className="h-14 bg-slate-600 hover:bg-slate-500 text-white font-black rounded-2xl shadow-lg shadow-slate-500/20 transition-all hover:scale-105 uppercase text-[10px] tracking-widest"
                                     onClick={() => handleAction('/api/admin/withdrawals', 'PATCH', { withdrawalId: req.id, status: 'approved' }, 'Withdrawal authorized successfully')}
                                   >
                                     <CheckCircle className="w-5 h-5 mr-3" />
@@ -850,7 +850,7 @@ export default function AdminDashboard() {
 
                 <div className="grid gap-6">
                   {verifications.length > 0 ? verifications.map((v) => (
-                    <Card key={v.id} className="bg-card border-border overflow-hidden rounded-[2.5rem] group hover:border-primary/30 transition-all duration-500 shadow-lg">
+                    <Card key={v.id} className="bg-card border-border overflow-hidden rounded-[2.5rem] group hover:border-slate-700/30 transition-all duration-500 shadow-lg">
                       <CardContent className="p-10">
                          <div className="flex flex-col lg:flex-row gap-10">
                             <div className="flex-1 space-y-6">
@@ -865,7 +865,7 @@ export default function AdminDashboard() {
                                   <div>
                                      <h3 className="text-2xl font-black text-foreground uppercase tracking-tight">{v.full_name}</h3>
                                      <p className="text-muted-foreground font-bold text-sm">{v.email}</p>
-                                     <Badge className="mt-2 bg-primary/10 text-primary border-none font-black uppercase text-[10px] tracking-widest">{v.user_type}</Badge>
+                                     <Badge className="mt-2 bg-slate-700/10 text-slate-700 border-none font-black uppercase text-[10px] tracking-widest">{v.user_type}</Badge>
                                   </div>
                                </div>
 
@@ -875,7 +875,7 @@ export default function AdminDashboard() {
                                      <p className="text-foreground font-black uppercase">{v.id_type?.toUpperCase() || 'N/A'}</p>
                                      <p className="text-muted-foreground font-mono text-sm mt-1">{v.id_serial || 'NO SERIAL'}</p>
                                      {v.id_url && (
-                                       <a href={v.id_url} target="_blank" className="inline-flex items-center gap-2 mt-4 text-primary hover:text-primary/80 font-black text-[10px] uppercase tracking-widest">
+                                       <a href={v.id_url} target="_blank" className="inline-flex items-center gap-2 mt-4 text-slate-700 hover:text-slate-700/80 font-black text-[10px] uppercase tracking-widest">
                                          <Eye className="w-4 h-4" /> View ID Document
                                        </a>
                                      )}
@@ -886,7 +886,7 @@ export default function AdminDashboard() {
                                        <p className="text-foreground font-black truncate uppercase">{v.business_name || 'N/A'}</p>
                                        <p className="text-muted-foreground font-bold text-xs mt-1 uppercase tracking-widest">{v.business_type || 'N/A'}</p>
                                        {v.business_reg_url && (
-                                         <a href={v.business_reg_url} target="_blank" className="inline-flex items-center gap-2 mt-4 text-slate500 hover:text-slate600 font-black text-[10px] uppercase tracking-widest">
+                                         <a href={v.business_reg_url} target="_blank" className="inline-flex items-center gap-2 mt-4 text-slate-500 hover:text-slate-600 font-black text-[10px] uppercase tracking-widest">
                                            <Building className="w-4 h-4" /> View Registration
                                          </a>
                                        )}
@@ -897,7 +897,7 @@ export default function AdminDashboard() {
 
                             <div className="w-full lg:w-72 flex flex-col gap-3 justify-center p-8 bg-muted/10 rounded-[2rem] border border-border">
                                <Button
-                                 className="h-14 bg-slate600 hover:bg-slate500 text-white font-black rounded-2xl shadow-lg shadow-slate500/20 uppercase text-[10px] tracking-widest"
+                                 className="h-14 bg-slate-600 hover:bg-slate-500 text-white font-black rounded-2xl shadow-lg shadow-slate-500/20 uppercase text-[10px] tracking-widest"
                                  onClick={() => handleAction('/api/admin/verifications', 'POST', { userId: v.id, status: 'verified' }, 'User verified successfully')}
                                >
                                  <CheckCircle className="w-5 h-5 mr-3" />

@@ -104,7 +104,7 @@ export default function FreelancerHub() {
                  </Badge>
               </div>
               <div className="text-muted-foreground mt-4 text-base md:text-lg font-medium flex flex-col md:flex-row items-center justify-center md:justify-start gap-3 md:gap-6">
-                 <span className="flex items-center gap-2"><Star className="w-5 h-5 text-slate400 fill-slate400" /> <span className="text-foreground font-black">4.98</span> (124 reviews)</span>
+                 <span className="flex items-center gap-2"><Star className="w-5 h-5 text-slate-400 fill-slate-400" /> <span className="text-foreground font-black">4.98</span> (124 reviews)</span>
                  <div className="hidden md:block w-1.5 h-1.5 bg-border rounded-full" />
                  <span className="flex items-center gap-2 text-accent font-black tracking-tight"><Zap className="w-5 h-5" /> Elite Vanguard Status</span>
               </div>
@@ -119,10 +119,10 @@ export default function FreelancerHub() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
            {[
              { label: 'Vault Balance', value: `$${stats.walletBalance.toLocaleString()}`, icon: WalletIcon, color: 'bg-accent', iconColor: 'text-accent-foreground' },
-             { label: 'Global Yield', value: `$${(stats.totalEarnings / 1000).toFixed(1)}k`, icon: DollarSign, color: 'bg-success/10', iconColor: 'text-success' },
+             { label: 'Global Yield', value: `$${(stats.totalEarnings / 1000).toFixed(1)}k`, icon: DollarSign, color: 'bg-slate-500/10', iconColor: 'text-slate-500' },
              { label: 'Active Pipeline', value: stats.activeJobs, icon: Briefcase, color: 'bg-accent/10', iconColor: 'text-accent' },
              { label: 'Settlement Escrow', value: `$${stats.pendingPayments.toLocaleString()}`, icon: Clock, color: 'bg-warning/10', iconColor: 'text-warning' },
-             { label: 'Mission Success', value: `${stats.jobSuccess}%`, icon: CheckCircle, color: 'bg-primary', iconColor: 'text-primary-foreground' }
+             { label: 'Mission Success', value: `${stats.jobSuccess}%`, icon: CheckCircle, color: 'bg-slate-700', iconColor: 'text-slate-700-foreground' }
            ].map((stat, i) => (
              <Card key={i} className="bg-card border border-border hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/5 transition-all duration-500 group rounded-[2.5rem] overflow-hidden">
                 <CardContent className="p-8">
@@ -193,7 +193,7 @@ export default function FreelancerHub() {
                       <button className="text-muted-foreground text-[10px] font-black uppercase mt-6 tracking-widest group-hover:text-foreground transition-colors">Analyze Project →</button>
                    </div>
                    <div className="p-8 bg-background/5 rounded-[2.5rem] border border-white/5 backdrop-blur-sm group hover:bg-background/10 transition-all cursor-pointer">
-                      <p className="text-[10px] text-success mb-4 font-black uppercase tracking-[0.2em]">Settlement</p>
+                      <p className="text-[10px] text-slate-500 mb-4 font-black uppercase tracking-[0.2em]">Settlement</p>
                       <p className="text-foreground font-medium text-lg leading-relaxed">$450 cleared for "UI Design".</p>
                       <button className="text-muted-foreground text-[10px] font-black uppercase mt-6 tracking-widest group-hover:text-foreground transition-colors">Access Vault →</button>
                    </div>

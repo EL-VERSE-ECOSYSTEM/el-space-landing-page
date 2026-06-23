@@ -70,7 +70,7 @@ export function FeaturedTalent() {
 
                 {/* Rating */}
                 <div className="flex items-center gap-1 mb-6">
-                   <Star className="w-4 h-4 fill-slate400 text-slate400" />
+                   <Star className="w-4 h-4 fill-slate-400 text-slate-400" />
                    <span className="text-sm font-bold text-slate-900">{freelancer.rating || '4.9'}</span>
                    <span className="text-sm text-slate-400">({freelancer.reviews || '20'}+ reviews)</span>
                 </div>
@@ -96,7 +96,7 @@ export function FeaturedTalent() {
                     </p>
                   </div>
                   <div className="text-right">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate100 text-slate700 uppercase tracking-tighter">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 uppercase tracking-tighter">
                       Online
                     </span>
                   </div>

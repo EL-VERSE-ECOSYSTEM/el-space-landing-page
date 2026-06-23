@@ -1,6 +1,7 @@
 "use client";
 import Image from 'next/image';
 import React from 'react';
+import { Badge } from '@/components/ui/badge';
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -65,7 +66,7 @@ export function AuthGuard({ children, userType, redirectPath }: {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-slate-700"></div>
           <p className="text-foreground mt-4">Loading...</p>
         </div>
       </div>
@@ -106,7 +107,7 @@ export function DashboardLayout({
   const elSpaceId = u.el_space_id || "EL-XXXXXXXX";
 
   // Role-specific theme colors
-  const activeColorClass = userType === 'client' ? 'text-success' : 'text-accent';
+  const activeColorClass = userType === 'client' ? 'text-slate-500' : 'text-accent';
   const sidebarBg = 'bg-card';
   const borderClass = 'border-border';
 
@@ -132,7 +133,7 @@ export function DashboardLayout({
           <div className="mb-6 p-4 bg-secondary rounded-2xl border border-border">
             <p className="text-foreground font-black truncate text-sm uppercase">{userName}</p>
             <p className={`text-[10px] font-mono font-bold ${activeColorClass}`}>{elSpaceId}</p>
-            <Badge className={`mt-2 ${userType === 'client' ? 'bg-success/10 text-success' : 'bg-accent/10 text-accent'} border-none text-[10px] font-black uppercase tracking-widest`}>
+            <Badge className={`mt-2 ${userType === 'client' ? 'bg-slate-500/10 text-slate-500' : 'bg-accent/10 text-accent'} border-none text-[10px] font-black uppercase tracking-widest`}>
               {userType}
             </Badge>
           </div>
@@ -173,8 +174,8 @@ export function DashboardLayout({
       {/* Main content */}
       <main className="lg:ml-64 min-h-screen relative">
          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
-            <div className={`absolute -top-24 -left-24 w-96 h-96 ${userType === 'client' ? 'bg-success/5' : 'bg-accent/5'} rounded-full blur-[100px]`} />
-            <div className={`absolute top-1/2 -right-24 w-[500px] h-[500px] ${userType === 'client' ? 'bg-success/5' : 'bg-accent/5'} rounded-full blur-[120px]`} />
+            <div className={`absolute -top-24 -left-24 w-96 h-96 ${userType === 'client' ? 'bg-slate-500/5' : 'bg-accent/5'} rounded-full blur-[100px]`} />
+            <div className={`absolute top-1/2 -right-24 w-[500px] h-[500px] ${userType === 'client' ? 'bg-slate-500/5' : 'bg-accent/5'} rounded-full blur-[120px]`} />
          </div>
         <div className="p-6 lg:p-12 max-w-7xl mx-auto">
           {children}

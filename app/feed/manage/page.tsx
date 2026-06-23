@@ -58,7 +58,7 @@ export default function FeedManagePage() {
           <Button onClick={() => router.push('/feed')} variant="ghost" className="text-muted-foreground hover:text-foreground rounded-full">
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <h1 className="text-3xl font-black text-foreground tracking-tighter uppercase">Nexus <span className="text-primary">Analytics</span></h1>
+          <h1 className="text-3xl font-black text-foreground tracking-tighter uppercase">Nexus <span className="text-slate-700">Analytics</span></h1>
         </div>
 
         <div className="bg-card border border-border rounded-[2.5rem] overflow-hidden shadow-2xl shadow-black/5">
@@ -95,7 +95,7 @@ export default function FeedManagePage() {
                   <TableRow key={post.id} className="border-border hover:bg-muted/30 transition-colors group">
                     <TableCell className="px-8 py-6">
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-xs font-black text-primary border border-primary/20 shadow-inner">
+                        <div className="w-10 h-10 rounded-xl bg-slate-700/10 flex items-center justify-center text-xs font-black text-slate-700 border border-slate-700/20 shadow-inner">
                           {(post.user?.full_name || 'U').charAt(0)}
                         </div>
                         <div>
@@ -107,7 +107,7 @@ export default function FeedManagePage() {
                     <TableCell className="max-w-xs py-6">
                       <p className="text-muted-foreground text-sm font-medium line-clamp-1">{post.content}</p>
                       {post.media_type !== 'none' && (
-                        <Badge className="mt-2 bg-primary/5 text-primary border border-primary/10 text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded">
+                        <Badge className="mt-2 bg-slate-700/5 text-slate-700 border border-slate-700/10 text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded">
                           {post.media_type} Encoded
                         </Badge>
                       )}
@@ -132,7 +132,7 @@ export default function FeedManagePage() {
                       {new Date(post.created_at).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="text-right px-8 py-6">
-                      <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-xl">
+                      <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-slate-700 hover:bg-slate-700/10 rounded-xl">
                         <ExternalLink className="w-4 h-4" />
                       </Button>
                     </TableCell>
