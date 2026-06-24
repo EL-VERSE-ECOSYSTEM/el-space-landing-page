@@ -117,7 +117,7 @@ export default function MessagesPage() {
             <h1 className="text-4xl font-black text-foreground tracking-tighter uppercase">Comms <span className="text-slate-700">Nexus</span></h1>
             <p className="text-muted-foreground font-medium">Real-time strategic synchronization</p>
           </div>
-          <Button className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black rounded-2xl h-12 px-6 shadow-xl shadow-primary/20 uppercase tracking-widest text-xs transition-all">
+          <Button className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black rounded-[2rem] h-12 px-6 shadow-xl shadow-primary/20 uppercase tracking-widest text-xs transition-all">
             <Plus className="w-4 h-4 mr-2" />
             New Link
           </Button>
@@ -135,7 +135,7 @@ export default function MessagesPage() {
                   placeholder="Scan active links..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-12 bg-background border-border text-foreground rounded-2xl h-12 focus:ring-primary/20"
+                  className="pl-12 bg-background border-border text-foreground rounded-[2rem] h-12 focus:ring-primary/20"
                 />
               </div>
             </div>
@@ -150,7 +150,7 @@ export default function MessagesPage() {
                 >
                   <div className="flex items-start gap-4">
                     <div className="relative">
-                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-slate-600 flex items-center justify-center text-slate-700-foreground font-black text-lg shadow-lg">
+                      <div className="w-12 h-12 rounded-[2rem] bg-gradient-to-br from-primary to-slate-600 flex items-center justify-center text-slate-700-foreground font-black text-lg shadow-lg">
                         {conv.name.charAt(0)}
                       </div>
                       {conv.online && <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-slate-500 rounded-full border-2 border-background shadow-sm" />}
@@ -180,7 +180,7 @@ export default function MessagesPage() {
                 {/* Chat Header */}
                 <div className="p-6 border-b border-border flex items-center justify-between bg-muted/30">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-slate-600 flex items-center justify-center text-slate-700-foreground font-black text-lg shadow-lg">
+                    <div className="w-12 h-12 rounded-[2rem] bg-gradient-to-br from-primary to-slate-600 flex items-center justify-center text-slate-700-foreground font-black text-lg shadow-lg">
                       {conversations.find(c => c.id === selectedConversation)?.name.charAt(0)}
                     </div>
                     <div>
@@ -193,7 +193,7 @@ export default function MessagesPage() {
                       </p>
                     </div>
                   </div>
-                  <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground rounded-xl">
+                  <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground rounded-2xl">
                     <MoreVertical className="w-5 h-5" />
                   </Button>
                 </div>
@@ -230,12 +230,12 @@ export default function MessagesPage() {
                       value={messageInput}
                       onChange={(e) => setMessageInput(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                      className="bg-background border-border text-foreground rounded-2xl h-14 px-6 focus:ring-primary/20 font-medium"
+                      className="bg-background border-border text-foreground rounded-[2rem] h-14 px-6 focus:ring-primary/20 font-medium"
                     />
                     <Button
                       onClick={handleSendMessage}
                       disabled={!messageInput.trim()}
-                      className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black rounded-2xl h-14 w-14 shadow-xl shadow-primary/20 transition-all active:scale-90"
+                      className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black rounded-[2rem] h-14 w-14 shadow-xl shadow-primary/20 transition-all active:scale-90"
                     >
                       <Send className="w-5 h-5" />
                     </Button>
@@ -244,7 +244,7 @@ export default function MessagesPage() {
               </>
             ) : (
               <div className="flex flex-col items-center justify-center h-full text-center p-12">
-                <div className="w-20 h-20 bg-muted rounded-3xl flex items-center justify-center mb-6 shadow-inner">
+                <div className="w-20 h-20 bg-muted rounded-[2.5rem] flex items-center justify-center mb-6 shadow-inner">
                   <MessageCircle className="w-10 h-10 text-muted-foreground/30" />
                 </div>
                 <h3 className="text-xl font-black text-foreground uppercase tracking-tight">System Idle</h3>

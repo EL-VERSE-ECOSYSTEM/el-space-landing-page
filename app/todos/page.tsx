@@ -116,7 +116,7 @@ export default function TodosPage() {
           <div className="flex justify-between items-end">
             <div>
               <h1 className="text-5xl font-black text-foreground tracking-tighter flex items-center gap-4 uppercase">
-                <div className="w-14 h-14 rounded-2xl bg-slate-700 flex items-center justify-center shadow-2xl shadow-primary/20">
+                <div className="w-14 h-14 rounded-[2rem] bg-slate-700 flex items-center justify-center shadow-2xl shadow-primary/20">
                   <ListTodo className="w-7 h-7 text-slate-700-foreground" />
                 </div>
                 Mission <span className="bg-gradient-to-r from-primary to-slate-500 bg-clip-text text-transparent">Backlog</span>
@@ -132,9 +132,9 @@ export default function TodosPage() {
                    value={newTodo}
                    onChange={(e) => setNewTodo(e.target.value)}
                    placeholder="Identify new strategic objective..."
-                   className="bg-muted border-border h-16 text-foreground font-bold rounded-2xl px-6 focus:ring-primary/20"
+                   className="bg-muted border-border h-16 text-foreground font-bold rounded-[2rem] px-6 focus:ring-primary/20"
                 />
-                <Button type="submit" className="bg-slate-700 text-slate-700-foreground hover:bg-slate-700/90 font-black px-10 rounded-2xl h-16 transition-all shadow-xl shadow-primary/20 uppercase tracking-widest text-xs">
+                <Button type="submit" className="bg-slate-700 text-slate-700-foreground hover:bg-slate-700/90 font-black px-10 rounded-[2rem] h-16 transition-all shadow-xl shadow-primary/20 uppercase tracking-widest text-xs">
                    <Plus className="w-6 h-6 mr-2" /> DEPLOY
                 </Button>
              </form>
@@ -152,7 +152,7 @@ export default function TodosPage() {
                      <div className="flex items-center gap-6">
                         <button
                            onClick={() => toggleTodo(todo.id, todo.is_completed)}
-                           className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
+                           className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${
                               todo.is_completed ? 'bg-slate-500 text-white shadow-lg shadow-slate-500/20' : 'bg-muted text-muted-foreground hover:text-slate-700 border border-border'
                            }`}
                         >

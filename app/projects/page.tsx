@@ -37,7 +37,7 @@ export default function ProjectsPage() {
           </div>
           {user?.role === 'client' && (
             <Link href="/jobs/post">
-              <Button className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground rounded-xl font-black uppercase tracking-widest text-xs h-12 px-6 shadow-lg shadow-primary/20 transition-all">
+              <Button className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground rounded-2xl font-black uppercase tracking-widest text-xs h-12 px-6 shadow-lg shadow-primary/20 transition-all">
                 Post New Project
               </Button>
             </Link>
@@ -81,7 +81,7 @@ export default function ProjectsPage() {
                         <p className="text-3xl font-black text-foreground tracking-tighter">${project.budget_min} - ${project.budget_max}</p>
                       </div>
                       <Link href={`/jobs/${project.id}`} className="w-full sm:w-auto">
-                        <Button className="w-full bg-secondary hover:bg-secondary/80 text-secondary-foreground font-black rounded-xl px-8 h-12 uppercase text-xs tracking-widest group-hover:bg-slate-700 group-hover:text-slate-700-foreground transition-all shadow-sm">
+                        <Button className="w-full bg-secondary hover:bg-secondary/80 text-secondary-foreground font-black rounded-2xl px-8 h-12 uppercase text-xs tracking-widest group-hover:bg-slate-700 group-hover:text-slate-700-foreground transition-all shadow-sm">
                           View Details <ChevronRight className="ml-2 w-4 h-4" />
                         </Button>
                       </Link>

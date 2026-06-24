@@ -36,7 +36,7 @@ export default function PricingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
             {/* For Clients */}
             <div className="bg-card/80 backdrop-blur-xl border border-border rounded-[3rem] p-12 shadow-2xl shadow-primary/5 hover:-translate-y-2 transition-all duration-500">
-              <div className="w-16 h-16 bg-slate-700/10 rounded-2xl flex items-center justify-center mb-8">
+              <div className="w-16 h-16 bg-slate-700/10 rounded-[2rem] flex items-center justify-center mb-8">
                  <span className="text-3xl">🏢</span>
               </div>
               <h3 className="text-3xl font-black text-foreground mb-8 tracking-tight uppercase">Enterprise Scale</h3>
@@ -67,7 +67,7 @@ export default function PricingPage() {
               <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-700">
                 <span className="text-9xl">🚀</span>
               </div>
-              <div className="w-16 h-16 bg-background/10 rounded-2xl flex items-center justify-center mb-8 backdrop-blur-md">
+              <div className="w-16 h-16 bg-background/10 rounded-[2rem] flex items-center justify-center mb-8 backdrop-blur-md">
                  <span className="text-3xl">💎</span>
               </div>
               <h3 className="text-3xl font-black text-background mb-8 tracking-tight uppercase">Creator Earnings</h3>
@@ -95,7 +95,7 @@ export default function PricingPage() {
           </div>
 
           {/* Additional Information */}
-          <div className="bg-card border border-border rounded-2xl p-8 mb-12 shadow-lg">
+          <div className="bg-card border border-border rounded-[2rem] p-8 mb-12 shadow-lg">
             <h3 className="text-2xl font-black text-foreground mb-6 uppercase tracking-tight">What&apos;s Included?</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -130,7 +130,7 @@ export default function PricingPage() {
           </div>
 
           {/* No Hidden Fees */}
-          <div className="bg-slate-700/5 border border-slate-700/20 rounded-3xl p-10 mb-12 shadow-inner">
+          <div className="bg-slate-700/5 border border-slate-700/20 rounded-[2.5rem] p-10 mb-12 shadow-inner">
             <h3 className="text-2xl font-black text-foreground mb-6 uppercase tracking-tight">No Hidden Fees</h3>
             <ul className="space-y-4">
               <li className="flex items-center gap-4 text-muted-foreground font-medium">
@@ -157,28 +157,28 @@ export default function PricingPage() {
             <h3 className="text-2xl font-black text-foreground mb-6 uppercase tracking-tight">Pricing FAQs</h3>
             
             <div className="space-y-4">
-              <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+              <div className="bg-card border border-border rounded-[2rem] p-6 shadow-sm">
                 <h4 className="font-black text-foreground mb-2 uppercase text-sm tracking-widest">Can I negotiate pricing for large projects?</h4>
                 <p className="text-muted-foreground font-medium text-sm">
                   Yes! For projects over $10,000, we offer custom pricing. Contact our sales team for details.
                 </p>
               </div>
 
-              <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+              <div className="bg-card border border-border rounded-[2rem] p-6 shadow-sm">
                 <h4 className="font-black text-foreground mb-2 uppercase text-sm tracking-widest">When do I pay the service fee?</h4>
                 <p className="text-muted-foreground font-medium text-sm">
                   For clients: The fee is calculated after project completion. For freelancers: The commission is deducted from your earnings.
                 </p>
               </div>
 
-              <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+              <div className="bg-card border border-border rounded-[2rem] p-6 shadow-sm">
                 <h4 className="font-black text-foreground mb-2 uppercase text-sm tracking-widest">Are there penalties for delayed payments?</h4>
                 <p className="text-muted-foreground font-medium text-sm">
                   No. We only charge our standard service fee. However, escrow funds may have expiration dates.
                 </p>
               </div>
 
-              <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+              <div className="bg-card border border-border rounded-[2rem] p-6 shadow-sm">
                 <h4 className="font-black text-foreground mb-2 uppercase text-sm tracking-widest">Do you offer refunds?</h4>
                 <p className="text-muted-foreground font-medium text-sm">
                   Service fees are non-refundable. However, if a project is cancelled before work begins, no fees apply.
@@ -198,7 +198,7 @@ export default function PricingPage() {
           </p>
           <Link
             href="/auth/register"
-            className="inline-block px-12 py-5 bg-background text-foreground font-black rounded-2xl transition-all hover:bg-foreground hover:text-background hover:shadow-2xl uppercase tracking-[0.2em] text-sm relative z-10 border border-border"
+            className="inline-block px-12 py-5 bg-background text-foreground font-black rounded-[2rem] transition-all hover:bg-foreground hover:text-background hover:shadow-2xl uppercase tracking-[0.2em] text-sm relative z-10 border border-border"
           >
             Initiate Account
           </Link>

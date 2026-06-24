@@ -153,7 +153,7 @@ export default function ProjectDetailPage() {
               <Briefcase className="w-20 h-20 text-muted-foreground/10 mx-auto mb-6" />
               <h2 className="text-3xl font-black text-foreground uppercase tracking-tight">Project Node Offline</h2>
               <p className="text-muted-foreground font-medium mb-8 max-w-xs mx-auto">The deployment you are seeking is no longer active in the Nexus.</p>
-              <Button onClick={() => router.push('/jobs')} className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground rounded-2xl px-10 h-14 font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/20">
+              <Button onClick={() => router.push('/jobs')} className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground rounded-[2rem] px-10 h-14 font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/20">
                  Browse Active Sectors
               </Button>
             </CardContent>
@@ -185,10 +185,10 @@ export default function ProjectDetailPage() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="flex-1 space-y-4">
               <div className="flex flex-wrap gap-2">
-                 <Badge className="bg-slate-700/10 text-slate-700 hover:bg-slate-700/20 border-none px-4 py-1.5 rounded-xl font-black uppercase tracking-widest text-[10px]">
+                 <Badge className="bg-slate-700/10 text-slate-700 hover:bg-slate-700/20 border-none px-4 py-1.5 rounded-2xl font-black uppercase tracking-widest text-[10px]">
                    {project.category}
                  </Badge>
-                 <Badge className="bg-slate-500/10 text-slate-500 hover:bg-slate-500/20 border-none px-4 py-1.5 rounded-xl font-black uppercase tracking-widest text-[10px]">
+                 <Badge className="bg-slate-500/10 text-slate-500 hover:bg-slate-500/20 border-none px-4 py-1.5 rounded-2xl font-black uppercase tracking-widest text-[10px]">
                    Open
                  </Badge>
               </div>
@@ -233,7 +233,7 @@ export default function ProjectDetailPage() {
               <h3 className="text-2xl font-black text-foreground tracking-tight uppercase">Required Expertise</h3>
               <div className="flex flex-wrap gap-3">
                 {project.required_skills?.map((skill: string) => (
-                  <div key={skill} className="px-6 py-4 bg-secondary text-secondary-foreground border border-border rounded-2xl font-black uppercase tracking-widest text-xs shadow-sm">
+                  <div key={skill} className="px-6 py-4 bg-secondary text-secondary-foreground border border-border rounded-[2rem] font-black uppercase tracking-widest text-xs shadow-sm">
                     {skill}
                   </div>
                 ))}
@@ -248,7 +248,7 @@ export default function ProjectDetailPage() {
                   {milestones.map((milestone, idx) => (
                     <div key={milestone.id} className="group flex flex-col md:flex-row md:items-center justify-between gap-4 p-8 rounded-[2rem] bg-card border border-border hover:border-slate-700/30 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500">
                       <div className="flex items-center gap-6">
-                        <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center font-black text-muted-foreground text-sm border border-border group-hover:bg-slate-700 group-hover:text-slate-700-foreground group-hover:border-slate-700 transition-all">
+                        <div className="w-12 h-12 rounded-[2rem] bg-secondary flex items-center justify-center font-black text-muted-foreground text-sm border border-border group-hover:bg-slate-700 group-hover:text-slate-700-foreground group-hover:border-slate-700 transition-all">
                           {idx + 1}
                         </div>
                         <div>
@@ -258,7 +258,7 @@ export default function ProjectDetailPage() {
                       </div>
                       <div className="flex items-center justify-between md:justify-end gap-8 border-t md:border-t-0 pt-6 md:pt-0 border-border/50">
                         <p className="font-black text-foreground text-2xl tracking-tighter">${milestone.amount}</p>
-                        <Badge className="bg-secondary text-secondary-foreground border-none px-4 py-1.5 rounded-xl font-black uppercase tracking-widest text-[9px] shadow-sm">{milestone.status}</Badge>
+                        <Badge className="bg-secondary text-secondary-foreground border-none px-4 py-1.5 rounded-2xl font-black uppercase tracking-widest text-[9px] shadow-sm">{milestone.status}</Badge>
                       </div>
                     </div>
                   ))}
@@ -312,7 +312,7 @@ export default function ProjectDetailPage() {
 
                 <div className="space-y-8 pt-8 border-t border-border">
                    <div className="flex items-center gap-5">
-                      <div className="w-12 h-12 rounded-2xl bg-slate-700/10 flex items-center justify-center text-slate-700 shadow-inner">
+                      <div className="w-12 h-12 rounded-[2rem] bg-slate-700/10 flex items-center justify-center text-slate-700 shadow-inner">
                         <Clock className="w-6 h-6" />
                       </div>
                       <div>
@@ -321,7 +321,7 @@ export default function ProjectDetailPage() {
                       </div>
                    </div>
                    <div className="flex items-center gap-5">
-                      <div className="w-12 h-12 rounded-2xl bg-slate-500/10 flex items-center justify-center text-slate-500 shadow-inner">
+                      <div className="w-12 h-12 rounded-[2rem] bg-slate-500/10 flex items-center justify-center text-slate-500 shadow-inner">
                         <Briefcase className="w-6 h-6" />
                       </div>
                       <div>
@@ -385,7 +385,7 @@ export default function ProjectDetailPage() {
                     placeholder="Outline your approach and deployment capabilities..."
                     value={applyFormData.coverLetter}
                     onChange={(e) => setApplyFormData({ ...applyFormData, coverLetter: e.target.value })}
-                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 rounded-3xl p-8 h-48 focus:ring-primary/20 transition-all font-medium resize-none"
+                    className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 rounded-[2.5rem] p-8 h-48 focus:ring-primary/20 transition-all font-medium resize-none"
                   />
                 </div>
 
@@ -399,7 +399,7 @@ export default function ProjectDetailPage() {
                         placeholder="0.00"
                         value={applyFormData.proposedRate}
                         onChange={(e) => setApplyFormData({ ...applyFormData, proposedRate: e.target.value })}
-                        className="pl-14 h-16 bg-muted/50 border-border text-foreground rounded-2xl font-black text-2xl focus:ring-primary/20"
+                        className="pl-14 h-16 bg-muted/50 border-border text-foreground rounded-[2rem] font-black text-2xl focus:ring-primary/20"
                       />
                     </div>
                   </div>
@@ -412,24 +412,24 @@ export default function ProjectDetailPage() {
                         placeholder="Days"
                         value={applyFormData.estimatedDays}
                         onChange={(e) => setApplyFormData({ ...applyFormData, estimatedDays: e.target.value })}
-                        className="pl-14 h-16 bg-muted/50 border-border text-foreground rounded-2xl font-black text-2xl focus:ring-primary/20"
+                        className="pl-14 h-16 bg-muted/50 border-border text-foreground rounded-[2rem] font-black text-2xl focus:ring-primary/20"
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className="p-5 bg-slate-700/5 border border-slate-700/10 rounded-2xl shadow-inner">
+                <div className="p-5 bg-slate-700/5 border border-slate-700/10 rounded-[2rem] shadow-inner">
                    <p className="text-[10px] font-black text-slate-700 uppercase tracking-[0.2em] text-center">System Fee: 5% ({applyFormData.proposedRate ? (parseFloat(applyFormData.proposedRate) * 0.05).toFixed(2) : '0.00'}) will be allocated to platform maintenance.</p>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-6">
-                <AlertDialogCancel className="h-16 flex-1 rounded-2xl border-2 border-border font-black text-muted-foreground hover:bg-secondary transition-all uppercase tracking-widest text-xs">
+                <AlertDialogCancel className="h-16 flex-1 rounded-[2rem] border-2 border-border font-black text-muted-foreground hover:bg-secondary transition-all uppercase tracking-widest text-xs">
                   Abort
                 </AlertDialogCancel>
                 <AlertDialogAction
                   onClick={handleSubmitApplication}
-                  className="h-16 flex-1 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black text-sm uppercase tracking-widest rounded-2xl shadow-xl shadow-primary/20 transition-all"
+                  className="h-16 flex-1 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black text-sm uppercase tracking-widest rounded-[2rem] shadow-xl shadow-primary/20 transition-all"
                 >
                   Confirm Transmission
                 </AlertDialogAction>

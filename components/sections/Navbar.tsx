@@ -55,14 +55,14 @@ export function Navbar() {
             {!isAuthenticated ? (
               <>
                 <Link href="/auth/login">
-                  <Button variant="ghost" size="sm" className="font-bold text-muted-foreground hover:text-foreground hover:bg-muted rounded-xl">
+                  <Button variant="ghost" size="sm" className="font-bold text-muted-foreground hover:text-foreground hover:bg-muted rounded-2xl">
                     Login
                   </Button>
                 </Link>
                 <Link href="/auth/register?role=client">
                   <Button
                     size="sm"
-                    className="bg-background border-2 border-border text-foreground hover:border-slate-700 hover:text-slate-700 font-bold px-6 rounded-xl transition-all"
+                    className="bg-background border-2 border-border text-foreground hover:border-slate-700 hover:text-slate-700 font-bold px-6 rounded-2xl transition-all"
                   >
                     Post a Job
                   </Button>
@@ -70,7 +70,7 @@ export function Navbar() {
                 <Link href="/auth/register?role=freelancer">
                   <Button
                     size="sm"
-                    className="bg-foreground hover:bg-slate-700 text-background font-bold px-6 rounded-xl shadow-lg shadow-foreground/10 hover:shadow-primary/20 transition-all active:scale-95"
+                    className="bg-foreground hover:bg-slate-700 text-background font-bold px-6 rounded-2xl shadow-lg shadow-foreground/10 hover:shadow-primary/20 transition-all active:scale-95"
                   >
                     Apply Now
                   </Button>
@@ -79,7 +79,7 @@ export function Navbar() {
             ) : (
               <>
                 <Link href={user?.user_type === 'freelancer' ? '/freelancer/dashboard' : '/client/dashboard'}>
-                  <Button variant="ghost" size="sm" className="font-bold text-muted-foreground hover:text-foreground hover:bg-muted rounded-xl gap-2">
+                  <Button variant="ghost" size="sm" className="font-bold text-muted-foreground hover:text-foreground hover:bg-muted rounded-2xl gap-2">
                     <LayoutDashboard size={18} />
                     Dashboard
                   </Button>
@@ -88,7 +88,7 @@ export function Navbar() {
                   variant="ghost"
                   size="sm"
                   onClick={() => logout()}
-                  className="font-bold text-destructive hover:text-destructive/80 hover:bg-destructive/10 rounded-xl gap-2"
+                  className="font-bold text-destructive hover:text-destructive/80 hover:bg-destructive/10 rounded-2xl gap-2"
                 >
                   <LogOut size={18} />
                   Logout
@@ -103,7 +103,7 @@ export function Navbar() {
               <Link href="/auth/register?role=freelancer">
                 <Button
                   size="sm"
-                  className="bg-foreground text-background font-bold px-4 rounded-xl"
+                  className="bg-foreground text-background font-bold px-4 rounded-2xl"
                 >
                   Join
                 </Button>
@@ -120,13 +120,13 @@ export function Navbar() {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="absolute top-full left-0 right-0 mt-2 mx-4 p-6 bg-card border border-border rounded-3xl shadow-2xl md:hidden animate-in fade-in zoom-in duration-300">
+          <div className="absolute top-full left-0 right-0 mt-2 mx-4 p-6 bg-card border border-border rounded-[2.5rem] shadow-2xl md:hidden animate-in fade-in zoom-in duration-300">
             <div className="flex flex-col gap-4">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="block px-4 py-3 text-lg font-bold text-muted-foreground hover:text-slate-700 hover:bg-slate-700/10 rounded-2xl transition-all"
+                  className="block px-4 py-3 text-lg font-bold text-muted-foreground hover:text-slate-700 hover:bg-slate-700/10 rounded-[2rem] transition-all"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
@@ -137,20 +137,20 @@ export function Navbar() {
               {!isAuthenticated ? (
                 <>
                   <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
-                    <Button variant="ghost" className="w-full text-muted-foreground font-bold py-6 rounded-2xl">
+                    <Button variant="ghost" className="w-full text-muted-foreground font-bold py-6 rounded-[2rem]">
                       Login
                     </Button>
                   </Link>
                   <Link href="/auth/register?role=client" onClick={() => setMobileMenuOpen(false)}>
                     <Button
-                      className="w-full border-2 border-border text-foreground font-bold py-6 rounded-2xl"
+                      className="w-full border-2 border-border text-foreground font-bold py-6 rounded-[2rem]"
                     >
                       Post a Job
                     </Button>
                   </Link>
                   <Link href="/auth/register?role=freelancer" onClick={() => setMobileMenuOpen(false)}>
                     <Button
-                      className="w-full bg-foreground text-background font-bold py-6 rounded-2xl"
+                      className="w-full bg-foreground text-background font-bold py-6 rounded-[2rem]"
                     >
                       Apply Now
                     </Button>
@@ -159,20 +159,20 @@ export function Navbar() {
               ) : (
                 <>
                   <Link href={user?.user_type === 'freelancer' ? '/freelancer/dashboard' : '/client/dashboard'} onClick={() => setMobileMenuOpen(false)}>
-                    <Button variant="ghost" className="w-full text-muted-foreground font-bold py-6 rounded-2xl justify-start gap-4">
+                    <Button variant="ghost" className="w-full text-muted-foreground font-bold py-6 rounded-[2rem] justify-start gap-4">
                       <LayoutDashboard size={24} />
                       Dashboard
                     </Button>
                   </Link>
                   <Link href="/settings" onClick={() => setMobileMenuOpen(false)}>
-                    <Button variant="ghost" className="w-full text-muted-foreground font-bold py-6 rounded-2xl justify-start gap-4">
+                    <Button variant="ghost" className="w-full text-muted-foreground font-bold py-6 rounded-[2rem] justify-start gap-4">
                       <Settings size={24} />
                       Settings
                     </Button>
                   </Link>
                   <Button
                     variant="ghost"
-                    className="w-full text-destructive font-bold py-6 rounded-2xl justify-start gap-4"
+                    className="w-full text-destructive font-bold py-6 rounded-[2rem] justify-start gap-4"
                     onClick={() => {
                       logout();
                       setMobileMenuOpen(false);

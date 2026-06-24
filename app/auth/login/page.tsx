@@ -165,14 +165,14 @@ export default function LoginPage() {
         <div className="bg-card/40 backdrop-blur-3xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] rounded-[2.5rem] p-8 md:p-10 shadow-2xl shadow-primary/5 overflow-hidden">
           {/* Status Messages */}
           {error && (
-          <div className="mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
+          <div className="mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-[2rem] flex gap-3 animate-in fade-in slide-in-from-top-2">
             <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0" />
             <p className="text-destructive text-sm font-bold leading-tight">{error}</p>
             </div>
           )}
 
           {success && (
-          <div className="mb-6 p-4 bg-slate-500/10 border border-slate-500/20 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
+          <div className="mb-6 p-4 bg-slate-500/10 border border-slate-500/20 rounded-[2rem] flex gap-3 animate-in fade-in slide-in-from-top-2">
             <CheckCircle className="w-5 h-5 text-slate-500 flex-shrink-0" />
             <p className="text-slate-500 text-sm font-bold leading-tight">{success}</p>
             </div>
@@ -191,7 +191,7 @@ export default function LoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="pl-12 h-14 bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 focus:ring-primary/20 transition-all rounded-2xl font-bold"
+                    className="pl-12 h-14 bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 focus:ring-primary/20 transition-all rounded-[2rem] font-bold"
                   />
                 </div>
               </div>
@@ -199,7 +199,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={loading || !email}
-                className="w-full h-16 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black text-sm uppercase tracking-widest rounded-2xl transition-all duration-300 shadow-xl shadow-primary/20 group"
+                className="w-full h-16 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black text-sm uppercase tracking-widest rounded-[2rem] transition-all duration-300 shadow-xl shadow-primary/20 group"
               >
                 {loading ? (
                   <span className="flex items-center gap-3">
@@ -223,8 +223,8 @@ export default function LoginPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <GoogleSignInButton fullWidth variant="outline" className="h-14 rounded-2xl font-bold border-2 border-border" />
-                <GitHubSignInButton fullWidth variant="outline" className="h-14 rounded-2xl font-bold border-2 border-border" />
+                <GoogleSignInButton fullWidth variant="outline" className="h-14 rounded-[2rem] font-bold border-2 border-border" />
+                <GitHubSignInButton fullWidth variant="outline" className="h-14 rounded-[2rem] font-bold border-2 border-border" />
               </div>
             </form>
           )}
@@ -232,7 +232,7 @@ export default function LoginPage() {
           {/* Step 2: Password */}
           {step === "password" && (
             <form onSubmit={handleLogin} className="space-y-6">
-              <div className="bg-muted p-4 rounded-2xl text-center mb-2">
+              <div className="bg-muted p-4 rounded-[2rem] text-center mb-2">
                 <p className="text-sm font-bold text-muted-foreground">
                   Signing in as <span className="text-slate-700">{email}</span>
                 </p>
@@ -247,7 +247,7 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="pl-4 pr-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-slate-700 focus:ring-primary/10 transition-all rounded-2xl font-bold"
+                    className="pl-4 pr-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-slate-700 focus:ring-primary/10 transition-all rounded-[2rem] font-bold"
                   />
                   <button
                     type="button"
@@ -262,7 +262,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={loading || !password}
-                className="w-full h-14 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black text-lg rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 group"
+                className="w-full h-14 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black text-lg rounded-[2rem] transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 group"
               >
                 {loading ? (
                   <span className="flex items-center gap-2">

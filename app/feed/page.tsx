@@ -198,13 +198,13 @@ export default function FeedPage() {
       </p>
 
       {post.media_type === 'image' && post.media_urls?.[0] && (
-        <div className="rounded-2xl overflow-hidden mb-6 border border-border relative h-[500px] shadow-inner bg-muted">
+        <div className="rounded-[2rem] overflow-hidden mb-6 border border-border relative h-[500px] shadow-inner bg-muted">
           <Image src={post.media_urls[0]} alt="Post media" fill className="object-cover" />
         </div>
       )}
 
       {post.media_type === 'video' && post.media_urls?.[0] && (
-        <div className="rounded-2xl overflow-hidden mb-6 border border-border bg-black aspect-video flex items-center justify-center relative group cursor-pointer shadow-2xl">
+        <div className="rounded-[2rem] overflow-hidden mb-6 border border-border bg-black aspect-video flex items-center justify-center relative group cursor-pointer shadow-2xl">
            <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:scale-110 transition-all border border-white/20">
               <Play className="w-8 h-8 text-white fill-white" />
            </div>
@@ -247,7 +247,7 @@ export default function FeedPage() {
             </h1>
             <p className="text-muted-foreground font-medium mt-2 text-lg">Strategic network broadcast and industry intelligence.</p>
           </div>
-          <Button onClick={() => router.push('/feed/manage')} variant="outline" className="bg-card border-border text-muted-foreground hover:text-slate-700 rounded-xl font-black text-[10px] uppercase tracking-widest h-12 px-6 shadow-sm">
+          <Button onClick={() => router.push('/feed/manage')} variant="outline" className="bg-card border-border text-muted-foreground hover:text-slate-700 rounded-2xl font-black text-[10px] uppercase tracking-widest h-12 px-6 shadow-sm">
             <FileText className="w-4 h-4 mr-2" /> Data Stream
           </Button>
         </div>
@@ -269,23 +269,23 @@ export default function FeedPage() {
                     className="w-full bg-transparent border-none text-foreground placeholder:text-muted-foreground/30 resize-none focus:ring-0 text-xl font-medium min-h-[120px]"
                  />
                  {mediaUrl && (
-                   <div className="p-4 bg-muted/50 border border-border rounded-xl text-[10px] text-slate-700 font-black uppercase tracking-widest truncate shadow-inner">
+                   <div className="p-4 bg-muted/50 border border-border rounded-2xl text-[10px] text-slate-700 font-black uppercase tracking-widest truncate shadow-inner">
                      {mediaType.toUpperCase()} Link: {mediaUrl}
                    </div>
                  )}
                  <div className="flex items-center justify-between pt-6 border-t border-border/50">
                     <div className="flex gap-4">
-                       <Button onClick={() => {setMediaType('image'); setMediaUrl('https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800')}} variant="ghost" size="sm" className={`text-muted-foreground hover:text-slate-700 rounded-xl font-black text-[10px] uppercase tracking-widest ${mediaType === 'image' && 'text-slate-700 bg-slate-700/10'}`}>
+                       <Button onClick={() => {setMediaType('image'); setMediaUrl('https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800')}} variant="ghost" size="sm" className={`text-muted-foreground hover:text-slate-700 rounded-2xl font-black text-[10px] uppercase tracking-widest ${mediaType === 'image' && 'text-slate-700 bg-slate-700/10'}`}>
                           <ImageIcon className="w-5 h-5 mr-2" /> Image
                        </Button>
-                       <Button onClick={() => {setMediaType('video'); setMediaUrl('https://example.com/demo.mp4')}} variant="ghost" size="sm" className={`text-muted-foreground hover:text-slate-500 rounded-xl font-black text-[10px] uppercase tracking-widest ${mediaType === 'video' && 'text-slate-500 bg-slate-500/10'}`}>
+                       <Button onClick={() => {setMediaType('video'); setMediaUrl('https://example.com/demo.mp4')}} variant="ghost" size="sm" className={`text-muted-foreground hover:text-slate-500 rounded-2xl font-black text-[10px] uppercase tracking-widest ${mediaType === 'video' && 'text-slate-500 bg-slate-500/10'}`}>
                           <Video className="w-5 h-5 mr-2" /> Video
                        </Button>
                     </div>
                     <Button
                        onClick={() => handleCreatePost()}
                        disabled={(!postContent.trim() && !mediaUrl) || isSubmittingPost}
-                       className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black px-10 h-14 rounded-2xl shadow-xl shadow-primary/20 uppercase tracking-widest text-xs transition-all active:scale-95"
+                       className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black px-10 h-14 rounded-[2rem] shadow-xl shadow-primary/20 uppercase tracking-widest text-xs transition-all active:scale-95"
                     >
                        {isSubmittingPost ? 'Syncing...' : 'Initiate Broadcast'} <Send className="w-4 h-4 ml-2" />
                     </Button>

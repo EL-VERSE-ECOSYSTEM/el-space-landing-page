@@ -4,12 +4,7 @@ import { type NextRequest, NextResponse } from "next/server";
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
-// Check if Supabase is properly configured
-const isConfigured = supabaseUrl && supabaseKey &&
-                     !supabaseUrl.includes('placeholder') &&
-                     !supabaseKey.includes('placeholder');
-
-export const createClient = async (request: NextRequest) => {
+export const createClient = (request: NextRequest) => {
   // Create an unmodified response
   let supabaseResponse = NextResponse.next({
     request: {
@@ -17,20 +12,16 @@ export const createClient = async (request: NextRequest) => {
     },
   });
 
-  if (!isConfigured) {
-    return { supabase: null, supabaseResponse };
-  }
-
   const supabase = createServerClient(
-    supabaseUrl,
-    supabaseKey,
+    supabaseUrl!,
+    supabaseKey!,
     {
       cookies: {
         getAll() {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
           supabaseResponse = NextResponse.next({
             request,
           })
@@ -42,9 +33,5 @@ export const createClient = async (request: NextRequest) => {
     },
   );
 
-  // This is required for the session to be refreshed
-  // https://supabase.com/docs/guides/auth/server-side/nextjs
-  await supabase.auth.getUser()
-
-  return { supabase, supabaseResponse }
+  return supabaseResponse
 };

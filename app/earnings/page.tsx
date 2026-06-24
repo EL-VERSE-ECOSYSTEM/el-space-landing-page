@@ -96,7 +96,7 @@ export default function EarningsPage() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          <Card className="bg-card border-border border-l-4 border-l-primary rounded-2xl p-6 shadow-xl shadow-black/5">
+          <Card className="bg-card border-border border-l-4 border-l-primary rounded-[2rem] p-6 shadow-xl shadow-black/5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1 opacity-60">Cumulative Asset Yield</p>
@@ -104,13 +104,13 @@ export default function EarningsPage() {
                   ${stats?.totalEarnings || 0}
                 </p>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-slate-700/10 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-2xl bg-slate-700/10 flex items-center justify-center">
                 <DollarSign className="h-6 w-6 text-slate-700" />
               </div>
             </div>
           </Card>
 
-          <Card className="bg-card border-border border-l-4 border-l-slate-500 rounded-2xl p-6 shadow-xl shadow-black/5">
+          <Card className="bg-card border-border border-l-4 border-l-slate-500 rounded-[2rem] p-6 shadow-xl shadow-black/5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1 opacity-60">Executed Contracts</p>
@@ -118,13 +118,13 @@ export default function EarningsPage() {
                   {stats?.completedProjects || 0}
                 </p>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-slate-500/10 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-2xl bg-slate-500/10 flex items-center justify-center">
                 <CheckCircle className="h-6 w-6 text-slate-500" />
               </div>
             </div>
           </Card>
 
-          <Card className="bg-card border-border border-l-4 border-l-slate-500 rounded-2xl p-6 shadow-xl shadow-black/5">
+          <Card className="bg-card border-border border-l-4 border-l-slate-500 rounded-[2rem] p-6 shadow-xl shadow-black/5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1 opacity-60">Escrow In-Transit</p>
@@ -132,13 +132,13 @@ export default function EarningsPage() {
                   ${stats?.pendingEarnings || 0}
                 </p>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-slate-500/10 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-2xl bg-slate-500/10 flex items-center justify-center">
                 <Clock className="h-6 w-6 text-slate-500" />
               </div>
             </div>
           </Card>
 
-          <Card className="bg-card border-border border-l-4 border-l-slate-500 rounded-2xl p-6 shadow-xl shadow-black/5">
+          <Card className="bg-card border-border border-l-4 border-l-slate-500 rounded-[2rem] p-6 shadow-xl shadow-black/5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1 opacity-60">Avg Node Value</p>
@@ -146,7 +146,7 @@ export default function EarningsPage() {
                   ${stats?.averageProjectValue || 0}
                 </p>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-slate-500/10 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-2xl bg-slate-500/10 flex items-center justify-center">
                 <TrendingUp className="h-6 w-6 text-slate-500" />
               </div>
             </div>
@@ -214,14 +214,14 @@ export default function EarningsPage() {
                     value={withdrawalAmount}
                     onChange={(e) => setWithdrawalAmount(e.target.value)}
                     placeholder="0.00"
-                    className="w-full h-14 pl-10 pr-6 bg-muted/50 border border-border rounded-xl text-foreground font-black text-lg focus:ring-primary/20 transition-all outline-none"
+                    className="w-full h-14 pl-10 pr-6 bg-muted/50 border border-border rounded-2xl text-foreground font-black text-lg focus:ring-primary/20 transition-all outline-none"
                   />
                 </div>
               </div>
 
               <Button
                 onClick={handleWithdrawal}
-                className="w-full h-16 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black uppercase tracking-widest text-xs rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-95"
+                className="w-full h-16 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black uppercase tracking-widest text-xs rounded-[2rem] shadow-xl shadow-primary/20 transition-all active:scale-95"
               >
                 Authorize Withdrawal
               </Button>
@@ -243,9 +243,9 @@ export default function EarningsPage() {
               </div>
             ) : earnings.length > 0 ? (
               earnings.map((earning) => (
-                <div key={earning.id} className="flex items-center justify-between p-6 rounded-2xl bg-muted/30 border border-border hover:border-slate-700/20 hover:bg-muted/50 transition-all group">
+                <div key={earning.id} className="flex items-center justify-between p-6 rounded-[2rem] bg-muted/30 border border-border hover:border-slate-700/20 hover:bg-muted/50 transition-all group">
                   <div className="flex items-center gap-6">
-                    <div className="w-12 h-12 rounded-xl bg-background border border-border flex items-center justify-center group-hover:border-slate-700/30 transition-colors">
+                    <div className="w-12 h-12 rounded-2xl bg-background border border-border flex items-center justify-center group-hover:border-slate-700/30 transition-colors">
                       <FileText className="w-5 h-5 text-muted-foreground group-hover:text-slate-700" />
                     </div>
                     <div>

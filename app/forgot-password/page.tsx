@@ -50,12 +50,12 @@ export default function ForgotPasswordPage() {
       <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden text-foreground">
         {/* Animated background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-slate-700/10 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-slate-500/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-slate-500/20 rounded-full blur-[160px] animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-slate-400/10 rounded-full blur-[140px] animate-pulse" />
         </div>
 
         <div className="w-full max-w-md relative z-10">
-          <Card className="bg-card/80 backdrop-blur-xl border-border shadow-2xl">
+          <Card className="bg-card/40 backdrop-blur-3xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]">
             <CardContent className="py-12 text-center space-y-6">
               <div className="flex justify-center">
                 <div className="relative">
@@ -73,7 +73,7 @@ export default function ForgotPasswordPage() {
                 </p>
               </div>
 
-              <div className="bg-slate-700/5 border border-slate-700/20 rounded-2xl p-6 space-y-3 text-left">
+              <div className="bg-slate-700/5 border border-slate-700/20 rounded-[2rem] p-6 space-y-3 text-left">
                 <p className="text-sm text-foreground font-black uppercase tracking-widest">Next steps:</p>
                 <ol className="text-sm text-muted-foreground space-y-2 font-medium">
                   <li className="flex gap-3">
@@ -99,7 +99,7 @@ export default function ForgotPasswordPage() {
               </p>
 
               <Link href="/auth/login">
-                <Button className="w-full bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black h-12 rounded-xl">
+                <Button className="w-full bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black h-12 rounded-2xl">
                   Back to Login
                 </Button>
               </Link>
@@ -114,8 +114,8 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden text-foreground">
       {/* Animated background gradient orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-slate-700/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-slate-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-slate-500/20 rounded-full blur-[160px] animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-slate-400/10 rounded-full blur-[140px] animate-pulse" />
       </div>
 
       {/* Main card */}
@@ -131,7 +131,7 @@ export default function ForgotPasswordPage() {
           </div>
         </div>
 
-        <Card className="bg-card/80 backdrop-blur-xl border-border shadow-2xl">
+        <Card className="bg-card/40 backdrop-blur-3xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]">
           <CardHeader className="space-y-1">
             <CardTitle className="text-foreground text-2xl font-black">Identify Account</CardTitle>
             <CardDescription className="text-muted-foreground font-medium">
@@ -151,7 +151,7 @@ export default function ForgotPasswordPage() {
                     placeholder="your@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/30 focus:border-slate-700 focus:ring-primary/10 transition-all rounded-2xl font-bold"
+                    className="pl-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/30 focus:border-slate-700 focus:ring-primary/10 transition-all rounded-[2rem] font-bold"
                   />
                 </div>
               </div>
@@ -160,7 +160,7 @@ export default function ForgotPasswordPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full h-14 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black text-lg rounded-2xl shadow-xl shadow-primary/20 transition-all duration-300 active:scale-95 disabled:opacity-50"
+                className="w-full h-14 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black text-lg rounded-[2rem] shadow-xl shadow-primary/20 transition-all duration-300 active:scale-95 disabled:opacity-50"
               >
                 {isLoading ? (
                   <span className="flex items-center gap-2">
@@ -186,7 +186,7 @@ export default function ForgotPasswordPage() {
             </form>
 
             {/* Security Notice */}
-            <div className="mt-8 p-4 rounded-2xl bg-muted/50 border border-border">
+            <div className="mt-8 p-4 rounded-[2rem] bg-muted/50 border border-border">
               <p className="text-[10px] text-muted-foreground font-black uppercase tracking-tighter text-center">
                 🔒 Secure transmission active. Check your email within 5 minutes.
               </p>
@@ -195,7 +195,7 @@ export default function ForgotPasswordPage() {
         </Card>
 
         <div className="mt-10 text-center text-[10px] font-black text-muted-foreground uppercase tracking-[0.4em]">
-          <p>© 2026 EL VERSE TECHNOLOGIES</p>
+          <p>© 2026 EL SPACE. A product of EL VERSE TECHNOLOGIES.</p>
         </div>
       </div>
     </div>

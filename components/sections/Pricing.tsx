@@ -21,16 +21,16 @@ export function Pricing() {
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="flex justify-center mb-12">
-            <TabsList className="grid w-full max-w-md grid-cols-2 p-1 bg-slate-200 rounded-2xl h-14">
+            <TabsList className="grid w-full max-w-md grid-cols-2 p-1 bg-slate-200 rounded-[2rem] h-14">
               <TabsTrigger
                 value="clients"
-                className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate-600 data-[state=active]:shadow-sm"
+                className="rounded-2xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate-600 data-[state=active]:shadow-sm"
               >
                 For Clients
               </TabsTrigger>
               <TabsTrigger
                 value="freelancers"
-                className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate-600 data-[state=active]:shadow-sm"
+                className="rounded-2xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate-600 data-[state=active]:shadow-sm"
               >
                 For Freelancers
               </TabsTrigger>
@@ -38,11 +38,11 @@ export function Pricing() {
           </div>
 
           <TabsContent value="clients" className="space-y-8 focus-visible:outline-none">
-            <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-200/50 overflow-hidden">
+            <div className="bg-card/40 backdrop-blur-2xl rounded-[3rem] border border-white/5 shadow-2xl overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="bg-slate-50 border-b border-slate-100">
+                    <tr className="bg-white/5 border-b border-white/10">
                       <th className="px-8 py-6 text-sm font-black uppercase tracking-widest text-slate-400">
                         Project Size
                       </th>
@@ -56,9 +56,9 @@ export function Pricing() {
                   </thead>
                   <tbody>
                     {PRICING_CLIENT_TABLE.map((row, idx) => (
-                      <tr key={idx} className="group hover:bg-slate-50/30 transition-colors border-b border-slate-50 last:border-none">
+                      <tr key={idx} className="group hover:bg-white/5 transition-colors border-b border-slate-50 last:border-none">
                         <td className="px-8 py-8">
-                          <p className="text-xl font-bold text-slate-900 mb-1">{row.size}</p>
+                          <p className="text-xl font-bold text-foreground mb-1">{row.size}</p>
                           <p className="text-sm font-bold text-slate-400">{row.range}</p>
                         </td>
                         <td className="px-8 py-8">
@@ -96,11 +96,11 @@ export function Pricing() {
           </TabsContent>
 
           <TabsContent value="freelancers" className="space-y-8 focus-visible:outline-none">
-            <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-200/50 overflow-hidden">
+            <div className="bg-card/40 backdrop-blur-2xl rounded-[3rem] border border-white/5 shadow-2xl overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="bg-slate-50 border-b border-slate-100">
+                    <tr className="bg-white/5 border-b border-white/10">
                       <th className="px-8 py-6 text-sm font-black uppercase tracking-widest text-slate-400">
                         Monthly Earnings
                       </th>
@@ -114,9 +114,9 @@ export function Pricing() {
                   </thead>
                   <tbody>
                     {PRICING_FREELANCER_TABLE.map((row, idx) => (
-                      <tr key={idx} className="group hover:bg-slate-50/30 transition-colors border-b border-slate-50 last:border-none">
+                      <tr key={idx} className="group hover:bg-white/5 transition-colors border-b border-slate-50 last:border-none">
                         <td className="px-8 py-8">
-                          <p className="text-xl font-bold text-slate-900 mb-1">{row.size}</p>
+                          <p className="text-xl font-bold text-foreground mb-1">{row.size}</p>
                           <p className="text-sm font-bold text-slate-400">{row.range}</p>
                         </td>
                         <td className="px-8 py-8">
@@ -164,7 +164,7 @@ export function Pricing() {
             <div key={i} className="flex gap-4">
               <CheckCircle2 className="w-6 h-6 text-slate-500 flex-shrink-0" />
               <div>
-                <p className="font-bold text-slate-900 mb-1">{item.title}</p>
+                <p className="font-bold text-foreground mb-1">{item.title}</p>
                 <p className="text-sm text-slate-500 leading-relaxed">{item.text}</p>
               </div>
             </div>

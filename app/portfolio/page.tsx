@@ -43,7 +43,7 @@ export default function PortfolioPage() {
             <h1 className="text-4xl font-black text-foreground tracking-tighter uppercase">Professional <span className="text-slate-700">Dossier</span></h1>
             <p className="text-muted-foreground font-medium">Showcase your elite technical deployments.</p>
           </div>
-          <Button className="bg-slate-700 hover:opacity-90 text-slate-700-foreground font-black h-12 rounded-xl border-none">
+          <Button className="bg-slate-700 hover:opacity-90 text-slate-700-foreground font-black h-12 rounded-2xl border-none">
             <Plus className="w-4 h-4 mr-2" /> New Project
           </Button>
         </div>

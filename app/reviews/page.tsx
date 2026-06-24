@@ -70,7 +70,7 @@ export default function ReviewsPage() {
               <h3 className="text-5xl font-black text-white tracking-tighter">{stats.totalReviews}</h3>
               <p className="text-slate-600 text-xs font-bold mt-2">Verified network operations</p>
             </div>
-            <div className="w-12 h-12 rounded-2xl bg-slate-800 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-[2rem] bg-slate-800 flex items-center justify-center">
               <MessageSquare className="w-6 h-6 text-slate-600" />
             </div>
           </Card>

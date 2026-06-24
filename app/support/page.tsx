@@ -38,7 +38,7 @@ export default function SupportPage() {
            <div className="relative z-10">
               <h2 className="text-4xl font-black text-white mb-6">Need immediate intervention?</h2>
               <p className="text-slate-400 text-lg mb-10 max-w-xl mx-auto font-medium">Our global operations team is online 24/7 to maintain ecosystem integrity.</p>
-              <Button className="h-16 bg-white text-slate-900 font-black px-12 rounded-2xl hover:bg-slate-400 hover:text-white transition-all uppercase tracking-widest text-sm">
+              <Button className="h-16 bg-white text-slate-900 font-black px-12 rounded-[2rem] hover:bg-slate-400 hover:text-white transition-all uppercase tracking-widest text-sm">
                  Initialize Live Support
               </Button>
            </div>

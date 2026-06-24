@@ -116,7 +116,7 @@ export default function ProfilePage() {
             <div className="space-y-8">
                <Card className="bg-slate-900/60 backdrop-blur-xl border-white/5 overflow-hidden">
                   <CardContent className="p-8 text-center">
-                     <div className="w-32 h-32 rounded-3xl bg-slate-800 border-4 border-slate-950 mx-auto shadow-2xl relative overflow-hidden flex items-center justify-center">
+                     <div className="w-32 h-32 rounded-[2.5rem] bg-slate-800 border-4 border-slate-950 mx-auto shadow-2xl relative overflow-hidden flex items-center justify-center">
                         {profile.user?.avatar_url ? (
                           <Image src={profile.user.avatar_url} alt="" fill className="object-cover" />
                         ) : (
@@ -152,7 +152,7 @@ export default function ProfilePage() {
                   </CardContent>
                </Card>
 
-               <Button className="w-full h-14 bg-white text-slate-950 hover:bg-slate-400 hover:text-white font-black text-lg transition-all rounded-2xl shadow-xl shadow-slate-500/20">
+               <Button className="w-full h-14 bg-white text-slate-950 hover:bg-slate-400 hover:text-white font-black text-lg transition-all rounded-[2rem] shadow-xl shadow-slate-500/20">
                   <MessageSquare className="w-5 h-5 mr-2" /> Message
                </Button>
             </div>
@@ -178,7 +178,7 @@ export default function ProfilePage() {
                     { label: 'Hours Logged', value: '1,200' },
                     { label: 'Avg. Rating', value: '5.0' },
                   ].map((stat, i) => (
-                    <div key={i} className="bg-white/5 border border-white/5 p-6 rounded-2xl text-center">
+                    <div key={i} className="bg-white/5 border border-white/5 p-6 rounded-[2rem] text-center">
                        <p className="text-white font-black text-2xl">{stat.value}</p>
                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-1">{stat.label}</p>
                     </div>
@@ -207,9 +207,9 @@ export default function ProfilePage() {
                         Verification History
                      </h3>
                      <div className="space-y-4">
-                        <div className="bg-white/5 border border-white/5 p-6 rounded-2xl flex items-center justify-between group cursor-pointer hover:bg-white/[0.08] transition-all">
+                        <div className="bg-white/5 border border-white/5 p-6 rounded-[2rem] flex items-center justify-between group cursor-pointer hover:bg-white/[0.08] transition-all">
                            <div className="flex items-center gap-4">
-                              <div className="w-12 h-12 bg-slate-500/10 rounded-xl flex items-center justify-center">
+                              <div className="w-12 h-12 bg-slate-500/10 rounded-2xl flex items-center justify-center">
                                  <Shield className="w-6 h-6 text-slate-400" />
                               </div>
                               <div>
@@ -265,7 +265,7 @@ export default function ProfilePage() {
                                   <p className="text-slate-200 text-sm leading-relaxed mb-4 whitespace-pre-wrap">{post.content}</p>
 
                                   {post.media_urls?.[0] && (
-                                    <div className="rounded-xl overflow-hidden mb-4 border border-white/10 relative h-64">
+                                    <div className="rounded-2xl overflow-hidden mb-4 border border-white/10 relative h-64">
                                        <Image src={post.media_urls[0]} alt="" fill className="object-cover" />
                                     </div>
                                   )}

@@ -69,7 +69,7 @@ export default function FeedManagePage() {
                 placeholder="Filter network intel..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-12 bg-background border-border text-foreground rounded-2xl h-12 focus:ring-primary/20"
+                className="pl-12 bg-background border-border text-foreground rounded-[2rem] h-12 focus:ring-primary/20"
               />
             </div>
             <div className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">
@@ -95,7 +95,7 @@ export default function FeedManagePage() {
                   <TableRow key={post.id} className="border-border hover:bg-muted/30 transition-colors group">
                     <TableCell className="px-8 py-6">
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-slate-700/10 flex items-center justify-center text-xs font-black text-slate-700 border border-slate-700/20 shadow-inner">
+                        <div className="w-10 h-10 rounded-2xl bg-slate-700/10 flex items-center justify-center text-xs font-black text-slate-700 border border-slate-700/20 shadow-inner">
                           {(post.user?.full_name || 'U').charAt(0)}
                         </div>
                         <div>
@@ -132,7 +132,7 @@ export default function FeedManagePage() {
                       {new Date(post.created_at).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="text-right px-8 py-6">
-                      <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-slate-700 hover:bg-slate-700/10 rounded-xl">
+                      <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-slate-700 hover:bg-slate-700/10 rounded-2xl">
                         <ExternalLink className="w-4 h-4" />
                       </Button>
                     </TableCell>

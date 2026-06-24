@@ -21,7 +21,7 @@ export function Testimonials() {
                 className="group relative flex flex-col h-full rounded-[2.5rem] border border-slate-200 bg-white p-10 transition-all duration-500 hover:border-transparent hover:shadow-2xl hover:shadow-slate-200/50"
               >
                 <div className="mb-8">
-                  <div className="inline-flex items-center justify-center h-12 w-12 rounded-2xl bg-slate-50 text-slate-500 mb-6 group-hover:scale-110 transition-transform duration-500">
+                  <div className="inline-flex items-center justify-center h-12 w-12 rounded-[2rem] bg-slate-50 text-slate-500 mb-6 group-hover:scale-110 transition-transform duration-500">
                     <Quote className="w-6 h-6 fill-slate-500" />
                   </div>
                   <div className="flex gap-1 mb-6">
@@ -35,7 +35,7 @@ export function Testimonials() {
                 </div>
 
                 <div className="mt-auto flex items-center gap-4">
-                  <div className="h-14 w-14 rounded-2xl bg-slate-100 flex-shrink-0 overflow-hidden">
+                  <div className="h-14 w-14 rounded-[2rem] bg-slate-100 flex-shrink-0 overflow-hidden">
                     <div className="h-full w-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center font-black text-slate-400">
                       {testimonial.author.charAt(0)}
                     </div>

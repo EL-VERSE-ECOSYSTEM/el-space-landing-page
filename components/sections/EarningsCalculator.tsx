@@ -34,19 +34,19 @@ export function EarningsCalculator() {
           description="Calculate your take-home earnings or see what you'll pay as a client with our transparent fee structure."
         />
 
-        <div className="rounded-[3rem] border border-slate-200 bg-white p-8 md:p-16 shadow-2xl shadow-slate-200/50">
+        <div className="rounded-[3.5rem] border border-white/10 bg-card/40 backdrop-blur-3xl p-8 md:p-16 shadow-2xl">
           <Tabs value={userType} onValueChange={(val) => setUserType(val as 'freelancer' | 'client')} className="w-full mb-12">
             <div className="flex justify-center">
-              <TabsList className="grid w-full max-w-md grid-cols-2 p-1 bg-slate-100 rounded-2xl h-14">
+              <TabsList className="grid w-full max-w-md grid-cols-2 p-1 bg-slate-100 rounded-[2rem] h-14">
                 <TabsTrigger
                   value="freelancer"
-                  className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate-600 data-[state=active]:shadow-sm"
+                  className="rounded-2xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate-600 data-[state=active]:shadow-sm"
                 >
                   Freelancer View
                 </TabsTrigger>
                 <TabsTrigger
                   value="client"
-                  className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate-600 data-[state=active]:shadow-sm"
+                  className="rounded-2xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate-600 data-[state=active]:shadow-sm"
                 >
                   Client View
                 </TabsTrigger>
@@ -60,7 +60,7 @@ export function EarningsCalculator() {
               <label className="text-sm font-black text-slate-400 uppercase tracking-widest">
                 Project Value
               </label>
-              <span className="text-4xl font-black text-slate-900">${projectValue.toLocaleString()}</span>
+              <span className="text-4xl font-black text-foreground">${projectValue.toLocaleString()}</span>
             </div>
             <Slider
               value={[projectValue]}
@@ -78,9 +78,9 @@ export function EarningsCalculator() {
 
           {/* Results */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="rounded-[2rem] bg-slate-50 border border-slate-100 p-8 transition-all hover:bg-white hover:shadow-xl hover:shadow-slate-100">
+            <div className="rounded-[2rem] bg-white/5 border border-white/10 p-8 transition-all hover:bg-white/10 hover:shadow-xl hover:shadow-slate-100">
               <p className="mb-2 text-xs font-black text-slate-400 uppercase tracking-widest">EL SPACE Fee</p>
-              <p className="text-3xl font-black text-slate-900">
+              <p className="text-3xl font-black text-foreground">
                 ${fee.toFixed(2)}
               </p>
               <p className="mt-4 text-sm font-bold text-slate-400 leading-relaxed">
@@ -93,7 +93,7 @@ export function EarningsCalculator() {
               <p className={`text-4xl font-black ${userType === 'freelancer' ? 'text-slate-600' : 'text-slate-600'}`}>
                 ${earnings.toFixed(2)}
               </p>
-              <p className="mt-4 text-sm font-bold text-slate-900">
+              <p className="mt-4 text-sm font-bold text-foreground">
                 That&apos;s {userType === 'freelancer' ? (earnings / projectValue * 100).toFixed(1) : (fee / projectValue * 100).toFixed(1)}% {userType === 'freelancer' ? 'of the project value' : 'above project cost'}
               </p>
             </div>
@@ -110,8 +110,8 @@ export function EarningsCalculator() {
                 { name: 'Fiverr', fee: '20%', color: 'text-slate-400' },
                 { name: 'EL SPACE', fee: '3-5%', color: 'text-slate-600 font-black' }
               ].map((plat, i) => (
-                <div key={i} className="flex items-center justify-between px-6 py-4 rounded-2xl bg-slate-50 border border-slate-100">
-                  <span className="font-bold text-slate-900">{plat.name}</span>
+                <div key={i} className="flex items-center justify-between px-6 py-4 rounded-[2rem] bg-slate-50 border border-slate-100">
+                  <span className="font-bold text-foreground">{plat.name}</span>
                   <span className={`text-lg ${plat.color}`}>{plat.fee}</span>
                 </div>
               ))}

@@ -53,7 +53,7 @@ export default function DisputesPage() {
             <Card key={dispute.id} className="bg-card border border-border rounded-[2rem] overflow-hidden hover:border-slate-700/20 transition-all group shadow-lg">
               <CardContent className="p-8 flex items-center justify-between">
                 <div className="flex items-center gap-6">
-                  <div className="w-14 h-14 rounded-2xl bg-destructive/10 text-destructive flex items-center justify-center">
+                  <div className="w-14 h-14 rounded-[2rem] bg-destructive/10 text-destructive flex items-center justify-center">
                     <ShieldAlert className="w-6 h-6" />
                   </div>
                   <div>
@@ -75,12 +75,12 @@ export default function DisputesPage() {
             </Card>
           )) : !loading && (
             <div className="bg-card border border-border rounded-[2.5rem] p-12 text-center shadow-xl">
-              <div className="w-20 h-20 bg-muted rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-sm">
+              <div className="w-20 h-20 bg-muted rounded-[2.5rem] flex items-center justify-center mx-auto mb-8 shadow-sm">
                 <ShieldAlert className="w-10 h-10 text-muted-foreground/30" />
               </div>
               <h3 className="text-2xl font-black text-foreground uppercase tracking-tight">Environment Clear</h3>
               <p className="text-muted-foreground max-w-md mx-auto font-medium leading-relaxed">No active disputes detected in your workspace. Our escrow and milestone system is maintaining operational harmony.</p>
-              <Button variant="outline" className="mt-8 border-border text-muted-foreground hover:text-foreground rounded-xl h-12 px-8">
+              <Button variant="outline" className="mt-8 border-border text-muted-foreground hover:text-foreground rounded-2xl h-12 px-8">
                 Contact Security Protocol
               </Button>
             </div>

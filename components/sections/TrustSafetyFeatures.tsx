@@ -95,7 +95,7 @@ export function TrustSafetyFeatures() {
               return (
                 <Card key={idx} className="group border-slate-200 bg-white rounded-[2rem] hover:border-transparent hover:shadow-2xl hover:shadow-slate-500/10 transition-all duration-500 overflow-hidden">
                   <CardHeader className="p-8 pb-4">
-                    <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-50 text-slate-600 group-hover:scale-110 transition-transform duration-500">
+                    <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-[2rem] bg-slate-50 text-slate-600 group-hover:scale-110 transition-transform duration-500">
                       <Icon className="w-7 h-7" />
                     </div>
                     <CardTitle className="text-xl font-bold text-slate-900">{feature.title}</CardTitle>
@@ -123,7 +123,7 @@ export function TrustSafetyFeatures() {
               return (
                 <Card key={idx} className="group border-slate-200 bg-white rounded-[2rem] hover:border-transparent hover:shadow-2xl hover:shadow-slate-500/10 transition-all duration-500 overflow-hidden">
                   <CardHeader className="p-8 pb-4">
-                    <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-50 text-slate-600 group-hover:scale-110 transition-transform duration-500">
+                    <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-[2rem] bg-slate-50 text-slate-600 group-hover:scale-110 transition-transform duration-500">
                       <Icon className="w-7 h-7" />
                     </div>
                     <CardTitle className="text-xl font-bold text-slate-900">{feature.title}</CardTitle>
@@ -151,7 +151,7 @@ export function TrustSafetyFeatures() {
               return (
                 <Card key={idx} className="group border-slate-200 bg-white rounded-[2rem] hover:border-transparent hover:shadow-2xl hover:shadow-slate-500/10 transition-all duration-500 overflow-hidden">
                   <CardHeader className="p-8 pb-4">
-                    <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-50 text-slate-600 group-hover:scale-110 transition-transform duration-500">
+                    <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-[2rem] bg-slate-50 text-slate-600 group-hover:scale-110 transition-transform duration-500">
                       <Icon className="w-7 h-7" />
                     </div>
                     <CardTitle className="text-xl font-bold text-slate-900">{feature.title}</CardTitle>

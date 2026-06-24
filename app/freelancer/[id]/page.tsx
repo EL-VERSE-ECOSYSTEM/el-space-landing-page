@@ -113,7 +113,7 @@ export default function FreelancerProfilePage() {
                     </div>
                   </div>
                 </div>
-                <Button className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black px-6 rounded-xl">Initialize Contract</Button>
+                <Button className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black px-6 rounded-2xl">Initialize Contract</Button>
               </div>
             </CardContent>
           </Card>
@@ -125,7 +125,7 @@ export default function FreelancerProfilePage() {
             </CardHeader>
             <CardContent className="space-y-2">
               {badges.map((badge) => (
-                <div key={badge.id} className="flex items-center gap-2 p-2 rounded-xl bg-muted/50 border border-border">
+                <div key={badge.id} className="flex items-center gap-2 p-2 rounded-2xl bg-muted/50 border border-border">
                   <span className="text-lg text-slate-700">{badge.icon}</span>
                   <div className="text-[10px]">
                     <p className="text-foreground font-black uppercase tracking-tight">{badge.name}</p>
@@ -139,11 +139,11 @@ export default function FreelancerProfilePage() {
 
         {/* Tabs */}
         <Tabs defaultValue="about" className="space-y-6">
-          <TabsList className="bg-card border border-border p-1 rounded-2xl w-full justify-start overflow-x-auto">
-            <TabsTrigger value="about" className="rounded-xl px-6 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black uppercase text-[10px] tracking-widest">Dossier</TabsTrigger>
-            <TabsTrigger value="portfolio" className="rounded-xl px-6 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black uppercase text-[10px] tracking-widest">Deployments</TabsTrigger>
-            <TabsTrigger value="reviews" className="rounded-xl px-6 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black uppercase text-[10px] tracking-widest">Nexus Feedback</TabsTrigger>
-            <TabsTrigger value="skills" className="rounded-xl px-6 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black uppercase text-[10px] tracking-widest">Intelligence Stack</TabsTrigger>
+          <TabsList className="bg-card border border-border p-1 rounded-[2rem] w-full justify-start overflow-x-auto">
+            <TabsTrigger value="about" className="rounded-2xl px-6 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black uppercase text-[10px] tracking-widest">Dossier</TabsTrigger>
+            <TabsTrigger value="portfolio" className="rounded-2xl px-6 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black uppercase text-[10px] tracking-widest">Deployments</TabsTrigger>
+            <TabsTrigger value="reviews" className="rounded-2xl px-6 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black uppercase text-[10px] tracking-widest">Nexus Feedback</TabsTrigger>
+            <TabsTrigger value="skills" className="rounded-2xl px-6 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black uppercase text-[10px] tracking-widest">Intelligence Stack</TabsTrigger>
           </TabsList>
 
           <TabsContent value="about">
@@ -156,15 +156,15 @@ export default function FreelancerProfilePage() {
                   {profile.bio || 'No intelligence data provided yet.'}
                 </p>
                 <div className="grid md:grid-cols-3 gap-6 mt-10">
-                  <div className="p-4 bg-muted/50 rounded-2xl border border-border">
+                  <div className="p-4 bg-muted/50 rounded-[2rem] border border-border">
                     <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Active Duration</p>
                     <p className="text-2xl font-black text-foreground">{profile.years_experience || 0} Cycles</p>
                   </div>
-                  <div className="p-4 bg-muted/50 rounded-2xl border border-border">
+                  <div className="p-4 bg-muted/50 rounded-[2rem] border border-border">
                     <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Settlement Rate</p>
                     <p className="text-2xl font-black text-foreground">${profile.hourly_rate || 0}/HR</p>
                   </div>
-                  <div className="p-4 bg-muted/50 rounded-2xl border border-border">
+                  <div className="p-4 bg-muted/50 rounded-[2rem] border border-border">
                     <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Operations Neutralized</p>
                     <p className="text-2xl font-black text-foreground">0</p>
                   </div>
@@ -252,7 +252,7 @@ export default function FreelancerProfilePage() {
                 <div className="flex flex-wrap gap-3">
                   {profile.skills && profile.skills.length > 0 ? (
                     profile.skills.map((skill: string) => (
-                      <Badge key={skill} className="bg-slate-700/10 text-slate-700 border-none font-black uppercase px-4 py-2 rounded-xl text-xs tracking-widest">
+                      <Badge key={skill} className="bg-slate-700/10 text-slate-700 border-none font-black uppercase px-4 py-2 rounded-2xl text-xs tracking-widest">
                         {skill}
                       </Badge>
                     ))

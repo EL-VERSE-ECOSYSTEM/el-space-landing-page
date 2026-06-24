@@ -45,7 +45,7 @@ export default function PaymentsPage() {
             <Card key={p.id} className="bg-card border border-border rounded-[2rem] overflow-hidden hover:border-slate-700/20 transition-all group shadow-sm">
               <CardContent className="p-8 flex items-center justify-between">
                 <div className="flex items-center gap-6">
-                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${p.amount > 0 ? 'bg-slate-500/10 text-slate-500' : 'bg-muted text-muted-foreground'}`}>
+                  <div className={`w-14 h-14 rounded-[2rem] flex items-center justify-center ${p.amount > 0 ? 'bg-slate-500/10 text-slate-500' : 'bg-muted text-muted-foreground'}`}>
                     {p.amount > 0 ? <ArrowDownLeft className="w-6 h-6" /> : <ArrowUpRight className="w-6 h-6" />}
                   </div>
                   <div>
@@ -65,7 +65,7 @@ export default function PaymentsPage() {
             </Card>
           )) : !loading && (
             <div className="py-24 text-center bg-card border-2 border-dashed border-border rounded-[3rem]">
-              <div className="w-20 h-20 bg-muted rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+              <div className="w-20 h-20 bg-muted rounded-[2.5rem] flex items-center justify-center mx-auto mb-6 shadow-sm">
                 <History className="w-10 h-10 text-muted-foreground/30" />
               </div>
               <p className="text-foreground font-black text-xl uppercase">Ledger Clear</p>

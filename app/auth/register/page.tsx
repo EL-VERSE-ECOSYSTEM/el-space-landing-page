@@ -261,7 +261,7 @@ export default function RegisterPage() {
                 const isCompleted = i < currentIndex;
                 return (
                   <React.Fragment key={s}>
-                    <div className={`relative flex items-center justify-center w-12 h-12 rounded-2xl border-2 transition-all duration-500 ${
+                    <div className={`relative flex items-center justify-center w-12 h-12 rounded-[2rem] border-2 transition-all duration-500 ${
                       isCompleted ? 'bg-slate-700 border-slate-700 text-slate-700-foreground shadow-lg shadow-primary/20' :
                       isActive ? 'bg-slate-700/10 border-slate-700 text-slate-700 shadow-md shadow-primary/10' :
                       'border-border text-muted-foreground'
@@ -283,14 +283,14 @@ export default function RegisterPage() {
         <div className="bg-card/40 backdrop-blur-3xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] rounded-[3rem] p-8 md:p-12 shadow-2xl shadow-primary/5 overflow-hidden">
           {/* Status Messages */}
           {error && (
-            <div className="mb-8 p-4 bg-destructive/10 border border-destructive/20 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
+            <div className="mb-8 p-4 bg-destructive/10 border border-destructive/20 rounded-[2rem] flex gap-3 animate-in fade-in slide-in-from-top-2">
               <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0" />
               <p className="text-destructive text-sm font-bold leading-tight">{error}</p>
             </div>
           )}
 
           {success && (
-            <div className="mb-8 p-4 bg-slate-500/10 border border-slate-500/20 rounded-2xl flex gap-3 animate-in fade-in slide-in-from-top-2">
+            <div className="mb-8 p-4 bg-slate-500/10 border border-slate-500/20 rounded-[2rem] flex gap-3 animate-in fade-in slide-in-from-top-2">
               <CheckCircle className="w-5 h-5 text-slate-500 flex-shrink-0" />
               <p className="text-slate-500 text-sm font-bold leading-tight">{success}</p>
             </div>
@@ -310,7 +310,7 @@ export default function RegisterPage() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
-                      className="pl-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-slate-700 focus:ring-primary/10 transition-all rounded-2xl font-bold"
+                      className="pl-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-slate-700 focus:ring-primary/10 transition-all rounded-[2rem] font-bold"
                     />
                   </div>
                 </div>
@@ -326,7 +326,7 @@ export default function RegisterPage() {
                       onChange={(e) => validateEmail(e.target.value)}
                       required
                       className={cn(
-                        "pl-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-slate-700 focus:ring-primary/10 transition-all rounded-2xl font-bold",
+                        "pl-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-slate-700 focus:ring-primary/10 transition-all rounded-[2rem] font-bold",
                         emailError && "border-destructive focus:border-destructive focus:ring-destructive/10"
                       )}
                     />
@@ -344,7 +344,7 @@ export default function RegisterPage() {
                       value={password}
                       onChange={(e) => checkPasswordStrength(e.target.value)}
                       required
-                      className="pl-12 pr-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-slate-700 focus:ring-primary/10 transition-all rounded-2xl font-bold"
+                      className="pl-12 pr-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-slate-700 focus:ring-primary/10 transition-all rounded-[2rem] font-bold"
                     />
                     <button
                       type="button"
@@ -392,7 +392,7 @@ export default function RegisterPage() {
                     onChange={(e) => validateConfirmPassword(e.target.value)}
                     required
                     className={cn(
-                      "h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-slate-700 focus:ring-primary/10 transition-all rounded-2xl font-bold",
+                      "h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 focus:border-slate-700 focus:ring-primary/10 transition-all rounded-[2rem] font-bold",
                       confirmPasswordError && "border-destructive focus:border-destructive focus:ring-destructive/10"
                     )}
                   />
@@ -416,7 +416,7 @@ export default function RegisterPage() {
                         : 'border-border bg-muted/50 hover:border-slate-700/50'
                     }`}
                   >
-                    <div className={`flex h-12 w-12 items-center justify-center rounded-xl transition-all ${
+                    <div className={`flex h-12 w-12 items-center justify-center rounded-2xl transition-all ${
                       userType === 'client' ? 'bg-slate-700 text-slate-700-foreground' : 'bg-muted text-muted-foreground'
                     }`}>
                       <Briefcase className="w-6 h-6" />
@@ -436,7 +436,7 @@ export default function RegisterPage() {
                         : 'border-border bg-muted/50 hover:border-slate-700/50'
                     }`}
                   >
-                    <div className={`flex h-12 w-12 items-center justify-center rounded-xl transition-all ${
+                    <div className={`flex h-12 w-12 items-center justify-center rounded-2xl transition-all ${
                       userType === 'entrepreneur' ? 'bg-slate-700 text-slate-700-foreground' : 'bg-muted text-muted-foreground'
                     }`}>
                       <Zap className="w-6 h-6" />
@@ -456,7 +456,7 @@ export default function RegisterPage() {
                         : 'border-border bg-muted/50 hover:border-slate-700/50'
                     }`}
                   >
-                    <div className={`flex h-12 w-12 items-center justify-center rounded-xl transition-all ${
+                    <div className={`flex h-12 w-12 items-center justify-center rounded-2xl transition-all ${
                       userType === 'business' ? 'bg-slate-700 text-slate-700-foreground' : 'bg-muted text-muted-foreground'
                     }`}>
                       <Building2 className="w-6 h-6" />
@@ -476,7 +476,7 @@ export default function RegisterPage() {
                         : 'border-border bg-muted/50 hover:border-slate-700/50'
                     }`}
                   >
-                    <div className={`flex h-12 w-12 items-center justify-center rounded-xl transition-all ${
+                    <div className={`flex h-12 w-12 items-center justify-center rounded-2xl transition-all ${
                       userType === 'enterprise' ? 'bg-slate-700 text-slate-700-foreground' : 'bg-muted text-muted-foreground'
                     }`}>
                       <Globe className="w-6 h-6" />
@@ -496,7 +496,7 @@ export default function RegisterPage() {
                         : 'border-border bg-muted/50 hover:border-accent/50'
                     }`}
                   >
-                    <div className={`flex h-12 w-12 items-center justify-center rounded-xl transition-all ${
+                    <div className={`flex h-12 w-12 items-center justify-center rounded-2xl transition-all ${
                       userType === 'freelancer' ? 'bg-accent text-accent-foreground' : 'bg-muted text-muted-foreground'
                     }`}>
                       <Rocket className="w-6 h-6" />
@@ -520,8 +520,8 @@ export default function RegisterPage() {
 
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
-                  <GoogleSignInButton fullWidth variant="outline" className="h-14 rounded-2xl font-bold border-2 border-border" />
-                  <GitHubSignInButton fullWidth variant="outline" className="h-14 rounded-2xl font-bold border-2 border-border" />
+                  <GoogleSignInButton fullWidth variant="outline" className="h-14 rounded-[2rem] font-bold border-2 border-border" />
+                  <GitHubSignInButton fullWidth variant="outline" className="h-14 rounded-[2rem] font-bold border-2 border-border" />
                 </div>
                 <p className="text-[9px] text-center text-muted-foreground font-black uppercase tracking-widest">
                   We only access your public profile and email address
@@ -580,7 +580,7 @@ export default function RegisterPage() {
                 <div className="space-y-2">
                   <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Official Government ID *</Label>
                   <Select value={idType} onValueChange={setIdType}>
-                    <SelectTrigger className="h-14 bg-muted border-border text-foreground rounded-2xl font-bold">
+                    <SelectTrigger className="h-14 bg-muted border-border text-foreground rounded-[2rem] font-bold">
                       <SelectValue placeholder="Select ID type" />
                     </SelectTrigger>
                     <SelectContent className="bg-card border-border">
@@ -599,7 +599,7 @@ export default function RegisterPage() {
                     placeholder="Enter ID serial number"
                     value={idSerial}
                     onChange={(e) => setIdSerial(e.target.value)}
-                    className="h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 rounded-2xl font-bold"
+                    className="h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 rounded-[2rem] font-bold"
                   />
                 </div>
 
@@ -607,11 +607,11 @@ export default function RegisterPage() {
                   <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Upload ID Document (Valid Passport or Driver License) *</Label>
                   <div className="flex items-center gap-6">
                     {idFilePreview ? (
-                      <div className="relative w-24 h-24 rounded-3xl overflow-hidden border-2 border-slate-700/20 shadow-lg">
+                      <div className="relative w-24 h-24 rounded-[2.5rem] overflow-hidden border-2 border-slate-700/20 shadow-lg">
                         <Image src={idFilePreview} alt="ID preview" fill className="object-cover" />
                       </div>
                     ) : (
-                      <div className="w-24 h-24 rounded-3xl bg-muted flex items-center justify-center border-2 border-dashed border-border">
+                      <div className="w-24 h-24 rounded-[2.5rem] bg-muted flex items-center justify-center border-2 border-dashed border-border">
                         <ShieldCheck className="w-8 h-8 text-muted-foreground/30" />
                       </div>
                     )}
@@ -641,14 +641,14 @@ export default function RegisterPage() {
                       placeholder="Legal business name"
                       value={businessName}
                       onChange={(e) => setBusinessName(e.target.value)}
-                      className="h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 rounded-2xl font-bold"
+                      className="h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 rounded-[2rem] font-bold"
                     />
                   </div>
 
                   <div className="space-y-2">
                     <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Business Type *</Label>
                     <Select value={businessType} onValueChange={setBusinessType}>
-                      <SelectTrigger className="h-14 bg-muted border-border text-foreground rounded-2xl font-bold">
+                      <SelectTrigger className="h-14 bg-muted border-border text-foreground rounded-[2rem] font-bold">
                         <SelectValue placeholder="Select business type" />
                       </SelectTrigger>
                       <SelectContent className="bg-card border-border">
@@ -664,7 +664,7 @@ export default function RegisterPage() {
                   <div className="space-y-2">
                     <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Sector/Industry *</Label>
                     <Select value={businessSector} onValueChange={setBusinessSector}>
-                      <SelectTrigger className="h-14 bg-muted border-border text-foreground rounded-2xl font-bold">
+                      <SelectTrigger className="h-14 bg-muted border-border text-foreground rounded-[2rem] font-bold">
                         <SelectValue placeholder="Select sector" />
                       </SelectTrigger>
                       <SelectContent className="bg-card border-border max-h-[300px]">
@@ -680,7 +680,7 @@ export default function RegisterPage() {
                   <div className="space-y-2">
                     <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Company Size</Label>
                     <Select value={companySize} onValueChange={setCompanySize}>
-                      <SelectTrigger className="h-14 bg-muted border-border text-foreground rounded-2xl font-bold">
+                      <SelectTrigger className="h-14 bg-muted border-border text-foreground rounded-[2rem] font-bold">
                         <SelectValue placeholder="Select size" />
                       </SelectTrigger>
                       <SelectContent className="bg-card border-border">
@@ -700,7 +700,7 @@ export default function RegisterPage() {
                       placeholder="business@example.com"
                       value={businessEmail}
                       onChange={(e) => setBusinessEmail(e.target.value)}
-                      className="h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 rounded-2xl font-bold"
+                      className="h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 rounded-[2rem] font-bold"
                     />
                   </div>
 
@@ -713,7 +713,7 @@ export default function RegisterPage() {
                         placeholder="https://example.com"
                         value={businessWebsite}
                         onChange={(e) => setBusinessWebsite(e.target.value)}
-                        className="pl-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 rounded-2xl font-bold"
+                        className="pl-12 h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 rounded-[2rem] font-bold"
                       />
                     </div>
                   </div>
@@ -722,7 +722,7 @@ export default function RegisterPage() {
                     <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Proof of Business Registration (Optional)</Label>
                     <div className="flex items-center gap-6">
                       {businessRegFilePreview ? (
-                        <div className="relative w-24 h-24 rounded-3xl overflow-hidden border-2 border-slate-700/20 shadow-lg flex items-center justify-center bg-muted">
+                        <div className="relative w-24 h-24 rounded-[2.5rem] overflow-hidden border-2 border-slate-700/20 shadow-lg flex items-center justify-center bg-muted">
                           {businessRegFile?.type === "application/pdf" ? (
                              <FileText className="w-10 h-10 text-slate-700" />
                           ) : (
@@ -730,7 +730,7 @@ export default function RegisterPage() {
                           )}
                         </div>
                       ) : (
-                        <div className="w-24 h-24 rounded-3xl bg-muted flex items-center justify-center border-2 border-dashed border-border">
+                        <div className="w-24 h-24 rounded-[2.5rem] bg-muted flex items-center justify-center border-2 border-dashed border-border">
                           <Building2 className="w-8 h-8 text-muted-foreground/30" />
                         </div>
                       )}
@@ -761,7 +761,7 @@ export default function RegisterPage() {
                       placeholder="Search technologies..."
                       value={techStackSearch}
                       onChange={(e) => setTechStackSearch(e.target.value)}
-                      className="h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 rounded-2xl font-bold mb-4"
+                      className="h-14 bg-muted border-border text-foreground placeholder:text-muted-foreground/50 rounded-[2rem] font-bold mb-4"
                     />
                     <div className="max-h-[200px] overflow-y-auto space-y-2 bg-muted/30 rounded-[1.5rem] p-4 border border-border">
                       <div className="flex flex-wrap gap-2">
@@ -771,7 +771,7 @@ export default function RegisterPage() {
                             type="button"
                             onClick={() => toggleTechStack(tech)}
                             className={cn(
-                              "px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border-2",
+                              "px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border-2",
                               techStack.includes(tech)
                                 ? "bg-accent border-accent text-accent-foreground shadow-md shadow-accent/20"
                                 : "bg-card border-border text-muted-foreground hover:border-accent/50"
@@ -803,7 +803,7 @@ export default function RegisterPage() {
                       value={aboutYou}
                       onChange={(e) => setAboutYou(e.target.value)}
                       rows={4}
-                      className="bg-muted border-border text-foreground placeholder:text-muted-foreground/50 rounded-2xl font-bold p-6 focus:border-accent"
+                      className="bg-muted border-border text-foreground placeholder:text-muted-foreground/50 rounded-[2rem] font-bold p-6 focus:border-accent"
                     />
                   </div>
 
@@ -815,7 +815,7 @@ export default function RegisterPage() {
                         placeholder="https://github.com/yourusername"
                         value={githubUrl}
                         onChange={(e) => setGithubUrl(e.target.value)}
-                        className="h-14 bg-muted border-border text-foreground rounded-2xl font-bold"
+                        className="h-14 bg-muted border-border text-foreground rounded-[2rem] font-bold"
                       />
                     </div>
 
@@ -823,16 +823,16 @@ export default function RegisterPage() {
                       <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Profile Photo *</Label>
                       <div className="flex items-center gap-4">
                         {profilePicturePreview ? (
-                          <div className="relative w-14 h-14 rounded-2xl overflow-hidden border-2 border-accent/20 shadow-md">
+                          <div className="relative w-14 h-14 rounded-[2rem] overflow-hidden border-2 border-accent/20 shadow-md">
                             <Image src={profilePicturePreview} alt="Profile preview" fill className="object-cover" />
                           </div>
                         ) : (
-                          <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center border-2 border-dashed border-border">
+                          <div className="w-14 h-14 rounded-[2rem] bg-muted flex items-center justify-center border-2 border-dashed border-border">
                             <User className="w-6 h-6 text-muted-foreground/30" />
                           </div>
                         )}
                         <label className="flex-1 cursor-pointer">
-                          <div className="border-2 border-dashed border-border rounded-2xl p-4 text-center hover:border-accent hover:bg-accent/5 transition-all">
+                          <div className="border-2 border-dashed border-border rounded-[2rem] p-4 text-center hover:border-accent hover:bg-accent/5 transition-all">
                             <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Select Image</p>
                             <input
                               type="file"
@@ -858,13 +858,13 @@ export default function RegisterPage() {
                               newLinks[index] = e.target.value;
                               setProjectLinks(newLinks);
                             }}
-                            className="h-14 bg-muted border-border text-foreground rounded-2xl font-bold flex-1"
+                            className="h-14 bg-muted border-border text-foreground rounded-[2rem] font-bold flex-1"
                           />
                           {index === projectLinks.length - 1 && projectLinks.length < 5 && (
                             <Button
                               type="button"
                               onClick={() => setProjectLinks([...projectLinks, ""])}
-                              className="h-14 w-14 rounded-2xl bg-accent/10 text-accent hover:bg-accent/20"
+                              className="h-14 w-14 rounded-[2rem] bg-accent/10 text-accent hover:bg-accent/20"
                             >
                               +
                             </Button>
@@ -876,7 +876,7 @@ export default function RegisterPage() {
                     <div className="md:col-span-2 space-y-2">
                       <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">CV/Resume (PDF)</Label>
                       <label className="cursor-pointer block">
-                        <div className="border-2 border-dashed border-border rounded-2xl p-4 text-center hover:border-accent hover:bg-accent/5 transition-all h-[84px] flex flex-col justify-center">
+                        <div className="border-2 border-dashed border-border rounded-[2rem] p-4 text-center hover:border-accent hover:bg-accent/5 transition-all h-[84px] flex flex-col justify-center">
                           <Upload className="w-5 h-5 mx-auto mb-1 text-muted-foreground" />
                           <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest truncate px-2">
                             {cvFile ? cvFile.name : "Select Resume"}
@@ -955,7 +955,7 @@ export default function RegisterPage() {
                       placeholder="••••"
                       value={transactionPin}
                       onChange={(e) => setTransactionPin(e.target.value.replace(/[^0-9]/g, ''))}
-                      className="h-20 text-center text-4xl tracking-[1em] bg-muted border-border text-foreground rounded-3xl font-black focus:border-slate-500"
+                      className="h-20 text-center text-4xl tracking-[1em] bg-muted border-border text-foreground rounded-[2.5rem] font-black focus:border-slate-500"
                     />
                   </div>
 
@@ -967,7 +967,7 @@ export default function RegisterPage() {
                       placeholder="••••"
                       value={confirmPin}
                       onChange={(e) => setConfirmPin(e.target.value.replace(/[^0-9]/g, ''))}
-                      className="h-20 text-center text-4xl tracking-[1em] bg-muted border-border text-foreground rounded-3xl font-black focus:border-slate-500"
+                      className="h-20 text-center text-4xl tracking-[1em] bg-muted border-border text-foreground rounded-[2.5rem] font-black focus:border-slate-500"
                     />
                   </div>
                </div>

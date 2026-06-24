@@ -124,7 +124,7 @@ export default function CookiePolicyPage() {
             <p className="text-muted-foreground leading-relaxed font-medium">
               If you have inquiries regarding the data matrix, contact the Command Center:
             </p>
-            <div className="bg-card border border-border rounded-2xl p-8 mt-6 shadow-inner">
+            <div className="bg-card border border-border rounded-[2rem] p-8 mt-6 shadow-inner">
               <p className="text-sm font-medium text-muted-foreground mb-2"><strong className="text-foreground uppercase tracking-widest text-[10px]">Secure Link:</strong> privacy@elspace.com</p>
               <p className="text-sm font-medium text-muted-foreground"><strong className="text-foreground uppercase tracking-widest text-[10px]">Data Node Officer:</strong> dpo@elspace.com</p>
             </div>

@@ -100,7 +100,7 @@ export default function MilestonesHub() {
               </h1>
               <p className="text-muted-foreground mt-2 text-lg font-medium">Precision tracking for active deployments</p>
             </div>
-            <Badge className="bg-muted text-muted-foreground border-border px-4 py-2 rounded-xl font-black text-[10px] tracking-widest uppercase">
+            <Badge className="bg-muted text-muted-foreground border-border px-4 py-2 rounded-2xl font-black text-[10px] tracking-widest uppercase">
               {milestones.length} ACTIVE TARGETS
             </Badge>
           </div>
@@ -108,7 +108,7 @@ export default function MilestonesHub() {
           {/* Overdue Warning */}
           {milestones.some(m => m.status === 'in_progress' && new Date(m.due_date) < new Date()) && (
             <div className="bg-destructive/10 border border-destructive/30 rounded-[2rem] p-6 flex items-center gap-6 animate-pulse">
-               <div className="w-12 h-12 rounded-2xl bg-destructive flex items-center justify-center shadow-lg shadow-destructive/20">
+               <div className="w-12 h-12 rounded-[2rem] bg-destructive flex items-center justify-center shadow-lg shadow-destructive/20">
                   <AlertCircle className="w-6 h-6 text-destructive-foreground" />
                </div>
                <div>
@@ -165,14 +165,14 @@ export default function MilestonesHub() {
                              </div>
 
                              <div className="flex gap-3 w-full md:w-auto">
-                                <Button variant="outline" className="flex-1 border-border text-foreground font-black rounded-xl px-6 h-12 hover:bg-muted">
+                                <Button variant="outline" className="flex-1 border-border text-foreground font-black rounded-2xl px-6 h-12 hover:bg-muted">
                                    Details
                                 </Button>
                                 {user?.user_type === 'freelancer' && milestone.status === 'in_progress' && (
                                   <Button
                                     disabled={!!processing}
                                     onClick={() => handleUpdateStatus(milestone.id, 'submitted')}
-                                    className="flex-1 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black rounded-xl px-8 h-12 shadow-lg shadow-primary/20"
+                                    className="flex-1 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black rounded-2xl px-8 h-12 shadow-lg shadow-primary/20"
                                   >
                                      {processing === milestone.id ? '...' : 'Submit'} <Send className="w-4 h-4 ml-2" />
                                   </Button>
@@ -181,7 +181,7 @@ export default function MilestonesHub() {
                                   <Button
                                     disabled={!!processing}
                                     onClick={() => handleUpdateStatus(milestone.id, 'approved')}
-                                    className="flex-1 bg-slate-500 hover:bg-slate-500/90 text-slate-500-foreground font-black rounded-xl px-8 h-12 shadow-lg shadow-success/20"
+                                    className="flex-1 bg-slate-500 hover:bg-slate-500/90 text-slate-500-foreground font-black rounded-2xl px-8 h-12 shadow-lg shadow-success/20"
                                   >
                                      {processing === milestone.id ? '...' : 'Approve'} <CheckCircle className="w-4 h-4 ml-2" />
                                   </Button>
@@ -197,7 +197,7 @@ export default function MilestonesHub() {
                   <CheckCircle className="w-12 h-12 text-muted-foreground/30 mx-auto mb-4" />
                   <h3 className="text-xl font-black text-foreground uppercase tracking-tight">Signal Neutral</h3>
                   <p className="text-muted-foreground mt-2 font-medium">All mission objectives are currently synchronized.</p>
-                  <Button onClick={() => router.push('/jobs')} className="mt-10 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black rounded-xl h-14 px-10 shadow-xl shadow-primary/20">Hunt New Missions</Button>
+                  <Button onClick={() => router.push('/jobs')} className="mt-10 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black rounded-2xl h-14 px-10 shadow-xl shadow-primary/20">Hunt New Missions</Button>
                </div>
              )}
           </div>

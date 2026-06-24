@@ -99,7 +99,7 @@ export default function FreelancerHub() {
            <div className="flex-1 text-center md:text-left">
               <div className="flex flex-col md:flex-row md:items-center gap-4">
                  <h1 className="text-3xl md:text-5xl font-black text-foreground tracking-tighter">{user?.full_name}</h1>
-                 <Badge className="w-fit mx-auto md:mx-0 bg-accent/10 border-accent/20 text-accent px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em]">
+                 <Badge className="w-fit mx-auto md:mx-0 bg-accent/10 border-accent/20 text-accent px-4 py-1.5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em]">
                    TOP-RATED ELITE
                  </Badge>
               </div>
@@ -110,8 +110,8 @@ export default function FreelancerHub() {
               </div>
            </div>
            <div className="flex gap-4">
-              <Button onClick={() => router.push('/settings')} variant="outline" className="h-14 border-2 border-border text-foreground font-black rounded-2xl px-8 hover:bg-muted">Workspace Settings</Button>
-              <Button className="h-14 bg-accent hover:opacity-90 text-accent-foreground font-black px-10 rounded-2xl shadow-xl shadow-accent/20">Share Credentials</Button>
+              <Button onClick={() => router.push('/settings')} variant="outline" className="h-14 border-2 border-border text-foreground font-black rounded-[2rem] px-8 hover:bg-muted">Workspace Settings</Button>
+              <Button className="h-14 bg-accent hover:opacity-90 text-accent-foreground font-black px-10 rounded-[2rem] shadow-xl shadow-accent/20">Share Credentials</Button>
            </div>
         </div>
 
@@ -127,7 +127,7 @@ export default function FreelancerHub() {
              <Card key={i} className="bg-card border border-border hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/5 transition-all duration-500 group rounded-[2.5rem] overflow-hidden">
                 <CardContent className="p-8">
                    <div className="flex items-center justify-between mb-8">
-                      <div className={`w-14 h-14 rounded-2xl ${stat.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
+                      <div className={`w-14 h-14 rounded-[2rem] ${stat.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
                          <stat.icon className={`w-6 h-6 ${stat.iconColor}`} />
                       </div>
                    </div>
@@ -150,7 +150,7 @@ export default function FreelancerHub() {
                   <Card key={app.id} className="bg-card border border-border hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/5 transition-all duration-500 cursor-pointer group rounded-[2.5rem]">
                      <CardContent className="p-8 flex items-center justify-between">
                         <div className="flex items-center gap-8">
-                           <div className="w-20 h-20 bg-muted rounded-3xl flex items-center justify-center border border-border group-hover:bg-accent transition-colors">
+                           <div className="w-20 h-20 bg-muted rounded-[2.5rem] flex items-center justify-center border border-border group-hover:bg-accent transition-colors">
                               <Rocket className="w-8 h-8 text-muted-foreground group-hover:text-accent-foreground" />
                            </div>
                            <div>
@@ -162,19 +162,19 @@ export default function FreelancerHub() {
                               </div>
                            </div>
                         </div>
-                        <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center group-hover:bg-accent group-hover:text-accent-foreground transition-all">
+                        <div className="w-12 h-12 rounded-[2rem] bg-muted flex items-center justify-center group-hover:bg-accent group-hover:text-accent-foreground transition-all">
                            <ChevronRight className="w-6 h-6" />
                         </div>
                      </CardContent>
                   </Card>
                 )) : (
                   <div className="py-24 text-center bg-muted border-2 border-dashed border-border rounded-[4rem]">
-                     <div className="w-20 h-20 bg-card rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-sm">
+                     <div className="w-20 h-20 bg-card rounded-[2.5rem] flex items-center justify-center mx-auto mb-8 shadow-sm">
                         <Rocket className="w-10 h-10 text-muted-foreground/30" />
                      </div>
                      <p className="text-muted-foreground font-black text-2xl tracking-tight">Mission Board Empty</p>
                      <p className="text-muted-foreground font-medium mt-2">Ready to deploy your technical prowess?</p>
-                     <Button onClick={() => router.push('/jobs')} className="mt-10 h-14 bg-accent hover:opacity-90 text-accent-foreground font-black px-12 rounded-2xl transition-all shadow-xl shadow-accent/20">Scout Opportunities</Button>
+                     <Button onClick={() => router.push('/jobs')} className="mt-10 h-14 bg-accent hover:opacity-90 text-accent-foreground font-black px-12 rounded-[2rem] transition-all shadow-xl shadow-accent/20">Scout Opportunities</Button>
                   </div>
                 )}
              </div>
@@ -202,13 +202,13 @@ export default function FreelancerHub() {
 
              <div className="grid grid-cols-2 gap-6">
                 <button onClick={() => router.push('/messages')} className="bg-card border border-border hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/5 transition-all p-8 rounded-[2.5rem] text-center group">
-                   <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4 group-hover:bg-accent/10 transition-colors">
+                   <div className="w-14 h-14 rounded-[2rem] bg-muted flex items-center justify-center mx-auto mb-4 group-hover:bg-accent/10 transition-colors">
                       <MessageSquare className="w-6 h-6 text-muted-foreground group-hover:text-accent" />
                    </div>
                    <p className="text-foreground font-black text-sm tracking-tight">Secure Comms</p>
                 </button>
                 <button onClick={() => router.push('/portfolio')} className="bg-card border border-border hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/5 transition-all p-8 rounded-[2.5rem] text-center group">
-                   <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4 group-hover:bg-accent/10 transition-colors">
+                   <div className="w-14 h-14 rounded-[2rem] bg-muted flex items-center justify-center mx-auto mb-4 group-hover:bg-accent/10 transition-colors">
                       <Briefcase className="w-6 h-6 text-muted-foreground group-hover:text-accent" />
                    </div>
                    <p className="text-foreground font-black text-sm tracking-tight">Dossier</p>

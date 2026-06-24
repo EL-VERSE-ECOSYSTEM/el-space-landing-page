@@ -94,7 +94,7 @@ export default function ClientHub() {
             <p className="text-muted-foreground mt-4 text-xl font-medium">Strategic oversight for <span className="text-foreground font-black">{user?.full_name}</span></p>
           </div>
           <div className="flex gap-3">
-             <Badge className="bg-slate-500/10 border-slate-500/20 text-slate-500 px-6 py-2.5 rounded-2xl text-[10px] font-black tracking-[0.2em] uppercase shadow-sm">
+             <Badge className="bg-slate-500/10 border-slate-500/20 text-slate-500 px-6 py-2.5 rounded-[2rem] text-[10px] font-black tracking-[0.2em] uppercase shadow-sm">
                ELITE ENTERPRISE ACCESS
              </Badge>
           </div>
@@ -112,7 +112,7 @@ export default function ClientHub() {
              <Card key={i} className="bg-card border border-border hover:border-slate-500/20 hover:shadow-2xl hover:shadow-success/5 transition-all duration-500 group rounded-[2.5rem] overflow-hidden shadow-lg">
                 <CardContent className="p-8">
                    <div className="flex items-center justify-between mb-8">
-                      <div className={`w-14 h-14 rounded-2xl ${stat.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
+                      <div className={`w-14 h-14 rounded-[2rem] ${stat.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
                          <stat.icon className={`w-6 h-6 ${stat.iconColor}`} />
                       </div>
                    </div>
@@ -136,7 +136,7 @@ export default function ClientHub() {
                  <Card key={project.id} className="bg-card border border-border hover:border-slate-500/20 hover:shadow-2xl hover:shadow-success/5 transition-all duration-500 cursor-pointer group rounded-[2.5rem] shadow-md" onClick={() => router.push(`/jobs/${project.id}`)}>
                     <CardContent className="p-8 flex items-center justify-between">
                        <div className="flex items-center gap-8">
-                          <div className="w-20 h-20 bg-muted rounded-3xl flex items-center justify-center border border-border group-hover:bg-slate-500 transition-colors">
+                          <div className="w-20 h-20 bg-muted rounded-[2.5rem] flex items-center justify-center border border-border group-hover:bg-slate-500 transition-colors">
                              <Briefcase className="w-8 h-8 text-muted-foreground group-hover:text-slate-500-foreground" />
                           </div>
                           <div>
@@ -156,7 +156,7 @@ export default function ClientHub() {
                              <p className="text-muted-foreground text-[10px] uppercase font-black tracking-widest mb-1">Status</p>
                              <Badge className="bg-muted text-foreground border-border font-black px-4 py-1 rounded-lg uppercase text-[10px] tracking-widest">{project.status}</Badge>
                           </div>
-                          <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center group-hover:bg-slate-500 group-hover:text-slate-500-foreground transition-all">
+                          <div className="w-12 h-12 rounded-[2rem] bg-muted flex items-center justify-center group-hover:bg-slate-500 group-hover:text-slate-500-foreground transition-all">
                              <ChevronRight className="w-6 h-6" />
                           </div>
                        </div>
@@ -164,12 +164,12 @@ export default function ClientHub() {
                  </Card>
                )) : (
                  <div className="py-24 text-center bg-card border-2 border-dashed border-border rounded-[4rem] shadow-inner">
-                    <div className="w-20 h-20 bg-muted rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-sm">
+                    <div className="w-20 h-20 bg-muted rounded-[2.5rem] flex items-center justify-center mx-auto mb-8 shadow-sm">
                        <Plus className="w-10 h-10 text-muted-foreground/30" />
                     </div>
                     <p className="text-foreground font-black text-2xl tracking-tight uppercase">Empty Workspace</p>
                     <p className="text-muted-foreground font-medium mt-2">Ready to deploy your next vision?</p>
-                    <Button onClick={() => router.push('/jobs/post')} className="mt-10 h-14 bg-slate-500 hover:bg-slate-500/90 text-slate-500-foreground font-black px-12 rounded-2xl transition-all shadow-xl shadow-success/20">Post First Job</Button>
+                    <Button onClick={() => router.push('/jobs/post')} className="mt-10 h-14 bg-slate-500 hover:bg-slate-500/90 text-slate-500-foreground font-black px-12 rounded-[2rem] transition-all shadow-xl shadow-success/20">Post First Job</Button>
                  </div>
                )}
             </div>
@@ -186,7 +186,7 @@ export default function ClientHub() {
                    <div className="p-8 bg-background/10 rounded-[2rem] border border-border backdrop-blur-sm">
                       <p className="text-[10px] text-slate-500 mb-4 font-black uppercase tracking-[0.2em]">Hot Insight</p>
                       <p className="text-foreground font-medium text-lg leading-relaxed">You have <span className="text-foreground font-black">12 elite applications</span> for your Mobile App project.</p>
-                      <Button className="w-full mt-8 h-14 bg-slate-500 text-slate-500-foreground hover:opacity-90 font-black text-sm rounded-2xl transition-all uppercase tracking-widest border-none">Review Applications</Button>
+                      <Button className="w-full mt-8 h-14 bg-slate-500 text-slate-500-foreground hover:opacity-90 font-black text-sm rounded-[2rem] transition-all uppercase tracking-widest border-none">Review Applications</Button>
                    </div>
 
                    <div className="flex items-center justify-between p-2">
@@ -205,7 +205,7 @@ export default function ClientHub() {
                   className="w-full flex items-center justify-between bg-card border border-border hover:border-slate-500/20 hover:shadow-2xl hover:shadow-success/5 transition-all p-8 rounded-[2.5rem] group shadow-sm"
                 >
                    <div className="flex items-center gap-6">
-                      <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center group-hover:bg-slate-500/10 transition-colors">
+                      <div className="w-14 h-14 rounded-[2rem] bg-muted flex items-center justify-center group-hover:bg-slate-500/10 transition-colors">
                          <Search className="w-6 h-6 text-muted-foreground group-hover:text-slate-500" />
                       </div>
                       <span className="text-foreground font-black text-lg tracking-tight uppercase">Recruit Talent</span>
@@ -214,7 +214,7 @@ export default function ClientHub() {
                 </button>
                 <button onClick={() => router.push('/messages')} className="w-full flex items-center justify-between bg-card border border-border hover:border-slate-500/20 hover:shadow-2xl hover:shadow-success/5 transition-all p-8 rounded-[2.5rem] group shadow-sm">
                    <div className="flex items-center gap-6">
-                      <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center group-hover:bg-slate-500/10 transition-colors">
+                      <div className="w-14 h-14 rounded-[2rem] bg-muted flex items-center justify-center group-hover:bg-slate-500/10 transition-colors">
                          <MessageSquare className="w-6 h-6 text-muted-foreground group-hover:text-slate-500" />
                       </div>
                       <span className="text-foreground font-black text-lg tracking-tight uppercase">Secure Comms</span>

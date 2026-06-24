@@ -16,7 +16,7 @@ export function FAQ() {
   const freelancerFAQ = FAQ_ITEMS.filter((item) => item.category === 'freelancer')
 
   return (
-    <section className="py-16 md:py-24 lg:py-32 bg-white" id="faq">
+    <section className="py-16 md:py-24 lg:py-32 bg-background" id="faq">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           subheading="FAQ"
@@ -26,16 +26,16 @@ export function FAQ() {
 
         <Tabs defaultValue="clients" className="w-full">
           <div className="flex justify-center mb-12">
-            <TabsList className="grid w-full max-w-md grid-cols-2 p-1 bg-slate-100 rounded-2xl h-14">
+            <TabsList className="grid w-full max-w-md grid-cols-2 p-1 bg-slate-100 rounded-[2rem] h-14">
               <TabsTrigger
                 value="clients"
-                className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate-600 data-[state=active]:shadow-sm"
+                className="rounded-2xl font-bold transition-all data-[state=active]:bg-background data-[state=active]:text-slate-600 data-[state=active]:shadow-sm"
               >
                 For Clients
               </TabsTrigger>
               <TabsTrigger
                 value="freelancers"
-                className="rounded-xl font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-slate-600 data-[state=active]:shadow-sm"
+                className="rounded-2xl font-bold transition-all data-[state=active]:bg-background data-[state=active]:text-slate-600 data-[state=active]:shadow-sm"
               >
                 For Freelancers
               </TabsTrigger>
@@ -48,9 +48,9 @@ export function FAQ() {
                 <AccordionItem
                   key={idx}
                   value={`client-${idx}`}
-                  className="border border-slate-200 rounded-2xl px-6 bg-slate-50/50 hover:bg-white hover:shadow-md hover:shadow-slate-200/50 transition-all duration-300"
+                  className="border border-white/5 rounded-[2rem] px-6 bg-card/20 hover:bg-background hover:shadow-md hover:shadow-slate-200/50 transition-all duration-300"
                 >
-                  <AccordionTrigger className="text-left font-bold text-slate-900 hover:no-underline py-5">
+                  <AccordionTrigger className="text-left font-bold text-foreground hover:no-underline py-5">
                     {item.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-slate-600 pb-5 leading-relaxed">
@@ -67,9 +67,9 @@ export function FAQ() {
                 <AccordionItem
                   key={idx}
                   value={`freelancer-${idx}`}
-                  className="border border-slate-200 rounded-2xl px-6 bg-slate-50/50 hover:bg-white hover:shadow-md hover:shadow-slate-200/50 transition-all duration-300"
+                  className="border border-white/5 rounded-[2rem] px-6 bg-card/20 hover:bg-background hover:shadow-md hover:shadow-slate-200/50 transition-all duration-300"
                 >
-                  <AccordionTrigger className="text-left font-bold text-slate-900 hover:no-underline py-5">
+                  <AccordionTrigger className="text-left font-bold text-foreground hover:no-underline py-5">
                     {item.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-slate-600 pb-5 leading-relaxed">

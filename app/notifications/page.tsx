@@ -210,8 +210,8 @@ function NotificationItem({
 // Stats Card Component
 function StatsCard({ icon: Icon, label, value, color }: { icon: typeof Bell; label: string; value: number | string; color: string }) {
   return (
-    <div className="flex items-center gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm">
-      <div className={cn("flex items-center justify-center rounded-xl size-12 shadow-inner", color)}>
+    <div className="flex items-center gap-4 rounded-[2rem] border border-border bg-card p-5 shadow-sm">
+      <div className={cn("flex items-center justify-center rounded-2xl size-12 shadow-inner", color)}>
         <Icon className="size-6" />
       </div>
       <div>
@@ -355,7 +355,7 @@ export default function NotificationsPage() {
           </div>
           <div className="flex items-center gap-3">
             {unreadCount > 0 && (
-              <Button onClick={markAllRead} className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black uppercase tracking-widest text-[10px] h-12 px-6 rounded-xl shadow-xl shadow-primary/20">
+              <Button onClick={markAllRead} className="bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black uppercase tracking-widest text-[10px] h-12 px-6 rounded-2xl shadow-xl shadow-primary/20">
                 <CheckCheck className="mr-2 h-4 w-4" />
                 Clear Backlog
               </Button>
@@ -367,7 +367,7 @@ export default function NotificationsPage() {
         <div className="mb-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <Card className="bg-card border-border rounded-[1.5rem] p-6 shadow-xl shadow-black/5">
             <div className="flex items-center gap-4">
-              <div className="flex items-center justify-center rounded-xl h-12 w-12 bg-slate-700/10 text-slate-700 border border-slate-700/20 shadow-inner">
+              <div className="flex items-center justify-center rounded-2xl h-12 w-12 bg-slate-700/10 text-slate-700 border border-slate-700/20 shadow-inner">
                 <Bell className="h-6 w-6" />
               </div>
               <div>
@@ -378,7 +378,7 @@ export default function NotificationsPage() {
           </Card>
           <Card className="bg-card border-border rounded-[1.5rem] p-6 shadow-xl shadow-black/5">
             <div className="flex items-center gap-4">
-              <div className="flex items-center justify-center rounded-xl h-12 w-12 bg-slate-700/10 text-slate-700 border border-slate-700/20 shadow-inner">
+              <div className="flex items-center justify-center rounded-2xl h-12 w-12 bg-slate-700/10 text-slate-700 border border-slate-700/20 shadow-inner">
                 <AlertCircle className="h-6 w-6" />
               </div>
               <div>
@@ -389,7 +389,7 @@ export default function NotificationsPage() {
           </Card>
           <Card className="bg-card border-border rounded-[1.5rem] p-6 shadow-xl shadow-black/5">
             <div className="flex items-center gap-4">
-              <div className="flex items-center justify-center rounded-xl h-12 w-12 bg-accent/10 text-accent border border-accent/20 shadow-inner">
+              <div className="flex items-center justify-center rounded-2xl h-12 w-12 bg-accent/10 text-accent border border-accent/20 shadow-inner">
                 <FolderKanban className="h-6 w-6" />
               </div>
               <div>
@@ -400,7 +400,7 @@ export default function NotificationsPage() {
           </Card>
           <Card className="bg-card border-border rounded-[1.5rem] p-6 shadow-xl shadow-black/5">
             <div className="flex items-center gap-4">
-              <div className="flex items-center justify-center rounded-xl h-12 w-12 bg-warning/10 text-warning border border-warning/20 shadow-inner">
+              <div className="flex items-center justify-center rounded-2xl h-12 w-12 bg-warning/10 text-warning border border-warning/20 shadow-inner">
                 <MessageSquare className="h-6 w-6" />
               </div>
               <div>

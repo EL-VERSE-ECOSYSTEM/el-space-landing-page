@@ -208,7 +208,7 @@ export default function WalletHub() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
             <div>
               <h1 className="text-5xl font-black text-foreground tracking-tighter flex items-center gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-slate-700 flex items-center justify-center shadow-2xl shadow-primary/20">
+                <div className="w-14 h-14 rounded-[2rem] bg-slate-700 flex items-center justify-center shadow-2xl shadow-primary/20">
                   <WalletIcon className="w-7 h-7 text-slate-700-foreground" />
                 </div>
                 The <span className="bg-gradient-to-r from-primary to-slate-500 bg-clip-text text-transparent uppercase">Vault</span>
@@ -216,13 +216,13 @@ export default function WalletHub() {
               <p className="text-muted-foreground mt-2 text-lg font-medium">Secured liquidity & asset management</p>
             </div>
             <div className="flex gap-4 w-full md:w-auto">
-              <Button onClick={() => setShowTransfer(true)} className="flex-1 md:flex-none h-14 bg-card border border-border text-foreground hover:bg-muted font-black px-8 rounded-2xl transition-all">
+              <Button onClick={() => setShowTransfer(true)} className="flex-1 md:flex-none h-14 bg-card border border-border text-foreground hover:bg-muted font-black px-8 rounded-[2rem] transition-all">
                 <Send className="w-5 h-5 mr-2" /> Transfer
               </Button>
-              <Button onClick={() => setShowWithdraw(true)} className="flex-1 md:flex-none h-14 bg-card border border-border text-foreground hover:bg-muted font-black px-8 rounded-2xl transition-all">
+              <Button onClick={() => setShowWithdraw(true)} className="flex-1 md:flex-none h-14 bg-card border border-border text-foreground hover:bg-muted font-black px-8 rounded-[2rem] transition-all">
                 <ArrowUpRight className="w-5 h-5 mr-2" /> Withdraw
               </Button>
-              <Button onClick={() => setShowFund(true)} className="flex-1 md:flex-none h-14 bg-slate-700 hover:opacity-90 text-slate-700-foreground font-black px-10 rounded-2xl shadow-xl shadow-primary/20 transition-all border-none">
+              <Button onClick={() => setShowFund(true)} className="flex-1 md:flex-none h-14 bg-slate-700 hover:opacity-90 text-slate-700-foreground font-black px-10 rounded-[2rem] shadow-xl shadow-primary/20 transition-all border-none">
                 <Plus className="w-5 h-5 mr-2" /> Fund
               </Button>
             </div>
@@ -234,7 +234,7 @@ export default function WalletHub() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-slate-700/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-slate-700/20 transition-all" />
               <CardContent className="p-10">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-xl bg-slate-700/10 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-2xl bg-slate-700/10 flex items-center justify-center">
                     <Banknote className="w-5 h-5 text-slate-700" />
                   </div>
                   <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Liquid Balance</span>
@@ -251,7 +251,7 @@ export default function WalletHub() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-warning/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-warning/10 transition-all" />
               <CardContent className="p-10">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-xl bg-warning/20 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-2xl bg-warning/20 flex items-center justify-center">
                     <Lock className="w-5 h-5 text-warning" />
                   </div>
                   <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Escrow / Pending</span>
@@ -265,7 +265,7 @@ export default function WalletHub() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-accent/10 transition-all" />
               <CardContent className="p-10">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-2xl bg-accent/20 flex items-center justify-center">
                     <TrendingUp className="w-5 h-5 text-accent" />
                   </div>
                   <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Lifetime Yield</span>
@@ -284,7 +284,7 @@ export default function WalletHub() {
                   <History className="w-8 h-8 text-muted-foreground" />
                   Ledger <span className="text-muted-foreground font-medium text-lg">/ Operations</span>
                 </h2>
-                <Button variant="ghost" className="text-muted-foreground hover:text-foreground font-black h-12 rounded-xl" onClick={fetchWalletData}>
+                <Button variant="ghost" className="text-muted-foreground hover:text-foreground font-black h-12 rounded-2xl" onClick={fetchWalletData}>
                   <RefreshCw className="w-4 h-4 mr-2" /> Sync
                 </Button>
               </div>
@@ -293,7 +293,7 @@ export default function WalletHub() {
                  {transactions.length > 0 ? transactions.map((tx) => (
                    <div key={tx.id} className="bg-card border border-border p-6 rounded-[2rem] flex items-center justify-between hover:border-slate-700/30 hover:bg-muted/50 transition-all group">
                       <div className="flex items-center gap-6">
-                         <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-colors ${
+                         <div className={`w-14 h-14 rounded-[2rem] flex items-center justify-center transition-colors ${
                             tx.amount > 0 ? 'bg-slate-500/20 text-slate-500 group-hover:bg-slate-500 group-hover:text-slate-500-foreground' : 'bg-muted text-muted-foreground group-hover:bg-slate-700 group-hover:text-slate-700-foreground'
                          }`}>
                             {tx.amount > 0 ? <ArrowDownLeft className="w-6 h-6" /> : <ArrowUpRight className="w-6 h-6" />}
@@ -320,7 +320,7 @@ export default function WalletHub() {
                    </div>
                  )) : (
                    <div className="py-24 text-center bg-card border-2 border-dashed border-border rounded-[3rem]">
-                      <div className="w-16 h-16 bg-muted rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm border border-border">
+                      <div className="w-16 h-16 bg-muted rounded-[2rem] flex items-center justify-center mx-auto mb-6 shadow-sm border border-border">
                          <Info className="w-8 h-8 text-muted-foreground/30" />
                       </div>
                       <p className="text-muted-foreground font-bold text-lg">No operations recorded yet.</p>
@@ -339,18 +339,18 @@ export default function WalletHub() {
                     Security Framework
                  </h3>
                  <div className="space-y-4 relative z-10">
-                    <div className="p-6 bg-muted rounded-2xl border border-border flex justify-between items-center">
+                    <div className="p-6 bg-muted rounded-[2rem] border border-border flex justify-between items-center">
                        <div>
                           <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Space Identity</p>
                           <p className="font-mono text-slate-700 font-black text-lg">{user?.el_space_id}</p>
                        </div>
-                       <div className="w-12 h-12 rounded-xl bg-card border border-border flex items-center justify-center">
+                       <div className="w-12 h-12 rounded-2xl bg-card border border-border flex items-center justify-center">
                           <Smartphone className="w-5 h-5 text-muted-foreground" />
                        </div>
                     </div>
-                    <div className="flex items-center justify-between p-6 bg-muted rounded-2xl border border-border">
+                    <div className="flex items-center justify-between p-6 bg-muted rounded-[2rem] border border-border">
                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-card border border-border flex items-center justify-center shadow-sm">
+                          <div className="w-10 h-10 rounded-2xl bg-card border border-border flex items-center justify-center shadow-sm">
                              <Lock className="w-5 h-5 text-muted-foreground" />
                           </div>
                           <span className="text-foreground font-bold">Transaction PIN</span>
@@ -363,7 +363,7 @@ export default function WalletHub() {
               <Card className="bg-gradient-to-br from-primary to-slate-600 border-none p-8 rounded-[2.5rem] text-slate-700-foreground shadow-2xl shadow-primary/20">
                  <h3 className="font-black text-xl mb-4 uppercase">Elite Benefits</h3>
                  <p className="text-slate-700-foreground/80 font-medium mb-6">You're currently in the <span className="text-slate-700-foreground font-black">Platinum Tier</span> with 0.5% reduced fees.</p>
-                 <Button className="w-full bg-background text-foreground hover:bg-background/90 font-black rounded-xl h-12 border-none">Upgrade Pipeline</Button>
+                 <Button className="w-full bg-background text-foreground hover:bg-background/90 font-black rounded-2xl h-12 border-none">Upgrade Pipeline</Button>
               </Card>
             </div>
           </div>
@@ -380,7 +380,7 @@ export default function WalletHub() {
                 </CardHeader>
                 <CardContent className="p-10 pt-0 space-y-8">
                    <div className="p-10 pt-0 space-y-8">
-                      <div className="bg-warning/10 border border-warning/20 p-4 rounded-2xl flex items-center gap-3">
+                      <div className="bg-warning/10 border border-warning/20 p-4 rounded-[2rem] flex items-center gap-3">
                          <Info className="w-5 h-5 text-warning" />
                          <p className="text-xs font-bold text-warning-foreground">Internal transfers attract a <span className="text-foreground">2.5% platform fee</span>.</p>
                       </div>
@@ -390,7 +390,7 @@ export default function WalletHub() {
                             <Smartphone className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                             <Input
                                placeholder="e.g. ELS1234567"
-                               className="bg-muted border-border pl-14 h-16 text-foreground font-black text-xl rounded-2xl focus:ring-primary"
+                               className="bg-muted border-border pl-14 h-16 text-foreground font-black text-xl rounded-[2rem] focus:ring-primary"
                                value={transferData.recipientId}
                                onChange={e => setTransferData({...transferData, recipientId: e.target.value})}
                             />
@@ -403,7 +403,7 @@ export default function WalletHub() {
                             <Input
                                type="number"
                                placeholder="0.00"
-                               className="bg-muted border-border h-16 text-foreground font-black text-xl rounded-2xl focus:ring-primary"
+                               className="bg-muted border-border h-16 text-foreground font-black text-xl rounded-[2rem] focus:ring-primary"
                                value={transferData.amount}
                                onChange={e => setTransferData({...transferData, amount: e.target.value})}
                             />
@@ -414,7 +414,7 @@ export default function WalletHub() {
                                type="password"
                                placeholder="••••"
                                maxLength={4}
-                               className="bg-muted border-border h-16 text-foreground tracking-[0.5em] text-center font-black text-xl rounded-2xl focus:ring-primary"
+                               className="bg-muted border-border h-16 text-foreground tracking-[0.5em] text-center font-black text-xl rounded-[2rem] focus:ring-primary"
                                value={transferData.pin}
                                onChange={e => setTransferData({...transferData, pin: e.target.value})}
                             />
@@ -423,9 +423,9 @@ export default function WalletHub() {
                    </div>
 
                    <div className="flex gap-4 pt-6">
-                      <Button variant="ghost" className="flex-1 h-14 text-muted-foreground font-black text-lg rounded-2xl hover:bg-muted" onClick={() => setShowTransfer(false)}>Cancel</Button>
+                      <Button variant="ghost" className="flex-1 h-14 text-muted-foreground font-black text-lg rounded-[2rem] hover:bg-muted" onClick={() => setShowTransfer(false)}>Cancel</Button>
                       <Button
-                         className="flex-[2] h-14 bg-slate-700 hover:opacity-90 text-slate-700-foreground font-black text-lg rounded-2xl shadow-xl shadow-primary/20 transition-all border-none"
+                         className="flex-[2] h-14 bg-slate-700 hover:opacity-90 text-slate-700-foreground font-black text-lg rounded-[2rem] shadow-xl shadow-primary/20 transition-all border-none"
                          onClick={handleTransfer}
                       >
                          Execute Transfer
@@ -447,11 +447,11 @@ export default function WalletHub() {
                 </CardHeader>
                 <CardContent className="p-10 pt-0 space-y-8">
                    <Tabs value={withdrawMethod} onValueChange={(v: any) => setWithdrawMethod(v)} className="w-full">
-                      <TabsList className="bg-muted border border-border p-1 rounded-2xl w-full mb-8">
-                         <TabsTrigger value="bank" className="flex-1 rounded-xl py-3 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black text-sm">
+                      <TabsList className="bg-muted border border-border p-1 rounded-[2rem] w-full mb-8">
+                         <TabsTrigger value="bank" className="flex-1 rounded-2xl py-3 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black text-sm">
                             <Building className="w-4 h-4 mr-2" /> Bank Settlement
                          </TabsTrigger>
-                         <TabsTrigger value="crypto" className="flex-1 rounded-xl py-3 data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-black text-sm">
+                         <TabsTrigger value="crypto" className="flex-1 rounded-2xl py-3 data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-black text-sm">
                             <Globe className="w-4 h-4 mr-2" /> Crypto Protocol
                          </TabsTrigger>
                       </TabsList>
@@ -461,7 +461,7 @@ export default function WalletHub() {
                            <div className="space-y-3">
                               <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Asset Class</label>
                               <select
-                                 className="w-full bg-muted border-border h-16 text-foreground font-black rounded-2xl px-4 outline-none"
+                                 className="w-full bg-muted border-border h-16 text-foreground font-black rounded-[2rem] px-4 outline-none"
                                  value={withdrawData.currency}
                                  onChange={e => setWithdrawData({...withdrawData, currency: e.target.value})}
                               >
@@ -480,7 +480,7 @@ export default function WalletHub() {
                               <Input
                                  type="number"
                                  placeholder="0.00"
-                                 className="bg-muted border-border h-16 text-foreground font-black text-xl rounded-2xl focus:ring-primary"
+                                 className="bg-muted border-border h-16 text-foreground font-black text-xl rounded-[2rem] focus:ring-primary"
                                  value={withdrawData.amount}
                                  onChange={e => setWithdrawData({...withdrawData, amount: e.target.value})}
                               />
@@ -498,7 +498,7 @@ export default function WalletHub() {
                                     type="password"
                                     placeholder="••••"
                                     maxLength={4}
-                                    className="bg-muted border-border pl-14 h-16 text-foreground tracking-[0.5em] text-center font-black text-xl rounded-2xl focus:ring-primary"
+                                    className="bg-muted border-border pl-14 h-16 text-foreground tracking-[0.5em] text-center font-black text-xl rounded-[2rem] focus:ring-primary"
                                     value={withdrawData.pin}
                                     onChange={e => setWithdrawData({...withdrawData, pin: e.target.value})}
                                  />
@@ -512,7 +512,7 @@ export default function WalletHub() {
                               <div className="space-y-3">
                                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Institution Name</label>
                                  <select
-                                    className="w-full bg-muted border-border h-14 text-foreground font-bold rounded-xl px-4 outline-none"
+                                    className="w-full bg-muted border-border h-14 text-foreground font-bold rounded-2xl px-4 outline-none"
                                     value={withdrawData.bankName}
                                     onChange={e => setWithdrawData({...withdrawData, bankName: e.target.value})}
                                  >
@@ -561,7 +561,7 @@ export default function WalletHub() {
                                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Account Number / IBAN</label>
                                  <Input
                                     placeholder="Enter full routing/account ID"
-                                    className="bg-muted border-border h-14 text-foreground font-bold rounded-xl"
+                                    className="bg-muted border-border h-14 text-foreground font-bold rounded-2xl"
                                     value={withdrawData.accountNumber}
                                     onChange={e => setWithdrawData({...withdrawData, accountNumber: e.target.value})}
                                  />
@@ -572,7 +572,7 @@ export default function WalletHub() {
                               <div className="space-y-3">
                                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Protocol / Network</label>
                                  <select
-                                    className="w-full bg-muted border-border h-14 text-foreground font-bold rounded-xl px-4 focus:ring-accent outline-none appearance-none"
+                                    className="w-full bg-muted border-border h-14 text-foreground font-bold rounded-2xl px-4 focus:ring-accent outline-none appearance-none"
                                     value={withdrawData.network}
                                     onChange={e => setWithdrawData({...withdrawData, network: e.target.value})}
                                  >
@@ -588,7 +588,7 @@ export default function WalletHub() {
                                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Destination Wallet Address</label>
                                  <Input
                                     placeholder="0x... or Address"
-                                    className="bg-muted border-border h-14 text-foreground font-mono text-sm rounded-xl"
+                                    className="bg-muted border-border h-14 text-foreground font-mono text-sm rounded-2xl"
                                     value={withdrawData.walletAddress}
                                     onChange={e => setWithdrawData({...withdrawData, walletAddress: e.target.value})}
                                  />
@@ -599,9 +599,9 @@ export default function WalletHub() {
                    </Tabs>
 
                    <div className="flex gap-4 pt-6">
-                      <Button variant="ghost" className="flex-1 h-14 text-muted-foreground font-black text-lg rounded-2xl hover:bg-muted" onClick={() => setShowWithdraw(false)}>Cancel</Button>
+                      <Button variant="ghost" className="flex-1 h-14 text-muted-foreground font-black text-lg rounded-[2rem] hover:bg-muted" onClick={() => setShowWithdraw(false)}>Cancel</Button>
                       <Button
-                         className={`flex-[2] h-14 font-black text-lg rounded-2xl shadow-xl transition-all border-none ${
+                         className={`flex-[2] h-14 font-black text-lg rounded-[2rem] shadow-xl transition-all border-none ${
                             withdrawMethod === 'bank' ? 'bg-slate-700 text-slate-700-foreground hover:opacity-90 shadow-primary/20' : 'bg-accent text-accent-foreground hover:opacity-90 shadow-accent/20'
                          }`}
                          onClick={handleWithdraw}
@@ -629,7 +629,7 @@ export default function WalletHub() {
                          <div className="space-y-3">
                             <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Asset Class</label>
                             <select
-                               className="w-full bg-muted border-border h-16 text-foreground font-black rounded-2xl px-4 outline-none"
+                               className="w-full bg-muted border-border h-16 text-foreground font-black rounded-[2rem] px-4 outline-none"
                                value={fundData.currency}
                                onChange={e => setFundData({...fundData, currency: e.target.value})}
                             >
@@ -645,7 +645,7 @@ export default function WalletHub() {
                             <Input
                                type="number"
                                placeholder="0.00"
-                               className="bg-muted border-border h-16 text-foreground font-black text-xl rounded-2xl focus:ring-primary"
+                               className="bg-muted border-border h-16 text-foreground font-black text-xl rounded-[2rem] focus:ring-primary"
                                value={fundData.amount}
                                onChange={e => setFundData({...fundData, amount: e.target.value})}
                             />
@@ -660,11 +660,11 @@ export default function WalletHub() {
                       <div className="space-y-3">
                          <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Payment Method</label>
                          <Tabs value={fundData.method} onValueChange={(v: any) => setFundData({...fundData, method: v})} className="w-full">
-                            <TabsList className="bg-muted border border-border p-1 rounded-2xl w-full">
-                               <TabsTrigger value="bank_transfer" className="flex-1 rounded-xl py-3 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black text-sm">
+                            <TabsList className="bg-muted border border-border p-1 rounded-[2rem] w-full">
+                               <TabsTrigger value="bank_transfer" className="flex-1 rounded-2xl py-3 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black text-sm">
                                   Bank Transfer
                                </TabsTrigger>
-                               <TabsTrigger value="crypto_transfer" className="flex-1 rounded-xl py-3 data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-black text-sm">
+                               <TabsTrigger value="crypto_transfer" className="flex-1 rounded-2xl py-3 data-[state=active]:bg-accent data-[state=active]:text-accent-foreground font-black text-sm">
                                   Crypto Pay
                                </TabsTrigger>
                             </TabsList>
@@ -675,7 +675,7 @@ export default function WalletHub() {
                          <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Receipt URL / Link</label>
                          <Input
                             placeholder="Link to payment receipt/screenshot"
-                            className="bg-muted border-border h-16 text-foreground font-medium rounded-2xl focus:ring-primary"
+                            className="bg-muted border-border h-16 text-foreground font-medium rounded-[2rem] focus:ring-primary"
                             value={fundData.receiptUrl}
                             onChange={e => setFundData({...fundData, receiptUrl: e.target.value})}
                          />
@@ -684,9 +684,9 @@ export default function WalletHub() {
                    </div>
 
                    <div className="flex gap-4 pt-6">
-                      <Button variant="ghost" className="flex-1 h-14 text-muted-foreground font-black text-lg rounded-2xl hover:bg-muted" onClick={() => setShowFund(false)}>Cancel</Button>
+                      <Button variant="ghost" className="flex-1 h-14 text-muted-foreground font-black text-lg rounded-[2rem] hover:bg-muted" onClick={() => setShowFund(false)}>Cancel</Button>
                       <Button
-                         className="flex-[2] h-14 bg-slate-700 hover:opacity-90 text-slate-700-foreground font-black text-lg rounded-2xl shadow-xl shadow-primary/20 transition-all border-none"
+                         className="flex-[2] h-14 bg-slate-700 hover:opacity-90 text-slate-700-foreground font-black text-lg rounded-[2rem] shadow-xl shadow-primary/20 transition-all border-none"
                          onClick={handleFund}
                       >
                          Submit Proof

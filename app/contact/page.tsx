@@ -73,7 +73,7 @@ export default function ContactPage() {
             {/* Email */}
             <div className="flex gap-4">
               <div className="flex-shrink-0">
-                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-slate-700/10 border border-slate-700/20 shadow-sm">
+                <div className="flex items-center justify-center h-12 w-12 rounded-2xl bg-slate-700/10 border border-slate-700/20 shadow-sm">
                   <Mail className="h-6 w-6 text-slate-700" />
                 </div>
               </div>
@@ -87,7 +87,7 @@ export default function ContactPage() {
             {/* Phone */}
             <div className="flex gap-4">
               <div className="flex-shrink-0">
-                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-slate-500/10 border border-slate-500/20 shadow-sm">
+                <div className="flex items-center justify-center h-12 w-12 rounded-2xl bg-slate-500/10 border border-slate-500/20 shadow-sm">
                   <Phone className="h-6 w-6 text-slate-500" />
                 </div>
               </div>
@@ -101,7 +101,7 @@ export default function ContactPage() {
             {/* Address */}
             <div className="flex gap-4">
               <div className="flex-shrink-0">
-                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-slate-500/10 border border-slate-500/20 shadow-sm">
+                <div className="flex items-center justify-center h-12 w-12 rounded-2xl bg-slate-500/10 border border-slate-500/20 shadow-sm">
                   <MapPin className="h-6 w-6 text-slate-500" />
                 </div>
               </div>
@@ -115,7 +115,7 @@ export default function ContactPage() {
             {/* Social Media */}
             <div className="flex gap-4 pt-4">
               <div className="flex-shrink-0">
-                <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-slate-500/10 border border-slate-500/20 shadow-sm">
+                <div className="flex items-center justify-center h-12 w-12 rounded-2xl bg-slate-500/10 border border-slate-500/20 shadow-sm">
                   <MessageSquare className="h-6 w-6 text-slate-500" />
                 </div>
               </div>
@@ -130,7 +130,7 @@ export default function ContactPage() {
             </div>
 
             {/* Response Time */}
-            <div className="bg-muted/50 border border-border rounded-2xl p-6 mt-8 shadow-inner">
+            <div className="bg-muted/50 border border-border rounded-[2rem] p-6 mt-8 shadow-inner">
               <p className="text-xs text-muted-foreground font-medium leading-relaxed uppercase tracking-wide">
                 <strong className="text-foreground">Average Sync Time:</strong> Within 24 business hours. For urgent mission friction, please subject your transmission with <span className="text-red-500 font-black">"URGENT"</span>.
               </p>
@@ -153,7 +153,7 @@ export default function ContactPage() {
                   onChange={handleChange}
                   required
                   placeholder="John Doe"
-                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 h-12 rounded-xl focus:ring-primary/20"
+                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 h-12 rounded-2xl focus:ring-primary/20"
                 />
               </div>
 
@@ -169,7 +169,7 @@ export default function ContactPage() {
                   onChange={handleChange}
                   required
                   placeholder="you@example.com"
-                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 h-12 rounded-xl focus:ring-primary/20"
+                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 h-12 rounded-2xl focus:ring-primary/20"
                 />
               </div>
 
@@ -182,7 +182,7 @@ export default function ContactPage() {
                   name="type"
                   value={formData.type}
                   onChange={handleChange}
-                  className="w-full px-4 h-12 bg-muted/50 border border-border text-foreground rounded-xl hover:border-slate-700/50 transition-colors outline-none font-bold text-sm"
+                  className="w-full px-4 h-12 bg-muted/50 border border-border text-foreground rounded-2xl hover:border-slate-700/50 transition-colors outline-none font-bold text-sm"
                 >
                   <option value="general">General Inquiry</option>
                   <option value="support">Support Request</option>
@@ -204,7 +204,7 @@ export default function ContactPage() {
                   onChange={handleChange}
                   required
                   placeholder="Query objective"
-                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 h-12 rounded-xl focus:ring-primary/20"
+                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 h-12 rounded-2xl focus:ring-primary/20"
                 />
               </div>
 
@@ -220,7 +220,7 @@ export default function ContactPage() {
                   required
                   placeholder="Describe your inquiry in detail..."
                   rows={5}
-                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 rounded-xl focus:ring-primary/20 resize-none p-4 font-medium"
+                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 rounded-2xl focus:ring-primary/20 resize-none p-4 font-medium"
                 />
               </div>
 
@@ -228,7 +228,7 @@ export default function ContactPage() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black py-4 h-14 rounded-2xl shadow-xl shadow-primary/20 transition-all uppercase text-sm tracking-widest"
+                className="w-full bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black py-4 h-14 rounded-[2rem] shadow-xl shadow-primary/20 transition-all uppercase text-sm tracking-widest"
               >
                 {loading ? (
                   <>

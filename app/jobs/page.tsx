@@ -74,7 +74,7 @@ export default function JobsPage() {
                <p className="text-muted-foreground mt-2 text-xl font-medium">Analyze and deploy to high-priority opportunities.</p>
             </div>
             {user?.user_type !== 'freelancer' && (
-              <Button onClick={() => router.push('/jobs/post')} className="h-14 bg-slate-700 text-slate-700-foreground hover:bg-slate-700/90 font-black px-10 rounded-2xl transition-all shadow-xl shadow-primary/20 uppercase tracking-widest text-xs">
+              <Button onClick={() => router.push('/jobs/post')} className="h-14 bg-slate-700 text-slate-700-foreground hover:bg-slate-700/90 font-black px-10 rounded-[2rem] transition-all shadow-xl shadow-primary/20 uppercase tracking-widest text-xs">
                  <Rocket className="w-5 h-5 mr-2" /> Launch Mission
               </Button>
             )}
@@ -99,11 +99,11 @@ export default function JobsPage() {
 
           {/* Category Tabs */}
           <Tabs value={filter} onValueChange={setFilter} className="w-full">
-            <TabsList className="bg-card border border-border p-1.5 rounded-2xl mb-12 shadow-inner">
-               <TabsTrigger value="all" className="rounded-xl px-10 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black text-[10px] uppercase tracking-[0.2em] transition-all">ALL SECTORS</TabsTrigger>
-               <TabsTrigger value="Development" className="rounded-xl px-10 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black text-[10px] uppercase tracking-[0.2em] transition-all">DEVELOPMENT</TabsTrigger>
-               <TabsTrigger value="Design" className="rounded-xl px-10 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black text-[10px] uppercase tracking-[0.2em] transition-all">DESIGN</TabsTrigger>
-               <TabsTrigger value="Marketing" className="rounded-xl px-10 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black text-[10px] uppercase tracking-[0.2em] transition-all">MARKETING</TabsTrigger>
+            <TabsList className="bg-card border border-border p-1.5 rounded-[2rem] mb-12 shadow-inner">
+               <TabsTrigger value="all" className="rounded-2xl px-10 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black text-[10px] uppercase tracking-[0.2em] transition-all">ALL SECTORS</TabsTrigger>
+               <TabsTrigger value="Development" className="rounded-2xl px-10 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black text-[10px] uppercase tracking-[0.2em] transition-all">DEVELOPMENT</TabsTrigger>
+               <TabsTrigger value="Design" className="rounded-2xl px-10 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black text-[10px] uppercase tracking-[0.2em] transition-all">DESIGN</TabsTrigger>
+               <TabsTrigger value="Marketing" className="rounded-2xl px-10 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-700-foreground font-black text-[10px] uppercase tracking-[0.2em] transition-all">MARKETING</TabsTrigger>
             </TabsList>
 
             {/* Jobs List */}
@@ -161,7 +161,7 @@ export default function JobsPage() {
                                <span className="flex items-center gap-2"><Users className="w-4 h-4 text-slate-700" /> 0 Intel Packs</span>
                             </div>
 
-                            <Button className="w-full bg-secondary hover:bg-slate-700 hover:text-slate-700-foreground text-foreground font-black rounded-2xl h-16 transition-all uppercase text-xs tracking-widest shadow-sm">
+                            <Button className="w-full bg-secondary hover:bg-slate-700 hover:text-slate-700-foreground text-foreground font-black rounded-[2rem] h-16 transition-all uppercase text-xs tracking-widest shadow-sm">
                                Analyze Dossier <ChevronRight className="w-4 h-4 ml-2" />
                             </Button>
                           </div>

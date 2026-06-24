@@ -14,7 +14,7 @@ export function Footer() {
           <div className="md:col-span-1">
             <div className="mb-6 flex items-center gap-2">
               <div className="relative h-10 w-10 flex-shrink-0">
-                <div className="h-full w-full bg-gradient-to-br from-primary via-slate-500 to-accent rounded-xl flex items-center justify-center font-bold text-white text-xs shadow-lg shadow-primary/20">
+                <div className="h-full w-full bg-gradient-to-br from-primary via-slate-500 to-accent rounded-2xl flex items-center justify-center font-bold text-white text-xs shadow-lg shadow-primary/20">
                   EL
                 </div>
               </div>
@@ -115,7 +115,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 pb-8">
           <p className="text-center md:text-left text-sm text-muted-foreground font-medium">
-            © 2026 EL SPACE. Built by EL VERSE TECHNOLOGIES. All rights reserved.
+            © 2026 EL SPACE. A product of EL VERSE TECHNOLOGIES. All rights reserved.
           </p>
           <div className="flex gap-6 items-center">
             <AdminLoginDialog />

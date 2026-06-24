@@ -58,7 +58,7 @@ export function FeaturedTalent() {
                 className="group relative flex flex-col h-full rounded-[2.5rem] border border-slate-200 bg-white p-8 transition-all duration-500 hover:border-transparent hover:shadow-2xl hover:shadow-slate-200/50"
               >
                 {/* Avatar Placeholder */}
-                <div className="mb-6 h-20 w-20 rounded-2xl bg-gradient-to-br from-slate-500 to-slate-600 flex items-center justify-center text-2xl font-black text-white shadow-lg shadow-slate-500/20 group-hover:scale-110 transition-transform duration-500">
+                <div className="mb-6 h-20 w-20 rounded-[2rem] bg-gradient-to-br from-slate-500 to-slate-600 flex items-center justify-center text-2xl font-black text-white shadow-lg shadow-slate-500/20 group-hover:scale-110 transition-transform duration-500">
                   {freelancer.name.charAt(0)}
                 </div>
 
@@ -80,7 +80,7 @@ export function FeaturedTalent() {
                   {freelancer.skills.slice(0, 3).map((skill: string, idx: number) => (
                     <span
                       key={`${freelancer.id}-${skill}-${idx}`}
-                      className="rounded-xl bg-slate-100 px-4 py-1.5 text-xs font-bold text-slate-600 border border-slate-200 transition-colors group-hover:bg-slate-50 group-hover:text-slate-700 group-hover:border-slate-100"
+                      className="rounded-2xl bg-slate-100 px-4 py-1.5 text-xs font-bold text-slate-600 border border-slate-200 transition-colors group-hover:bg-slate-50 group-hover:text-slate-700 group-hover:border-slate-100"
                     >
                       {skill}
                     </span>
@@ -104,14 +104,14 @@ export function FeaturedTalent() {
 
                 {/* CTA */}
                 <Link href={`/freelancer/${freelancer.id}`} className="w-full">
-                  <Button variant="outline" className="w-full border-2 border-slate-200 text-slate-900 font-bold py-6 rounded-2xl group-hover:bg-slate-900 group-hover:text-white group-hover:border-slate-900 transition-all duration-300">
+                  <Button variant="outline" className="w-full border-2 border-slate-200 text-slate-900 font-bold py-6 rounded-[2rem] group-hover:bg-slate-900 group-hover:text-white group-hover:border-slate-900 transition-all duration-300">
                     View Profile
                   </Button>
                 </Link>
               </div>
             ))
           ) : (
-             <div className="col-span-full text-center text-slate-400 py-12 border-2 border-dashed border-slate-200 rounded-3xl">
+             <div className="col-span-full text-center text-slate-400 py-12 border-2 border-dashed border-slate-200 rounded-[2.5rem]">
                No featured talent available at the moment.
              </div>
           )}

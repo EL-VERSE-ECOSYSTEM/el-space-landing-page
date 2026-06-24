@@ -48,7 +48,7 @@ export default function ApplicationsPage() {
             <Card key={app.id} className="bg-card border border-border rounded-[2rem] overflow-hidden hover:border-slate-700/20 transition-all group shadow-lg">
               <CardContent className="p-8 flex items-center justify-between">
                 <div className="flex items-center gap-6">
-                  <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center border border-border group-hover:bg-slate-700 transition-colors">
+                  <div className="w-14 h-14 rounded-[2rem] bg-muted flex items-center justify-center border border-border group-hover:bg-slate-700 transition-colors">
                     <Rocket className="w-6 h-6 text-slate-700 group-hover:text-slate-700-foreground" />
                   </div>
                   <div>
@@ -76,12 +76,12 @@ export default function ApplicationsPage() {
             </Card>
           )) : !loading && (
             <div className="py-24 text-center bg-card border-2 border-dashed border-border rounded-[3rem]">
-              <div className="w-20 h-20 bg-muted rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+              <div className="w-20 h-20 bg-muted rounded-[2.5rem] flex items-center justify-center mx-auto mb-6 shadow-sm">
                 <Search className="w-10 h-10 text-muted-foreground/30" />
               </div>
               <p className="text-foreground font-black text-xl uppercase">Nexus List Clear</p>
               <p className="text-muted-foreground font-medium mt-2">No active proposals detected. Start scouting the board.</p>
-              <Button onClick={() => router.push('/jobs')} className="mt-10 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black rounded-xl h-14 px-10 shadow-xl shadow-primary/20">Browse Missions</Button>
+              <Button onClick={() => router.push('/jobs')} className="mt-10 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black rounded-2xl h-14 px-10 shadow-xl shadow-primary/20">Browse Missions</Button>
             </div>
           )}
         </div>

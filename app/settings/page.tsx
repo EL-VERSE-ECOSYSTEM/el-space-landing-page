@@ -120,7 +120,7 @@ export default function SettingsPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all ${
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold transition-all ${
                   activeTab === tab.id
                   ? 'bg-slate-500 text-white shadow-lg shadow-slate-500/20'
                   : 'text-slate-400 hover:bg-slate-800'
@@ -139,18 +139,18 @@ export default function SettingsPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Full Name (Locked)</Label>
-                      <Input value={user?.full_name || user?.name} disabled className="bg-slate-800 border-slate-700 text-slate-500 rounded-xl" />
+                      <Input value={user?.full_name || user?.name} disabled className="bg-slate-800 border-slate-700 text-slate-500 rounded-2xl" />
                     </div>
                     <div className="space-y-2">
                       <Label className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Business Name (Locked)</Label>
-                      <Input value={(user as any)?.business_name || 'N/A'} disabled className="bg-slate-800 border-slate-700 text-slate-500 rounded-xl" />
+                      <Input value={(user as any)?.business_name || 'N/A'} disabled className="bg-slate-800 border-slate-700 text-slate-500 rounded-2xl" />
                     </div>
                     <div className="space-y-2">
                       <Label className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Email Address</Label>
                       <Input
                         value={profileData.email}
                         onChange={(e) => setProfileData({...profileData, email: e.target.value})}
-                        className="bg-slate-800 border-slate-700 text-white rounded-xl"
+                        className="bg-slate-800 border-slate-700 text-white rounded-2xl"
                       />
                     </div>
                     <div className="space-y-2">
@@ -158,7 +158,7 @@ export default function SettingsPage() {
                       <Input
                         value={profileData.phone_number}
                         onChange={(e) => setProfileData({...profileData, phone_number: e.target.value})}
-                        className="bg-slate-800 border-slate-700 text-white rounded-xl"
+                        className="bg-slate-800 border-slate-700 text-white rounded-2xl"
                       />
                     </div>
                   </div>
@@ -167,13 +167,13 @@ export default function SettingsPage() {
                     <Textarea
                       value={profileData.bio}
                       onChange={(e) => setProfileData({...profileData, bio: e.target.value})}
-                      className="bg-slate-800 border-slate-700 text-white rounded-xl min-h-[120px]"
+                      className="bg-slate-800 border-slate-700 text-white rounded-2xl min-h-[120px]"
                     />
                   </div>
                   <Button
                     onClick={handleSaveProfile}
                     disabled={loading}
-                    className="w-full bg-slate-500 hover:bg-slate-600 text-white font-black h-14 rounded-2xl shadow-xl shadow-slate-500/20"
+                    className="w-full bg-slate-500 hover:bg-slate-600 text-white font-black h-14 rounded-[2rem] shadow-xl shadow-slate-500/20"
                   >
                     {loading ? 'Synchronizing...' : 'Update Records'} <Save className="w-5 h-5 ml-2" />
                   </Button>
@@ -192,7 +192,7 @@ export default function SettingsPage() {
                       <button
                         key={t.id}
                         onClick={() => setTheme(t.id)}
-                        className={`flex flex-col items-center gap-4 p-6 rounded-2xl border-2 transition-all ${
+                        className={`flex flex-col items-center gap-4 p-6 rounded-[2rem] border-2 transition-all ${
                           theme === t.id
                           ? 'border-slate-500 bg-slate-500/10'
                           : 'border-slate-800 hover:border-slate-700'
@@ -213,9 +213,9 @@ export default function SettingsPage() {
                     <p className="text-slate-400 font-medium">Irreversible actions for your account.</p>
                   </div>
 
-                  <div className="p-6 border border-red-500/20 bg-red-500/5 rounded-2xl space-y-4">
+                  <div className="p-6 border border-red-500/20 bg-red-500/5 rounded-[2rem] space-y-4">
                     <div className="flex items-start gap-4">
-                      <div className="p-3 bg-red-500/10 rounded-xl">
+                      <div className="p-3 bg-red-500/10 rounded-2xl">
                         <Trash2 className="w-6 h-6 text-red-500" />
                       </div>
                       <div>
@@ -226,7 +226,7 @@ export default function SettingsPage() {
                     <Button
                       onClick={() => setShowDeactivateDialog(true)}
                       variant="destructive"
-                      className="w-full h-12 font-bold rounded-xl"
+                      className="w-full h-12 font-bold rounded-2xl"
                     >
                       Deactivate Account
                     </Button>

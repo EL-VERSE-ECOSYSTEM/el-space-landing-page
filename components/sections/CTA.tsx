@@ -13,7 +13,7 @@ export function CTA() {
       </div>
 
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md border border-white/10 rounded-[3rem] p-8 md:p-16 text-center space-y-10 shadow-2xl">
+        <div className="bg-card/30 backdrop-blur-3xl border border-white/10 rounded-[3.5rem] p-8 md:p-16 text-center space-y-10 shadow-2xl">
           <div className="space-y-4">
             <h2 className="text-4xl md:text-6xl font-black text-white text-balance tracking-tight">
               Ready to Transform Your<br />
@@ -31,7 +31,7 @@ export function CTA() {
             <Link href="/auth/register">
               <Button
                 size="lg"
-                className="bg-white hover:bg-slate-50 text-slate-900 font-black text-lg px-10 py-8 rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-xl shadow-white/5 group"
+                className="bg-white hover:bg-slate-50 text-slate-900 font-black text-lg px-10 py-8 rounded-[2rem] transition-all hover:scale-105 active:scale-95 shadow-xl shadow-white/5 group"
               >
                 Post a Job Today <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
@@ -40,7 +40,7 @@ export function CTA() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-2 border-white/20 text-white hover:bg-white/10 hover:border-white font-black text-lg px-10 py-8 rounded-2xl transition-all"
+                className="border-2 border-white/20 text-white hover:bg-white/10 hover:border-white font-black text-lg px-10 py-8 rounded-[2rem] transition-all"
               >
                 Apply as Freelancer
               </Button>

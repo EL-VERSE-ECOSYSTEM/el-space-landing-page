@@ -224,7 +224,7 @@ export default function AdminDashboard() {
         <div className="p-8 border-b border-border relative group">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <div className="relative flex items-center gap-4">
-             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-slate-600 flex items-center justify-center shadow-lg shadow-primary/20">
+             <div className="w-12 h-12 rounded-[2rem] bg-gradient-to-br from-primary to-slate-600 flex items-center justify-center shadow-lg shadow-primary/20">
                 <Shield className="w-6 h-6 text-white" />
              </div>
              <div>
@@ -249,7 +249,7 @@ export default function AdminDashboard() {
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full group flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold transition-all duration-300 relative overflow-hidden ${
+              className={`w-full group flex items-center gap-4 px-6 py-4 rounded-[2rem] text-sm font-bold transition-all duration-300 relative overflow-hidden ${
                 activeTab === item.id
                 ? 'text-foreground'
                 : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
@@ -277,7 +277,7 @@ export default function AdminDashboard() {
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full group flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold transition-all duration-300 relative ${
+              className={`w-full group flex items-center gap-4 px-6 py-4 rounded-[2rem] text-sm font-bold transition-all duration-300 relative ${
                 activeTab === item.id
                 ? 'text-foreground bg-slate-700/10'
                 : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
@@ -292,7 +292,7 @@ export default function AdminDashboard() {
         <div className="p-6 border-t border-border bg-muted/20">
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-black text-red-500 hover:bg-red-500/10 transition-all group"
+            className="w-full flex items-center gap-4 px-6 py-4 rounded-[2rem] text-sm font-black text-red-500 hover:bg-red-500/10 transition-all group"
           >
             <LogOut className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" />
             TERMINATE SESSION
@@ -310,7 +310,7 @@ export default function AdminDashboard() {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-slate-700 transition-colors" />
               <Input
                 placeholder="Query system intelligence..."
-                className="bg-background border-border pl-12 h-12 focus:ring-primary/10 focus:border-slate-700/30 rounded-2xl transition-all"
+                className="bg-background border-border pl-12 h-12 focus:ring-primary/10 focus:border-slate-700/30 rounded-[2rem] transition-all"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -318,7 +318,7 @@ export default function AdminDashboard() {
           </div>
 
           <div className="flex items-center gap-6">
-            <div className="hidden xl:flex items-center gap-6 px-6 py-2 bg-muted/50 rounded-2xl border border-border">
+            <div className="hidden xl:flex items-center gap-6 px-6 py-2 bg-muted/50 rounded-[2rem] border border-border">
                <div className="text-right">
                   <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest leading-none">Security Clearance</p>
                   <p className="text-xs font-bold text-slate-700 leading-none mt-1 uppercase">LVL 4 ADMINISTRATOR</p>
@@ -330,7 +330,7 @@ export default function AdminDashboard() {
                </div>
             </div>
 
-            <button className="relative p-3 bg-muted/50 rounded-2xl border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-all">
+            <button className="relative p-3 bg-muted/50 rounded-[2rem] border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-all">
               <Bell className="w-6 h-6" />
               <span className="absolute top-3 right-3 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-card" />
             </button>
@@ -340,7 +340,7 @@ export default function AdminDashboard() {
                   <p className="text-xs font-black text-foreground leading-none">System Admin</p>
                   <p className="text-[10px] font-bold text-muted-foreground leading-none mt-1 uppercase">Superuser</p>
                </div>
-               <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-slate-800 via-slate-500 to-slate-300 p-[2px] shadow-lg shadow-primary/10">
+               <div className="h-12 w-12 rounded-[2rem] bg-gradient-to-br from-slate-800 via-slate-500 to-slate-300 p-[2px] shadow-lg shadow-primary/10">
                  <div className="h-full w-full rounded-[14px] bg-background flex items-center justify-center font-black text-sm text-foreground">
                    AD
                  </div>
@@ -363,11 +363,11 @@ export default function AdminDashboard() {
                     <p className="text-muted-foreground mt-3 font-bold uppercase tracking-[0.2em] text-[10px]">Ecosystem Intelligence Dashboard · Real-time Feed</p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Button variant="outline" className="h-12 px-6 rounded-2xl border-border bg-card hover:bg-muted font-bold text-xs uppercase tracking-widest">
+                    <Button variant="outline" className="h-12 px-6 rounded-[2rem] border-border bg-card hover:bg-muted font-bold text-xs uppercase tracking-widest">
                        <Clock className="w-4 h-4 mr-2" />
                        Last 24 Hours
                     </Button>
-                    <Button className="h-12 px-8 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black rounded-2xl shadow-lg shadow-primary/20 transition-all hover:scale-105 uppercase text-xs tracking-widest">
+                    <Button className="h-12 px-8 bg-slate-700 hover:bg-slate-700/90 text-slate-700-foreground font-black rounded-[2rem] shadow-lg shadow-primary/20 transition-all hover:scale-105 uppercase text-xs tracking-widest">
                       Generate Audit
                     </Button>
                   </div>
@@ -385,7 +385,7 @@ export default function AdminDashboard() {
                       <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-10 blur-[60px] transition-opacity`} />
                       <CardContent className="p-8 relative z-10">
                         <div className="flex items-center justify-between mb-8">
-                          <div className={`p-4 rounded-2xl bg-gradient-to-br ${stat.color} text-white shadow-lg shadow-black/20 group-hover:scale-110 transition-transform duration-500`}>
+                          <div className={`p-4 rounded-[2rem] bg-gradient-to-br ${stat.color} text-white shadow-lg shadow-black/20 group-hover:scale-110 transition-transform duration-500`}>
                             <stat.icon className="w-6 h-6" />
                           </div>
                           <Badge className={`border-none font-black text-[10px] py-1 px-3 rounded-full ${
@@ -451,7 +451,7 @@ export default function AdminDashboard() {
                          ].map((action, i) => (
                            <button
                              key={i}
-                             className="w-full flex items-center gap-4 p-4 rounded-2xl bg-muted/50 hover:bg-muted border border-border transition-all group/btn"
+                             className="w-full flex items-center gap-4 p-4 rounded-[2rem] bg-muted/50 hover:bg-muted border border-border transition-all group/btn"
                            >
                              <div className={`p-2 rounded-lg ${action.bg} ${action.color} group-hover/btn:scale-110 transition-transform`}>
                                <action.icon className="w-5 h-5" />
@@ -461,7 +461,7 @@ export default function AdminDashboard() {
                            </button>
                          ))}
 
-                         <div className="mt-8 p-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-3xl relative overflow-hidden shadow-xl">
+                         <div className="mt-8 p-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-[2.5rem] relative overflow-hidden shadow-xl">
                             <div className="relative z-10">
                                <p className="text-white font-black text-lg leading-tight uppercase">Upgrade<br/>Nodes</p>
                                <p className="text-slate-200 text-[10px] font-bold mt-2 uppercase tracking-widest">Version 4.2.0 Stable</p>
@@ -484,9 +484,9 @@ export default function AdminDashboard() {
                   <div className="flex items-center gap-3">
                     <div className="relative group">
                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-slate-700 transition-colors" />
-                       <Input placeholder="Filter by ID, Email, or Name..." className="bg-background border-border pl-12 h-12 w-80 rounded-2xl shadow-sm" />
+                       <Input placeholder="Filter by ID, Email, or Name..." className="bg-background border-border pl-12 h-12 w-80 rounded-[2rem] shadow-sm" />
                     </div>
-                    <Button variant="outline" className="h-12 px-6 rounded-2xl border-border bg-card hover:bg-muted font-bold text-xs uppercase tracking-widest">
+                    <Button variant="outline" className="h-12 px-6 rounded-[2rem] border-border bg-card hover:bg-muted font-bold text-xs uppercase tracking-widest">
                       <Filter className="w-4 h-4 mr-2" />
                       Matrix Filters
                     </Button>
@@ -500,7 +500,7 @@ export default function AdminDashboard() {
                         <div className="flex flex-col lg:flex-row items-stretch">
                            <div className="p-8 flex items-center gap-6 flex-1 bg-gradient-to-r from-transparent to-muted/20">
                               <div className="relative">
-                                <div className="w-20 h-20 rounded-3xl bg-muted flex items-center justify-center font-black text-2xl border-2 border-border group-hover:border-slate-700/50 transition-colors overflow-hidden">
+                                <div className="w-20 h-20 rounded-[2.5rem] bg-muted flex items-center justify-center font-black text-2xl border-2 border-border group-hover:border-slate-700/50 transition-colors overflow-hidden">
                                   {user.avatar_url ? (
                                     <Image src={user.avatar_url} alt="" width={80} height={80} className="object-cover" />
                                   ) : (
@@ -544,12 +544,12 @@ export default function AdminDashboard() {
                            </div>
 
                            <div className="p-8 flex items-center justify-end gap-3 bg-muted/5 border-l border-border">
-                              <Button variant="outline" className="h-12 w-12 rounded-2xl border-border bg-background hover:bg-muted p-0">
+                              <Button variant="outline" className="h-12 w-12 rounded-[2rem] border-border bg-background hover:bg-muted p-0">
                                 <MessageSquare className="w-5 h-5 text-muted-foreground" />
                               </Button>
                               <Button
                                 variant="outline"
-                                className={`h-12 px-6 rounded-2xl font-black text-[10px] tracking-widest transition-all uppercase ${
+                                className={`h-12 px-6 rounded-[2rem] font-black text-[10px] tracking-widest transition-all uppercase ${
                                   user.status === 'active'
                                   ? 'border-red-500/20 text-red-500 hover:bg-red-500/10'
                                   : 'border-slate-500/20 text-slate-500 hover:bg-slate-500/10'
@@ -558,7 +558,7 @@ export default function AdminDashboard() {
                               >
                                 {user.status === 'active' ? 'Suspend' : 'Restore'}
                               </Button>
-                              <Button variant="outline" className="h-12 w-12 rounded-2xl border-border bg-background hover:bg-muted p-0">
+                              <Button variant="outline" className="h-12 w-12 rounded-[2rem] border-border bg-background hover:bg-muted p-0">
                                 <MoreVertical className="w-5 h-5 text-muted-foreground" />
                               </Button>
                            </div>
@@ -586,7 +586,7 @@ export default function AdminDashboard() {
                         <div className="flex flex-col lg:flex-row gap-10">
                            <div className="flex-1 space-y-6">
                               <div className="flex items-center gap-6">
-                                 <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center font-black text-xl border border-border">
+                                 <div className="w-16 h-16 rounded-[2rem] bg-muted flex items-center justify-center font-black text-xl border border-border">
                                     {dep.user?.full_name?.charAt(0)}
                                  </div>
                                  <div>
@@ -596,17 +596,17 @@ export default function AdminDashboard() {
                               </div>
 
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                 <div className="p-6 bg-muted/30 rounded-3xl border border-border">
+                                 <div className="p-6 bg-muted/30 rounded-[2.5rem] border border-border">
                                     <p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest mb-1">Volume</p>
                                     <p className="text-3xl font-black text-foreground">${dep.amount.toLocaleString()}</p>
                                  </div>
-                                 <div className="p-6 bg-muted/30 rounded-3xl border border-border">
+                                 <div className="p-6 bg-muted/30 rounded-[2.5rem] border border-border">
                                     <p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest mb-1">Method</p>
                                     <p className="text-foreground font-black uppercase text-xs tracking-widest">{dep.method?.replace('_', ' ')}</p>
                                  </div>
                               </div>
 
-                              <div className="p-4 bg-muted rounded-2xl border border-border">
+                              <div className="p-4 bg-muted rounded-[2rem] border border-border">
                                  <a href={dep.receipt_url} target="_blank" className="flex items-center gap-3 text-slate-700 hover:text-slate-700/80 font-black text-[10px] uppercase tracking-widest">
                                     <FileText className="w-5 h-5" /> View Payment Receipt
                                  </a>
@@ -617,21 +617,21 @@ export default function AdminDashboard() {
                               {dep.status === 'pending' ? (
                                 <>
                                   <Button
-                                    className="h-14 bg-slate-600 hover:bg-slate-500 text-white font-black rounded-2xl uppercase text-[10px] tracking-widest shadow-lg shadow-slate-500/20"
+                                    className="h-14 bg-slate-600 hover:bg-slate-500 text-white font-black rounded-[2rem] uppercase text-[10px] tracking-widest shadow-lg shadow-slate-500/20"
                                     onClick={() => handleAction('/api/admin/deposits', 'PATCH', { depositId: dep.id, status: 'approved' }, 'Funding approved and credited')}
                                   >
                                     Confirm Deposit
                                   </Button>
                                   <Button
                                     variant="ghost"
-                                    className="h-14 text-red-500 hover:text-red-600 font-black rounded-2xl uppercase text-[10px] tracking-widest"
+                                    className="h-14 text-red-500 hover:text-red-600 font-black rounded-[2rem] uppercase text-[10px] tracking-widest"
                                     onClick={() => handleAction('/api/admin/deposits', 'PATCH', { depositId: dep.id, status: 'rejected' }, 'Deposit proof rejected')}
                                   >
                                     Reject Proof
                                   </Button>
                                 </>
                               ) : (
-                                <Badge className={`h-12 flex items-center justify-center rounded-xl font-black border-none uppercase text-[10px] tracking-widest ${
+                                <Badge className={`h-12 flex items-center justify-center rounded-2xl font-black border-none uppercase text-[10px] tracking-widest ${
                                   dep.status === 'approved' ? 'bg-slate-500/10 text-slate-500' : 'bg-red-500/10 text-red-500'
                                 }`}>
                                   {dep.status}
@@ -667,7 +667,7 @@ export default function AdminDashboard() {
                           <div className="flex-1 space-y-8">
                              <div className="flex items-center gap-12">
                                 <div className="flex items-center gap-4">
-                                   <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center font-black text-slate-700">
+                                   <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center font-black text-slate-700">
                                       {tx.sender?.full_name?.charAt(0)}
                                    </div>
                                    <div>
@@ -678,7 +678,7 @@ export default function AdminDashboard() {
                                 </div>
                                 <ArrowUpRight className="w-6 h-6 text-muted-foreground/30" />
                                 <div className="flex items-center gap-4">
-                                   <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center font-black text-slate-500">
+                                   <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center font-black text-slate-500">
                                       {tx.recipient?.full_name?.charAt(0)}
                                    </div>
                                    <div>
@@ -704,14 +704,14 @@ export default function AdminDashboard() {
                           {tx.status === 'pending' && (
                              <div className="flex flex-col gap-3 justify-center">
                                 <Button
-                                  className="h-14 bg-slate-700 hover:bg-slate-700/90 text-white font-black rounded-2xl px-8 uppercase text-[10px] tracking-widest shadow-lg shadow-primary/20"
+                                  className="h-14 bg-slate-700 hover:bg-slate-700/90 text-white font-black rounded-[2rem] px-8 uppercase text-[10px] tracking-widest shadow-lg shadow-primary/20"
                                   onClick={() => handleAction('/api/admin/transfers', 'PATCH', { transferId: tx.id, status: 'approved' }, 'Transfer approved')}
                                 >
                                   Approve Transfer
                                 </Button>
                                 <Button
                                   variant="ghost"
-                                  className="h-14 text-red-500 hover:text-red-600 font-black rounded-2xl uppercase text-[10px] tracking-widest"
+                                  className="h-14 text-red-500 hover:text-red-600 font-black rounded-[2rem] uppercase text-[10px] tracking-widest"
                                   onClick={() => handleAction('/api/admin/transfers', 'PATCH', { transferId: tx.id, status: 'rejected' }, 'Transfer rejected')}
                                 >
                                   Reject
@@ -738,7 +738,7 @@ export default function AdminDashboard() {
                     <p className="text-muted-foreground mt-3 font-bold uppercase tracking-[0.2em] text-[10px]">Withdrawal Request Authorization Pipeline</p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Button variant="outline" className="h-12 px-6 rounded-2xl border-border bg-card hover:bg-muted font-bold text-xs uppercase tracking-widest">
+                    <Button variant="outline" className="h-12 px-6 rounded-[2rem] border-border bg-card hover:bg-muted font-bold text-xs uppercase tracking-widest">
                       <Clock className="w-4 h-4 mr-2" />
                       Pending History
                     </Button>
@@ -772,19 +772,19 @@ export default function AdminDashboard() {
                              </div>
 
                              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                                <div className="bg-muted/30 p-6 rounded-3xl border border-border">
+                                <div className="bg-muted/30 p-6 rounded-[2.5rem] border border-border">
                                    <p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest mb-2">Institution</p>
                                    <p className="text-foreground font-black">{req.metadata?.bankName || 'Standard Chartered'}</p>
                                 </div>
-                                <div className="bg-muted/30 p-6 rounded-3xl border border-border">
+                                <div className="bg-muted/30 p-6 rounded-[2.5rem] border border-border">
                                    <p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest mb-2">Account Number</p>
                                    <p className="text-foreground font-mono font-bold tracking-widest">{req.metadata?.accountNumber || '**** 9012'}</p>
                                 </div>
-                                <div className="bg-muted/30 p-6 rounded-3xl border border-border">
+                                <div className="bg-muted/30 p-6 rounded-[2.5rem] border border-border">
                                    <p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest mb-2">Account Holder</p>
                                    <p className="text-foreground font-black truncate">{req.metadata?.accountName || 'Verified User'}</p>
                                 </div>
-                                <div className="bg-muted/30 p-6 rounded-3xl border border-border">
+                                <div className="bg-muted/30 p-6 rounded-[2.5rem] border border-border">
                                    <p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest mb-2">Request Origin</p>
                                    <p className="text-foreground font-black">{new Date(req.created_at).toLocaleDateString()}</p>
                                 </div>
@@ -806,7 +806,7 @@ export default function AdminDashboard() {
                              {req.status === 'pending' && (
                                <div className="flex flex-col gap-3 w-full">
                                   <Button
-                                    className="h-14 bg-slate-600 hover:bg-slate-500 text-white font-black rounded-2xl shadow-lg shadow-slate-500/20 transition-all hover:scale-105 uppercase text-[10px] tracking-widest"
+                                    className="h-14 bg-slate-600 hover:bg-slate-500 text-white font-black rounded-[2rem] shadow-lg shadow-slate-500/20 transition-all hover:scale-105 uppercase text-[10px] tracking-widest"
                                     onClick={() => handleAction('/api/admin/withdrawals', 'PATCH', { withdrawalId: req.id, status: 'approved' }, 'Withdrawal authorized successfully')}
                                   >
                                     <CheckCircle className="w-5 h-5 mr-3" />
@@ -814,7 +814,7 @@ export default function AdminDashboard() {
                                   </Button>
                                   <Button
                                     variant="ghost"
-                                    className="h-14 text-red-500 hover:text-red-600 hover:bg-red-500/10 font-black rounded-2xl uppercase text-[10px] tracking-widest"
+                                    className="h-14 text-red-500 hover:text-red-600 hover:bg-red-500/10 font-black rounded-[2rem] uppercase text-[10px] tracking-widest"
                                     onClick={() => handleAction('/api/admin/withdrawals', 'PATCH', { withdrawalId: req.id, status: 'rejected', rejectionReason: 'Compliance verification failed' }, 'Withdrawal rejected for compliance')}
                                   >
                                     <XCircle className="w-5 h-5 mr-3" />
@@ -855,7 +855,7 @@ export default function AdminDashboard() {
                          <div className="flex flex-col lg:flex-row gap-10">
                             <div className="flex-1 space-y-6">
                                <div className="flex items-center gap-6">
-                                  <div className="w-20 h-20 rounded-3xl bg-muted flex-shrink-0 overflow-hidden border-2 border-border shadow-inner">
+                                  <div className="w-20 h-20 rounded-[2.5rem] bg-muted flex-shrink-0 overflow-hidden border-2 border-border shadow-inner">
                                      {v.avatar_url ? (
                                        <Image src={v.avatar_url} alt="" width={80} height={80} className="object-cover" />
                                      ) : (
@@ -870,7 +870,7 @@ export default function AdminDashboard() {
                                </div>
 
                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                  <div className="p-6 bg-muted/30 rounded-3xl border border-border">
+                                  <div className="p-6 bg-muted/30 rounded-[2.5rem] border border-border">
                                      <p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest mb-2">ID Details</p>
                                      <p className="text-foreground font-black uppercase">{v.id_type?.toUpperCase() || 'N/A'}</p>
                                      <p className="text-muted-foreground font-mono text-sm mt-1">{v.id_serial || 'NO SERIAL'}</p>
@@ -881,7 +881,7 @@ export default function AdminDashboard() {
                                      )}
                                   </div>
                                   {v.user_type !== 'freelancer' && (
-                                    <div className="p-6 bg-muted/30 rounded-3xl border border-border">
+                                    <div className="p-6 bg-muted/30 rounded-[2.5rem] border border-border">
                                        <p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest mb-2">Business Proof</p>
                                        <p className="text-foreground font-black truncate uppercase">{v.business_name || 'N/A'}</p>
                                        <p className="text-muted-foreground font-bold text-xs mt-1 uppercase tracking-widest">{v.business_type || 'N/A'}</p>
@@ -897,7 +897,7 @@ export default function AdminDashboard() {
 
                             <div className="w-full lg:w-72 flex flex-col gap-3 justify-center p-8 bg-muted/10 rounded-[2rem] border border-border">
                                <Button
-                                 className="h-14 bg-slate-600 hover:bg-slate-500 text-white font-black rounded-2xl shadow-lg shadow-slate-500/20 uppercase text-[10px] tracking-widest"
+                                 className="h-14 bg-slate-600 hover:bg-slate-500 text-white font-black rounded-[2rem] shadow-lg shadow-slate-500/20 uppercase text-[10px] tracking-widest"
                                  onClick={() => handleAction('/api/admin/verifications', 'POST', { userId: v.id, status: 'verified' }, 'User verified successfully')}
                                >
                                  <CheckCircle className="w-5 h-5 mr-3" />
@@ -905,7 +905,7 @@ export default function AdminDashboard() {
                                </Button>
                                <Button
                                  variant="ghost"
-                                 className="h-14 text-red-500 hover:text-red-600 hover:bg-red-500/10 font-black rounded-2xl uppercase text-[10px] tracking-widest"
+                                 className="h-14 text-red-500 hover:text-red-600 hover:bg-red-500/10 font-black rounded-[2rem] uppercase text-[10px] tracking-widest"
                                  onClick={() => handleAction('/api/admin/verifications', 'POST', { userId: v.id, status: 'rejected' }, 'Verification rejected')}
                                >
                                  <XCircle className="w-5 h-5 mr-3" />

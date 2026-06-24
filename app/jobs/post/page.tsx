@@ -116,7 +116,7 @@ export default function PostJobPage() {
                   placeholder="e.g., Senior Next.js Developer for Fintech Dashboard"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="h-14 bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 rounded-2xl font-bold focus:ring-primary/20"
+                  className="h-14 bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 rounded-[2rem] font-bold focus:ring-primary/20"
                   required
                 />
               </div>
@@ -129,7 +129,7 @@ export default function PostJobPage() {
                   placeholder="Tell us about the project goals, requirements, and scope..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 rounded-3xl p-6 h-48 focus:ring-primary/20 font-medium leading-relaxed resize-none"
+                  className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 rounded-[2.5rem] p-6 h-48 focus:ring-primary/20 font-medium leading-relaxed resize-none"
                   required
                 />
               </div>
@@ -139,7 +139,7 @@ export default function PostJobPage() {
                 <div className="space-y-3">
                   <Label htmlFor="category" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] ml-1">Category *</Label>
                   <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
-                    <SelectTrigger className="h-14 bg-muted/50 border-border text-foreground rounded-2xl font-bold">
+                    <SelectTrigger className="h-14 bg-muted/50 border-border text-foreground rounded-[2rem] font-bold">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="bg-card border-border">
@@ -158,7 +158,7 @@ export default function PostJobPage() {
                   <div className="relative">
                     <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/30 pointer-events-none" />
                     <Select value={formData.timeline} onValueChange={(value) => setFormData({ ...formData, timeline: value })}>
-                      <SelectTrigger className="h-14 bg-muted/50 border-border text-foreground pl-12 rounded-2xl font-bold">
+                      <SelectTrigger className="h-14 bg-muted/50 border-border text-foreground pl-12 rounded-[2rem] font-bold">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-card border-border">
@@ -190,7 +190,7 @@ export default function PostJobPage() {
                         ...formData,
                         budget: { ...formData.budget, min: parseInt(e.target.value) || 0 }
                       })}
-                      className="h-14 bg-muted/50 border-border text-foreground pl-8 rounded-2xl font-black text-lg focus:ring-primary/20"
+                      className="h-14 bg-muted/50 border-border text-foreground pl-8 rounded-[2rem] font-black text-lg focus:ring-primary/20"
                       required
                     />
                   </div>
@@ -205,7 +205,7 @@ export default function PostJobPage() {
                         ...formData,
                         budget: { ...formData.budget, max: parseInt(e.target.value) || 0 }
                       })}
-                      className="h-14 bg-muted/50 border-border text-foreground pl-8 rounded-2xl font-black text-lg focus:ring-primary/20"
+                      className="h-14 bg-muted/50 border-border text-foreground pl-8 rounded-[2rem] font-black text-lg focus:ring-primary/20"
                       required
                     />
                   </div>
@@ -229,12 +229,12 @@ export default function PostJobPage() {
                         handleAddSkill();
                       }
                     }}
-                    className="h-14 bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 rounded-2xl font-bold focus:ring-primary/20"
+                    className="h-14 bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/30 rounded-[2rem] font-bold focus:ring-primary/20"
                   />
                   <Button
                     type="button"
                     onClick={handleAddSkill}
-                    className="h-14 px-8 bg-slate-700 text-slate-700-foreground font-black uppercase tracking-widest text-xs rounded-2xl hover:bg-slate-700/90 transition-all shadow-lg shadow-primary/20"
+                    className="h-14 px-8 bg-slate-700 text-slate-700-foreground font-black uppercase tracking-widest text-xs rounded-[2rem] hover:bg-slate-700/90 transition-all shadow-lg shadow-primary/20"
                   >
                     Add
                   </Button>
@@ -246,7 +246,7 @@ export default function PostJobPage() {
                     {selectedSkills.map((skill) => (
                       <Badge
                         key={skill}
-                        className="bg-secondary text-secondary-foreground border border-border px-4 py-2 rounded-xl font-black uppercase tracking-widest text-[9px] flex items-center gap-2 hover:border-red-500/50 hover:bg-red-500/10 transition-all group/badge"
+                        className="bg-secondary text-secondary-foreground border border-border px-4 py-2 rounded-2xl font-black uppercase tracking-widest text-[9px] flex items-center gap-2 hover:border-red-500/50 hover:bg-red-500/10 transition-all group/badge"
                         onClick={() => handleRemoveSkill(skill)}
                       >
                         {skill}

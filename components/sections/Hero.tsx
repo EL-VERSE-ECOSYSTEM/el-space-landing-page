@@ -13,7 +13,7 @@ export function Hero() {
         {/* Metallic glow top-right */}
         <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-slate-700/10 rounded-full blur-[120px] animate-pulse" />
         {/* Purple glow bottom-left */}
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-slate-400/10 rounded-full blur-[120px] animate-pulse" />
         {/* Slate accent */}
         <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-slate-500/5 rounded-full blur-[100px] animate-pulse animation-delay-1000" />
         {/* Grid pattern overlay */}
@@ -60,7 +60,7 @@ export function Hero() {
             {/* Quick Benefits */}
             <div className="space-y-4">
               <div className="flex items-start gap-4 p-4 rounded-[2rem] bg-muted/30 border border-border group-hover:border-slate-700/20 transition-all">
-                <div className="p-2.5 bg-slate-700/10 rounded-xl mt-0.5 text-slate-700">
+                <div className="p-2.5 bg-slate-700/10 rounded-2xl mt-0.5 text-slate-700">
                   <Shield className="w-5 h-5" />
                 </div>
                 <div>
@@ -69,7 +69,7 @@ export function Hero() {
                 </div>
               </div>
               <div className="flex items-start gap-4 p-4 rounded-[2rem] bg-muted/30 border border-border group-hover:border-slate-700/20 transition-all">
-                <div className="p-2.5 bg-slate-500/10 rounded-xl mt-0.5 text-slate-500">
+                <div className="p-2.5 bg-slate-500/10 rounded-2xl mt-0.5 text-slate-500">
                   <Zap className="w-5 h-5" />
                 </div>
                 <div>
@@ -79,7 +79,7 @@ export function Hero() {
               </div>
             </div>
 
-            <div className="rounded-xl border border-slate-700/20 bg-slate-700/5 p-4">
+            <div className="rounded-2xl border border-slate-700/20 bg-slate-700/5 p-4">
               <p className="text-sm font-semibold text-slate-700">
                 {HERO_CLIENT.fee}
               </p>
@@ -112,7 +112,7 @@ export function Hero() {
             {/* Quick Benefits */}
             <div className="space-y-4">
               <div className="flex items-start gap-4 p-4 rounded-[2rem] bg-muted/30 border border-border group-hover:border-accent/20 transition-all">
-                <div className="p-2.5 bg-accent/10 rounded-xl mt-0.5 text-accent">
+                <div className="p-2.5 bg-accent/10 rounded-2xl mt-0.5 text-accent">
                   <TrendingUp className="w-5 h-5" />
                 </div>
                 <div>
@@ -121,7 +121,7 @@ export function Hero() {
                 </div>
               </div>
               <div className="flex items-start gap-4 p-4 rounded-[2rem] bg-muted/30 border border-border group-hover:border-accent/20 transition-all">
-                <div className="p-2.5 bg-slate-500/10 rounded-xl mt-0.5 text-slate-500">
+                <div className="p-2.5 bg-slate-500/10 rounded-2xl mt-0.5 text-slate-500">
                   <Shield className="w-5 h-5" />
                 </div>
                 <div>
@@ -131,7 +131,7 @@ export function Hero() {
               </div>
             </div>
 
-            <div className="rounded-xl border border-accent/20 bg-accent/5 p-4">
+            <div className="rounded-2xl border border-accent/20 bg-accent/5 p-4">
               <p className="text-sm font-semibold text-accent">
                 {HERO_FREELANCER.fee}
               </p>

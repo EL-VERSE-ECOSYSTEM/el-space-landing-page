@@ -72,7 +72,7 @@ function GitHubSuccessContent() {
         </div>
 
         {error && (
-          <div className="mt-6 p-6 bg-red-500/10 border border-red-500/20 rounded-2xl shadow-xl">
+          <div className="mt-6 p-6 bg-red-500/10 border border-red-500/20 rounded-[2rem] shadow-xl">
             <p className="text-red-500 font-black uppercase tracking-widest text-xs">{error}</p>
           </div>
         )}

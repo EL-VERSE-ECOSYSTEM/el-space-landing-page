@@ -28,10 +28,10 @@ export default function HowItWorksPage() {
 
         {/* Tabs */}
         <div className="mb-16 flex justify-center gap-4 relative z-10">
-          <button className="px-8 py-3 bg-slate-700 text-slate-700-foreground shadow-xl shadow-primary/20 rounded-2xl font-black text-sm uppercase tracking-widest transition-all hover:scale-105 active:scale-95">
+          <button className="px-8 py-3 bg-slate-700 text-slate-700-foreground shadow-xl shadow-primary/20 rounded-[2rem] font-black text-sm uppercase tracking-widest transition-all hover:scale-105 active:scale-95">
             Client Hub
           </button>
-          <button className="px-8 py-3 bg-muted text-muted-foreground rounded-2xl font-black text-sm uppercase tracking-widest transition-all hover:bg-muted/80 hover:text-foreground">
+          <button className="px-8 py-3 bg-muted text-muted-foreground rounded-[2rem] font-black text-sm uppercase tracking-widest transition-all hover:bg-muted/80 hover:text-foreground">
             Freelancer Hub
           </button>
         </div>
@@ -84,13 +84,13 @@ export default function HowItWorksPage() {
           <div className="flex gap-6 justify-center flex-wrap relative z-10">
             <Link
               href="/auth/register"
-              className="px-10 py-5 bg-slate-700 text-slate-700-foreground font-black rounded-2xl transition-all hover:bg-slate-700/90 hover:shadow-xl hover:shadow-primary/20 uppercase tracking-widest text-sm"
+              className="px-10 py-5 bg-slate-700 text-slate-700-foreground font-black rounded-[2rem] transition-all hover:bg-slate-700/90 hover:shadow-xl hover:shadow-primary/20 uppercase tracking-widest text-sm"
             >
               Post a Project
             </Link>
             <Link
               href="/auth/register"
-              className="px-10 py-5 border-2 border-border text-foreground font-black rounded-2xl transition-all hover:bg-muted uppercase tracking-widest text-sm"
+              className="px-10 py-5 border-2 border-border text-foreground font-black rounded-[2rem] transition-all hover:bg-muted uppercase tracking-widest text-sm"
             >
               Browse Network
             </Link>

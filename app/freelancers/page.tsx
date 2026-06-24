@@ -62,7 +62,7 @@ export default function FreelancersHub() {
                <p className="text-muted-foreground mt-2 text-xl font-medium">Vetted technical specialists for critical deployments.</p>
             </div>
             <div className="flex gap-3">
-               <Badge className="bg-slate-700/10 text-slate-700 border border-slate-700/20 px-6 py-2.5 rounded-2xl text-[10px] font-black tracking-widest uppercase">
+               <Badge className="bg-slate-700/10 text-slate-700 border border-slate-700/20 px-6 py-2.5 rounded-[2rem] text-[10px] font-black tracking-widest uppercase">
                   {freelancers.length} SPECIALISTS ONLINE
                </Badge>
             </div>
@@ -133,7 +133,7 @@ export default function FreelancersHub() {
                               <span className="text-foreground font-black text-sm">${freelancer.hourly_rate || '45'}/HR</span>
                            </div>
                         </div>
-                        <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center group-hover:bg-slate-700 group-hover:text-slate-700-foreground transition-all">
+                        <div className="w-10 h-10 rounded-2xl bg-muted flex items-center justify-center group-hover:bg-slate-700 group-hover:text-slate-700-foreground transition-all">
                            <ChevronRight className="w-6 h-6" />
                         </div>
                      </div>
